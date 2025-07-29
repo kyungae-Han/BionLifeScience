@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head
+	th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 제품 중 분류 페이지')">
+
+</head>
+
+<body class="stretched">
+
+	<div id="wrapper" class="clearfix">
+
+		<th:block
+			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+		<section id="page-title">
+
+			<div class="container clearfix">
+				<h1>제품 카테고리별 분류</h1>
+				<span>Bion Life Science Products Sorted</span>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="/index">메인</a></li>
+					<li class="breadcrumb-item" th:classappend="${sort} == 'main' ? 'active' : ''" aria-current="page">대분류</li>
+					<li class="breadcrumb-item" th:classappend="${sort} == 'middle' ? 'active' : ''" aria-current="page">중분류</li>
+					<li class="breadcrumb-item" th:classappend="${sort} == 'sub' ? 'active' : ''"  aria-current="page">소분류</li>
+				</ol>
+			</div>
+
+		</section>
+		<section id="content" th:if="${products.totalElements > 0}">
+			<div class="content-wrap">
+				<div class="container clearfix">
+					<div class="border-top-0 m-0">
+						<div class="container text-center">
+
+							<div class="heading-block center">
+								<h2 th:text="${name}">Tubes</h2>
+								<span>[[${name}]]분류에 속한 제품들 입니다</span>
+							</div>
+						</div>
+					</div>
+					<div class="row gutter-40 col-mb-80">
+						<div class="postcontent col-lg-12 order-lg-last">
+							<div id="posts" class="row grid-container gutter-30">
+
+								<div class="entry sorted-entry col-lg-4 col-xs-6" th:each="product : ${products}">
+									<div class="grid-inner">
+										<div class="entry-image mb-2">
+											<a th:href="@{|/productDetail/${product.id}|}">
+											<img th:src="${product.firstImageRoad}"
+												alt="#"></a>
+										</div>
+										<div class="entry-title">
+											<h2>
+												<a th:href="@{|/productDetail/${product.id}|}" th:text="${product.subject}">Screw Caps and Tubes</a>
+											</h2>
+										</div>
+										<div class="entry-meta">
+											<ul>
+												<li th:each="spec:${product.specs}"><i class="icon-folder-open"></i> # [[${spec.productSpecContent}]]</li>
+											</ul>
+										</div>
+										<div class="entry-content mt-1">
+											<p th:text="${product.content}">간단한 제품에 대한 설명이 들어가는 영역입니다.</p>
+											<a th:href="@{|/productDetail/${product.id}|}" class="more-link">자세히 보기 <i class="icon-line-arrow-right"></i></a>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="d-flex justify-content-center mt-5">
+								<nav aria-label="navigation" style="text-align: center;">
+								<ul class="pagination justify-content-center">
+									<li class="page-item"
+										th:classappend="${1 == products.pageable.pageNumber+1} ? 'disabled'">
+										<a class="page-link" href="#"
+										th:href="@{/productSorted/{sort}/{id}(sort=${sort} , id=${id},page=0, size=${param.size})}"
+										tabindex="-1" aria-disabled="true">First</a>
+									</li>
+									<li class="page-item"
+										th:classappend="${1 == products.pageable.pageNumber+1} ? 'disabled'">
+										<a class="page-link" href="#"
+										th:href="@{/productSorted/{sort}/{id}(sort=${sort} , id=${id},page=${products.pageable.pageNumber - 1}, size=${param.size})}"
+										tabindex="-1" aria-disabled="true">Previous</a>
+									</li>
+									<li class="page-item"
+										th:classappend="${i == products.pageable.pageNumber+1} ? 'disabled'"
+										th:each="i : ${#numbers.sequence(startPage, endPage)}">
+										<a	class="page-link" href="#" th:text=${i}
+										th:href="@{/productSorted/{sort}/{id}(sort=${sort} , id=${id},page=${i-1}, size=${param.size})}">1</a>
+									</li>
+									<li class="page-item"
+										th:classappend="${products.totalPages == products.pageable.pageNumber + 1} ? 'disabled'">
+										<a class="page-link" href="#"
+										th:href="@{/productSorted/{sort}/{id}(sort=${sort} , id=${id},page=${products.pageable.pageNumber + 1}, size=${param.size})}">Next</a>
+									</li>
+									<li class="page-item"
+										th:classappend="${products.totalPages == products.pageable.pageNumber + 1} ? 'disabled'">
+										<a class="page-link" href="#"
+										th:href="@{/productSorted/{sort}/{id}(sort=${sort} , id=${id},page=${products.totalPages-1}, size=${param.size})}">Last</a>
+									</li>
+								</ul>
+							</nav>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<section id="content" th:if="${products.totalElements == 0}">
+			<div class="content-wrap">
+				<div class="container clearfix">
+					<div class="border-top-0 m-0">
+						<div class="container text-center">
+
+							<div class="heading-block center">
+								<h2 th:text="${name}">Tubes</h2>
+								<span>There are no products in this category.</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+	</div>
+	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+
+</body>
+</html>

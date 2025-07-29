@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/fragments/front/common :: headSrc('권한 없는 페이지')">
+
+</head>
+
+<body class="stretched">
+	<div id="wrapper" class="clearfix">
+		<th:block
+			th:replace="/fragments/front/common :: headerSrc(true, ${menuList})"></th:block>
+
+		<section id="slider" class="slider-element min-vh-60 min-vh-md-100 dark error404-wrap include-header" style="background: url(/front/images/landing/static.jpg) center;">
+			<div class="slider-inner">
+
+				<div class="vertical-middle">
+					<div class="container text-center py-5 py-md-0">
+
+						<div class="error404">403</div>
+
+						<div class="heading-block border-bottom-0">
+							<h4>해당 페이지는 관리자만 접근 가능한 페이지 입니다.</h4>
+							<span>You do not have permission to access this page</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</section>
+
+		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+	</div>
+
+	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+
+</body>
+
+</html>

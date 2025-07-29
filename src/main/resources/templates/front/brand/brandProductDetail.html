@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head
+	th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 제품 중 분류 페이지')">
+
+</head>
+
+<body class="stretched">
+
+	<div id="wrapper" class="clearfix">
+
+		<th:block
+			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+		<section id="page-title">
+
+			<div class="container clearfix">
+				<h1>제품 상세</h1>
+				<span>Bion Life Science Products Sorted</span>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="/index">메인</a></li>
+					<li class="breadcrumb-item active" aria-current="page">제품
+						상세페이지</li>
+				</ol>
+			</div>
+
+		</section>
+		<section id="content">
+			<div class="content-wrap">
+				<div class="container clearfix">
+					<div class="border-top-0 m-0">
+						<div class="container text-center">
+
+							<div class="heading-block center">
+								<h2 th:text="${pr.subject}">Screw Caps and Tubes</h2>
+								<span th:text="${pr.content}">Screw Caps and Tubes 제품 상세
+									페이지 입니다</span>
+							</div>
+						</div>
+					</div>
+					<div class="row gutter-40 col-mb-80 justify-content-end">
+						<div class="postcontent col-lg-10 order-lg-last">
+
+							<div class="single-product">
+								<div class="product">
+									<div class="row gutter-40">
+
+										<div class="col-md-6">
+											<div class="product-image">
+												<div class="fslider" data-pagi="false" data-arrows="false"
+													data-thumbs="true">
+													<div class="flexslider">
+														<div class="slider-wrap" data-lightbox="gallery">
+															<div class="slide" th:each="e:${pr.images}"
+																th:data-thumb="${e.productImageRoad}">
+																<a th:href="@{${e.productImageRoad}}" title="제품 사진"
+																	data-lightbox="gallery-item"><img
+																	th:src="${e.productImageRoad}" alt="#"></a>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="sale-flash badge bg-danger p-2">Tubes</div>
+											</div>
+										</div>
+
+										<div class="col-md-6 product-desc">
+
+											<p th:text="${pr.productSubContent}">
+												특허받은 설계로 스왑을 담고 있는 꽉 잠긴 Screw Caps and Tubes을 개봉하면 뚜껑부분에 스왑이
+												꼽혀서 나오며 또한 <strong></strong>작은 힘으로도 뚜껑과 스왑을 쉽게 분리</strong>할 수 있습니다.
+											</p>
+											<ul class="iconlist">
+												<li th:each="i:${pr.infos}"><i class="icon-caret-right"></i>
+													<span th:text="${i.productInfoText}"></span></li>
+											</ul>
+											<div class="card product-meta">
+												<div class="card-body">
+													<th:block th:each="s:${pr.specs}">
+														<span class="posted_in">[[${s.productSpecSubject}]]
+															: <a href="javascript:void();" rel="tag"
+															th:text="${s.productSpecContent}">제조자</a>
+														</span><br>
+													</th:block>
+												</div>
+											</div>
+										</div>
+										<div class="w-100"></div>
+
+										<div class="col-12 mt-10">
+											<div class="tabs clearfix mb-0" id="tab-1">
+												<ul class="tab-nav clearfix">
+													<li><a href="#tabs-1"><i
+															class="icon-align-justify2"></i> <span
+															class="d-none d-md-inline-block"> Product Overview</span></a></li>
+													<li><a href="#tabs-2"><i class="icon-info-sign"></i>
+															<span class="d-none d-md-inline-block">
+																Specification</span></a></li>
+													<li><a href="#tabs-3"><i class="icon-star3"></i> <span
+															class="d-none d-md-inline-block"> Catalog</span></a></li>
+												</ul>
+
+												<div class="tab-container">
+
+													<div class="tab-content clearfix text-center" id="tabs-1"
+														style="text-align: center;">
+														<img width="1200px" style="margin: 0 auto;"
+															th:src="${pr.tableImageRoad}">
+													</div>
+													<div class="tab-content clearfix text-center" id="tabs-2"
+														style="text-align: center;">
+														<img width="1200px" style="margin: 0 auto;"
+															th:src="${pr.specImageRoad}">
+
+													</div>
+													<div class="tab-content clearfix" id="tabs-3">
+
+														<div id="reviews" class="clearfix">
+															<ol class="commentlist clearfix b-b-n">
+																<li class="comment even thread-even depth-1"
+																	th:each="f:${pr.files}" id="li-comment-1">
+																	<div id="comment-1" class="comment-wrap clearfix">
+																		<div class="comment-content clearfix">
+																			<div class="comment-author">
+																				관리자<span><a href="#" title="#"
+																					th:text="${f.productFileDate}">2023.01.01</a></span>
+																			</div>
+																			<p>
+																				<a th:href="@{${f.productFileRoad}}" download
+																					th:text="${f.productFileName}">카달로그 다운로드.</a>
+																			</p>
+																		</div>
+																		<div class="clear"></div>
+																	</div>
+																</li>
+
+															</ol>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="sidebar m-d-none" id="product-quick">
+							<div class="sidebar-widgets-wrap">
+								<div class="border-top-0 m-0">
+									<div class="heading-block mb-3">
+										<h4># Quick Link</h4>
+									</div>
+								</div>
+								<div class="toggle" th:if="${bs.middleSort.id == pr.smallSort.middleSort.id}" th:each="bs:${bs}">
+									<div class="toggle-header">
+										<div class="toggle-icon">
+											<i class="toggle-closed icon-ok-circle"></i> <i
+												class="toggle-open icon-remove-circle"></i>
+										</div>
+										<div class="toggle-title" th:text="${bs.name}">Screw Caps and Tubes</div>
+									</div>
+									<div class="toggle-content sidebar-menu-toggle">
+										<ul>
+											<li th:if="${bs.id == bp.smallSort.id}" th:each="bp:${bp}">
+												<a th:href="@{|/brandProductDetail/${bp.id}|}" th:text="${bp.subject}">Capture Screw Caps and
+														Tubes(5ML)<i class="icon-line-arrow-right"></i>
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="w-100 clearfix mt-10">
+						<div class="line"></div>
+						<div class="mt-5 bg-white">
+							<h4 class="m-b-0">연관된 상품</h4>
+							<p># 이미지를 클릭하시면 해당 상품의 상세페이지로 이동합니다.</p>
+							<div class="owl-carousel product-carousel carousel-widget"
+								data-margin="30" data-pagi="false" data-autoplay="5000"
+								data-items-xs="1" data-items-md="2" data-items-lg="3"
+								data-items-xl="4">
+
+								<div class="portfolio-item" th:each="product:${pr}">
+									<div class="portfolio-image">
+										<a href="#"> <img th:src="${product.firstImageRoad}"
+											alt="PRODUCT">
+										</a>
+										<div class="bg-overlay">
+											<div class="bg-overlay-content dark"
+												data-hover-animate="fadeIn" data-hover-speed="350">
+												<a th:href="@{${product.firstImageRoad}}"
+													class="overlay-trigger-icon bg-light text-dark"
+													data-hover-animate="fadeInDownSmall"
+													data-hover-animate-out="fadeInUpSmall"
+													data-hover-speed="350" data-lightbox="image"><i
+													class="icon-line-plus"></i></a> <a
+													th:href="@{|/brandProductDetail/${product.id}|}"
+													class="overlay-trigger-icon bg-light text-dark"
+													data-hover-animate="fadeInDownSmall"
+													data-hover-animate-out="fadeInUpSmall"
+													data-hover-speed="350"><i class="icon-line-ellipsis"></i></a>
+											</div>
+											<div class="bg-overlay-bg dark" data-hover-animate="fadeIn"
+												data-hover-speed="350"></div>
+										</div>
+									</div>
+									<div class="portfolio-desc">
+										<h3>
+											<a href="javascript:void(0);" th:text="${product.smallSort.name}">Sorts
+												of Product</a>
+										</h3>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+	</div>
+	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+
+</body>
+</html>

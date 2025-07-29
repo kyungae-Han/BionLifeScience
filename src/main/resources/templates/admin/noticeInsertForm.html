@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/admin/common :: headMenu">
+
+</head>
+
+
+<body>
+    <section id="container">
+
+         <th:block th:replace="fragments/admin/common :: headMenu"></th:block>
+
+         <th:block th:replace="fragments/admin/common :: sideMenu('notice')"></th:block>
+
+        <section id="main-content">
+            <section class="wrapper">
+                <div class="row mt">
+                    <div class="col-md-8">
+                        <div class="content-panel">
+                            <h4>
+                                <i class="fa fa-angle-right"></i> 공지사항 입력 페이지
+                            </h4>
+                            <p class="mb-none"># 하단의 버튼을 통해 공지사항 내용을 등록할 수 있습니다.</p>
+                            <hr>
+                            <div class="row mt">
+                                <div class="col-lg-12">
+                                    <div class="form">
+                                        <form class="cmxform form-horizontal style-form" method="post" action="/admin/noticeInsert">
+                                            <div class="form-group ">
+                                                <label for="subject" class="control-label col-lg-2"># 공지사항 제목</label>
+                                                <div class="col-lg-10">
+                                                    <input 
+                                                    class="form-control" 
+                                                    type="text"
+                                                    name="subject"
+                                                    required="required"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="curl" class="control-label col-lg-2"># 공지사항주제</label>
+                                                
+                                                <div class="col-lg-10">
+                                                    <select class="form-control" name="subjectId">
+                                                    	<option th:each="s:${subject}" th:text="|# ${s.text}|" th:value="${s.id}"></option>
+                                                    </select>
+                                                	<span class="alsert-message">* 공지사항의 분류를 작성할 수 있습니다.</span><br>
+                                                	<span class="alsert-message">* 해당 공지사항의 분류로 사이트 접속자가 공지사항을 조회할 수 있습니다.</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="curl" class="control-label col-lg-2"># 중요공지여부</label>
+                                                
+                                                <div class="col-lg-10">
+                                                    <select class="form-control" name="sign">
+                                                    	<option value= false>== 선택 ==</option>
+                                                    	<option value= true>중요공지</option>
+                                                    	<option value= false>일반공지</option>
+                                                    </select>
+                                                	<span class="alsert-message">* 공지사항은 최근 공지사항이 먼저 출력 됩니다.</span><br>
+                                                	<span class="alsert-message">* 중요공지는 공지일과 무관하게 가장 상단에 출력 됩니다.</span><br>
+                                                	<span class="alsert-message">* 선택하지 않는 경우 일반공지로 등록 됩니다.</span>
+                                                </div>
+                                            </div>
+                                             <div class="form-group ">
+                                                <label for="curl" class="control-label col-lg-2"># 공지사항</label>
+                                                <div class="col-lg-10">
+                                                    <textarea 
+                                                    required="required" 
+                                                    name="content" 
+                                                    class="form-control"
+                                                    ></textarea>
+                                                    <span class="alsert-message">* 엔터키와 띄어쓰기 형태 모두 동일하게 출력 됩니다.</span><br>
+                                                    <span class="alsert-message">* 공지사항 네모칸의 우측 아래를 드래그 하여 크기를 조절할 수 있습니다.</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-offset-2 col-lg-10">
+                                                    <button class="btn btn-theme" type="submit">등록</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </section>
+    <th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
+
+</body>
+
+</html>

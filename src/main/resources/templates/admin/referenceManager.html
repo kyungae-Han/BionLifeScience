@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="KO" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/admin/common :: headMenu">
+
+
+</head>
+</head>
+
+<body>
+	<section id="container">
+		<th:block th:replace="fragments/admin/common :: headMenu"></th:block>
+		<th:block th:replace="fragments/admin/common :: sideMenu('reference')"></th:block>
+		<section id="main-content">
+			<section class="wrapper">
+				<div class="row mt">
+					<div class="col-lg-8">
+						<div class="form-panel">
+							<form action="/admin/referenceFileInsert" method="POST" enctype="multipart/form-data" class="form-horizontal style-form">
+								<div class="row">
+									<div class="form-group col-12 col-md-12 col-lg-12">
+										<div class="col-md-5 col-xs-11">
+											<input class="form-control form-control-inline" 
+											size="16"
+											type="text" 
+											name="filesubject"> 
+											<span class="help-block"># 파일 제목을 입력 해 주세요.</span>
+											<span class="help-block"># 실제 파일명이 아닌 사이트 접속자가 보게 되는 이름을 의미합니다.</span>
+											<span class="help-block"># 빈칸으로 입력시 실제 파일명으로 보여집니다.</span>
+										</div>
+										<div class="col-md-6 col-xs-11">
+											<div class="fileupload fileupload-new"
+												data-provides="fileupload">
+												<span class="btn btn-warning btn-file" style="width:100%;"> 
+													<span class="fileupload-new"><i class="fa fa-paperclip"></i>Select file</span> 
+													<span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span> 
+													<input 
+													type="file"
+													class="default"
+													name="file"
+													required="required"
+													id="file" />
+												</span> 
+												<span class="fileupload-preview" style="margin-left: 5px;"></span>
+												<a href="#" class="close fileupload-exists" 
+													data-dismiss="fileupload"
+													style="float: none; margin-left: 5px;"></a>
+											</div>
+											<span class="help-block"># 업로드 할 파일을 선택 하세요.</span>
+											<span class="help-block"># 1회 업로드 가능 용량은 30MB입니다.</span>
+											<span class="help-block"># 파일은 jpeg/png/jpg/pdf 확장자를 지원 합니다.</span>
+										</div>
+										<div class="col-md-1 col-xs-11">
+											<button type="submit" class="btn btn-theme">등록</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="row mt">
+					<div class="col-md-8">
+						<section class="task-panel tasks-widget">
+							<div class="panel-heading">
+								<div class="pull-left">
+									<h5>
+										<i class="fa fa-tasks"></i> 바이온라이프사이언스 - 자료실 파일 관리
+									</h5>
+								</div>
+								<br>
+							</div>
+							<div class="panel-body">
+								<div class="task-content">
+									<ul class="task-list">
+										<li th:each="f:${files}">
+											<div class="task-title">
+												<a th:href="@{|/admin/referenceFileDownload/${f.id}|}"><span class="task-title-sp" th:text="${f.filesubject}">파일 제목이 입력되는 곳 입니다.</span></a> <span
+													class="badge bg-theme" th:text="${f.fileextension}">pdf</span>
+												<div class="pull-right hidden-phone">
+													<button class="btn btn-danger btn-xs" th:onclick="|deleteReferenceFile('${f.id}')|">
+														<i class="fa fa-trash-o "></i>
+													</button>
+												</div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</section>
+					</div>
+				</div>
+			</section>
+		</section>
+	</section>
+	<th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
+	<script src="/administration/lib/jquery-ui-1.9.2.custom.min.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-daterangepicker/date.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-daterangepicker/moment.min.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+	<script src="/administration/lib/advanced-form-components.js"></script>
+	<script>
+	$(function(){
+		
+		$("#file").on('change', function (e) {
+	    	var size = 0;
+	    	for(var i=0;i<e.target.files.length;i++){
+	    		size += e.target.files[i].size;
+	    	}
+	    	if(size > 30000000){
+	    		alert('1회 업로드 가능 용량은 30MB입니다.');
+	    		$(this).val('');
+	    		return;
+	    	}
+	    });
+
+	});
+	function deleteReferenceFile(id){
+		var result = confirm('해당 파일을 삭제 하시겠습니까?');
+		if(result){
+			location.href="/admin/deleteReferenceFile/" + id;
+		}
+	}
+	  
+	</script>
+</body>
+
+</html>

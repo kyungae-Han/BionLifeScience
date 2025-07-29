@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 기업소개')">
+
+</head>
+
+<body class="stretched">
+
+	<div id="wrapper" class="clearfix">
+
+		<th:block
+			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+		<section id="page-title">
+
+			<div class="container clearfix">
+				<h1>기업연혁</h1>
+				<span>Bion Life Science History</span>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="/index">메인</a></li>
+					<li class="breadcrumb-item active" aria-current="page">기업연혁</li>
+				</ol>
+			</div>
+
+		</section>
+		<section id="content">
+			<div class="content-wrap p-t-0">
+
+				<div class="section m-0 bg-white">
+					<div class="container clearfix">
+						<div class="border-top-0 m-0">
+							<div class="container text-center">
+
+								<div class="heading-block center">
+									<h2>TIMELINE</h2>
+									<span>바이온라이프사이언스의 역사 입니다.</span>
+								</div>
+							</div>
+						</div>
+						<section class="timeline-wrap">
+							<div class="tabs tabs-alt tabs-tb clearfix" id="tab-8">
+
+								<ul class="tab-nav clearfix">
+									<li th:each="list:${list}"><a th:href="@{|#tabs-${list.id}|}">[[${list.start}]] ~ [[${list.end}]]</a></li>
+								</ul>
+
+								<div class="tab-container">
+
+									<div class="tab-content clearfix" th:each="list:${list}" th:id="@{|tabs-${list.id}|}">
+										<div class="page">
+											<div class="timeline">
+												<div class="timeline__group">
+													<!-- <span class="timeline__year time" aria-hidden="true">2008</span> -->
+													<div class="timeline__cards">
+														<div class="timeline__card card" th:each="c:${list.contents}">
+															<header class="card__header">
+																<time class="time" datetime="2008-02-02">
+																	<span class="time__day" th:text="${c.historyDate}">2</span>
+																</time>
+															</header>
+															<div class="card__content">
+																<p th:text="${c.contentSubject}"></p>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</section>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+	</div>
+	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+	<script src="/front/js/timeline.js"></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/admin/common :: headMenu">
+
+</head>
+
+
+<body>
+    <section id="container">
+
+         <th:block th:replace="fragments/admin/common :: headMenu"></th:block>
+
+         <th:block th:replace="fragments/admin/common :: sideMenu('index')"></th:block>
+
+        <section id="main-content">
+            <section class="wrapper">
+                <div class="row mt">
+                    <div class="col-md-8">
+                        <div class="content-panel">
+                            <h4>
+                                <i class="fa fa-angle-right"></i> 문의 상세페이지
+                            </h4>
+                            <p class="mb-none"># 하단의 버튼을 통해 고객의 서비스 신청 내역을 수정할 수 있습니다.</p>
+                            <hr>
+                            <div class="row mt">
+                                <div class="col-lg-12">
+                                    <div class="form">
+                                        <form class="cmxform form-horizontal style-form" method="post" action="/admin/clientUpdate">
+                                            <div class="form-group ">
+                                                <label for="cname" class="control-label col-lg-2"># 고객이름</label>
+                                                <div class="col-lg-10">
+                                                    <input class="form-control" 
+                                                    type="text" 
+                                                    th:value="${client.name}"
+                                                    name="name"/>
+                                                    <input type="hidden"
+                                                    th:value="${client.id}"
+                                                    name="id">
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="email" class="control-label col-lg-2"># 고객업체명</label>
+                                                <div class="col-lg-10">
+                                                    <input 
+                                                    class="form-control" 
+                                                    type="text"
+                                                    name="company"
+                                                    th:value="${client.company}"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="email" class="control-label col-lg-2"># 고객연락처</label>
+                                                <div class="col-lg-10">
+                                                    <input 
+                                                    class="form-control" 
+                                                    type="text"
+                                                    name="phone"
+                                                    th:value="${client.phone}"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="curl" class="control-label col-lg-2"># 고객이메일</label>
+                                                <div class="col-lg-10">
+                                                    <input 
+                                                    class="form-control" 
+                                                    type="text"
+                                                    name="email"
+                                                    th:value="${client.email}"/>
+                                                </div>
+                                            </div>
+                                             <div class="form-group ">
+                                                <label for="curl" class="control-label col-lg-2"># 남김말</label>
+                                                <div class="col-lg-10">
+                                                    <textarea 
+                                                    class="form-control" 
+                                                    th:text="${client.comment}"
+                                                    name="comment"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <label for="curl" class="control-label col-lg-2"># 고객파일</label>
+                                                <div class="col-lg-10">
+                                                    <a th:href="@{|/admin/fileDownload/${client.id}|}"><span class="task-title-sp" th:text="${client.filename}"></span></a>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="col-lg-offset-2 col-lg-10">
+                                                    <button class="btn btn-theme" type="button" onclick="location.href='/admin/index'">확인</button>
+                                                    <!-- <button class="btn btn-theme04" type="submit">수정</button> -->
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </section>
+    <th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
+	<script>
+	const autoHyphen = (target) => {
+		target.value = target.value
+			.replace(/[^0-9]/g, '')
+			.replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
+	}
+	</script>
+
+</body>
+
+</html>

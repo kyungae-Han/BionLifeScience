@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/admin/common :: headMenu">
+
+</head>
+
+
+<body>
+	<section id="container">
+
+		<th:block th:replace="fragments/admin/common :: headMenu"></th:block>
+
+		<th:block th:replace="fragments/admin/common :: sideMenu('information')"></th:block>
+
+		<section id="main-content">
+			<section class="wrapper">
+				<div class="row mt">
+					<div class="col-lg-8">
+						<h4>
+							<i class="fa fa-angle-right"></i> 회사 기본 정보
+						</h4>
+						<span class="alsert-messate">* 하단의 내용은 사이트 내 회사정보 부분에 표시됩니다.</span>
+						<div class="form-panel">
+							<form id="companyInfoForm" role="form" class="form-horizontal style-form" name="companyInfoForm">
+								<div class="form-group has-success">
+									<label class="col-lg-2 control-label">회사명</label>
+									<div class="col-lg-10">
+										<input 
+										type="text" 
+										th:value="${company.companyName}"
+										class="form-control"
+										required="required"
+										name="companyName"
+										id="companyName">
+										<p class="help-block">* 회사명을 입력하는 곳 입니다.</p>
+									</div>
+								</div>
+								<div class="form-group has-error">
+									<label class="col-lg-2 control-label">주소</label>
+									<div class="col-lg-10">
+										<input 
+										type="text" 
+										th:value="${company.companyAddress}"
+										class="form-control"
+										required="required"
+										name="companyAddress"
+										id="companyAddress">
+										<p class="help-block">* 주소를 입력하는 영역 입니다.</p>
+									</div>
+								</div>
+								<div class="form-group has-warning">
+									<label class="col-lg-2 control-label">사업자번호</label>
+									<div class="col-lg-10">
+										<input 
+										type="text" 
+										class="form-control"
+										name="companyNumber"
+										required="required"
+										th:value="${company.companyNumber}"
+										id="companyNumber"
+										>
+										<p class="help-block">* 사업자 번호를 입력하는 곳 입니다.</p>
+									</div>
+								</div>
+								<div class="form-group has-warning">
+									<label class="col-lg-2 control-label">대표번호</label>
+									<div class="col-lg-10">
+										<input 
+										type="text" 
+										class="form-control"
+										name="companyTelephone"
+										required="required"
+										th:value="${company.companyTelephone}"
+										id="companyTelephone"
+										>
+										<input type="hidden" name="companyEmailCheck" value=true>
+										<p class="help-block">* 회사의 대표번호를 입력하는 영역 입니다.</p>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-lg-offset-2 col-lg-10">
+										<button class="btn btn-theme" type="button" onclick="companyInfoInsert();">확인</button>
+										<p class="help-block">* [확인] 버튼 클릭 시 작성된 내용으로 저장되어 반영 됩니다.</p>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="row mt">
+					<div class="col-lg-8">
+						<h4>
+							<i class="fa fa-angle-right"></i> 사이트 관리 정보
+						</h4>
+						<div class="form-panel">
+							<div class="form">
+								<form class="cmxform form-horizontal style-form" id="emailForm">
+									<div class="form-group ">
+										<label for="firstname" class="control-label col-lg-2">이메일 주소</label>
+										<div class="col-lg-10">
+											<input 
+											class="form-control" 
+											id="email" 
+											name="email" 
+											type="email" />
+											<button class="btn btn-theme" type="button" onclick="insertEmail();" style="margin-top:10px;">입력</button>
+											<p class="help-block">* 사이트 접속자가 [ContactUs] 페이지로 문의 제출 시 입력한 메일 주소로 해당 정보가 전송됩니다.</p>
+											<p class="help-block">* 이메일 주소가 하나도 저장되어있지 않은 경우 이메일이 수신되지 않습니다.</p>
+											<p class="help-block">* 발신 이메일 주소는 [bionlifesci@gmail.com] 입니다.</p>
+										</div>
+									</div>
+									<div class="form-group ">
+										<label for="lastname" class="control-label col-lg-2">이메일 주소 삭제</label>
+										<div class="col-lg-10">
+											<select class="form-control" multiple="multiple" id="emailDelSelect">
+												<option th:each="e:${email}" th:text="${e.email}" th:value="${e.id}">bion01@bion.co.kr</option>
+											</select>
+											<button class="btn btn-danger" id="emailDelBtn" type="button" style="margin-top:10px;">삭제</button>
+											<p class="help-block">* 이메일을 삭제할 수 있습니다.</p>
+											<p class="help-block">* 이메일을 드래그 하여 동시에 여러개를 삭제할 수 있습니다.</p>
+										</div>
+									</div>
+									<div class="form-group ">
+										<label for="companyEmailCheck" class="control-label col-lg-2 col-sm-3">이메일 수신 확인</label>
+										<div class="col-lg-10 col-sm-9">
+											<input 
+											type="checkbox" 
+											style="width: 20px"
+											class="checkbox form-control" 
+											id="companyEmailCheck" 
+											name="companyEmailCheck"
+											th:checked="${company.companyEmailCheck == true}" />
+											<p class="help-block">* 이메일 수신여부를 체크 합니다.</p>	
+											<p class="help-block">* 체크박스가 체크되어 있는 경우 상단에 저장된 이메일 주소로 이메일이 발송 됩니다.</p>
+											<button class="btn btn-theme" id="emailStatusBtn" type="button">상태변경</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+	</section>
+	<th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
+	<script src="/administration/lib/siteManager.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head
+	th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 참고자료 페이지')">
+
+</head>
+
+<body class="stretched">
+
+	<div id="wrapper" class="clearfix">
+
+		<th:block
+			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+		<section id="page-title">
+
+			<div class="container clearfix">
+				<h1>카달로그</h1>
+				<span>Bion Life Science Referenced File</span>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="/index">메인</a></li>
+					<li class="breadcrumb-item active" aria-current="page">카달로그</li>
+				</ol>
+			</div>
+
+		</section>
+		<section id="content">
+			<div class="content-wrap">
+				<div class="container clearfix">
+					<div class="border-top-0 m-0">
+						<div class="container text-center">
+
+							<div class="heading-block center">
+								<h2>Catalog</h2>
+								<span>바이온라이프사이언스 참고자료</span>
+							</div>
+						</div>
+					</div>
+					<div class="row gutter-40 col-mb-80">
+						<div class="postcontent col-lg-12 order-lg-last">
+							<div id="posts" class="row grid-container gutter-30">
+
+								<div class="entry col-4" th:each="f:${file}">
+									<div class="grid-inner">
+										<div class="entry-title">
+											<h2>
+												<a th:href="@{${f.fileroad}}" download th:text="|# 참고파일 명 : ${f.filesubject}|">Screw Caps and Tubes</a>
+											</h2>
+										</div>
+										<div class="entry-meta">
+											<ul>
+												<li style="margin-bottom:0px;"><i class="icon-file"></i> # 파일 확장자 : [[${f.fileextension}]]</li>
+												<li><i class="icon-stack"></i> # 파일명을 클릭하면 다운로드가 진행 됩니다.</li>
+											</ul>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+	</div>
+	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+
+</body>
+</html>

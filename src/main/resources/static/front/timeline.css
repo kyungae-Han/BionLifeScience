@@ -1,0 +1,139 @@
+.timeline ul li {
+  list-style-type: none;
+  position: relative;
+  width: 6px;
+  margin: 0 auto;
+  padding-top: 30px;
+  background: #fff;
+}
+.timeline ul li::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%)
+   rotate(45deg);
+  width: 20px;
+  height: 20px;
+  z-index: 2;
+  background: #eee;
+}
+.timeline ul li div {
+  position: relative;
+  bottom: 0;
+  width: 600px;
+  padding: 15px;
+  background: #fff;
+  box-shadow: 0px 10px 15px rgba(0,0,0, 0.2);
+  display: flex;
+}
+.timeline ul li div time {
+  position: absolute;
+  background: #094bad;
+  width: 80px;
+  height: 30px;
+  top: -15px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  letter-spacing: 2px;
+  color:white;
+}
+.timeline ul li div div {
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+}
+.timeline ul li div div p {
+  text-align: left;
+}
+.timeline ul li div .discovery {
+  margin-right: 10px;
+}
+.timeline ul li:nth-of-type(odd) > div {
+  left: 45px;
+}
+.timeline ul li:nth-of-type(even) > div {
+  left: -650px;
+}
+
+.timeline ul li div {
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.5s ease-in-out;
+}
+.timeline ul li:nth-of-type(odd) div {
+  transform: translate3d(100px, -10px, 0) rotate(10deg);
+}
+.timeline ul li:nth-of-type(even) div {
+  transform: translate3d(-100px, -10px, 0) rotate(10deg);
+}
+.timeline ul li.in-view div{
+    transform: none;
+    visibility: visible;
+    opacity: 1;
+}
+@media screen and (max-width: 900px){
+    .timeline ul li div{
+        width: 250px;
+        flex-direction: column;
+    }
+    .timeline ul li div div{
+        width: 80%;
+        margin: 10px;
+    }
+    .timeline ul li:nth-of-type(even) > div{
+        left: -289px;
+    }
+}
+@media screen and (max-width:600px){
+    body{
+        background: #8bfff4;
+    }
+    .timeline ul li{
+        margin-left: 20px;
+
+    }
+    .timeline ul li div{
+        width: calc(100vw - 91px);
+    }
+    .timeline ul li:nth-of-type(even) > div{
+        left: 45px;
+    }
+}
+.discovery{
+	text-align:left;
+}
+.discovery h1{
+	line-height:1.0;
+	font-size:1.2rem;
+	margin-bottom:0px;
+}
+.year h1{
+	color:#094bad;
+	position:absolute;
+	top:0;
+	left:50%;
+	transform:translateX(-50%);
+	text-shadow:0px 2px 2px black;
+	font-weight:400;
+	font-size:1.5rem;
+}
+.timeline ul li.year::after{
+	content:"";
+	width:0px;
+	height:0px;
+}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="headMenu">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="#">
+<meta name="author" content="#">
+<meta name="keyword" content="#">
+<title>바이온라이프사이언스 관리자페이지</title>
+<script src="https://kit.fontawesome.com/c5ff1aa588.js"
+	crossorigin="anonymous"></script>
+<link href="/administration/img/apple-touch-icon.png" rel="apple-touch-icon">
+<link href="/administration/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/administration/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
+<link rel="stylesheet" type="text/css" href="/administration/css/zabuto_calendar.css">
+<link rel="stylesheet" type="text/css" href="/administration/lib/gritter/css/jquery.gritter.css" />
+<link rel="stylesheet" type="text/css" href="/administration/lib/bootstrap-fileupload/bootstrap-fileupload.css" />
+<link href="/administration/css/style.css" rel="stylesheet">
+<link href="/administration/css/style-responsive.css" rel="stylesheet">
+<link rel="stylesheet" href="/administration/css/to-do.css">
+<link href="/administration/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
+<link rel="shortcut icon" href="/front/image/logo/favicon.ico">	
+</head>
+
+<body>
+	<section id="container">
+		<th:block th:fragment="headMenu">
+			<header class="header black-bg">
+				<div class="sidebar-toggle-box">
+					<div class="fa fa-bars tooltips" data-placement="right"
+						data-original-title="Toggle Navigation"></div>
+				</div>
+				<a href="/administration/index" class="logo"><b>ADMINISTRATION<span>PAGE</span></b></a>
+				<div class="top-menu">
+					<ul class="nav pull-right top-menu">
+						<li><a class="logout" href="/admin/productCenter/productOverall">ProductCenter</a></li>
+						<li><a class="logout" href="/logout">Logout</a></li>
+					</ul>
+				</div>
+			</header>
+		</th:block>
+		<th:block th:fragment="sideMenu(code)">
+			<aside>
+				<div id="sidebar" class="nav-collapse ">
+					<ul class="sidebar-menu" id="nav-accordion">
+						<li class="mt"><a th:classappend="${code} == 'index' ? 'active' : ''" href="/admin/clientManager">
+								<i class="fa fa-dashboard"></i> <span>문의사항 관리</span>
+						</a>
+						</li>
+						<li><a th:classappend="${code} == 'history' ? 'active' : ''"  href="/admin/historyManager"> <i
+								class="fa fa-book"></i> <span>연혁 관리</span>
+						</a>
+						</li>
+						<li class="sub-menu"><a th:classappend="${code} == 'notice' ? 'active' : ''"  href="javascript:;"> <i
+								class="fa fa-envelope"></i> <span>공지사항 관리</span>
+						</a>
+							<ul class="sub">
+								<li><a href="/admin/noticeSubjectManager">공지사항 분류 관리</a></li>
+								<li><a href="/admin/noticeManager">공지사항 관리</a></li>
+							</ul>
+						</li>
+						<li><a th:classappend="${code} == 'information' ? 'active' : ''"  href="/admin/siteManager"> <i class="fa fa-tasks"></i><span>회사정보관리</span>
+						</a></li>
+						<li><a th:classappend="${code} == 'reference' ? 'active' : ''"  href="/admin/referenceManager"> <i
+								class="fa fa-cogs"></i><span>자료실 관리</span>
+						</a></li>
+						<li class="sub-menu"><a th:classappend="${code} == 'product' ? 'active' : ''"  href="javascript:;"> <i
+								class="fa fa-desktop"></i> <span>제품 관리</span>
+						</a>
+							<ul class="sub">
+								<li><a href="/admin/sortManager">제품 분류 관리</a></li>
+								<li><a href="/admin/productManager">제품 상세 등록</a></li>
+							</ul>
+						</li>
+						<li class="sub-menu"><a th:classappend="${code} == 'brand' ? 'active' : ''"  href="javascript:;"> <i class="fa fa-dashboard"></i>
+							<span>브랜드관리</span>
+						</a>
+							<ul class="sub">
+								<li><a href="/admin/brandManager">브랜드 관리</a></li>
+								<li><a href="/admin/brandSortManager">브랜드 분류 관리</a></li>
+								<li><a href="/admin/brandProductManager">브랜드 제품 상세 등록</a></li>
+							</ul>
+						</li>
+						<li class="sub-menu"><a th:classappend="${code} == 'site' ? 'active' : ''"  href="javascript:;"> <i
+								class="fa fa-camera"></i> <span>사이트관리</span>
+						</a>
+							<ul class="sub">
+								<li><a href="/admin/bannerManager">메인 배너 관리</a></li>
+								<li><a href="/admin/eventManager">이벤트 배너 관리</a></li>
+							</ul>
+						</li>
+						<li><a th:classappend="${code} == 'certification' ? 'active' : ''"  href="/admin/certificationManager"> <i
+								class="fa fa-book"></i> <span>인증서 관리</span>
+						</a>
+						</li>
+					</ul>
+				</div>
+			</aside>
+		</th:block>
+	</section>
+	<th:block th:fragment="scriptSrc">
+		<script type="text/javascript" src="/administration/lib/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="/administration/lib/bootstrap/js/bootstrap.min.js"></script>
+		<script class="include" type="text/javascript" src="/administration/lib/jquery.dcjqaccordion.2.7.js"></script>
+		<script type="text/javascript" src="/administration/lib/jquery.scrollTo.min.js"></script>
+		<script type="text/javascript" src="/administration/lib/jquery.nicescroll.js"></script>
+		<script type="text/javascript" src="/administration/lib/jquery.sparkline.js"></script>
+		<script type="text/javascript" src="/administration/lib/common-scripts.js"></script>
+		<script type="text/javascript" src="/administration/lib/gritter/js/jquery.gritter.js"></script>
+		<script type="text/javascript" src="/administration/lib/gritter-conf.js"></script>
+		<script type="text/javascript" src="/administration/lib/sparkline-chart.js"></script>
+		<script type="text/javascript" src="/administration/lib/zabuto_calendar.js"></script>
+		<script type="text/javascript" src="/administration/lib/jquery.backstretch.min.js"></script>
+		<script type="text/javascript" src="/administration/lib/jquery-ui-1.9.2.custom.min.js"></script>
+	</th:block>
+</body>
+
+</html>

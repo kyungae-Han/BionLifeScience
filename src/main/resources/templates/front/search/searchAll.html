@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 검색페이지')">
+
+</head>
+
+<body class="stretched">
+
+	<div id="wrapper" class="clearfix">
+
+		<th:block
+			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+		<section id="page-title">
+
+			<div class="container clearfix">
+				<h1>사이트내 검색</h1>
+				<span>Bion Life Science Search Page</span>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="/index">메인</a></li>
+					<li class="breadcrumb-item active" aria-current="page">사이트내 검색 페이지</li>
+				</ol>
+			</div>
+
+		</section>
+		<section id="content">
+			<div class="content-wrap p-t-0" style="margin-top:50px;">
+				<div class="container clearfix">
+				<div class="border-top-0 m-0">
+						<div class="container text-center">
+
+							<div class="heading-block center">
+								<h2>Search</h2>
+								<span>바이온라이프사이언스 검색페이지</span>
+							</div>
+						</div>
+					</div>
+					<div class="divider">
+						<i class="icon-circle"></i><span>제품검색 : 총 [[${products.size}]]건 검색</span>
+					</div>
+					<div class="row gutter-40 col-mb-80">
+						<div class="postcontent col-lg-12 order-lg-last">
+							<div class="row grid-container gutter-30">
+								<div class="entry col-lg-3 col-xs-6" th:each="product : ${products}">
+									<div class="grid-inner">
+										<div class="entry-image mb-2">
+											<a th:href="@{|/productDetail/${product.id}|}" data-lightbox="image">
+											<img th:src="${product.firstImageRoad}"
+												alt="#"></a>
+										</div>
+										<div class="entry-title">
+											<h3 style="font-size:16px;">
+												<a th:href="@{|/productDetail/${product.id}|}" th:text="${product.subject}">Screw Caps and Tubes</a>
+											</h3>
+										</div>
+										<div class="entry-meta">
+											<span style="color:gray; font-size:12px;">[[${product.smallSort.name}]] / [[${product.smallSort.middleSort.name}]] / [[${product.smallSort.middleSort.bigSort.name}]]</span>
+										</div>
+										<div class="entry-content mt-1">
+											<p style="font-size:14px;" th:text="${product.content}">간단한 제품에 대한 설명이 들어가는 영역입니다.</p>
+											<a th:href="@{|/productDetail/${product.id}|}" class="more-link">자세히 보기 <i class="icon-line-arrow-right"></i></a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="divider">
+						<i class="icon-circle"></i><span>브랜드제품검색 : 총 [[${brandProducts.size}]]건 검색</span>
+					</div>
+					<div class="row gutter-40 col-mb-80">
+						<div class="postcontent col-lg-12 order-lg-last">
+							<div class="row grid-container gutter-30">
+								<div class="entry col-lg-3 col-xs-6" th:each="product : ${brandProducts}">
+									<div class="grid-inner">
+										<div class="entry-image mb-2">
+											<a th:href="@{|/brandProductDetail/${product.id}|}" data-lightbox="image">
+											<img th:src="${product.firstImageRoad}"
+												alt="#"></a>
+										</div>
+										<div class="entry-title">
+											<h3 style="font-size:16px;">
+												<a th:href="@{|/brandProductDetail/${product.id}|}" th:text="${product.subject}">Screw Caps and Tubes</a>
+											</h3>
+										</div>
+										<div class="entry-meta">
+											<span style="color:gray; font-size:12px;">[[${product.smallSort.name}]] / [[${product.smallSort.middleSort.name}]] / [[${product.smallSort.middleSort.bigSort.name}]]</span>
+										</div>
+										<div class="entry-content mt-1">
+											<p style="font-size:14px;" th:text="${product.content}">간단한 제품에 대한 설명이 들어가는 영역입니다.</p>
+											<a th:href="@{|/brandProductDetail/${product.id}|}" class="more-link">자세히 보기 <i class="icon-line-arrow-right"></i></a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="divider">
+						<i class="icon-circle"></i><span>공지사항검색 : 총 [[${notices.size}]]건 검색</span>
+					</div>
+					<div class="row gutter-40 col-mb-80">
+						<div class="postcontent col-lg-12 order-lg-last">
+							<div class="list-group">
+								<a th:href="@{/notice#faq-} + ${notice.id}" class="list-group-item list-group-item-action flex-column align-items-start" th:each="notice:${notices}">
+									<div class="d-flex w-100 justify-content-between">
+										<h4 class="mb-2">[[${notice.subject}]]</h4>
+										<small th:if="${notice.sign == true}" style="color:red;">중요공지</small>
+										<small th:if="${notice.sign == false}">일반공지</small>
+									</div>
+									<small># 공지일 : [[${notice.date}]]</small><br>
+									<small># 공지사항주제 : [[${notice.noticeSubject.text}]]</small>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="divider">
+						<i class="icon-circle"></i><span>참고파일검색 : 총 [[${references.size}]]건 검색</span>
+					</div>
+					<div class="row gutter-40 col-mb-80">
+						<div class="postcontent col-lg-12 order-lg-last">
+							<div class="list-group">
+								<a th:href="@{${file.fileroad}}" download class="list-group-item list-group-item-action flex-column align-items-start" th:each="file:${references}">
+									<div class="d-flex w-100 justify-content-between">
+										<h4 class="mb-2">[[${file.filesubject}]](클릭하여 다운로드 가능합니다)</h4>
+										<small>파일확장자 : [[${file.fileextension}]]</small>
+									</div>
+									<small># 업로드날짜 : [[${file.filedate}]]</small><br>
+									<small># 파일명 : [[${file.filename}]]</small>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+	</div>
+	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+
+</body>
+</html>

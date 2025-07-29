@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/fragments/front/common :: headSrc('서버 에러 페이지')">
+
+</head>
+
+<body class="stretched">
+	<div id="wrapper" class="clearfix">
+		<!--<th:block th:replace="/fragments/front/common :: headerSrc(true,${b},${m},${s},${p}, ${brand},
+		${bb}, ${bm}, ${bs}, ${bp})"></th:block>-->
+		<th:block
+			th:replace="/fragments/front/common :: headerSrc(true, ${menuList})"></th:block>
+		<section id="slider" class="slider-element min-vh-60 min-vh-md-100 dark error404-wrap include-header" style="background: url(/front/images/landing/static.jpg) center;">
+			<div class="slider-inner">
+
+				<div class="vertical-middle">
+					<div class="container text-center py-5 py-md-0">
+
+						<div class="error404">500</div>
+
+						<div class="heading-block border-bottom-0">
+							<h4>서버 에러가 발생하였습니다.</h4>
+							<span>Server error is occured.</span>
+						</div>
+						<form action="#" method="get" class="mx-auto mb-0">
+							<div class="input-group input-group-lg">
+								<input type="text" class="form-control" placeholder="반복되는 경우 문의사항을 남겨 주세요.">
+								<button class="btn btn-danger" type="button"><i class="icon-line-search"></i></button>
+							</div>
+						</form>
+					</div>
+				</div>
+
+			</div>
+		</section>
+
+		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+	</div>
+
+	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="KO" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/admin/common :: headMenu">
+
+
+</head>
+</head>
+
+<body>
+	<section id="container">
+		<th:block th:replace="fragments/admin/common :: headMenu"></th:block>
+		<th:block th:replace="fragments/admin/common :: sideMenu('site')"></th:block>
+		<section id="main-content">
+			<section class="wrapper">
+				<div class="row mt">
+					<div class="col-lg-8">
+						<h4>
+							<i class="fa fa-angle-right"></i> 회사 기본 정보
+						</h4>
+						<span class="alsert-messate">* 하단의 내용은 사이트 내 회사정보 부분에 표시됩니다.</span>
+						<div class="form-panel">
+							<form id="eventForm" role="form" class="form-horizontal style-form" name="eventForm">
+								<div class="form-group has-success">
+									<label class="col-lg-2 control-label">제목</label>
+									<div class="col-lg-10">
+										<input 
+										type="text" 
+										th:value="${event.subject}"
+										class="form-control"
+										required="required"
+										name="subject"
+										id="subject">
+										<p class="help-block">* 이벤트 제목을 입력하는 곳 입니다.</p>
+									</div>
+								</div>
+								<div class="form-group has-error">
+									<label class="col-lg-2 control-label">내용</label>
+									<div class="col-lg-10">
+										<input 
+										type="text" 
+										th:value="${event.content}"
+										class="form-control"
+										required="required"
+										name="content"
+										id="content">
+										<p class="help-block">* 이벤트 내용을 입력하는 곳 입니다.</p>
+									</div>
+								</div>
+								<div class="form-group has-warning">
+									<label class="col-lg-2 control-label">링크</label>
+									<div class="col-lg-10">
+										<input 
+										type="text" 
+										class="form-control"
+										name="link"
+										required="required"
+										th:value="${event.link}"
+										id="link"
+										>
+										<p class="help-block">* 버튼 클릭시 연결할 URL 주소를 입력하는 곳 입니다.</p>
+										<p class="help-block">* Https/http 를 포함한 전체 주소를 입력 해 주시기 바랍니다.</p>
+									</div>
+								</div>
+								<div class="form-group">
+									<div class="col-lg-offset-2 col-lg-10">
+										<button class="btn btn-theme" type="button" onclick="eventInsert();">확인</button>
+										<p class="help-block">* [확인] 버튼 클릭 시 작성된 내용으로 저장되어 반영 됩니다.</p>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+	</section>
+	<th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
+	<script src="/administration/lib/eventManager.js"></script>
+</body>
+
+</html>

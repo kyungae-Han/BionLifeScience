@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head
+	th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 찾아오시는 길')">
+
+</head>
+
+<body class="stretched">
+
+	<div id="wrapper" class="clearfix">
+
+		<th:block
+			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+		<section id="page-title">
+
+			<div class="container clearfix">
+				<h1>고객 문의</h1>
+				<span>Customer Inquiry</span>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="/index">메인</a></li>
+					<li class="breadcrumb-item active" aria-current="page">고객문의</li>
+				</ol>
+			</div>
+
+		</section>
+		<section id="content">
+			<div class="content-wrap">
+				<div class="container">
+					<div class="border-top-0 m-0">
+						<div class="container text-center">
+
+							<div class="heading-block center">
+								<h2>Customer Inquiry</h2>
+								<span>고객님의 문의를 기다립니다.</span>
+							</div>
+						</div>
+					</div>
+					<div class="row gutter-40 col-mb-80">
+						<div class="postcontent col-lg-12">
+
+
+							<form class="mb-0" action="/clientInsert" method="post"
+								enctype="multipart/form-data">
+
+								<div class="row">
+									<div class="col-md-6 form-group">
+										<label for="template-contactform-name">성함 (Name) <small>*</small></label>
+										<input type="text" id="name" name="name"
+											class="sm-form-control" required="required" />
+									</div>
+
+									<div class="col-md-6 form-group">
+										<label for="template-contactform-company">회사명
+											(Company)</label> <input type="text" id="company" name="company"
+											class="sm-form-control" />
+									</div>
+
+									<div class="col-md-6 form-group">
+										<label for="template-contactform-email">이메일 (E-Mail)<small>*</small></label>
+										<input type="text" id="email" name="email" required="required"
+											class="sm-form-control" />
+									</div>
+
+									<div class="col-md-6 form-group">
+										<label for="template-contactform-phone">연락처
+											(Telephone)<small>*</small>
+										</label> <input type="text" id="phone" name="phone"
+											required="required" class="sm-form-control" />
+									</div>
+
+									<div class="col-md-6 form-group">
+										<label for="template-contactform-country">국가명
+											(Country)</label> <input type="text" id="country" name="country"
+											class="sm-form-control" />
+									</div>
+
+									<div class="col-md-6 form-group">
+										<label for="template-contactform-topic">문의 주제 (Topic)</label>
+										<select id="topic" name="topic" class="sm-form-control">
+											<option value="none">-- 선택 --</option>
+											<option value="제품정보관련">제품정보관련</option>
+											<option value="제휴관련">제휴관련</option>
+											<option value="기업제휴관련">기업제휴관련</option>
+											<option value="기타문의">기타문의</option>
+										</select>
+									</div>
+
+									<div class="w-100"></div>
+
+									<div class="col-md-12 form-group">
+										<label for="template-contactform-title">문의 제목
+											(Subject) <small>*</small>
+										</label> <input type="text" id="subject" name="subject"
+											required="required" class="sm-form-control" />
+									</div>
+
+
+									<div class="w-100"></div>
+
+									<div class="col-12 form-group">
+										<label for="template-contactform-message">내용 (Enquiry
+											& Comments) <small>*</small>
+										</label>
+										<textarea class="required sm-form-control" id="comment"
+											name="comment" required="required" rows="6" cols="30"></textarea>
+										<span class="alert-text">* 제품 문의 시 제품번호 및 수량을 기재하여
+											보내주시면 빠른 응답이 가능합니다.</span>
+									</div>
+									<div class="col-12 form-group">
+										<label for="template-contactform-file">파일 업로드 (Upload
+											Files)</label> <input type="file" id="file" name="file"
+											class="sm-form-control" /> <span class="alert-text">*
+											1회 업로드 가능 용량은 20MB입니다. 초과하는 경우 bionlifescience@hanmail.net
+											메일로 보내주시기 바랍니다.</span><br> <span class="alert-text">*
+											jpg / jpeg / pdf / png / zip 확장자를 지원합니다.</span>
+									</div>
+
+									<div class="col-12 form-group">
+										<label for="template-contactform-private">개인정보 취급방침
+											(Private Policy) </label>
+										<textarea class="sm-form-control" rows="6" cols="30" readonly
+											style="overflow-y: scroll">
+1. 수집하는 개인정보 항목 및 수집방법
+회사는 원활한 서비스 제공을 위해 아래와 같은 개인정보를 수집하고 있습니다. 이중 필수항목은 회사가 제공하는 서비스를 이용하기 위해 반드시 입력을 해야 하는 정보이며, 선택항목은 보다 양질의 서비스를 제공하기 위하여 수집하고 있으나, 이를 입력하지 않아도 서비스 이용에 제한을 두지 않는 정보입니다.
+
+1) 필수 수집 항목: 아이디, 비밀번호, 성명, 우편물 수령 주소, 주민등록상 주소, 전화번호, 이메일, 이메일 수신여부, 만18 세 미만일 경우 법정대리인 식별정보 및 동의 정보 또한 본인인증, 모바일 서비스 이용 및 이벤트 경품배송 등의 목적으로 다음 정보가 서비스 이용 도중 추가 수집될 수 있습니다. (휴대폰 번호)
+2) 유료 서비스 이용 시 수집 항목: 결제 등을 위해 신용카드, 은행계좌 정보, 결제 기록 등의 정보
+3) 서비스 이용과정이나 사업 처리과정에서 아래와 같은 정보들이 생성되어 수집될 수 있습니다: 서비스 이용기록, 접속로그, 쿠키, 접속IP, 결제기록, 불량 이용 기록
+4) 개인정보 수집방법: 홈페이지(회원가입, 상표등록출원신청, 특허출원신청, 디자인등록출원신청, 상담게시판, 견적의뢰), 모바일 어플리케이션, 전화상담, 서면양식
+
+2. 개인정보 수집 및 이용목적
+회사는 수집한 개인정보를 다음의 목적을 위해 활용합니다.
+
+1) 서비스 제공에 관한 계약 이행 및 서비스 제공에 따른 요금정산: 서비스 제공, 구매 및 요금 결제, 청구서 및 물품 발송, 결제서비스 본인인증
+2) 회원관리: 회원제 서비스 이용에 따른 신용평가기관을 통한 본인확인, 개인 식별, 불량회원의 부정이용 방지와 비인가 사용 방지, 중복 가입 확인, 가입 의사 확인, 연령 확인, 만 18세 미만 아동 개인정보 수집 시 법정 대리인 동의여부 확인, 불만처리 및 민원처리, 고지사항 전달, 비밀번호 재발급 및 보안서비스 이용과 관련된 본인확인, 분쟁조절/해결을 위한 기록 보존
+3) 신규서비스 및 마케팅, 광고에 활용 : 이벤트 등 광고성 정보 전달, 인구통계학적 특성에 따른 서비스 제공 및 광고 게재, 접속 빈도 파악 또는 회원의 서비스이용에 대한 통계, 경품 등 물품 배송에 대한 정확한 배송지 확보
+
+3. 개인정보 보유 및 이용기간
+회사는 개인정보 수집 및 이용목적이 달성된 후에는 해당 정보를 지체 없이 파기합니다. 단, 다음의 정보에 대해서는 아래의 이유로 명시한 기간 동안 보존합니다.
+
+보존 항목: 이름, 아이디, 이메일, 연락처
+보존 근거: 고객지원(회원탈퇴 시 소비자의 불만 및 분쟁해결을 위한 목적 및 부정 이용 방지)
+보존 기간: 회원탈퇴일로부터14일 또는 영구정지일로부터 1년 그리고, 관계법령의 규정에 의하여 보존할 필요가 있는 경우 회사는 아래와 같이 관계법령에서 정한 일정한 기간동안 회원정보를 보관합니다.
+보존 항목: 계약 또는 청약철회 등에 관한 기록 보존 근거: 전자상거래 등에서의 소비자보호에 관한 법률
+보존 기간: 5 년 보존 항목: 소비자의 불만 또는 분쟁처리에 관한 기록
+보존 근거: 전자상거래 등에서의 소비자보호에 관한 법률
+보존 기간: 3년 보존 항목 : 본인확인에 관한 기록
+보존 근거: 정보통신망 이용촉진 및 정보보호 등에 관한 법률
+보존 기간: 6개월 보존 항목: 접속로그, 접속IP 정보
+보존 근거: 통신비밀보호법 보존 기간: 3개월간
+
+4. 개인정보 파기 절차 및 방법
+회사는 개인정보 보유기간의 경과, 처리목적 달성 등 개인정보가 불필요하게 되었을 때에는 해당 정보를 지체 없이 파기합니다. 파기절차 및 방법은 다음과 같습니다.
+
+1) 파기절차 정보주체로부터 동의 받은 개인정보 보유기간이 경과하거나 처리목적이 달성되었음에도 불구하고 다른 법령에 따라 개인정보를 계속 보존하여야 하는 경우에는, 해당 개인정보를 별도의 데이터베이스(DB)로 옮기거나 보관장소를 달리하여 보존합니다.
+2) 파기방법 전자적 파일형태로 저장한 개인정보는 기록을 재생할 수 없는 기술적 방법을 사용하여 삭제합니다. 종이에 출력한 개인정보는 분쇄기로 분쇄하거나 소각을 통하여 파기합니다.
+
+5. 개인정보 제공 및 공유
+회사는 귀하의 개인정보를 「개인정보의 수집목적 및 이용목적」에서 고지한 범위 내에서 사용하며, 동 범위를 초과하여 이용하거나 귀하의 동의 없이 타인 또는 타기업, 기관에 제공하지 않습니다. 다만, 회사는 정보 주체의 개인정보를 '2. 개인정보의 수집 및 이용목적'에서 명시한 범위 내에서만 처리하며, 정보주체의 동의, 법률의 특별한 규정 등 개인정보보호법 제17조 및 제18조에 해당하는 경우에만 개인정보를 제3자에게 제공합니다.
+
+6. 수집한 개인정보 위탁
+회사는 귀하의 동의 없이 귀하의 정보를 외부 업체에 위탁하지 않습니다. 향후 그러한 필요가 생길 경우, 위탁대상자와 위탁 업무 내용에 대해 통지하고 필요한 경우 사전 동의를 받도록 하겠습니다.
+
+7. 이용자 및 법정대리인의 권리와 그 행사방법
+이용자 및 법정 대리인은 언제든지 등록되어 있는 자신 혹은 당해 만 18세 미만 아동 및 청소년의 개인정보를 조회하거나 수정할 수 있으며 가입 해지를 요청할 수도 있습니다. 이용자 혹은 만 18세 미만 아동 및 청소년의 개인정보 조회 및 수정을 위해서는 '개인정보변경'(또는 '회원정보수정' 등)을, 가입 해지(동의철회)를 위해서는 "회원탈퇴"을 클릭하여 본인 확인 절차를 거치신 후 직접 열람, 정정 또는 탈퇴가 가능합니다. 혹은 개인정보관리책임자에게 서면, 전화 또는 이메일로 연락하시면 지체 없이 조치하겠습니다. 귀하가 개인정보 오류에 대한 정정을 요청하신 경우에는 정정을 완료하기 전까지 당해 개인정보를 이용 또는 제공하지 않습니다. 또한 잘못된 개인정보를 제3자에게 이미 제공한 경우에는 정정 처리결과를 제3자에게 지체 없이 통지하여 정정이 이루어지도록 하겠습니다. '회사'는 이용자 혹은 법정 대리인의 요청에 의해 해지 또는 삭제한 개인정보를 "'회사'가 수집하는 개인정보 보유 및 이용기간"에 명시한 바에 따라 처리하고 그 외 용도로 열람 또는 이용할 수 없도록 처리하고 있습니다.
+
+8. 개인정보 자동수집 장치 설치, 운영 및 그 거부에 관한 사항
+회사는 귀하에게 특화된 맞춤서비스 등을 제공하기 위해서 귀하의 정보를 저장하고 수시로 찾아내는 '쿠키(cookie, 접속정보파일)'또는 기기식별번호를 수집합니다. 쿠키란 웹사이트를 운영하는데 이용하는 서버가 귀하의 브라우저에 보내는 아주 작은 텍스트 파일로서 귀하의 컴퓨터 하드디스크에 저장하며, 기기식별번호란 휴대폰의 제조사가 개별 단말기에 부여하는 고유 번호를 말하며, 모바일에서 로그인하는 시점에 해당 정보를 서버에 저장합니다. 회사는 자동 수집한 정보를 통해 컴퓨터 또는 모바일 장비를 식별하지만 이를 회원식별 정보로는 사용하지 않습니다.
+
+1) 쿠키 등 사용 목적 회원과 비회원의 접속 빈도나 방문 시간 등을 분석, 이용자 취향과 관심분야 파악 및 자취 추적, 각종 이벤트 참여 정도 및 방문 회수 파악 등을 통한 타겟 마케팅 및 개인 맞춤 서비스 제공
+2) 쿠키 설정 거부 방법 귀하는 쿠키 설치에 대한 선택권을 가지고 있습니다. 쿠키 설정을 거부하는 방법으로는 귀하가 사용하는 웹 브라우저 옵션을 선택함으로써 모든 쿠키를 허용하거나 쿠키를 저장할 때마다 확인을 거치거나, 모든 쿠키의 저장을 거부할 수 있습니다. 단, 모든 쿠키의 저장을 거부하는 경우, 회사가 쿠키를 통해 제공하는 서비스를 이용할 수 없습니다.
+3) 기기식별번호 사용목적 및 거부방법 회사는 기기식별번호를 푸시 메시지 발송 및 자동 로그인 기능과 같은 맞춤 서비스 제공을 위해 사용하며 이용자가 기기식별번호의 자동 수집을 거부하는 경우 모바일 서비스를 이용할 수 없습니다.
+
+9. 개인정보보호를 위한 기술적 대책
+회사는 귀하의 개인정보를 보호하기 위하여 다음과 같은 정책을 실시하고 있습니다.
+
+귀하의 개인정보는 비밀번호에 의해 보호되고 있고 이용자 계정 암호는 오직 본인만이 알 수 있으며, 개인정보 확인 및 변경 또한 비밀번호를 알고 있는 본인에 한해서만 가능합니다. 회사는 귀하의 개인정보가 유출되는 것을 막기 위해 현재 외부로부터 침입을 차단하는 장치를 이용하여 외부로부터의 공격, 해킹 등을 막고 있습니다. 특히, 이용자 개인정보를 저장하고 있는 서버는 외부의 인터넷 라인과 직접 연결하지 않고 별도로 관리하는 등 최고 수준의 보안을 유지하고 있습니다. 회사는 만약의 사태에 대비하여 시스템과 데이터를 백업하는 체제를 갖추고 있습니다. 회사는 백신프로그램을 이용하여 컴퓨터바이러스에 의한 피해를 방지하기 위한 조치를 취하고 있습니다. 백신프로그램은 주기적으로 업데이트하며, 갑작스런 바이러스가 출현할 경우 백신이 나오는 즉시 이를 제공함으로써 개인정보가 침해되는 것을 방지하고 있습니다.
+
+10. 개인정보보호를 위한 관리적 대책
+상승국제특허법률사무소는 귀하의 개인정보에 대한 접근권한을 최소한의 인원으로 제한하고 있습니다. 그 최소한의 인원에 해당하는 자는 아래와 같습니다.
+
+이용자와 직접 상대 하여 마케팅, 고객지원, 배송 업무를 수행하는 자로 위탁, 협력 업체, 직원 포함 개인정보관리책임자 등 개인정보관리업무를 수행하는 자 기타 업무상 개인정보 취급이 불가피한 자 개인정보를 취급하는 직원을 대상으로 새로운 보안 기술 습득 및 개인정보 보호 의무 등에 관해 정기적인 사내 교육을 실시하고 있습니다. 입사 시 전 직원의 보안서약서를 통하여 사람에 의한 정보유출을 사전에 방지하고 개인정보취급방침에 대한 이행사항 및 준수여부를 감사하기 위한 내부절차를 마련하고 있습니다. 개인정보 관련 취급자의 업무 인수인계는 보안을 유지한 상태에서 이뤄지고 있으며 입사 및 퇴사 후 개인정보 사고에 대한 책임을 명확화하고 있습니다. 개인정보와 일반 데이터를 혼합하여 보관하지 않고 별도 서버를 통해 분리하여 보관하고 있습니다. 전산실 및 자료 보관실 등을 특별 보호구역으로 설정하여 출입을 통제하고 있습니다. 상승국제특허법률사무소는 이용자 개인의 실수 혹은 인터넷의 본질적인 위험성으로 인하여 발생하는 개인정보유출에 대해 책임을 지지 않습니다. 이용자 개개인이 본인의 개인정보를 보호하기 위해서 본인 계정과 비밀번호를 적절하게 관리하고 여기에 대한 책임을 져야 합니다. 그 외 내부 관리자 실수나 기술관리 상의 사고로 인해 개인정보의 상실, 유출, 변조, 훼손이 유발될 경우 발견 즉시 귀하께 사실을 알리고 적절한 대책과 보상을 강구할 것입니다.
+
+11. 개인정보에 관한 민원서비스
+회사는 귀하의 개인정보를 보호하고 개인정보와 관련한 불만을 처리하기 위하여 아래와 같이 개인정보관리책임자를 지정하고 있습니다.
+</textarea>
+									</div>
+									<div class="form-check">
+										<input type="checkbox" class="form-check-input"
+											style="margin-left: -0.5rem; margin-right: 5px;"
+											id="policyCheck"> <label class="form-check-label"
+											for="policyCheck">개인정보의 수집 및 이용에 동의합니다.</label>
+									</div>
+									<div class="col-12 form-group">
+										<button class="button button-3d m-0" type="submit"
+											id="contactBtn">메시지 보내기</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+	</div>
+	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+	<script src="/front/js/contact.js"></script>
+</body>
+</html>

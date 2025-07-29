@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/admin/common :: headMenu">
+
+</head>
+
+
+<body>
+	<section id="container">
+
+		<th:block th:replace="fragments/admin/common :: headMenu"></th:block>
+
+		<th:block th:replace="fragments/admin/common :: sideMenu('product')"></th:block>
+
+		<section id="main-content">
+			<section class="wrapper">
+				<div class="row mt">
+					<div class="col-lg-10">
+						<h4>
+							<i class="fa fa-angle-right"></i> 제품 관리
+						</h4>
+						<span class="alsert-messate">* 제품을 등록 및 삭제할 수 있습니다.</span><br>
+						<span class="alsert-messate">* 제품 삭제 시 제품에 등록된 이미지 및 텍스트는
+							모두 삭제됩니다.</span>
+						<div class="form-panel">
+
+							<form role="form" action="/admin/productUpdate" class="form-horizontal style-form" method="POST" enctype="multipart/form-data">
+								<div class="form-group has-success">
+									<label class="col-lg-2 control-label"># 제품 분류 선택</label>
+									<div class="col-lg-10">
+										<div class="row">
+											<div class="col-lg-4">
+												<select class="form-control" id="smallPanelBigSortSelect" name="bigId" required="required">
+													<option value="">=== 대분류 선택 ===</option>
+													<option
+													th:each="b:${bigsorts}" 
+													th:text="${b.name}" 
+													th:value="${b.id}"
+													th:selected="${product.smallSort.middleSort.bigSort.id == b.id}"></option>
+												</select>
+											</div>
+											<div class="col-lg-4">
+												<select class="form-control" id="smallPanelMiddleSortSelect" name="middleId"  required="required">
+												<option value="">=== 중분류 선택 ===</option>
+												<option
+													th:each="m:${middlesorts}" 
+													th:text="${m.name}" 
+													th:value="${m.id}"
+													th:selected="${product.smallSort.middleSort.id == m.id}"></option>
+												</select>
+											</div>
+											<div class="col-lg-4">
+												<select class="form-control" id="smallPanelSmallSortSelect" name="smallId" required="required">
+													<option value="">=== 소분류 선택 ===</option>
+													<option
+													th:each="s:${smallsorts}" 
+													th:text="${s.name}" 
+													th:value="${s.id}"
+													th:selected="${product.smallSort.id == s.id}"></option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group has-success">
+									<label class="col-sm-2 control-label col-lg-2"
+										for="inputSuccess"># 제품 이름 입력</label>
+									<div class="col-lg-10">
+										<input 
+										type="text" 
+										class="form-control" 
+										id="subject"
+										name="subject"
+										th:value="${product.subject}"
+										required="required">
+										<input type="hidden" name="id" th:value="${product.id}">
+									</div>
+								</div>
+								<div class="form-group has-success">
+									<label class="col-sm-2 control-label col-lg-2"
+										for="inputSuccess"># 제품 메인 설명문구 입력</label>
+									<div class="col-lg-10">
+										<textarea 
+										class="form-control" 
+										id="content"
+										required="required"
+										th:text="${product.content}"
+										name="content"></textarea>
+									</div>
+								</div>
+								<div class="form-group has-success">
+									<label class="col-sm-2 control-label col-lg-2"
+										for="inputSuccess"># 제품 서브 설명문구 입력</label>
+									<div class="col-lg-10">
+										<textarea 
+										class="form-control" 
+										id="productSubContent"
+										th:text="${product.productSubContent}"
+										name="productSubContent"></textarea>
+									</div>
+								</div>
+								<div class="form-group has-success">
+									<label class="col-sm-2 control-label col-lg-2"
+										for="inputSuccess"># 제품 스펙 입력</label>
+									<div class="col-lg-10 form-inline" id="spec-wrap">
+										<div class="spec-wrap">
+										    <button type="button" class="btn btn-success" id="spec-plus-button">+ 추가</button>
+											<button type="button" class="btn btn-danger" id="spec-del-button">- 삭제</button>
+									    </div>
+									    <div class="spec-wrap" th:each="s:${product.infos}">
+											<input
+											type="text" 
+											name="spec" 
+											th:value="${s.productInfoText}"
+											placeholder="제품 스펙을 입력 해 주세요. 예) 80mm*80mm*100mm" 
+											class="form-control" 
+											style="width:80%;">
+									    </div>
+									</div>
+								</div>
+								<div class="form-group has-success">
+									<label class="col-sm-2 control-label col-lg-2"
+										for="inputSuccess"># 제품 INFO 입력</label>
+									<div class="col-lg-10 form-inline" id="info-wrap">
+										<div class="spec-wrap">
+											
+										    <button type="button" class="btn btn-success" id="info-plus-button">+ 추가</button>
+										    <button type="button" class="btn btn-danger" id="info-del-button">- 삭제</button>
+									    </div>
+									    <div class="spec-wrap" th:each="i:${product.specs}">
+											<input type="text" 
+											name="infoQ" 
+											class="form-control" 
+											placeholder="추가할 내용을 입력 해 주세요. 예) 제조자"
+											style="width:40%;"
+											th:value="${i.productSpecSubject}">
+											<input 
+											type="text" 
+											name="infoA" 
+											class="form-control" 
+											placeholder="추가주제의 답변을 입력 해 주세요. 예) 바이온라이프사이언스" 
+											style="width:40%;"
+											th:value="${i.productSpecContent}">
+									    </div>
+									</div>
+								</div>
+								
+								<div class="form-group has-error">
+									<label class="col-sm-2 control-label col-lg-2"># Product Overview 이미지 </label>
+									<div class="col-lg-10">
+										<input 
+										type="file" 
+										class="form-control wth-100" 
+										style="margin-bottom:10px;" 
+										name="productOverviewImage" 
+										th:value="same">
+										<span class="label label-danger">주의</span> <span> image용 확장자(jpg/jpeg/png)만을 지원합니다</span><br>
+										<span class="label label-danger">주의</span> <span> 이미지 이름에 공백 혹은 특수문자를 제거 해 주시기 바랍니다</span><br>
+										<span class="label label-danger">주의</span> <span> 가로사이즈 1,440px 을 기준으로 최적화 되어 있습니다.</span>
+									</div>
+								</div>
+								
+								<div class="form-group has-error">
+									<label class="col-sm-2 control-label col-lg-2"># PRODUCT SPEC IMAGE</label>
+									<div class="col-lg-10">
+										<input
+										type="file" 
+										class="form-control wth-100" 
+										style="margin-bottom:10px;" 
+										name="productSpecImage"
+										th:value="same">
+										<span class="label label-danger">주의</span> <span> image용 확장자(jpg/jpeg/png)만을 지원합니다</span><br>
+										<span class="label label-danger">주의</span> <span> 이미지 이름에 공백 혹은 특수문자를 제거 해 주시기 바랍니다</span><br>
+										<span class="label label-danger">주의</span> <span> 가로사이즈 1,440px 을 기준으로 최적화 되어 있습니다.</span>
+									</div>
+								</div>
+								<div class="form-group has-error">
+									<label class="col-sm-2 control-label col-lg-2"># 슬라이드 이미지</label>
+									<div class="col-lg-10">
+										<input 
+										type="file" 
+										class="form-control wth-100" 
+										style="margin-bottom:10px;" 
+										id="deImage" 
+										name="slides" 
+										multiple="multiple"
+										th:value="same">
+										<span class="label label-danger">주의</span> <span> image용 확장자(jpg/jpeg/png)만을 지원합니다</span><br>
+										<span class="label label-danger">주의</span> <span> 이미지 이름에 공백 혹은 특수문자를 제거 해 주시기 바랍니다</span><br>
+										<span class="label label-success">사용</span> <span> 파일 드래그를 통해 여러장을 한번에 업로드 할 수 있습니다</span><br>
+										<span class="label label-success">사용</span> <span> 740px * 740px 의 사이즈에 최적화 되어 있습니다.</span><br>
+										<button onclick="imgReset('deImage');" type="button" class="btn btn-warning" style="margin-top:10px;">이미지 리셋</button>
+									</div>
+								</div>
+								<div class="form-group has-error">
+									<label class="col-sm-2 control-label col-lg-2" for="sampleSection"># 미리보기</label>
+									<div class="col-lg-10" id="sampleSection">
+										<img th:each="e:${product.images}" width="200" th:src="${e.productImageRoad}">
+									</div>
+								</div>
+								<div class="form-group has-error">
+									<label class="col-sm-2 control-label col-lg-2"># 파일업로드</label>
+									<div class="col-lg-10">
+										<input 
+										type="file" 
+										class="form-control wth-100" 
+										style="margin-bottom:10px;" 
+										id="productFile" 
+										name="productFile" 
+										multiple="multiple"
+										th:value="same">
+										<span class="label label-danger">주의</span> <span> 수정을 원하시는 경우 새로운 파일을 등록 해 주세요.</span><br>
+										<span class="label label-danger">주의</span> <span> 새로운 파일 등록시 기존 파일은 삭제됩니다.</span><br>
+										<span class="label label-success">사용</span> <span> 파일 드래그를 통해 여러장을 한번에 업로드 할 수 있습니다</span><br>
+									</div>
+								</div>
+								<div class="form-group has-error">
+									<label class="col-sm-2 control-label col-lg-2"># 메인화면 표시여부</label>
+									<div class="col-lg-10">
+										<input 
+										id="sighCheck"
+										type="checkbox" 
+										class="form-control" 
+										style="margin-bottom:10px; width:20px;" 
+										name="sign"
+										th:checked="${product.sign == true}">
+										<span class="label label-success">사용</span> <span> 체크시 메인화면의 대표제품에 등록됩니다.</span><br>
+									</div>
+								</div>
+								<button type="submit" class="btn btn-danger">수정</button>
+								<button class="btn btn-theme" onclick="javascript:location.href='/admin/productManager'" type="button">확인</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+	</section>
+	<th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
+	<script src="/administration/lib/productDetail.js"></script>
+	<script src="/administration/lib/jquery-ui-1.9.2.custom.min.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-daterangepicker/date.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-daterangepicker/moment.min.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+	<script src="/administration/lib/advanced-form-components.js"></script>
+</body>
+
+</html>

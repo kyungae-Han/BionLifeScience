@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 기업소개')">
+
+</head>
+
+<body class="stretched">
+
+	<div id="wrapper" class="clearfix">
+
+		<th:block
+			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+		<section id="page-title"
+			class="page-title-parallax page-title-dark include-header"
+			style="padding: 250px 0; background-image: url('/front/images/about/parallax.jpg'); background-size: cover; background-position: center center;"
+			data-bottom-top="background-position:0px 400px;"
+			data-top-bottom="background-position:0px -500px;">
+
+			<div class="container clearfix">
+				<h1>기업소개</h1>
+				<span>Bion Life Science Introduction</span>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="/index">Home</a></li>
+					<li class="breadcrumb-item"><a href="#">회사소개</a></li>
+					<li class="breadcrumb-item active" aria-current="page">기업소개</li>
+				</ol>
+			</div>
+
+		</section>
+		<section id="content">
+			<div class="content-wrap">
+				<div class="container">
+
+					<div
+						class="row align-items-center col-mb-50 justify-content-between">
+
+						<div class="col-md-6">
+							<div class="feature-box media-box">
+								<div class="fbox-media">
+									<img src="/front/images/services/1.jpg" alt="Why choose Us?">
+								</div>
+							</div>
+						</div>
+						<div class="col-md-5 text-center text-md-start">
+							<div class="heading-block border-bottom-0">
+								<h4>기업 개요</h4>
+								<span>About BionLifeScience</span>
+							</div>
+
+
+							<p>이곳은 바이온라이프사이언스의 기업 개요가 들어가는 영역 입니다.</p>
+							<p>우측의 이미지는 기업개요를 보여줄 수 있는 이미지가 삽입될 예정 입니다.</p>
+
+						</div>
+					</div>
+
+					<div class="line"></div>
+
+					<div
+						class="row align-items-center col-mb-50 justify-content-between">
+						<div class="col-md-6 order-md-last">
+							<div class="feature-box media-box">
+								<div class="fbox-media">
+									<img src="/front/images/services/1.jpg" alt="Why choose Us?">
+								</div>
+							</div>
+						</div>
+
+						<div class="col-md-5 text-md-start text-center">
+							<div class="heading-block border-bottom-0">
+								<h4>추구 가치</h4>
+								<span>Value Sought</span>
+							</div>
+
+							<p>이곳은 바이온라이프사이언스의 추구가치가 들어가는 영역 입니다.</p>
+							<p>좌측의 이미지는 추구가치와 연관된 이미지가 삽입될 예입니다.</p>
+
+						</div>
+					</div>
+				</div>
+
+				<!-- <div class="section m-0">
+					<div class="container clearfix">
+						<div class="border-top-0 m-0">
+							<div class="container text-center">
+
+								<div class="heading-block center">
+									<h2>TIMELINE</h2>
+									<span>바이온라이프사이언스의 역사 입니다...</span>
+								</div>
+							</div>
+						</div>
+						<section class="timeline">
+
+							<ul>
+								<li class="year">
+									<h1>2012</h1>
+								</li>
+								<li>
+									<div>
+										<time>5월</time>
+										<div class="discovery">
+											<p>(주) 바이온라이프사이언스 법인 설립</p>
+										</div>
+									</div>
+								</li>
+								<li></li>
+								<li class="year">
+									<h1>2013</h1>
+								</li>
+								<li>
+									<div>
+										<time>12월</time>
+										<div class="discovery">
+											<p>BioTreat 브랜드 출시</p>
+										</div>
+									</div>
+								</li>
+								<li></li>
+								<li class="year">
+									<h1>2014</h1>
+								</li>
+								<li>
+									<div>
+										<time>02월</time>
+										<div class="discovery">
+											<p>벤처기업 인증</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div>
+										<time>03월</time>
+										<div class="discovery">
+											<p>Com & Cell 브랜드 출시</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<div>
+										<time>12월</time>
+										<div class="discovery">
+											<p>아크릴아마이드 젤 캐스터 특허 등록 및 디자인 등록</p>
+										</div>
+									</div>
+								</li>
+								<li></li>
+								
+							</ul>
+						</section>
+
+					</div>
+				</div>
+ -->
+				<div class="line"></div>
+				<div class="container clearfix mt-5">
+
+					<div class="clear"></div>
+
+					<div class="border-top-0 m-0">
+							<div class="container text-center">
+
+								<div class="heading-block center">
+									<h2>PARTNERS</h2>
+									<span>바이온라이프사이언스의 파트너사 입니다...</span>
+								</div>
+							</div>
+						</div>
+
+					<ul class="clients-grid grid-2 grid-sm-3 grid-md-6 mb-0">
+						<li class="grid-item"><a href="#"><img
+								src="/front/images/clients/1.png" alt="Clients"></a></li>
+						<li class="grid-item"><a href=""><img
+								src="/front/images/clients/2.png" alt="Clients"></a></li>
+						<li class="grid-item"><a href=""><img
+								src="/front/images/clients/3.png" alt="Clients"></a></li>
+						<li class="grid-item"><a href=""><img
+								src="/front/images/clients/4.png" alt="Clients"></a></li>
+						<li class="grid-item"><a
+							href="http://logofaves.com/2021/02/hershel-farms/"><img
+								src="/front/images/clients/5.png" alt="Clients"></a></li>
+						<li class="grid-item"><a href="#"><img
+								src="/front/images/clients/6.png" alt="Clients"></a></li>
+						<li class="grid-item"><a href=""><img
+								src="/front/images/clients/7.png" alt="Clients"></a></li>
+						<li class="grid-item"><a href="#"><img
+								src="/front/images/clients/8.png" alt="Clients"></a></li>
+						<li class="grid-item"><a href="#"><img
+								src="/front/images/clients/9.png" alt="Clients"></a></li>
+						<li class="grid-item"><a href="#"><img
+								src="/front/images/clients/10.png" alt="Clients"></a></li>
+						<li class="grid-item"><a href="#"><img
+								src="/front/images/clients/11.png" alt="Clients"></a></li>
+						<li class="grid-item"><a href="#"><img
+								src="/front/images/clients/12.png" alt="Clients"></a></li>
+					</ul>
+
+				</div>
+
+			</div>
+		</section>
+
+		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+	</div>
+	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+	<script src="/front/js/timeline.js"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 공지사항')">
+
+</head>
+
+<body class="stretched">
+
+	<div id="wrapper" class="clearfix">
+
+		<th:block
+			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+		<section id="page-title">
+
+			<div class="container clearfix">
+				<h1>공지사항</h1>
+				<span>Bion Life Science Notice</span>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="/index">메인</a></li>
+					<li class="breadcrumb-item active" aria-current="page">공지사항</li>
+				</ol>
+			</div>
+
+		</section>
+		<section id="content">
+
+			<!-- <div class="content-wrap p-b-0">
+
+				<div class="container clearfix">
+					<div class="card notice-search-form"
+						style="background-color: #fff; border-radius: 0px;">
+						<div class="card-body" style="padding: 20px">
+							<div class="form-widget">
+								<form class="row mb-0" action="#" method="post"
+									enctype="multipart/form-data">
+									<div class="col-lg-12 mt-4 mt-lg-0">
+										<div class="row">
+											<div
+												class="input-daterange travel-date-group col-12 bottommargin-sm">
+												<div class="row">
+													<div class="col-md-3 col-3">
+														<label for="booking-registration-check-in">검색어 입력
+															: </label> <input type="text" value=""
+															class="sm-form-control border-form-control text-start"
+															placeholder="Keywords">
+													</div>
+													<div class="col-md-3 col-3">
+														<label for="booking-registration-check-out">시작일 선택
+															: </label> <input type="date" value=""
+															class="sm-form-control required border-form-control text-start">
+													</div>
+													<div class="col-md-3 col-3">
+														<label for="booking-registration-check-out">종료일 선택
+															: </label> <input type="date" value=""
+															class="sm-form-control required border-form-control text-start">
+													</div>
+													<div class="col-3">
+														<div class="mb-4">
+															<label>공지사항 주제 선택 : </label> <select
+																class="sm-form-control border-form-control">
+																<option value="#" selected="selected">주제를 선택
+																	하세요</option>
+																<option value="#">제품 관련</option>
+																<option value="#">협업 관련</option>
+																<option value="#">기타 공지</option>
+															</select>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div> -->
+			<div class="content-wrap p-t-0" style="margin-top:50px;">
+				<div class="container clearfix">
+				<div class="border-top-0 m-0">
+						<div class="container text-center">
+
+							<div class="heading-block center">
+								<h2>Notice</h2>
+								<span>바이온라이프사이언스 공지사항</span>
+							</div>
+						</div>
+					</div>
+					<div class="row gutter-40 col-mb-80">
+						<div class="postcontent col-lg-12">
+
+							<div id="faqs" class="faqs">
+
+								<div id="faqs-list" class="fancy-title title-bottom-border">
+									<h3></h3>
+								</div>
+
+								<ul class="iconlist faqlist">
+									<li th:each="im:${notice}"><i class="icon-caret-right"></i><strong><a 
+									th:style="${im.sign == true ? 'color : red;' : 'color : black;'}"
+											href="#" th:data-scrollto="@{|#faq-${im.id}|}" th:text="${im.subject}">공지사항 제목 01</a></strong></li>
+									
+								</ul>
+
+								<div class="divider">
+									<i class="icon-circle"></i>
+								</div>
+								
+								<div th:each="i:${notice}">
+									<h3 th:id="@{|faq-${i.id}|}">
+										<strong th:style="${i.sign == true ? 'color : red;' : 'color : black;'}">Q.</strong> [[${i.subject}]]
+									</h3>
+									<p class="notice-wrap" th:text="${i.content}">공지사항 내용 01</p>
+									<p th:text="${i.subjectText}">공지사항 내용 01</p>
+									<div class="divider divider-right">
+										<a href="#" data-scrollto="#faqs-list"><i
+											class="icon-chevron-up"></i></a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+	</div>
+	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+
+</body>
+</html>

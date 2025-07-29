@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en" data-layout="vertical" data-topbar="light"
+	data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none"
+	data-preloader="disable" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="program/fragments/common :: headSrc"></head>
+
+<body>
+
+	<div id="layout-wrapper">
+
+		<header id="page-topbar"
+			th:replace="program/fragments/common :: headerMenu"></header>
+
+		<div class="app-menu navbar-menu"
+			th:replace="program/fragments/common :: navMenu">
+			<div class="sidebar-background"></div>
+		</div>
+		<div class="vertical-overlay"></div>
+		<div class="main-content">
+
+			<div class="page-content">
+				<div class="container-fluid">
+
+					<div class="row">
+						<div class="col-12">
+							<div
+								class="page-title-box d-sm-flex align-items-center justify-content-between">
+								<h4 class="mb-sm-0">BRAND PRODUCT MANAGER</h4>
+
+								<div class="page-title-right">
+									<ol class="breadcrumb m-0">
+										<li class="breadcrumb-item"><a
+											href="javascript: void(0);">BRAND Manage Center</a></li>
+										<li class="breadcrumb-item active">BRAND Product Reset Manager</li>
+									</ol>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					<div class="row">
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title mb-0">제품 DB 교체용 EXCEL 파일 업로드 영역</h4>
+                                </div>
+
+                                <div class="card-body">
+                                    <p class="text-muted">
+										# <code>엑셀[.xlsx]확장자의</code> 업로드 만을 지원 합니다.<br> 
+										# <code>다운로드 받은 엑셀 파일</code>의 양식을 통해 업로드를 진행해 주시기 바랍니다.<br> 
+										# 업로드 한 엑셀 파일에 따라<code> 모든 정보가 수정</code>되니 주의해 주시기 바랍니다. <br>
+										# 1회 업로드 허용 용량은<code> 10MB</code>입니다. <br> 
+									</p>
+                                    <div class="dropzone">
+										<div class="row mb-2">	
+											<div class="col-sm-auto">
+												<a href="/admin/brandCenter/addExcelDownload" class="btn btn-primary">제품추가용 EXCEL 다운로드</a>
+											</div>
+											<div class="col-sm-auto">
+												<div>
+													<button id="addExcelUpload" type="submit" class="btn btn-warning">제품추가용 EXCEL 업로드</button>
+												</div>
+											</div>
+										</div>
+                                        <div class="fallback">
+                                            <input name="file" type="file">
+                                        </div>
+                                        <div class="dz-message needsclick">
+                                            <div class="mb-3">
+                                                <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                            </div>
+
+                                            <h4>드래그 또는 클릭하여 업로드할 파일을 선택 해 주시기 바랍니다.</h4>
+                                        </div>
+                                    </div>
+
+                                    <ul class="list-unstyled mb-0" id="dropzone-preview">
+                                        <li class="mt-2" id="dropzone-preview-list">
+                                            <div class="border rounded">
+                                                <div class="d-flex p-2">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <div class="avatar-sm bg-light rounded">
+                                                            <img data-dz-thumbnail class="img-fluid rounded d-block" src="/administration/program/assets/images/new-document.png" alt="Dropzone-Image" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <div class="pt-1">
+                                                            <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+                                                            <p class="fs-13 text-muted mb-0" data-dz-size></p>
+                                                            <strong class="error text-danger" data-dz-errormessage></strong>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-shrink-0 ms-3">
+                                                        <button data-dz-remove class="btn btn-sm btn-danger">삭제</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title mb-0">리셋용 이미지 파일 업로드</h4>
+                                </div>
+
+                                <div class="card-body">
+                                    <p class="text-muted">
+										# <code>압축[.zip]확장자의</code> 업로드 만을 지원 합니다.<br> 
+										# <code>다운로드 받은 ZIP 파일</code>의 양식을 통해 업로드를 진행해 주시기 바랍니다.<br> 
+										# 업로드 한 ZIP 파일에 따라<code> 모든 정보가 수정</code>되니 주의해 주시기 바랍니다. <br>
+										# 1회 업로드 가능한 파일의 용량은<code> 1,000MB</code>입니다. 
+									</p>
+
+                                    <div class="dropzone sec">
+										<div class="row mb-2">	
+											<div class="col-sm-auto">
+												<a href="/administration/brand.zip" download class="btn btn-primary">제품추가용 ZIP 다운로드</a>
+											</div>
+											<div class="col-sm-auto">
+												
+												<div>
+													<button id="addFileUpload" type="submit" class="btn btn-warning">제품추가용 ZIP파일 업로드</button>
+												</div>
+											</div>
+										</div>
+                                        <div class="fallback">
+                                            <input name="file" type="file">
+                                        </div>
+                                        <div class="dz-message needsclick">
+                                            <div class="mb-3">
+                                                <i class="display-4 text-muted ri-upload-cloud-2-fill"></i>
+                                            </div>
+
+                                            <h4>드래그 또는 클릭하여 업로드할 파일을 선택 해 주시기 바랍니다.</h4>
+                                        </div>
+                                    </div>
+
+                                    <ul class="list-unstyled mb-0" id="sec-dropzone-preview">
+                                        <li class="mt-2" id="sec-dropzone-preview-list">
+                                            <div class="border rounded">
+                                                <div class="d-flex p-2">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <div class="avatar-sm bg-light rounded">
+                                                            <img data-dz-thumbnail class="img-fluid rounded d-block" src="/administration/program/assets/images/new-document.png" alt="Dropzone-Image" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <div class="pt-1">
+                                                            <h5 class="fs-14 mb-1" data-dz-name>&nbsp;</h5>
+                                                            <p class="fs-13 text-muted mb-0" data-dz-size></p>
+                                                            <strong class="error text-danger" data-dz-errormessage></strong>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex-shrink-0 ms-3">
+                                                        <button data-dz-remove class="btn btn-sm btn-danger">삭제</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div> 
+                        <div class="col-lg-12" id="reset_result">
+                            <div class="card">
+								<div class="card-header">
+									<div class="row mb-2">
+										<div class="col-sm-auto" style="display:flex;vertical-align: middle; justify-content: center; align-items: center;">
+											<h4 class="card-title mb-0">업로드 결과 확인</h4>
+										</div>
+										<div class="col-sm-auto">
+											<a href="/admin/brandCenter/productAddManager" class="btn btn-primary">새로고침</a>
+										</div>
+									</div>
+								</div>
+								<div class="card-body" id="result_list">
+                                   
+								</div>	
+                            </div>
+                        </div> 
+                    </div>
+				</div>
+			</div>
+			<th:block th:replace="program/fragments/common :: footerSrc"></th:block>
+		</div>
+	</div>
+	<th:block th:replace="program/fragments/common :: settingBlock"></th:block>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+		integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+		crossorigin="anonymous"></script>
+	<th:block th:replace="program/fragments/common :: scriptSrc"></th:block>
+	<script src="/administration/program/assets/libs/dropzone/dropzone-min.js"></script>
+	
+	<script src="/administration/program/assets/libs/filepond/filepond.min.js"></script>
+	<script src="/administration/program/assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.js"></script>
+	<script src="/administration/program/assets/libs/filepond-plugin-file-validate-size/filepond-plugin-file-validate-size.min.js"></script>
+	<script src="/administration/program/assets/libs/filepond-plugin-image-exif-orientation/filepond-plugin-image-exif-orientation.min.js"></script>
+	<script src="/administration/program/assets/libs/filepond-plugin-file-encode/filepond-plugin-file-encode.min.js"></script>
+	<script src="/administration/program/brand/addFileUpload.js"></script>
+</body>
+
+</html>

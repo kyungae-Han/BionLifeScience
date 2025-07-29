@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="KO" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/admin/common :: headMenu">
+   
+
+</head>
+
+<body>
+
+    <div id="login-page">
+        <div class="container">
+            <form class="form-login" th:action="@{/memberLogin}" method="POST">
+                <h2 class="form-login-heading">관리자로그인</h2>
+                <div class="login-wrap">
+                    <input type="text" name="username" class="form-control" required="required" placeholder="아이디를 입력 해 주세요." autofocus>
+                    <br>
+                    <input type="password" class="form-control" name="password" required="required" placeholder="비밀번호를 입력 해 주세요.">
+                    <label class="checkbox" style="margin-left:20px;">
+
+                    </label>
+                    <button class="btn btn-theme btn-block" type="submit"><i class="fa fa-lock"></i>로그인</button>
+                    <hr>
+                    <div class="alert alert-danger" role="alert" th:if="${param.error}">
+			    		<p th:text="${param.exception}"># 없는 계정 입니다.</p>
+			        </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
+    <script>
+        $.backstretch("/administration/img/login-bg.jpg", {
+            speed: 500
+        });
+    </script>
+</body>
+
+</html>

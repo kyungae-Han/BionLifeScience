@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="KO" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/admin/common :: headMenu">
+
+
+</head>
+</head>
+
+<body>
+	<section id="container">
+		<th:block th:replace="fragments/admin/common :: headMenu"></th:block>
+		<th:block th:replace="fragments/admin/common :: sideMenu('history')"></th:block>
+		<section id="main-content">
+			<section class="wrapper">
+				<div class="row mt">
+					<form class="form-horizontal style-form" id="history-title-form" name="history-title-form">
+						<div class="col-lg-6">
+							<div class="form-panel">
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="form-group col-12 col-md-12 col-lg-12">
+											<div class="col-md-5 col-xs-11">
+												<input class="form-control form-control-inline" 
+												name="start" 
+												size="16"
+												required="required"	
+												id="start"
+												type="text"> 
+												<span class="help-block"># 연혁 시작년도를 입력 하세요</span>
+											</div>
+											<div class="col-md-5 col-xs-11">
+												<input class="form-control form-control-inline"
+												size="16" 
+												required="required"
+												id="end"
+												type="text" 
+												name="end"> 
+												<span class="help-block"># 연혁 종료년도를 입력 하세요</span>
+											</div>
+											<div class="col-md-2" style="padding-left: 30px;">
+												<button id="history-title-button" onclick="historySubjectInsert();" style="width: 100%;" type="button"
+													class="btn btn-primary">등록</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="row mt" id="history-subject-wrap">
+					<form id="history-content-form" action="#" class="form-horizontal style-form" th:each="list:${list}" th:id="|history-content-form-${list.id}|">
+						<div class="col-lg-6">
+							<div class="form-panel h-700">
+								<div class="row">
+									<div class="col-lg-12">
+										<div class="form-group col-12 col-md-12 col-lg-12">
+											<div class="col-md-12 col-xs-11 history-title text-center">
+												<span th:text="${list.start}">2014년 </span> ~ <span th:text="${list.end}"> 2017년</span>
+											</div>
+										</div>
+										<div class="form-group col-12 col-md-12 col-lg-12">
+											<div class="col-md-5 col-xs-11">
+												<input class="form-control form-control-inline" size="16"
+													type="text" th:id="|content-${list.id}|"> <span class="help-block">#
+													연혁 내용을 입력 하세요</span>
+											</div>
+											<div class="col-md-4 col-xs-11">
+												<div class="input-append date dpYears">
+													<input type="date" size="16" th:id="|content-date-${list.id}|"
+														class="form-control">
+												</div>
+												<span class="help-block"># 연혁에 해당하는 날을 입력 하세요</span>
+											</div>
+											<div class="col-md-3" style="padding-left: 5px;display:flex;">
+												<button style="width: 100%;" type="button"
+													class="btn btn-primary" th:onclick="|historyContentInsert(${list.id});|">등록</button>
+												<button style="width: 100%;margin-left:5px;" type="button"
+													class="btn btn-warning" th:onclick="|historyDelete(${list.id},1);|">삭제</button>	
+											</div>
+										</div>
+									</div>
+								</div>
+								<section class="task-panel tasks-widget no-shadow">
+									<div class="panel-heading">
+										<div class="pull-left">
+											<h5>
+												<i class="fa fa-tasks"></i> <span th:text="${list.start}">2011</span> ~ <span th:text="${list.end}">2013</span>
+											</h5>
+										</div>
+										<br>
+									</div>
+									<div class="panel-body">
+										<div class="task-content">
+											<ul class="task-list">
+												<li th:each="content:${list.contents}"  th:id="|history-content-wrap-${list.id}|">
+													<div class="task-checkbox">
+													</div>
+													<div class="task-title">
+														<span class="task-title-sp" th:text="${content.contentSubject}">연혁 내용이 입력되는 장소 입니다.</span> <span
+															class="badge bg-theme" th:text="${content.historyDate}">2023.01.01</span>
+														<div class="pull-right hidden-phone">
+															<button class="btn btn-danger btn-xs" th:onclick="|historyDelete(${content.id},0);|">
+																<i class="fa fa-trash-o "></i>
+															</button>
+														</div>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</section>
+							</div>
+						</div>
+					</form>
+				</div>
+			</section>
+		</section>
+	</section>
+	<th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
+	<script src="/administration/lib/historyManager.js"></script>
+</body>
+
+</html>

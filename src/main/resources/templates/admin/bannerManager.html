@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="KO" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/admin/common :: headMenu">
+
+
+</head>
+</head>
+
+<body>
+	<section id="container">
+		<th:block th:replace="fragments/admin/common :: headMenu"></th:block>
+		<th:block th:replace="fragments/admin/common :: sideMenu('site')"></th:block>
+		<section id="main-content">
+			<section class="wrapper">
+				<div class="row mt">
+					<div class="col-lg-8">
+						<div class="form-panel">
+							<form action="/admin/bannerInsert" method="POST" enctype="multipart/form-data" class="form-horizontal style-form">
+								<div class="row">
+									<div class="form-group col-12 col-md-12 col-lg-12">
+										<div class="col-md-12 col-xs-11">
+											<input class="form-control form-control-inline" 
+											type="text" 
+											name="subject"
+											required="required"> 
+											<span class="help-block"># 메인 배너의 SUBJECT 문구를 입력 해 주세요.</span>
+										</div>
+										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
+											<input class="form-control form-control-inline" 
+											type="text" 
+											name="content"
+											required="required"> 
+											<span class="help-block"># 메인 배너의 CONTENT 문구를 입력 해 주세요.</span>
+										</div>
+										<div class="col-md-6 col-xs-11" style="margin-top:20px;">
+											<div class="fileupload fileupload-new"
+												data-provides="fileupload">
+												<span class="btn btn-warning btn-file" style="width:100%;"> 
+													<span class="fileupload-new"><i class="fa fa-paperclip"></i>Select file</span> 
+													<span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span> 
+													<input 
+													type="file"
+													class="default"
+													name="webFile"
+													id="webFile"
+													required="required" />
+												</span> 
+												<span class="fileupload-preview" style="margin-left: 5px;"></span>
+												<a href="#" class="close fileupload-exists" 
+													data-dismiss="fileupload"
+													style="float: none; margin-left: 5px;"></a>
+											</div>
+											<span class="help-block"># PC용 이미지를 업로드 해 주세요.</span>
+											<span class="help-block"># 최적화된 사이즈는 1920px * 1180px 입니다.</span>
+											<span class="help-block"># 파일은 jpeg/png/jpg 확장자를 지원 합니다.</span>
+											<span class="help-block"># PC용 이미지는 필수 등록 사항입니다.</span>
+										</div>
+										<div class="col-md-6 col-xs-11" style="margin-top:20px;">
+											<div class="fileupload fileupload-new"
+												data-provides="fileupload">
+												<span class="btn btn-warning btn-file" style="width:100%;"> 
+													<span class="fileupload-new"><i class="fa fa-paperclip"></i>Select file</span> 
+													<span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span> 
+													<input 
+													type="file"
+													class="default"
+													name="mobileFile"
+													id="mobileFile" />
+												</span> 
+												<span class="fileupload-preview" style="margin-left: 5px;"></span>
+												<a href="#" class="close fileupload-exists" 
+													data-dismiss="fileupload"
+													style="float: none; margin-left: 5px;"></a>
+											</div>
+											<span class="help-block"># MOBILE용 이미지를 업로드 해 주세요.</span>
+											<span class="help-block"># MOBILE용 이미지 미등록시 WEB용 이미지로 대체됩니다.</span>
+											<span class="help-block"># 최적화된 사이즈는 460px * 700px 입니다.</span>
+										</div>
+										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
+											<button type="submit" class="btn btn-theme">등록</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="row mt">
+					<div class="col-md-8">
+						<section class="task-panel tasks-widget">
+							<div class="panel-heading">
+								<div class="pull-left">
+									<h5>
+										<i class="fa fa-tasks"></i> 바이온라이프사이언스 - 메인 배너관리
+									</h5>
+								</div>
+								<br>
+							</div>
+							<div class="panel-body">
+								<div class="task-content">
+									<ul class="task-list">
+										<li th:each="b:${banners}">
+											<div class="task-title">
+												<div class="admin-banner-wrap">
+													<h3 th:text="${b.subject}">제목영역</h3>
+													<p th:text="${b.content}">컨텐츠 영역</p>
+													<div class="pull-right hidden-phone">
+														<button class="btn btn-danger btn-xs" th:onclick="|deleteBanner('${b.id}')|">
+															<i class="fa fa-trash-o "></i>
+														</button>
+													</div>
+												</div>
+												<div class="admin-banner-image row">
+													<img width="150px" th:src="${b.webroad}">
+													<img width="150px" th:src="${b.mobileroad}">
+												</div>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</section>
+					</div>
+				</div>
+			</section>
+		</section>
+	</section>
+	<th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
+	<script src="/administration/lib/jquery-ui-1.9.2.custom.min.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-daterangepicker/date.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-daterangepicker/moment.min.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+	<script src="/administration/lib/advanced-form-components.js"></script>
+	<script>
+	$(function(){
+		
+		$("#file").on('change', function (e) {
+	    	var size = 0;
+	    	for(var i=0;i<e.target.files.length;i++){
+	    		size += e.target.files[i].size;
+	    	}
+	    	if(size > 30000000){
+	    		alert('1회 업로드 가능 용량은 30MB입니다.');
+	    		$(this).val('');
+	    		return;
+	    	}
+	    });
+
+	});
+	function deleteBanner(id){
+		var result = confirm('해당 배너 세트를 삭제 하시겠습니까?');
+		if(result){
+			location.href="/admin/deleteBanner/" + id;
+		}
+	}
+	  
+	</script>
+</body>
+
+</html>

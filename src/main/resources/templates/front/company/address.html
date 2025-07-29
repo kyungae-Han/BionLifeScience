@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head
+	th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 찾아오시는 길')">
+
+</head>
+
+<body class="stretched">
+
+	<div id="wrapper" class="clearfix">
+
+		<th:block
+			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+		<section id="page-title">
+
+			<div class="container clearfix">
+				<h1>찾아오시는 길</h1>
+				<span>Bion Life Science Address</span>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="/index">메인</a></li>
+					<li class="breadcrumb-item active" aria-current="page">찾아오시는 길</li>
+				</ol>
+			</div>
+
+		</section>
+		<section id="content">
+			<div class="container clearfix mb-5">
+
+				<div class="row gutter-40 col-mb-80 address-section">
+
+					<div class="col-lg-12">
+
+						<address>
+							
+							<div class="address-title"><strong><a target="_blacnk" href="https://map.naver.com/v5/search/%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EB%82%A8%EC%96%91%EC%A3%BC%EC%8B%9C%20%EC%88%9C%ED%99%94%EA%B6%81%EB%A1%9C%20282/address/14151969.9427807,4530441.854458215,%EA%B2%BD%EA%B8%B0%EB%8F%84%20%EB%82%A8%EC%96%91%EC%A3%BC%EC%8B%9C%20%EC%88%9C%ED%99%94%EA%B6%81%EB%A1%9C%20282,new?c=15.76,0,0,0,dh&isCorrectAnswer=true"># 본사</a></strong></div>
+							<abbr title="Phone Number"><strong>도로명
+									주소 </strong></abbr> : 경기도 남양주시 순화궁로 282(별내동) 10층 [1001호, 1002호, 1005호, 1007호,
+							1009호, 1012호, 1013호, 1014호].<br> 
+							<abbr title="Phone Number"><strong>지번
+									주소 </strong></abbr> :경기도 남양주시 별내동 974, 12106<br> 
+							<abbr title="Phone Number"><strong>영문
+									주소 </strong></abbr> : 282, Sunhwagung-ro, Namyangju-si, Gyeonggi-do, Republic of
+							Korea 10층 [1001 - ho, 1002 - ho, 1005 - ho, 1007 - ho, 1009 - ho,
+							1012 - ho, 1013 - ho, 1014 - ho].<br><br>
+							 
+							<abbr title="Email Address"><strong>E-mail
+									: </strong></abbr> bionlifescience@hanmail.net<br>
+							<abbr title="Phone Number"><strong>TEL : </strong></abbr> 031-572-2272(대표번호)<br> * 상담은 평일 09:00 ~ 18:00에
+							가능합니다.<br>
+							<abbr title="Fax Number"><strong>FAX : </strong></abbr> 031-572-2273
+						</address>
+						
+					</div>
+				</div>
+			</div>
+		</section>
+		<div class="map-wrapper section bg-white">
+			<div id="map" style="width: 95%;height:600px; margin:auto; box-shadow:0px 5px 10px rgba(0,0,0,0.3);"></div>
+			<script type="text/javascript"
+				src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fd60fec59f7da4088817d25db749380c"></script>
+			<script>
+				var mapContainer = document.getElementById("map"), // 지도를 표시할 div
+				mapOption = {
+					center : new kakao.maps.LatLng(37.6524503419165,
+							127.129308757972), // 지도의 중심좌표
+					level : 4, // 지도의 확대 레벨
+				};
+
+				var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+				function setZoomable(zoomable) {
+					// 마우스 휠로 지도 확대,축소 가능여부를 설정합니다
+					map.setZoomable(zoomable);
+				}
+				// var markerPosition = new kakao.maps.LatLng(37.376932495004, 127.11330500451);
+
+				// 마커를 생성합니다
+				// var marker = new kakao.maps.Marker({
+				// 	position: markerPosition
+				// });
+				var markerImageSrc = "/front/image/logo/logo_one.png";
+				var hiddenGemPositions = new kakao.maps.LatLng(
+						37.6524503419165, 127.129308757972);
+				function createMarkerImage(src, size, options) {
+					var markerImage = new kakao.maps.MarkerImage(src, size,
+							options);
+					return markerImage;
+				}
+
+				function createMarker(position, image) {
+					var marker = new kakao.maps.Marker({
+						position : position,
+						image : image,
+					});
+
+					return marker;
+				}
+
+				function createHiddenGemMarkers() {
+					var imageSize = new kakao.maps.Size(100, 70), imageOptions = {
+						spriteOrigin : new kakao.maps.Point(0, 0),
+						spriteSize : new kakao.maps.Size(100, 70),
+					};
+
+					// 마커이미지와 마커를 생성합니다
+					var markerImage = createMarkerImage(markerImageSrc,
+							imageSize, imageOptions), marker = createMarker(
+							hiddenGemPositions, markerImage);
+
+					return marker;
+				}
+				createHiddenGemMarkers().setMap(map);
+
+				// 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+				var mapTypeControl = new kakao.maps.MapTypeControl();
+
+				// 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+				// kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+				map.addControl(mapTypeControl,
+						kakao.maps.ControlPosition.TOPRIGHT);
+
+				// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+				var zoomControl = new kakao.maps.ZoomControl();
+				map.addControl(zoomControl,
+						kakao.maps.ControlPosition.RIGHT);
+			</script>
+		</div>
+
+		
+
+		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+	</div>
+	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+
+</body>
+</html>
