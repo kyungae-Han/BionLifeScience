@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class AjaxAuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoint {
+	
 	public AjaxAuthenticationEntryPoint(String loginFormUrl) {
         super(loginFormUrl);
     }
@@ -17,7 +18,6 @@ public class AjaxAuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoi
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         String ajaxHeader = ((HttpServletRequest) request).getHeader("X-Requested-With");
-        System.out.println("ajaxAuthentication");
         boolean isAjax = "XMLHttpRequest".equals(ajaxHeader);
         if (isAjax) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Ajax Request Denied (Session Expired)");

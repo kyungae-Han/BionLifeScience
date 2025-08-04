@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,15 +13,17 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dev.BionLifeScienceWeb.model.brand.Brand;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class BrandService {
 
-	@Autowired
-	BrandRepository brandRepository;
+	private final BrandRepository brandRepository;
 	
 	@Value("${spring.upload.env}")
 	private String env;
-	
+
 	@Value("${spring.upload.path}")
 	private String commonPath;
 	
@@ -124,8 +125,6 @@ public class BrandService {
 	 		b.setContent(brand.getContent());
 	 		brandRepository.save(b);
  		});
- 		
- 		
 	}
 }
 

@@ -3,14 +3,16 @@ package com.dev.BionLifeScienceWeb.controller;
 import java.io.IOException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,50 +39,30 @@ import com.dev.BionLifeScienceWeb.service.brand.BrandProductImageService;
 import com.dev.BionLifeScienceWeb.service.brand.BrandProductService;
 import com.dev.BionLifeScienceWeb.service.brand.BrandService;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 public class BrandController {
 
-	@Autowired
-	BrandRepository brandRepository;
+	private final BrandRepository brandRepository;
+	private final BrandBigSortRepository brandBigSortRepository;
+	private final BrandMiddleSortRepository brandMiddleSortRepository;
+	private final BrandSmallSortRepository brandSmallSortRepository;
+	private final BrandProductRepository brandProductRepository;
+	private final BrandProductInfoRepository brandProductInfoRepository;
+	private final BrandProductSpecRepository brandProductSpecRepository;
+	private final BrandProductFileRepository brandProductFileRepository;
+	private final BrandProductImageRepository brandProductImageRepository;
+	private final BrandService brandService;	
+	private final BrandProductService brandProductService;
+	private final BrandProductImageService brandProductImageService;
+	private final BrandProductFileService brandProductFileService;
 	
-	@Autowired
-	BrandService brandService;	
-	
-	@Autowired
-	BrandBigSortRepository brandBigSortRepository;
-	
-	@Autowired
-	BrandMiddleSortRepository brandMiddleSortRepository;
-	
-	@Autowired
-	BrandSmallSortRepository brandSmallSortRepository;
-	
-	@Autowired
-	BrandProductRepository brandProductRepository;
-	
-	@Autowired
-	BrandProductService brandProductService;
-	
-	@Autowired
-	BrandProductInfoRepository brandProductInfoRepository;
-	
-	@Autowired
-	BrandProductSpecRepository brandProductSpecRepository;
-	
-	@Autowired
-	BrandProductFileService brandProductFileService;
-	
-	@Autowired
-	BrandProductImageService brandProductImageService;
-	
-	@Autowired
-	BrandProductFileRepository brandProductFileRepository;
-	
-	@Autowired
-	BrandProductImageRepository brandProductImageRepository;
-	
-	@RequestMapping("/brandManager")
+	@RequestMapping(value = "/brandManager",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String brandManager(
 			Model model, 
 			@PageableDefault(size = 10) Pageable pageable,
@@ -108,7 +90,7 @@ public class BrandController {
 		return "admin/brand/brandManager";
 	}
 	
-	@RequestMapping("/brandInsert")
+	@PostMapping("/brandInsert")
 	@ResponseBody
 	public String brandInsert(
 			Brand brand,
@@ -128,7 +110,9 @@ public class BrandController {
 		return sb.toString();
 	}
 	
-	@RequestMapping("/brandDelete")
+	@RequestMapping(value = "/brandDelete",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String brandDelete(
 			Long text,
@@ -152,7 +136,7 @@ public class BrandController {
 		return sb.toString();
 	}
 	
-	@RequestMapping("/brandSortManager")
+	@GetMapping("/brandSortManager")
 	public String brandSortManager(
 			Model model
 			) {
@@ -161,7 +145,9 @@ public class BrandController {
 		return "admin/brand/brandSortManager";
 	}
 	
-	@RequestMapping("/brandBigSortInsert")
+	@RequestMapping(value = "/brandBigSortInsert",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String brandBigSortInsert(
 			BrandBigSort brandBigSort,
@@ -185,7 +171,9 @@ public class BrandController {
 		return sb.toString();
 	}
 	
-	@RequestMapping("/brandBigSortSearch")
+	@RequestMapping(value = "/brandBigSortSearch",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public List<BrandBigSort> searchBrandBigSort(
 			Model model,
@@ -194,7 +182,9 @@ public class BrandController {
 		return brandBigSortRepository.findAllByBrand(brandRepository.findById(brandId).get());
 	}
 	
-	@RequestMapping("/brandBigSortDelete")
+	@RequestMapping(value = "/brandBigSortDelete",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String brandBigSortDelete(
 			Long text,
@@ -219,7 +209,9 @@ public class BrandController {
 		return sb.toString();
 	}
 	
-	@RequestMapping("/brandMiddleSortInsert")
+	@RequestMapping(value = "/brandMiddleSortInsert",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String brandMiddleSortInsert(
 			BrandMiddleSort brandMiddleSort,
@@ -243,7 +235,9 @@ public class BrandController {
 		return sb.toString();
 	}
 	
-	@RequestMapping("/brandMiddleSortSearch")
+	@RequestMapping(value = "/brandMiddleSortSearch",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public List<BrandMiddleSort> brandMiddleSortSearch(
 			Model model,
@@ -252,7 +246,9 @@ public class BrandController {
 		return brandMiddleSortRepository.findAllByBigSort(brandBigSortRepository.findById(brandBigSortId).get());
 	}
 	
-	@RequestMapping("/brandMiddleSortDelete")
+	@RequestMapping(value = "/brandMiddleSortDelete",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String brandMiddleSortDelete(
 			Long brandMiddleSortId,
@@ -276,7 +272,9 @@ public class BrandController {
 		return sb.toString();
 	}
 	
-	@RequestMapping("/brandSmallSortInsert")
+	@RequestMapping(value = "/brandSmallSortInsert",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String brandSmallSortInsert(
 			BrandSmallSort brandSmallSort,
@@ -301,7 +299,9 @@ public class BrandController {
 	}
 	
 	
-	@RequestMapping("/brandSmallSortSearch")
+	@RequestMapping(value = "/brandSmallSortSearch",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public List<BrandSmallSort> brandSmallSortSearch(
 			Model model,
@@ -310,7 +310,9 @@ public class BrandController {
 		return brandSmallSortRepository.findAllByMiddleSort(brandMiddleSortRepository.findById(brandMiddleSortId).get());
 	}
 	
-	@RequestMapping("/brandSmallSortDelete")
+	@RequestMapping(value = "/brandSmallSortDelete",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String brandSmallSortDelete(
 			Long brandSmallSortId,
@@ -334,7 +336,9 @@ public class BrandController {
 		return sb.toString();
 	}
 	
-	@RequestMapping("/brandProductManager")
+	@RequestMapping(value = "/brandProductManager",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String brandProductManager(
 			Model model, 
 			@RequestParam(required = false) Long brandSmallSortId,
@@ -374,7 +378,7 @@ public class BrandController {
 		return "admin/brand/brandProductManager";
 	}
 	
-	@RequestMapping("/brandProductInsertForm")
+	@GetMapping("/brandProductInsertForm")
 	public String brandProductInsertForm(Model model) {
 
 		model.addAttribute("brand",brandRepository.findAll());
@@ -382,7 +386,9 @@ public class BrandController {
 		return "admin/brand/brandProductInsertForm";
 	}
 
-	@RequestMapping("/brandProductInsert")
+	@RequestMapping(value = "/brandProductInsert",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String brandProductInsert(
 			BrandProduct product, 
@@ -458,7 +464,9 @@ public class BrandController {
 		return sb.toString();
 	}
 
-	@RequestMapping("/brandProductDetail/{id}")
+	@RequestMapping(value = "/brandProductDetail/{id}",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String brandProductDetail(
 			@PathVariable Long id,
 			Model model
@@ -471,7 +479,9 @@ public class BrandController {
 		return "admin/brand/brandProductDetail";
 	}
 
-	@RequestMapping("/brandProductUpdate")
+	@RequestMapping(value = "/brandProductUpdate",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String brandProductUpdate(
 			Model model, 
 			@PageableDefault(size = 10) Pageable pageable,
@@ -556,7 +566,9 @@ public class BrandController {
 		return "admin/brand/brandProductManager";
 	}
 	
-	@RequestMapping("/brandProductDelete/{id}")
+	@RequestMapping(value = "/brandProductDelete/{id}",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String brandProductDelete(
 			@PathVariable Long id
@@ -579,7 +591,9 @@ public class BrandController {
 		return sb.toString();
 	}
 	
-	@RequestMapping("/brandDetail/{id}")
+	@RequestMapping(value = "/brandDetail/{id}",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String brandDetail(
 			@PathVariable Long id,
 			Model model
@@ -589,7 +603,9 @@ public class BrandController {
 		return "admin/brand/brandDetail";
 	}
 	
-	@RequestMapping("/brandUpdate")
+	@RequestMapping(value = "/brandUpdate",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String brandUpdate(
 			Brand brand,

@@ -10,10 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -23,9 +21,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -47,41 +47,28 @@ import com.dev.BionLifeScienceWeb.service.ClientService;
 import com.dev.BionLifeScienceWeb.service.CompanyInfoService;
 import com.dev.BionLifeScienceWeb.service.NoticeService;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 public class AdminController {
 
-	@Autowired
-	HistorySubjectRepository historySubjectRepository;
+	private final HistorySubjectRepository historySubjectRepository;
+	private final HistoryContentRepository historyContentRepository;
+	private final CompanyInfoRepository companyInfoRepository;
+	private final CompanyEmailRepository companyEmailRepository;
+	private final ClientRepository clientRepository;
+	private final NoticeSubjectRepository noticeSubjectRepository;
+	private final NoticeRepository noticeRepository;
+	private final ClientService clientService;
+	private final CompanyInfoService companyInfoService;
+	private final NoticeService noticeService;
 	
-	@Autowired
-	HistoryContentRepository historyContentRepository;
-	
-	@Autowired
-	CompanyInfoRepository companyInfoRepository;
-	
-	@Autowired
-	CompanyInfoService companyInfoService;
-	
-	@Autowired
-	CompanyEmailRepository companyEmailRepository;
-	
-	@Autowired
-	ClientRepository clientRepository;
-	
-	@Autowired
-	ClientService clientService;
-	
-	@Autowired
-	NoticeSubjectRepository noticeSubjectRepository;
-	
-	@Autowired
-	NoticeRepository noticeRepository;
-	
-	@Autowired
-	NoticeService noticeService;
-	
-	@RequestMapping({"/index" , "", "/clientManager"})
+	@RequestMapping(
+		    value = {"/index", "", "/clientManager"},
+		    method = {RequestMethod.GET, RequestMethod.POST}
+		)
 	public String adminIndex(
 			Model model,
 			@PageableDefault(size = 10) Pageable pageable,
@@ -131,7 +118,7 @@ public class AdminController {
 		return "admin/index";
 	}
 	
-	@RequestMapping("/clientDetail/{id}")
+	@GetMapping("/clientDetail/{id}")
 	public String clientDetail(
 			@PathVariable Long id,
 			Model model
@@ -141,7 +128,9 @@ public class AdminController {
 		return "admin/clientDetail";
 	}
 	
-	@RequestMapping("/fileDownload/{id}")
+	@RequestMapping(value = "/fileDownload/{id}",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public ResponseEntity<Object> download(
 			@PathVariable Long id
 			) throws UnsupportedEncodingException{
@@ -157,8 +146,6 @@ public class AdminController {
 			Path filePath = Paths.get(path);
 			Resource resource = new InputStreamResource(Files.newInputStream(filePath)); // 파일 resource 얻기
 			
-//			File file = new File(path);
-			
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentDisposition(ContentDisposition.builder("attachment").filename(fileName).build());  // 다운로드 되거나 로컬에 저장되는 용도로 쓰이는지를 알려주는 헤더
 			
@@ -168,12 +155,12 @@ public class AdminController {
 		}
 	}
 	
-	@RequestMapping("/memberLoginForm")
+	@GetMapping("/memberLoginForm")
 	public String memberLoginForm() {
 		return "admin/login";
 	}
 	
-	@RequestMapping("/historyManager")
+	@GetMapping("/historyManager")
 	public String historyManager(
 			Model model
 			){
@@ -186,7 +173,7 @@ public class AdminController {
 		return "admin/historyManager";
 	}
 	
-	@RequestMapping("/historySubjectInsert")
+	@GetMapping("/historySubjectInsert")
 	public String historySubjectInsert(
 			HistorySubject historySubject,
 			Model model
@@ -202,7 +189,7 @@ public class AdminController {
 		return "admin/historyManager :: #history-subject-wrap";
 	}
 	
-	@RequestMapping("/historyContentInsert")
+	@PostMapping("/historyContentInsert")
 	public String historyContentInsert(
 			HistoryContent historyContent,
 			String dateString,
@@ -226,7 +213,9 @@ public class AdminController {
 		
 	}
 	
-	@RequestMapping("/historyDelete")
+	@RequestMapping(value = "/historyDelete",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String historyDelete(
 			Long id,
 			int code,
@@ -248,7 +237,7 @@ public class AdminController {
 		return "admin/historyManager :: #history-subject-wrap";
 	}
 	
-	@RequestMapping("/noticeSubjectInsert")
+	@PostMapping("/noticeSubjectInsert")
 	public String noticeSubjectInsert(
 			NoticeSubject noticeSubject,
 			Model model
@@ -260,30 +249,22 @@ public class AdminController {
 		return "admin/noticeSubjectManager :: #textForm";
 	}
 	
-	@RequestMapping("/noticeSubjectDelete")
+	@RequestMapping(value = "/noticeSubjectDelete",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String noticeSubjectDelete(
 			@RequestParam(value="text[]") Long[] text,
 			Model model
 			){
-		
 		for(Long id : text) {
 			noticeSubjectRepository.deleteById(id);
 		}
 		model.addAttribute("subject", noticeSubjectRepository.findAll());
-		
 		return "admin/noticeSubjectManager :: #textForm";
 		
 	}
-	
-	@ExceptionHandler(DataIntegrityViolationException.class)
-	@ResponseBody
-	public String SQLExceptionController() {
-		
 
-		return "fail";
-	}
-	
-	@RequestMapping("/noticeSubjectManager")
+	@GetMapping("/noticeSubjectManager")
 	public String noticeSubjectManager(
 			Model model
 			) {
@@ -292,7 +273,7 @@ public class AdminController {
 		return "admin/noticeSubjectManager";
 	}
 	
-	@RequestMapping("/noticeManager")
+	@GetMapping("/noticeManager")
 	public String noticeManager(
 			Model model,
 			@PageableDefault(size = 10) Pageable pageable
@@ -309,7 +290,7 @@ public class AdminController {
 		return "admin/noticeManager";
 	}
 	
-	@RequestMapping("/noticeUpdate")
+	@PostMapping("/noticeUpdate")
 	public String noticeUpdate(
 			Notice notice,
 			Model model
@@ -321,7 +302,9 @@ public class AdminController {
 		return "admin/noticeDetail";
 	}
 	
-	@RequestMapping("/noticeDetail/{id}")
+	@RequestMapping(value = "/noticeDetail/{id}",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String noticeDetail(
 			@PathVariable Long id,
 			Model model
@@ -331,7 +314,7 @@ public class AdminController {
 		return "admin/noticeDetail";
 	}
 	
-	@RequestMapping("/noticeInsertForm")
+	@GetMapping("/noticeInsertForm")
 	public String noticeInsertForm(
 			Model model
 			) {
@@ -340,7 +323,9 @@ public class AdminController {
 		return "admin/noticeInsertForm";
 	}
 	
-	@RequestMapping("/noticeInsert")
+	@RequestMapping(value = "/noticeInsert",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String noticeInsert(
 			Notice notice
@@ -361,7 +346,9 @@ public class AdminController {
 		
 	}
 	
-	@RequestMapping("/noticeDelete/{id}")
+	@RequestMapping(value = "/noticeDelete/{id}",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String noticeDelete(
 			@PathVariable Long id
@@ -380,7 +367,7 @@ public class AdminController {
 		
 	}
 	
-	@RequestMapping("/siteManager")
+	@GetMapping("/siteManager")
 	public String siteManager(
 			Model model
 			) {
@@ -393,7 +380,9 @@ public class AdminController {
 		return "admin/siteManager";
 	}
 	
-	@RequestMapping("/companyInfoInsert")
+	@RequestMapping(value = "/companyInfoInsert",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String companyInfoInsert(
 			CompanyInfo companyInfo,
 			Model model
@@ -408,7 +397,7 @@ public class AdminController {
 		return "admin/siteManager :: #companyInfoForm";
 	}
 	
-	@RequestMapping("/emailInsert")
+	@PostMapping("/emailInsert")
 	public String emailInsert(
 			CompanyEmail companyEmail,
 			Model model
@@ -419,7 +408,9 @@ public class AdminController {
 		return "admin/siteManager :: #emailForm";
 	}
 	
-	@RequestMapping("/deleteEmail")
+	@RequestMapping(value = "/deleteEmail",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String deleteEmail(
 			@RequestParam(value="email[]") Long[] email,
 			Model model
@@ -433,7 +424,9 @@ public class AdminController {
 		return "admin/siteManager :: #emailForm";
 	}
 	
-	@RequestMapping("/changeEmailStatus")
+	@RequestMapping(value = "/changeEmailStatus",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String changeEmailStatus(
 			Model model,
 			Boolean companyEmailCheck
@@ -448,7 +441,4 @@ public class AdminController {
 		
 		return "admin/siteManager :: #companyEmailCheck";
 	}
-	
-
-	
 }

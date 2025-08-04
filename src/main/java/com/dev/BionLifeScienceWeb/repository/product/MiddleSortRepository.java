@@ -27,4 +27,5 @@ public interface MiddleSortRepository extends JpaRepository<MiddleSort, Long>{
 	
 	@Query("SELECT MAX(middleSortIndex) FROM MiddleSort")
 	Optional<Integer> findFirstIndex();
+	
 }

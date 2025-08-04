@@ -263,55 +263,6 @@
 									</div>
 								</div>
 							</div>
-							<!-- <div class="col-sm-6 col-lg-3">
-
-								<div class="widget quick-contact-widget form-widget clearfix">
-
-									<h4>Send Message</h4>
-
-									<div class="form-result"></div>
-
-									<form id="quick-contact-form" name="quick-contact-form"
-										action="#" method="post" class="quick-contact-form mb-0">
-
-										<div class="form-process">
-											<div class="css3-spinner">
-												<div class="css3-spinner-scaler"></div>
-											</div>
-										</div>
-
-										<div class="input-group mx-auto">
-											<div class="input-group-text">
-												<i class="icon-user"></i>
-											</div>
-											<input type="text" class="required form-control"
-												id="quick-contact-form-name" name="quick-contact-form-name"
-												value="" placeholder="Full Name" />
-										</div>
-										<div class="input-group mx-auto">
-											<div class="input-group-text">
-												<i class="icon-email2"></i>
-											</div>
-											<input type="text" class="required form-control email"
-												id="quick-contact-form-email"
-												name="quick-contact-form-email" value=""
-												placeholder="Email Address" />
-										</div>
-										<textarea
-											class="required form-control input-block-level short-textarea"
-											id="quick-contact-form-message"
-											name="quick-contact-form-message" rows="4" cols="30"
-											placeholder="Message"></textarea>
-										<input type="text" class="d-none"
-											id="quick-contact-form-botcheck"
-											name="quick-contact-form-botcheck" value="" /> <input
-											type="hidden" name="prefix" value="quick-contact-form-">
-										<a href="#"
-											class="button button-rounded button-reveal button-large button-dirtygreen"><i
-											class="icon-arrow-right"></i><span>문의하기</span></a>
-									</form>
-								</div>
-							</div> -->
 							<div class="col-sm-6 col-lg-3 footer-client-center">
 
 								<div class="widget clearfix">
@@ -359,18 +310,161 @@
 	</div>
 	<th:block th:fragment="scriptSrc">
 		<div id="gotoTop" class="icon-angle-up"></div>
-		<!-- <div class="btn-wrap">
-			<div class="btn telBtn">
-				<a href="#">전화상담</a>
-			</div>
-			<div class="btn kakaoBtn">
-				<a href="#">카톡상담</a>
-			</div>
-		</div> -->
 		<script src="/front/js/jquery.js"></script>
 		<script src="/front/js/plugins.min.js"></script>
 		<script src="/front/js/functions.js"></script>
+		<script th:inline="javascript">
+			/*<![CDATA[*/
+			var menuList = /*[[${menuList}]]*/ null;
+			/*]]>*/
+			// menuList가 undefined/null이면 종료
+			if (!menuList) {
+				console.log("menuList 데이터가 없습니다.");
+			} else {
+				// 브랜드 기준 단계별 출력
+				console.log("=== 브랜드 제품 계층별 ===");
+				menuList.brandList.forEach(brand => {
+					console.log(`브랜드: ${brand.name} (ID: ${brand.id})`);
+					const brandBigSorts = menuList.brandBigSortList.filter(bbs => bbs.brand && bbs.brand.id === brand.id);
+					brandBigSorts.forEach(big => {
+						console.log(`  └ 대분류: ${big.name} (ID: ${big.id})`);
+						const brandMiddleSorts = menuList.brandMiddleSortList.filter(bms => bms.bigSort && bms.bigSort.id === big.id);
+						brandMiddleSorts.forEach(middle => {
+							console.log(`    └ 중분류: ${middle.name} (ID: ${middle.id})`);
+							const brandSmallSorts = menuList.brandSmallSortList.filter(bss => bss.middleSort && bss.middleSort.id === middle.id);
+							brandSmallSorts.forEach(small => {
+								console.log(`      └ 소분류: ${small.name} (ID: ${small.id})`);
+								const brandProducts = menuList.brandProductList.filter(bp => bp.smallSort && bp.smallSort.id === small.id);
+								brandProducts.forEach(product => {
+									console.log(`        └ 제품: ${product.subject} (ID: ${product.id})`);
+								});
+							});
+						});
+					});
+				});
+
+				// 일반 제품 계층별 출력
+				console.log("=== 일반 제품 계층별 ===");
+				menuList.bigSortList.forEach(big => {
+					console.log(`대분류: ${big.name} (ID: ${big.id})`);
+					const middleSorts = menuList.middleSortList.filter(middle => middle.bigSort && middle.bigSort.id === big.id);
+					middleSorts.forEach(middle => {
+						console.log(`  └ 중분류: ${middle.name} (ID: ${middle.id})`);
+						const smallSorts = menuList.smallSortList.filter(small => small.middleSort && small.middleSort.id === middle.id);
+						smallSorts.forEach(small => {
+							console.log(`    └ 소분류: ${small.name} (ID: ${small.id})`);
+							const products = menuList.productList.filter(product => product.smallSort && product.smallSort.id === small.id);
+							products.forEach(product => {
+								console.log(`      └ 제품: ${product.subject} (ID: ${product.id})`);
+							});
+						});
+					});
+				});
+			}
+
+			// 브랜드 전체 리스트 조회
+			function getBrandList() {
+				$.ajax({
+					url: '/api/brandProduct/brandList',
+					type: 'GET',
+					success: function (data) {
+						console.log("[브랜드] 전체 리스트:", data);
+					}
+				});
+			}
+			// 브랜드 제품 - 대분류 조회
+			function getBrandBigSortList(brandId) {
+				$.ajax({
+					url: '/api/brandProduct/bigSortList',
+					data: {brandId: brandId},
+					success: function (data) {
+						console.log("[브랜드] 대분류 리스트:", data);
+					}
+				});
+			}
+
+			// 브랜드 제품 - 중분류 조회
+			function getBrandMiddleSortList(bigSortId) {
+				$.ajax({
+					url: '/api/brandProduct/middleSortList',
+					data: {bigSortId: bigSortId},
+					success: function (data) {
+						console.log("[브랜드] 중분류 리스트:", data);
+					}
+				});
+			}
+
+			// 브랜드 제품 - 소분류 조회
+			function getBrandSmallSortList(middleSortId) {
+				$.ajax({
+					url: '/api/brandProduct/smallSortList',
+					data: {middleSortId: middleSortId},
+					success: function (data) {
+						console.log("[브랜드] 소분류 리스트:", data);
+					}
+				});
+			}
+
+			// 브랜드 제품 - 제품리스트 조회
+			function getBrandProductList(smallSortId) {
+				$.ajax({
+					url: '/api/brandProduct/productList',
+					data: {smallSortId: smallSortId},
+					success: function (data) {
+						console.log("[브랜드] 제품 리스트:", data);
+					}
+				});
+			}
+
+			// 일반제품 대분류 리스트 조회
+			function getBigSortList() {
+				$.ajax({
+					url: '/api/product/bigSortList',
+					type: 'GET',
+					success: function (data) {
+						console.log("[일반제품] 대분류 리스트:", data);
+					}
+				});
+			}
+
+			// 일반 제품 - 중분류 조회
+			function getProductMiddleSortList(bigSortId) {
+				$.ajax({
+					url: '/api/product/middleSortList',
+					data: {bigSortId: bigSortId},
+					success: function (data) {
+						console.log("[일반] 중분류 리스트:", data);
+					}
+				});
+			}
+
+			// 일반 제품 - 소분류 조회
+			function getProductSmallSortList(middleSortId) {
+				$.ajax({
+					url: '/api/product/smallSortList',
+					data: {middleSortId: middleSortId},
+					success: function (data) {
+						console.log("[일반] 소분류 리스트:", data);
+					}
+				});
+			}
+
+			// 일반 제품 - 제품 리스트 조회
+			function getProductList(smallSortId) {
+				$.ajax({
+					url: '/api/product/productList',
+					data: {smallSortId: smallSortId},
+					success: function (data) {
+						console.log("[일반] 제품 리스트:", data);
+					}
+				});
+			}
+
+			getBigSortList();
+			getBrandList();							
+		</script>
 	</th:block>
+
 </body>
 
 </html>

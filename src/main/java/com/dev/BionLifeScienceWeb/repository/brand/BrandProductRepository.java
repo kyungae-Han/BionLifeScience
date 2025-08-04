@@ -62,8 +62,11 @@ public interface BrandProductRepository extends JpaRepository<BrandProduct, Long
 	
 	Page<BrandProduct> findAllByBrandAndSubjectContainsOrderByIdDesc(Pageable pageable, Brand brand, String searchWord);
 	
+	List<BrandProduct> findBySmallSortOrderByBrandProductIndexAsc(BrandSmallSort smallSort);
+	
 	Optional<BrandProduct> findByBrandProductCode(String code);
 	
 	@Query("SELECT MAX(brandProductIndex) FROM BrandProduct")
 	Optional<Integer> findFirstIndex();
+	
 }

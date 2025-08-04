@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -15,11 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dev.BionLifeScienceWeb.model.product.ProductImage;
 import com.dev.BionLifeScienceWeb.repository.product.ProductImageRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class ProductImageService {
 
-	@Autowired
-	ProductImageRepository productImageRepository;
+	private final ProductImageRepository productImageRepository;
 	
 	@Value("${spring.upload.env}")
 	private String env;

@@ -5,11 +5,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,24 +22,20 @@ import com.dev.BionLifeScienceWeb.repository.EventRepository;
 import com.dev.BionLifeScienceWeb.service.BannerService;
 import com.dev.BionLifeScienceWeb.service.EventService;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 public class SiteManagerController {
 
-	@Autowired
-	BannerRepository bannerRepository;
-	
-	@Autowired
-	BannerService bannerService;
-	
-	@Autowired
-	EventRepository eventRepository;
-	
-	@Autowired
-	EventService eventService;
+	private final BannerRepository bannerRepository;
+	private final BannerService bannerService;
+	private final EventRepository eventRepository;
+	private final EventService eventService;
 	
 	
-	@RequestMapping("/bannerManager")
+	@GetMapping("/bannerManager")
 	public String bannerManager(
 			Model model
 			) {
@@ -45,64 +43,70 @@ public class SiteManagerController {
 		return "admin/bannerManager";
 	}
 	
-	@RequestMapping("/bannerInsert")
+	@RequestMapping(value = "/bannerInsert", method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public String bannerInsert(
-			MultipartFile webFile,
-			MultipartFile mobileFile,
-			Banner banner,
-			Model model
-			) throws IllegalStateException, IOException {
-		List<MultipartFile> files = new ArrayList<MultipartFile>();
-		if(mobileFile.isEmpty()) {
-			files.add(webFile);
-		}else {
-			files.add(webFile);
-			files.add(mobileFile);
-		}
-		bannerService.bannerInsert(files, banner);
-		StringBuffer sb = new StringBuffer();
-		String msg = "배너가 등록 되었습니다.";
+	    @RequestParam("webFile") MultipartFile webFile,
+	    @RequestParam(value = "mobileFile", required = false) MultipartFile mobileFile,
+	    Banner banner
+	) throws IOException {
 
-		sb.append("alert('" + msg + "');");
-		sb.append("location.href='/admin/bannerManager'");
-		sb.append("</script>");
-		sb.insert(0, "<script>");
+	    List<MultipartFile> files = new ArrayList<>();
+	    if (webFile != null && !webFile.isEmpty()) files.add(webFile);
+	    if (mobileFile != null && !mobileFile.isEmpty()) files.add(mobileFile);
 
-		return sb.toString();
+	    bannerService.bannerInsert(files, banner);
+
+	    String msg = "배너가 등록 되었습니다.";
+	    String script = "<script>alert('" + msg + "');location.href='/admin/bannerManager'</script>";
+	    return script;
 	}
 	
-	@RequestMapping("/deleteBanner/{id}")
+	@RequestMapping(value = "/deleteBanner/{id}",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String deleteBanner(
 			@PathVariable Long id,
 			Model model
 			) {
 		
-		Banner b = bannerRepository.findById(id).get();
-		if(b.getWebpath().equals(b.getMobilepath())) {
-			File file = new File(b.getWebpath());
-			Boolean result = file.delete();
-		}else {
-			File file = new File(b.getWebpath());
-			File mFile = new File(b.getMobilepath());
-			Boolean result = file.delete();
-			Boolean mResult = mFile.delete();
-		}
-		
-		bannerRepository.deleteById(id);
-		StringBuffer sb = new StringBuffer();
-		String msg = "배너가 삭제 되었습니다.";
+		// 1. 배너 정보 조회
+	    Banner b = bannerRepository.findById(id)
+	            .orElseThrow(() -> new IllegalArgumentException("배너 정보가 존재하지 않습니다."));
 
-		sb.append("alert('" + msg + "');");
-		sb.append("location.href='/admin/bannerManager'");
-		sb.append("</script>");
-		sb.insert(0, "<script>");
+	    // 2. 파일 삭제 메서드 호출 (webpath, mobilepath)
+	    deleteFileIfExists(b.getWebpath());
 
-		return sb.toString();
+	    if (!b.getWebpath().equals(b.getMobilepath())) {
+	        deleteFileIfExists(b.getMobilepath());
+	    }
+
+	    // 3. DB에서 배너 정보 삭제
+	    bannerRepository.deleteById(id);
+
+	    // 4. 스크립트 반환
+	    String msg = "배너가 삭제 되었습니다.";
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("<script>");
+	    sb.append("alert('").append(msg).append("');");
+	    sb.append("location.href='/admin/bannerManager';");
+	    sb.append("</script>");
+	    return sb.toString();
 	}
 	
-	@RequestMapping("/eventManager")
+	private void deleteFileIfExists(String path) {
+	    if (path == null || path.isBlank()) return;
+	    File file = new File(path);
+	    if (file.exists()) {
+	        boolean deleted = file.delete();
+	        if (!deleted) {
+	        	System.out.println("파일 삭제 실패: " + path);
+	        } 
+	    }
+	}
+	
+	@GetMapping("/eventManager")
 	public String eventManager(
 			Model model
 			) {
@@ -114,13 +118,15 @@ public class SiteManagerController {
 		return "admin/eventManager";
 	}
 	
-	@RequestMapping("/eventInsert")
+	@RequestMapping(value = "/eventInsert",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String eventInsert(
 			Event event,
 			Model model
 			) {
-		eventService.insertEvent(event);
 		
+		eventService.insertEvent(event);
 		if(eventRepository.findById(1L).isPresent()) {
 			model.addAttribute("event",eventRepository.findById(1L).get());
 		}else {
@@ -128,6 +134,5 @@ public class SiteManagerController {
 		}
 		return "admin/eventManager :: #eventForm";
 	}
-	
 }
 

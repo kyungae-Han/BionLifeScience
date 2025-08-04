@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -40,52 +39,27 @@ import com.dev.BionLifeScienceWeb.service.program.brand.BrandExcelUploadService;
 import com.dev.BionLifeScienceWeb.service.program.brand.BrandZipService;
 
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/admin/brandCenter")
+@RequiredArgsConstructor
 public class BrandManageController {
 
-	@Autowired
-	BrandBigSortRepository brandBigSortRepository;
-
-	@Autowired
-	BrandMiddleSortRepository brandMiddleSortRepository;
-
-	@Autowired
-	BrandSmallSortRepository brandSmallSortRepository;
-
-	@Autowired
-	BrandProductRepository brandProductRepository;
-	
-	@Autowired
-	BrandProductFileService brandProductFileService;
-
-	@Autowired
-	BrandProductImageService brandProductImageService;
-	
-	@Autowired
-	BrandProductImageRepository brandProductImageRepository;
-	
-	@Autowired
-	BrandProductFileRepository brandProductFileRepository;
-	
-	@Autowired
-	BrandProductService brandProductService;
-	
-	@Autowired
-	BrandExcelDownloadService brandExcelDownloadService;
-	
-	@Autowired
-	BrandExcelUploadService brandExcelUploadService;
-	
-	@Autowired
-	BrandZipService brandZipService;
-	
-	@Autowired
-	BrandCheckService brandExcelCheckService;
-	
-	@Autowired
-	BrandRepository brandRepository;
+	private final BrandBigSortRepository brandBigSortRepository;
+	private final BrandMiddleSortRepository brandMiddleSortRepository;
+	private final BrandSmallSortRepository brandSmallSortRepository;
+	private final BrandProductRepository brandProductRepository;
+	private final BrandRepository brandRepository;
+	private final BrandProductImageRepository brandProductImageRepository;
+	private final BrandProductFileRepository brandProductFileRepository;
+	private final BrandProductFileService brandProductFileService;
+	private final BrandProductService brandProductService;
+	private final BrandExcelDownloadService brandExcelDownloadService;
+	private final BrandExcelUploadService brandExcelUploadService;
+	private final BrandZipService brandZipService;
+	private final BrandCheckService brandExcelCheckService;
+	private final BrandProductImageService brandProductImageService;
 	
 	@GetMapping("/addExcelDownload")
 	@ResponseBody
@@ -93,7 +67,6 @@ public class BrandManageController {
 			HttpServletResponse res
 			) throws IOException {
 		brandExcelDownloadService.productAddSheetDownload(res);
-		
 	}
 	
 	
@@ -103,7 +76,6 @@ public class BrandManageController {
 			HttpServletResponse res
 			) throws IOException {
 		brandExcelDownloadService.bigSortDownload(res);
-		
 	}
 
 	@GetMapping("/resetZipDownload")
@@ -181,7 +153,6 @@ public class BrandManageController {
 			return result;
 		}
 	}
-	
 	
 	@GetMapping("/productManager")
 	public String productManager(
@@ -317,7 +288,6 @@ public class BrandManageController {
 	
 	@GetMapping("/productAddManager")
 	public String productAddManager() {
-		
 		return "program/brand/brandProductAddManager";
 	}
 	
@@ -354,16 +324,13 @@ public class BrandManageController {
 				brandProductService.productOverview(file.get(0),brandProductRepository.findById(productIdInput).get());
 			}
 		}
-		
 		return "redirect:/admin/brandCenter/productManager";
 	}
 	
 	@GetMapping("/productResetManager")
 	public String productResetManager() {
-		
 		return "program/brand/brandProductResetManager";
 	}
-	
 	
 	@PostMapping("/changeIndex")
 	public String changeIndex(

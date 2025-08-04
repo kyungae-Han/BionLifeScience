@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -38,49 +38,26 @@ import com.dev.BionLifeScienceWeb.service.program.company.ExcelDownloadService;
 import com.dev.BionLifeScienceWeb.service.program.company.ExcelUploadService;
 
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/admin/productCenter")
+@RequiredArgsConstructor
 public class ProductManageController {
 
-	@Autowired
-	BigSortRepository bigSortRepository;
-
-	@Autowired
-	MiddleSortRepository middleSortRepository;
-
-	@Autowired
-	SmallSortRepository smallSortRepository;
-
-	@Autowired
-	ProductRepository productRepository;
-	
-	@Autowired
-	ProductFileService productFileService;
-
-	@Autowired
-	ProductImageService productImageService;
-	
-	@Autowired
-	ProductImageRepository productImageRepository;
-	
-	@Autowired
-	ProductFileRepository productFileRepository;
-	
-	@Autowired
-	ProductService productService;
-	
-	@Autowired
-	ExcelDownloadService excelDownloadService;
-	
-	@Autowired
-	ExcelUploadService excelUploadService;
-	
-	@Autowired
-	ZipService zipService;
-	
-	@Autowired
-	CheckService excelCheckService;
+	private final BigSortRepository bigSortRepository;
+	private final MiddleSortRepository middleSortRepository;
+	private final SmallSortRepository smallSortRepository;
+	private final ProductRepository productRepository;
+	private final ProductFileService productFileService;
+	private final ProductImageService productImageService;
+	private final ProductImageRepository productImageRepository;
+	private final ProductFileRepository productFileRepository;
+	private final ProductService productService;
+	private final ExcelDownloadService excelDownloadService;
+	private final ExcelUploadService excelUploadService;
+	private final ZipService zipService;
+	private final CheckService excelCheckService;
 	
 	@GetMapping("/addExcelDownload")
 	@ResponseBody
@@ -90,7 +67,6 @@ public class ProductManageController {
 		excelDownloadService.productAddSheetDownload(res);
 		
 	}
-	
 
 	@GetMapping("/resetExcelDownload")
 	@ResponseBody
@@ -135,7 +111,6 @@ public class ProductManageController {
 		}
 		
 	}
-	
 
 	@PostMapping("/resetZipUpload")
 	@ResponseBody
@@ -166,7 +141,6 @@ public class ProductManageController {
 		}
 	}
 	
-	
 	@GetMapping("/resetZipDownload")
 	@ResponseBody
 	public ResponseEntity<Object> resetZipDownload() {
@@ -174,10 +148,9 @@ public class ProductManageController {
 		
 	}
 	
-	
-	
-	
-	@GetMapping("/productManager")
+	@RequestMapping(value = "/productManager",
+		method = {RequestMethod.GET, RequestMethod.POST}
+			)
 	public String productManager(
 			Model model, 
 			@RequestParam(required = false) Long smallId,
@@ -219,7 +192,9 @@ public class ProductManageController {
 		return "program/company/productManager";
 	}
 	
-	@GetMapping("/productOverall")
+	@RequestMapping(value = "/productOverall",
+			method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String productOverall(	
 			Model model, 
 			@RequestParam(required = false) Long smallId,

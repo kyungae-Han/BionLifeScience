@@ -3,8 +3,6 @@ package com.dev.BionLifeScienceWeb.controller;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -12,12 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.dev.BionLifeScienceWeb.dto.MenuDTO;
 import com.dev.BionLifeScienceWeb.model.Banner;
 import com.dev.BionLifeScienceWeb.model.Event;
 import com.dev.BionLifeScienceWeb.model.HistorySubject;
@@ -38,7 +33,6 @@ import com.dev.BionLifeScienceWeb.repository.EventRepository;
 import com.dev.BionLifeScienceWeb.repository.HistoryContentRepository;
 import com.dev.BionLifeScienceWeb.repository.HistorySubjectRepository;
 import com.dev.BionLifeScienceWeb.repository.NoticeRepository;
-import com.dev.BionLifeScienceWeb.repository.NoticeSubjectRepository;
 import com.dev.BionLifeScienceWeb.repository.ReferenceFileRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandBigSortRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandMiddleSortRepository;
@@ -49,90 +43,35 @@ import com.dev.BionLifeScienceWeb.repository.product.BigSortRepository;
 import com.dev.BionLifeScienceWeb.repository.product.MiddleSortRepository;
 import com.dev.BionLifeScienceWeb.repository.product.ProductRepository;
 import com.dev.BionLifeScienceWeb.repository.product.SmallSortRepository;
-import com.dev.BionLifeScienceWeb.service.product.ProductService;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
-
-
-	@Autowired
-	HistorySubjectRepository historySubjectRepository;
 	
-	@Autowired
-	HistoryContentRepository historyContentRepository;
-	
-	@Autowired
-	ProductRepository productRepository;
-	
-	@Autowired
-	BigSortRepository bigSortRepository;
-	
-	@Autowired
-	MiddleSortRepository middleSortRepository;
-	
-	@Autowired
-	SmallSortRepository smallSortRepository;
-	
-	@Autowired
-	BannerRepository bannerRepository;
-	
-	@Autowired
-	EventRepository eventRepository;
-	
-	@Autowired
-	NoticeRepository noticeRepository;
-	
-	@Autowired
-	ReferenceFileRepository referenceFileRepository;
-	
-	@Autowired
-	NoticeSubjectRepository noticeSubjectRepository;
-
-	@Autowired
-	BrandRepository brandRepository;
-	
-	@Autowired
-	BrandBigSortRepository brandBigSortRepository;
-	
-	@Autowired
-	BrandMiddleSortRepository brandMiddleSortRepository;
-	
-	@Autowired
-	BrandSmallSortRepository brandSmallSortRepository;
-	
-	@Autowired
-	BrandProductRepository brandProductRepository;
-	
-	@Autowired
-	CertificationRepository certificationRepository;
-	
-	@Autowired
-	ProductService productService;
-	
-	@Value("${spring.upload.path}")
-	private String uploadPath;
-	
-	@ModelAttribute("menuList")
-	public MenuDTO menuList(MenuDTO menuDto) {
-		
-		menuDto.setProductList(productRepository.findAllByOrderByProductIndexAsc());
-		menuDto.setBigSortList(bigSortRepository.findAllByOrderByBigSortIndexAsc());
-		menuDto.setMiddleSortList(middleSortRepository.findAllByOrderByMiddleSortIndexAsc());
-		menuDto.setSmallSortList(smallSortRepository.findAllByOrderBySmallSortIndexAsc());
-		
-		menuDto.setBrandList(brandRepository.findAllByOrderByBrandIndexAsc());
-		menuDto.setBrandBigSortList(brandBigSortRepository.findAllByOrderByBrandBigSortIndexAsc());
-		menuDto.setBrandMiddleSortList(brandMiddleSortRepository.findAllByOrderByBrandMiddleSortIndexAsc());
-		menuDto.setBrandSmallSortList(brandSmallSortRepository.findAllByOrderByBrandSmallSortIndexAsc());
-		menuDto.setBrandProductList(brandProductRepository.findAllByOrderByBrandProductIndexAsc());
-		return menuDto;
-	}
+	private final HistorySubjectRepository historySubjectRepository;
+	private final HistoryContentRepository historyContentRepository;
+	private final ProductRepository productRepository;
+	private final BigSortRepository bigSortRepository;
+	private final MiddleSortRepository middleSortRepository;
+	private final SmallSortRepository smallSortRepository;
+	private final BannerRepository bannerRepository;
+	private final EventRepository eventRepository;
+	private final NoticeRepository noticeRepository;
+	private final ReferenceFileRepository referenceFileRepository;
+	private final BrandRepository brandRepository;
+	private final BrandBigSortRepository brandBigSortRepository;
+	private final BrandMiddleSortRepository brandMiddleSortRepository;
+	private final BrandSmallSortRepository brandSmallSortRepository;
+	private final BrandProductRepository brandProductRepository;
+	private final CertificationRepository certificationRepository;
 	
 	@ResponseStatus(value=HttpStatus.NOT_FOUND, reason="잘못된 접근입니다.")
     public class UrlNotFoundException extends RuntimeException {
-		private static final long serialVersionUID = 1L; }
+		private static final long serialVersionUID = 1L; 
+	}
 	
-	@SuppressWarnings("null")
 	@GetMapping({"/", "/index"})
 	public String index(
 			Model model
@@ -177,15 +116,14 @@ public class HomeController {
 		return "front/index";
 	}
 	
-	@RequestMapping("/about")
+	@GetMapping("/about")
 	public String about(
 			Model model
 			) {
 		return "front/company/about";
 	}
 	
-	
-	@RequestMapping("/history")
+	@GetMapping("/history")
 	public String history(
 			Model model
 			) {
@@ -198,7 +136,7 @@ public class HomeController {
 		return "front/company/history";
 	}
 	
-	@RequestMapping("/certifications")
+	@GetMapping("/certifications")
 	public String certifications(
 			Model model
 			) {
@@ -207,33 +145,28 @@ public class HomeController {
 		return "front/company/certifications";
 	}
 	
-	@RequestMapping("/address")
+	@GetMapping("/address")
 	public String address(
 			Model model
 			) {
-
 		return "front/company/address";
 	}
 	
-	@RequestMapping("/contact")
+	@GetMapping("/contact")
 	public String contact(
 			Model model
 			) {
-
 		return "front/customer/contact";
 	}
 	
-	
-	@RequestMapping("/productOverall")
+	@GetMapping("/productOverall")
 	public String productOverall(
 			Model model
 			) {
-
 		return "front/product/productOverall";
 	}
 	
-	
-	@RequestMapping("/productDetail/{id}")
+	@GetMapping("/productDetail/{id}")
 	public String productDetail(
 			Model model,
 			@PathVariable Long id
@@ -256,13 +189,11 @@ public class HomeController {
 	}
 	
 	
-	@RequestMapping("/brandProductDetail/{id}")
+	@GetMapping("/brandProductDetail/{id}")
 	public String brandProductDetail(
 			Model model,
 			@PathVariable Long id
 			) {
-	
-		
 		Optional<BrandProduct> product = brandProductRepository.findById(id);
 		if(product.isPresent()) {
 			
@@ -277,8 +208,8 @@ public class HomeController {
 			throw new UrlNotFoundException();
 		}
 	}
-	
-	@RequestMapping("/notice")
+
+	@GetMapping("/notice")
 	public String notice(
 			Model model
 			) {
@@ -288,19 +219,16 @@ public class HomeController {
 		return "front/notice/notice";
 	}
 
-	@RequestMapping("/references")
+	@GetMapping("/references")
 	public String reference(
-			
 			Model model
 			) {
 		
 		model.addAttribute("file",referenceFileRepository.findAll());
 		return "front/references";
-		
 	}
 	
-	
-	@RequestMapping("/productSorted/{sort}/{id}")
+	@GetMapping("/productSorted/{sort}/{id}")
 	public String productSorted(
 			Model model,
 			@PathVariable String sort,
@@ -373,7 +301,7 @@ public class HomeController {
 		
 	}
 	
-	@RequestMapping("/brandProductSorted/{sort}/{id}")
+	@GetMapping("/brandProductSorted/{sort}/{id}")
 	public String brandProductSorted(
 			Model model,
 			@PathVariable String sort,
@@ -470,7 +398,6 @@ public class HomeController {
 			}
 		}
 		
-		
 		model.addAttribute("brandInfo", brand);
 		model.addAttribute("products", products);
 		model.addAttribute("name", name);
@@ -483,8 +410,6 @@ public class HomeController {
 		
 		return "front/brand/brandProductSorted";
 	}
-	
-	
 }
 
 

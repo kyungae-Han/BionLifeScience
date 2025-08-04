@@ -37,8 +37,6 @@ public class ZipService {
 		}
 		ZipUtil.pack(new File(existFilePath), new File(zipFilePath));
 		
-
-		
 		try {
 			Path filePath = Paths.get(zipFilePath);
 			Resource resource = new InputStreamResource(Files.newInputStream(filePath)); // 파일 resource 얻기

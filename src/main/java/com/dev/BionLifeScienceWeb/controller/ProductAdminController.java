@@ -3,15 +3,15 @@ package com.dev.BionLifeScienceWeb.controller;
 import java.io.IOException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,50 +35,28 @@ import com.dev.BionLifeScienceWeb.service.product.ProductFileService;
 import com.dev.BionLifeScienceWeb.service.product.ProductImageService;
 import com.dev.BionLifeScienceWeb.service.product.ProductService;
 
-@RequestMapping("/admin")
+import lombok.RequiredArgsConstructor;
+
 @Controller
-public class ProductController {
+@RequestMapping("/admin")
+@RequiredArgsConstructor
+public class ProductAdminController {
 
-	@Autowired
-	BigSortRepository bigSortRepository;
-
-	@Autowired
-	MiddleSortRepository middleSortRepository;
-
-	@Autowired
-	SmallSortRepository smallSortRepository;
-
-	@Autowired
-	ProductService productService;
-
-	@Autowired
-	ProductRepository productRepository;
-
-	@Autowired
-	ProductImageRepository productImageRepository;
-
-	@Autowired
-	ProductFileRepository productFileRepository;
-
-	@Autowired
-	ProductSpecRepository productSpecRepository;
-
-	@Autowired
-	ProductInfoRepository productInfoRepository;
-
-	@Autowired
-	ProductFileService productFileService;
-
-	@Autowired
-	ProductImageService productImageService;
-
-	@Value("${spring.upload.path}")
-	private String commonPath;
+	private final BigSortRepository bigSortRepository;
+	private final MiddleSortRepository middleSortRepository;
+	private final SmallSortRepository smallSortRepository;
+	private final ProductRepository productRepository;
+	private final ProductImageRepository productImageRepository;
+	private final ProductFileRepository productFileRepository;
+	private final ProductSpecRepository productSpecRepository;
+	private final ProductInfoRepository productInfoRepository;
+	private final ProductService productService;
+	private final ProductFileService productFileService;
+	private final ProductImageService productImageService;
 	
-	@RequestMapping("/sortManager")
+	@GetMapping("/sortManager")
 	public String sortManager(Model model) {
 		List<BigSort> b = bigSortRepository.findAll();
-//		System.out.println(b.size());
 		if(b.size()<1) {
 			BigSort bs = new BigSort();
 			bs.setName("분류를 등록 해 주세요");
@@ -90,7 +68,9 @@ public class ProductController {
 		return "admin/product/sortManager";
 	}
 
-	@RequestMapping("/bigsortInsert")
+	@RequestMapping(value = "/bigsortInsert",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String bigsortInsert(BigSort bigSort, Model model) {
 		int index = 1;
 		if(bigSortRepository.findFirstIndex().isPresent()) {
@@ -102,7 +82,9 @@ public class ProductController {
 		return "redirect:/admin/sortManager";
 	}
 
-	@RequestMapping("/bigSortDelete")
+	@RequestMapping(value = "/bigSortDelete",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String bigSortDelete(
 			@RequestParam(value = "text[]") Long[] text, 
 			Model model) {
@@ -113,12 +95,12 @@ public class ProductController {
 		}catch(DeleteViolationException e) {
 			throw new DeleteViolationException();
 		}	
-			
-		
 		return "redirect:/admin/sortManager";
 	}
 
-	@RequestMapping("/middlesortInsert")
+	@RequestMapping(value = "/middlesortInsert",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String middlesortInsert(
 			MiddleSort middleSort, 
 			Model model, 
@@ -136,16 +118,18 @@ public class ProductController {
 		return "redirect:/admin/sortManager";
 	}
 
-	@RequestMapping("/searchMiddleSort")
+	@RequestMapping(value = "/searchMiddleSort",
+		    method = {RequestMethod.GET, RequestMethod.POST})
 	@ResponseBody
 	public List<MiddleSort> searchMiddleSort(Model model, Long bigId) {
 
 		return middleSortRepository.findAllByBigSort(bigSortRepository.findById(bigId).get());
 	}
 
-	@RequestMapping("/middleSortDelete")
+	@RequestMapping(value = "/middleSortDelete",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String middleSortDelete(@RequestParam(value = "text[]") Long[] text, Model model, Long bigId) {
-		
 		try {
 			for (Long id : text) {
 				middleSortRepository.deleteById(id);
@@ -156,7 +140,9 @@ public class ProductController {
 		return "redirect:/admin/sortManager";
 	}
 
-	@RequestMapping("/smallsortInsert")
+	@RequestMapping(value = "/smallsortInsert",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String smallsortInsert(
 			SmallSort smallSort, 
 			Model model, 
@@ -174,15 +160,18 @@ public class ProductController {
 		return "redirect:/admin/sortManager";
 	}
 
-	@RequestMapping("/searchSmallSort")
+	@RequestMapping(value = "/searchSmallSort",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public List<SmallSort> searchSmallSort(Model model, Long middleId) {
 		return smallSortRepository.findAllByMiddleSort(middleSortRepository.findById(middleId).get());
 	}
 
-	@RequestMapping("/smallSortDelete")
+	@RequestMapping(value = "/smallSortDelete",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String smallSortDelete(@RequestParam(value = "text[]") Long[] text, Model model) {
-		
 		try {
 			for (Long id : text) {
 				smallSortRepository.deleteById(id);
@@ -193,7 +182,9 @@ public class ProductController {
 		return "redirect:/admin/sortManager";
 	}
 
-	@RequestMapping("/productManager")
+	@RequestMapping(value = "/productManager",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String productManager(
 			Model model, 
 			@RequestParam(required = false) Long smallId,
@@ -228,15 +219,17 @@ public class ProductController {
 		return "admin/product/productManager";
 	}
 
-	@RequestMapping("/productInsertForm")
+	@RequestMapping(value = "/productInsertForm",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String productInsertForm(Model model) {
-
 		model.addAttribute("bigsorts", bigSortRepository.findAll());
-
 		return "admin/product/productInsertForm";
 	}
 
-	@RequestMapping("/productInsert")
+	@RequestMapping(value = "/productInsert",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String productInsert(
 			Product product, 
@@ -314,7 +307,9 @@ public class ProductController {
 		return sb.toString();
 	}
 
-	@RequestMapping("/productDetail/{id}")
+	@RequestMapping(value = "/productDetail/{id}",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String productDetail(
 			@PathVariable Long id,
 			Model model
@@ -326,7 +321,9 @@ public class ProductController {
 		return "admin/product/productDetail";
 	}
 
-	@RequestMapping("/productUpdate")
+	@RequestMapping(value = "/productUpdate",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	public String productUpdate(
 			Model model, 
 			@PageableDefault(size = 10) Pageable pageable,
@@ -406,7 +403,9 @@ public class ProductController {
 		return "redirect:/admin/productManager";
 	}
 	
-	@RequestMapping("/productDelete/{id}")
+	@RequestMapping(value = "/productDelete/{id}",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String productDelete(
 			@PathVariable Long id

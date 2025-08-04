@@ -13,7 +13,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -30,32 +29,18 @@ import com.dev.BionLifeScienceWeb.repository.product.ProductImageRepository;
 import com.dev.BionLifeScienceWeb.repository.product.ProductRepository;
 import com.dev.BionLifeScienceWeb.repository.product.SmallSortRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class ProductService {
 
-	@Autowired
-	ProductRepository productRepository;
-	
-	@Autowired
-	ProductFileService productFileService;
-	
-	@Autowired
-	ProductImageService productImageService;
-	
-	@Autowired
-	SmallSortRepository smallSortRepository;
-	
-	@Autowired
-	MiddleSortRepository middleSortRepository;
-	
-	@Autowired
-	BigSortRepository bigSortRepository;
-	
-	@Autowired
-	ProductFileRepository productFileRepository;
-	
-	@Autowired
-	ProductImageRepository productImageRepository;
+	private final ProductRepository productRepository;
+	private final SmallSortRepository smallSortRepository;
+	private final MiddleSortRepository middleSortRepository;
+	private final BigSortRepository bigSortRepository;
+	private final ProductFileRepository productFileRepository;
+	private final ProductImageRepository productImageRepository;
 
 	@Value("${spring.upload.env}")
 	private String env;
@@ -331,34 +316,9 @@ public class ProductService {
 		}
 		
 		String overviewContentType = productOverviewImage.getContentType();
-		String overviewOriginalFileExtension = "";
-		
+		// 확장자 명 NULL 검증
 		if (ObjectUtils.isEmpty(overviewContentType)) {
 			return null;
-		} else {
-			if (overviewContentType.contains("image/jpeg")) {
-				overviewOriginalFileExtension = ".jpg";
-			} else if (overviewContentType.contains("image/png")) {
-				overviewOriginalFileExtension = ".png";
-			} else if (overviewContentType.contains("image/gif")) {
-				overviewOriginalFileExtension = ".gif";
-			} else if (overviewContentType.contains("application/pdf")) {
-				overviewOriginalFileExtension = ".pdf";
-			} else if (overviewContentType.contains("application/x-zip-compressed")) {
-				overviewOriginalFileExtension = ".zip";
-			} else if (overviewContentType
-					.contains("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
-				overviewOriginalFileExtension = ".xlsx";
-			} else if (overviewContentType
-					.contains("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-				overviewOriginalFileExtension = ".docx";
-			} else if (overviewContentType.contains("text/plain")) {
-				overviewOriginalFileExtension = ".txt";
-			} else if (overviewContentType.contains("image/x-icon")) {
-				overviewOriginalFileExtension = ".ico";
-			} else if (overviewContentType.contains("application/haansofthwp")) {
-				overviewOriginalFileExtension = ".hwp";
-			}
 		}
 		String overviewFileName = generatedString + "_" + productOverviewImage.getOriginalFilename();
 		
@@ -371,34 +331,9 @@ public class ProductService {
 		}
 
 		String specContentType = productSpecImage.getContentType();
-		String specOriginalFileExtension = "";
-		
-
+		// 확장자 명 NULL 검증
 		if (ObjectUtils.isEmpty(specContentType)) {
 			return null;
-		} else {
-			if (specContentType.contains("image/jpeg")) {
-				specOriginalFileExtension = ".jpg";
-			} else if (specContentType.contains("image/png")) {
-				specOriginalFileExtension = ".png";
-			} else if (specContentType.contains("image/gif")) {
-				specOriginalFileExtension = ".gif";
-			} else if (specContentType.contains("application/pdf")) {
-				specOriginalFileExtension = ".pdf";
-			} else if (specContentType.contains("application/x-zip-compressed")) {
-				specOriginalFileExtension = ".zip";
-			} else if (specContentType.contains("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
-				specOriginalFileExtension = ".xlsx";
-			} else if (specContentType
-					.contains("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-				specOriginalFileExtension = ".docx";
-			} else if (specContentType.contains("text/plain")) {
-				specOriginalFileExtension = ".txt";
-			} else if (specContentType.contains("image/x-icon")) {
-				specOriginalFileExtension = ".ico";
-			} else if (specContentType.contains("application/haansofthwp")) {
-				specOriginalFileExtension = ".hwp";
-			}
 		}
 		String specFileName = generatedString + "_" + productSpecImage.getOriginalFilename();
 		
@@ -489,8 +424,7 @@ public class ProductService {
 			MultipartFile productSpecImage, 
 			Product product)
 			throws IllegalStateException, IOException {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String current_date = simpleDateFormat.format(new Date());
+
 		String absolutePath = new File("").getAbsolutePath() + "\\";
 
 		int leftLimit = 48; // numeral '0'
@@ -519,35 +453,10 @@ public class ProductService {
 			}
 
 			String overviewContentType = productOverviewImage.getContentType();
-			String overviewOriginalFileExtension = "";
-
-			if (ObjectUtils.isEmpty(overviewContentType)) {
-				return "fail";
-			} else {
-				if (overviewContentType.contains("image/jpeg")) {
-					overviewOriginalFileExtension = ".jpg";
-				} else if (overviewContentType.contains("image/png")) {
-					overviewOriginalFileExtension = ".png";
-				} else if (overviewContentType.contains("image/gif")) {
-					overviewOriginalFileExtension = ".gif";
-				} else if (overviewContentType.contains("application/pdf")) {
-					overviewOriginalFileExtension = ".pdf";
-				} else if (overviewContentType.contains("application/x-zip-compressed")) {
-					overviewOriginalFileExtension = ".zip";
-				} else if (overviewContentType
-						.contains("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
-					overviewOriginalFileExtension = ".xlsx";
-				} else if (overviewContentType
-						.contains("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-					overviewOriginalFileExtension = ".docx";
-				} else if (overviewContentType.contains("text/plain")) {
-					overviewOriginalFileExtension = ".txt";
-				} else if (overviewContentType.contains("image/x-icon")) {
-					overviewOriginalFileExtension = ".ico";
-				} else if (overviewContentType.contains("application/haansofthwp")) {
-					overviewOriginalFileExtension = ".hwp";
-				}
-			}
+			// 확장자 명 NULL 검증
+    		if (ObjectUtils.isEmpty(overviewContentType)) {
+    			return "NONE";
+    		}
 
 			String overviewFileName = generatedString + "_" + productOverviewImage.getOriginalFilename();
 			if (env.equals("local")) {
@@ -584,34 +493,10 @@ public class ProductService {
 			}
 
 			String specContentType = productSpecImage.getContentType();
-			String specOriginalFileExtension = "";
-			if (ObjectUtils.isEmpty(specContentType)) {
-				return null;
-			} else {
-				if (specContentType.contains("image/jpeg")) {
-					specOriginalFileExtension = ".jpg";
-				} else if (specContentType.contains("image/png")) {
-					specOriginalFileExtension = ".png";
-				} else if (specContentType.contains("image/gif")) {
-					specOriginalFileExtension = ".gif";
-				} else if (specContentType.contains("application/pdf")) {
-					specOriginalFileExtension = ".pdf";
-				} else if (specContentType.contains("application/x-zip-compressed")) {
-					specOriginalFileExtension = ".zip";
-				} else if (specContentType
-						.contains("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
-					specOriginalFileExtension = ".xlsx";
-				} else if (specContentType
-						.contains("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-					specOriginalFileExtension = ".docx";
-				} else if (specContentType.contains("text/plain")) {
-					specOriginalFileExtension = ".txt";
-				} else if (specContentType.contains("image/x-icon")) {
-					specOriginalFileExtension = ".ico";
-				} else if (specContentType.contains("application/haansofthwp")) {
-					specOriginalFileExtension = ".hwp";
-				}
-			}
+			// 확장자 명 NULL 검증
+    		if (ObjectUtils.isEmpty(specContentType)) {
+    			return "NONE";
+    		}
 
 			String specFileName = generatedString + "_" + productSpecImage.getOriginalFilename();
 
@@ -673,35 +558,11 @@ public class ProductService {
 			}
 
 			String overviewContentType = productOverviewImage.getContentType();
-			String overviewOriginalFileExtension = "";
-
-			if (ObjectUtils.isEmpty(overviewContentType)) {
-				return "fail";
-			} else {
-				if (overviewContentType.contains("image/jpeg")) {
-					overviewOriginalFileExtension = ".jpg";
-				} else if (overviewContentType.contains("image/png")) {
-					overviewOriginalFileExtension = ".png";
-				} else if (overviewContentType.contains("image/gif")) {
-					overviewOriginalFileExtension = ".gif";
-				} else if (overviewContentType.contains("application/pdf")) {
-					overviewOriginalFileExtension = ".pdf";
-				} else if (overviewContentType.contains("application/x-zip-compressed")) {
-					overviewOriginalFileExtension = ".zip";
-				} else if (overviewContentType
-						.contains("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
-					overviewOriginalFileExtension = ".xlsx";
-				} else if (overviewContentType
-						.contains("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-					overviewOriginalFileExtension = ".docx";
-				} else if (overviewContentType.contains("text/plain")) {
-					overviewOriginalFileExtension = ".txt";
-				} else if (overviewContentType.contains("image/x-icon")) {
-					overviewOriginalFileExtension = ".ico";
-				} else if (overviewContentType.contains("application/haansofthwp")) {
-					overviewOriginalFileExtension = ".hwp";
-				}
-			}
+			
+			// 확장자 명 NULL 검증
+    		if (ObjectUtils.isEmpty(overviewContentType)) {
+    			return "NONE";
+    		}
 
 			String overviewFileName = generatedString + "_" + productOverviewImage.getOriginalFilename();
 			if (env.equals("local")) {
@@ -751,34 +612,11 @@ public class ProductService {
 			}
 
 			String specContentType = productSpecImage.getContentType();
-			String specOriginalFileExtension = "";
-			if (ObjectUtils.isEmpty(specContentType)) {
-				return null;
-			} else {
-				if (specContentType.contains("image/jpeg")) {
-					specOriginalFileExtension = ".jpg";
-				} else if (specContentType.contains("image/png")) {
-					specOriginalFileExtension = ".png";
-				} else if (specContentType.contains("image/gif")) {
-					specOriginalFileExtension = ".gif";
-				} else if (specContentType.contains("application/pdf")) {
-					specOriginalFileExtension = ".pdf";
-				} else if (specContentType.contains("application/x-zip-compressed")) {
-					specOriginalFileExtension = ".zip";
-				} else if (specContentType
-						.contains("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
-					specOriginalFileExtension = ".xlsx";
-				} else if (specContentType
-						.contains("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-					specOriginalFileExtension = ".docx";
-				} else if (specContentType.contains("text/plain")) {
-					specOriginalFileExtension = ".txt";
-				} else if (specContentType.contains("image/x-icon")) {
-					specOriginalFileExtension = ".ico";
-				} else if (specContentType.contains("application/haansofthwp")) {
-					specOriginalFileExtension = ".hwp";
-				}
-			}
+			
+			// 확장자 명 NULL 검증
+    		if (ObjectUtils.isEmpty(specContentType)) {
+    			return "NONE";
+    		}
 
 			String specFileName = generatedString + "_" + productSpecImage.getOriginalFilename();
 
@@ -798,6 +636,5 @@ public class ProductService {
 		}
 
 		return "success";
-
 	}
 }

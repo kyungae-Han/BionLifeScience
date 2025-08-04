@@ -2,21 +2,20 @@ package com.dev.BionLifeScienceWeb.service;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dev.BionLifeScienceWeb.model.Notice;
 import com.dev.BionLifeScienceWeb.repository.NoticeRepository;
 import com.dev.BionLifeScienceWeb.repository.NoticeSubjectRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class NoticeService {
 	
-	@Autowired
-	NoticeRepository noticeRepository;
-	
-	@Autowired
-	NoticeSubjectRepository noticeSubjectRepository;
+	private final NoticeRepository noticeRepository;
+	private final NoticeSubjectRepository noticeSubjectRepository;
 	
 	public String noticeUpdate(Notice notice) {
 		

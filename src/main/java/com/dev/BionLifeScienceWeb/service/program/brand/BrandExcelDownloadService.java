@@ -14,7 +14,6 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,31 +34,20 @@ import com.dev.BionLifeScienceWeb.repository.brand.BrandSmallSortRepository;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class BrandExcelDownloadService {
 
-	@Autowired
-	BrandProductRepository productRepository;
-	
-	@Autowired
-	BrandBigSortRepository bigSortRepository;
-	
-	@Autowired
-	BrandMiddleSortRepository middleSortRepository;
-	
-	@Autowired
-	BrandSmallSortRepository smallSortRepository;
-	
-	@Autowired
-	BrandProductSpecRepository productSpecRepository;
-	
-	@Autowired
-	BrandProductInfoRepository productInfoRepository;
-	
-	@Autowired
-	BrandRepository brandRepository;
+	private final BrandProductRepository productRepository;
+	private final BrandBigSortRepository bigSortRepository;
+	private final BrandMiddleSortRepository middleSortRepository;
+	private final BrandSmallSortRepository smallSortRepository;
+	private final BrandProductSpecRepository productSpecRepository;
+	private final BrandProductInfoRepository productInfoRepository;
+	private final BrandRepository brandRepository;
 	
 	public void bigSortDownload(
 			HttpServletResponse res
@@ -324,8 +312,6 @@ public class BrandExcelDownloadService {
 				productSpecBodyCell.setCellStyle(bodyXssfCellStyle); // 스타일 추가
 			}
 		}
-			
-			
 
 		/**
 		 * download
@@ -523,8 +509,6 @@ public class BrandExcelDownloadService {
 				smallBodyCell.setCellStyle(bodyXssfCellStyle);
 			}
 		}
-		
-			
 
 		/**
 		 * download
@@ -540,5 +524,4 @@ public class BrandExcelDownloadService {
 		servletOutputStream.flush();
 		servletOutputStream.close();
 	}
-	
 }

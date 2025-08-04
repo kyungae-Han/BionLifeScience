@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,18 +16,19 @@ import com.dev.BionLifeScienceWeb.repository.CompanyEmailRepository;
 import com.dev.BionLifeScienceWeb.service.ClientService;
 import com.dev.BionLifeScienceWeb.service.EmailService;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
+@RequiredArgsConstructor
 public class ClientController {
 
-	@Autowired
-	ClientService clientService;
+	private final CompanyEmailRepository companyEmailRepository;
+	private final ClientService clientService;
+	private final EmailService emailService;
 	
-	@Autowired
-	CompanyEmailRepository companyEmailRepository;
-	
-	@Autowired
-	EmailService emailService;
-	
+	/**
+	 * 스레드 처리로 이메일 발송과 DB Insert 병렬처리
+	 */
 	@PostMapping("/clientInsert")
 	public String clientInsert(
 			Client client,
@@ -38,9 +38,8 @@ public class ClientController {
 		List<CompanyEmail> list = companyEmailRepository.findAll();
 		
 		ExecutorService executorService = Executors.newCachedThreadPool();
-		
-        // 작업1 (스레드)
-        executorService.submit(() -> {
+
+		executorService.submit(() -> {
         	String[] to = new String[list.size()];
         	int i=0;
         	for(CompanyEmail a : list) {
@@ -55,12 +54,9 @@ public class ClientController {
         	} catch (InterruptedException e) {
         		e.printStackTrace();
         	}
-    		
-    		
         });
 
         executorService.shutdown();
-		
 		return "redirect:/contact";
 	}
 }

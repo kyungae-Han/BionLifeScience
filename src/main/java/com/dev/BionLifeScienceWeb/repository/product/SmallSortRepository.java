@@ -27,4 +27,5 @@ public interface SmallSortRepository extends JpaRepository<SmallSort, Long>{
 	
 	@Query("SELECT MAX(smallSortIndex) FROM SmallSort")
 	Optional<Integer> findFirstIndex();
+	
 }

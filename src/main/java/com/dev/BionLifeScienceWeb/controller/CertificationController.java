@@ -2,11 +2,12 @@ package com.dev.BionLifeScienceWeb.controller;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,18 +15,17 @@ import com.dev.BionLifeScienceWeb.model.Certification;
 import com.dev.BionLifeScienceWeb.repository.CertificationRepository;
 import com.dev.BionLifeScienceWeb.service.CertificationService;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 public class CertificationController {
-
 	
-	@Autowired
-	CertificationRepository certificationRepository;
+	private final CertificationRepository certificationRepository;
+	private final CertificationService certificationService;
 	
-	@Autowired
-	CertificationService certificationService;
-	
-	@RequestMapping("/certificationManager")
+	@GetMapping("/certificationManager")
 	public String certificationManager(
 			Model model
 			) {
@@ -33,7 +33,9 @@ public class CertificationController {
 		return "admin/certificationManager";
 	}
 	
-	@RequestMapping("/certificationInsert")
+	@RequestMapping(value = "/certificationInsert",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String bannerInsert(
 			MultipartFile webFile,
@@ -52,14 +54,14 @@ public class CertificationController {
 		return sb.toString();
 	}
 	
-	@RequestMapping("/deleteCertification/{id}")
+	@RequestMapping(value = "/deleteCertification/{id}",
+		    method = {RequestMethod.GET, RequestMethod.POST}
+	)
 	@ResponseBody
 	public String deleteBanner(
 			@PathVariable Long id,
 			Model model
 			) {
-		
-		Certification b = certificationRepository.findById(id).get();
 		
 		certificationRepository.deleteById(id);
 		StringBuffer sb = new StringBuffer();

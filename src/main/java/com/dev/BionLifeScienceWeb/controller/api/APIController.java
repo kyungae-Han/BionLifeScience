@@ -1,6 +1,5 @@
-package com.dev.BionLifeScienceWeb.controller;
+package com.dev.BionLifeScienceWeb.controller.api;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,12 +8,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dev.BionLifeScienceWeb.model.Member;
 import com.dev.BionLifeScienceWeb.service.MemberService;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
 @RequestMapping("/api/v1")
+@RequiredArgsConstructor
 public class APIController {
 
-	@Autowired
-	MemberService memberService;
+	private final MemberService memberService;
 	
 	@PostMapping("/join")
 	@ResponseBody

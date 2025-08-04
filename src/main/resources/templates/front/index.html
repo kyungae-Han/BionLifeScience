@@ -7,9 +7,6 @@
 
 <body class="stretched">
 	<div id="wrapper" class="clearfix">
-		<!--<th:block
-			th:replace="/fragments/front/common :: headerSrc(false,${b},${m},${s},${p}, ${brand},
-		${bb}, ${bm}, ${bs}, ${bp})"></th:block>-->
 		<th:block
 			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
 
@@ -323,9 +320,7 @@
 		$(document).ready(function() {
 
 			var currentDate = new Date();
-
-			var futureDate  = new Date(2023, 12, 1);
-
+			var futureDate  = new Date(2025, 12, 1);
 			var diff = futureDate.getTime() / 1000 - currentDate.getTime() / 1000;
 
 			clock = $('.clock').FlipClock(diff, {

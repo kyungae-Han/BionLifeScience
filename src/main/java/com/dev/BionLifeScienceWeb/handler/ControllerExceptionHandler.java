@@ -13,7 +13,6 @@ import com.dev.BionLifeScienceWeb.model.ControllerException;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
-
 	
 	@ExceptionHandler(value= {SQLException.class})
 	public ResponseEntity<Object> handleSqlException(SQLException e){

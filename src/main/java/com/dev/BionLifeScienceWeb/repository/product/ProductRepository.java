@@ -43,7 +43,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
 
 	List<Product> findAllBySign(Boolean sign);
 	
-	
 	Page<Product> findAllBySmallSortOrderByProductIndexAsc(Pageable pageable, SmallSort smallSort);
 	
 	Page<Product> findAllByOrderByProductIndexAsc(Pageable pageble);
@@ -64,11 +63,13 @@ public interface ProductRepository extends JpaRepository<Product, Long>{
 	
 	List<Product> findAllByOrderByProductIndexAsc();
 	
-	
 	List<Product> findBySubjectContains(String subject);
 	
 	Optional<Product> findByProductCode(String code);
 	
 	@Query("SELECT MAX(productIndex) FROM Product")
 	Optional<Integer> findFirstIndex();
+	
+	List<Product> findBySmallSortOrderByProductIndexAsc(SmallSort smallSort);
+	
 }

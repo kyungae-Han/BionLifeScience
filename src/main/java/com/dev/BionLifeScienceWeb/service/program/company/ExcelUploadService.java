@@ -11,7 +11,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,35 +27,21 @@ import com.dev.BionLifeScienceWeb.repository.product.ProductSpecRepository;
 import com.dev.BionLifeScienceWeb.repository.product.SmallSortRepository;
 import com.dev.BionLifeScienceWeb.service.product.ProductService;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class ExcelUploadService {
 
-	@Autowired
-	ProductRepository productRepository;
-
-	@Autowired
-	BigSortRepository bigSortRepository;
-
-	@Autowired
-	MiddleSortRepository middleSortRepository;
-
-	@Autowired
-	SmallSortRepository smallSortRepository;
-
-	@Autowired
-	ProductSpecRepository productSpecRepository;
-
-	@Autowired
-	ProductInfoRepository productInfoRepository;
-
-	@Autowired
-	ProductImageRepository productImageRepository;
-	
-	@Autowired
-	ProductFileRepository productFileRepository;
-
-	@Autowired
-	ProductService productService;
+	private final ProductRepository productRepository;
+	private final BigSortRepository bigSortRepository;
+	private final MiddleSortRepository middleSortRepository;
+	private final SmallSortRepository smallSortRepository;
+	private final ProductSpecRepository productSpecRepository;
+	private final ProductInfoRepository productInfoRepository;
+	private final ProductImageRepository productImageRepository;
+	private final ProductFileRepository productFileRepository;
+	private final ProductService productService;
 
 	public void uploadExcel(MultipartFile file) throws IOException {
 
@@ -208,7 +193,6 @@ public class ExcelUploadService {
 			} catch (Exception e) {
 				System.out.println(e.fillInStackTrace());
 			}
-
 			
 			try {
 
@@ -234,8 +218,6 @@ public class ExcelUploadService {
 			}
 		});
 		executorService.shutdown();
-		
-		
 	}
 	
 	public void uploadAddExcel(MultipartFile file) throws IOException {
@@ -320,8 +302,6 @@ public class ExcelUploadService {
 			} catch (Exception e) {
 				System.out.println(e.fillInStackTrace());
 			}
-			
-			
 		});
 		
 		executorService.submit(() -> {
@@ -402,6 +382,5 @@ public class ExcelUploadService {
 			}
 		});
 		executorService.shutdown();
-		
 	}
 }

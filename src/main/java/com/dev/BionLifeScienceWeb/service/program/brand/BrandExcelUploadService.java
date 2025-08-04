@@ -11,7 +11,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,38 +28,22 @@ import com.dev.BionLifeScienceWeb.repository.brand.BrandRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandSmallSortRepository;
 import com.dev.BionLifeScienceWeb.service.brand.BrandProductService;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class BrandExcelUploadService {
 
-	@Autowired
-	BrandRepository brandRepository;
-
-	@Autowired
-	BrandProductRepository brandProductRepository;
-
-	@Autowired
-	BrandBigSortRepository brandBigSortRepository;
-
-	@Autowired
-	BrandMiddleSortRepository brandMiddleSortRepository;
-
-	@Autowired
-	BrandSmallSortRepository brandSmallSortRepository;
-
-	@Autowired
-	BrandProductSpecRepository brandProductSpecRepository;
-
-	@Autowired
-	BrandProductInfoRepository brandProductInfoRepository;
-
-	@Autowired
-	BrandProductService brandProductService;
-
-	@Autowired
-	BrandProductImageRepository brandProductImageRepository;
-
-	@Autowired
-	BrandProductFileRepository brandProductFileRepository;
+	private final BrandRepository brandRepository;
+	private final BrandProductRepository brandProductRepository;
+	private final BrandBigSortRepository brandBigSortRepository;
+	private final BrandMiddleSortRepository brandMiddleSortRepository;
+	private final BrandSmallSortRepository brandSmallSortRepository;
+	private final BrandProductSpecRepository brandProductSpecRepository;
+	private final BrandProductInfoRepository brandProductInfoRepository;
+	private final BrandProductImageRepository brandProductImageRepository;
+	private final BrandProductFileRepository brandProductFileRepository;
+	private final BrandProductService brandProductService;
 
 	public void uploadExcel(MultipartFile file) throws IOException {
 
@@ -104,7 +87,6 @@ public class BrandExcelUploadService {
 			try {
 
 				// 엑셀 97 - 2003 까지는 HSSF(xls), 엑셀 2007 이상은 XSSF(xlsx)
-
 				Sheet productSheet = workbook.getSheetAt(4);
 				for (int i = 1; i < productSheet.getPhysicalNumberOfRows(); i++) {
 					Row row = productSheet.getRow(i);
@@ -292,7 +274,6 @@ public class BrandExcelUploadService {
 				System.out.println(e.fillInStackTrace());
 			}
 		});
-		System.out.println("22222222222222222");
 		executorService.submit(() -> {
 
 			try {
@@ -370,6 +351,5 @@ public class BrandExcelUploadService {
 			}
 		});
 		executorService.shutdown();
-
 	}
 }

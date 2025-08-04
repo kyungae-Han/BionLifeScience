@@ -14,7 +14,6 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,28 +32,19 @@ import com.dev.BionLifeScienceWeb.repository.product.SmallSortRepository;
 
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ExcelDownloadService {
 
-	@Autowired
-	ProductRepository productRepository;
-	
-	@Autowired
-	BigSortRepository bigSortRepository;
-	
-	@Autowired
-	MiddleSortRepository middleSortRepository;
-	
-	@Autowired
-	SmallSortRepository smallSortRepository;
-	
-	@Autowired
-	ProductSpecRepository productSpecRepository;
-	
-	@Autowired
-	ProductInfoRepository productInfoRepository;
+	private final ProductRepository productRepository;
+	private final BigSortRepository bigSortRepository;
+	private final MiddleSortRepository middleSortRepository;
+	private final SmallSortRepository smallSortRepository;
+	private final ProductSpecRepository productSpecRepository;
+	private final ProductInfoRepository productInfoRepository;
 	
 	public void bigSortDownload(
 			HttpServletResponse res

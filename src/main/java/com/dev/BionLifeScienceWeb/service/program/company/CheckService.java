@@ -22,6 +22,7 @@ import com.dev.BionLifeScienceWeb.model.product.BigSort;
 import com.dev.BionLifeScienceWeb.model.product.MiddleSort;
 import com.dev.BionLifeScienceWeb.model.product.Product;
 import com.dev.BionLifeScienceWeb.model.product.SmallSort;
+import com.dev.BionLifeScienceWeb.repository.brand.BrandProductImageRepository;
 import com.dev.BionLifeScienceWeb.repository.product.BigSortRepository;
 import com.dev.BionLifeScienceWeb.repository.product.MiddleSortRepository;
 import com.dev.BionLifeScienceWeb.repository.product.ProductFileRepository;
@@ -31,32 +32,16 @@ import com.dev.BionLifeScienceWeb.repository.product.ProductRepository;
 import com.dev.BionLifeScienceWeb.repository.product.ProductSpecRepository;
 import com.dev.BionLifeScienceWeb.repository.product.SmallSortRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class CheckService {
 
-	@Autowired
-	ProductRepository productRepository;
-
-	@Autowired
-	BigSortRepository bigSortRepository;
-
-	@Autowired
-	MiddleSortRepository middleSortRepository;
-
-	@Autowired
-	SmallSortRepository smallSortRepository;
-
-	@Autowired
-	ProductSpecRepository productSpecRepository;
-
-	@Autowired
-	ProductInfoRepository productInfoRepository;
-
-	@Autowired
-	ProductImageRepository productImageRepository;
-
-	@Autowired
-	ProductFileRepository productFileRepository;
+	private final ProductRepository productRepository;
+	private final BigSortRepository bigSortRepository;
+	private final MiddleSortRepository middleSortRepository;
+	private final SmallSortRepository smallSortRepository;
 
 	@Value("${spring.upload.path}")
 	private String commonPath;

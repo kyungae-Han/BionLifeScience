@@ -13,7 +13,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import org.apache.commons.io.FileUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -31,35 +30,19 @@ import com.dev.BionLifeScienceWeb.repository.brand.BrandProductRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandSmallSortRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class BrandProductService {
 
-	@Autowired
-	BrandProductRepository brandProductRepository;
-	
-	@Autowired
-	BrandSmallSortRepository brandSmallSortRepository;
-
-	@Autowired
-	BrandMiddleSortRepository brandMiddleSortRepository;
-	
-	@Autowired
-	BrandBigSortRepository brandBigSortRepository;
-	
-	@Autowired
-	BrandRepository brandRepository;
-
-	@Autowired
-	BrandProductFileRepository brandProductFileRepository;
-	
-	@Autowired
-	BrandProductImageRepository brandProductImageRepository;
-	
-	@Autowired
-	BrandProductFileService brandProductFileService;
-	
-	@Autowired
-	BrandProductImageService brandProductImageService;
+	private final BrandProductRepository brandProductRepository;
+	private final BrandSmallSortRepository brandSmallSortRepository;
+	private final BrandMiddleSortRepository brandMiddleSortRepository;
+	private final BrandBigSortRepository brandBigSortRepository;
+	private final BrandRepository brandRepository;
+	private final BrandProductFileRepository brandProductFileRepository;
+	private final BrandProductImageRepository brandProductImageRepository;
 	
 	@Value("${spring.upload.env}")
 	private String env;
@@ -382,39 +365,11 @@ public class BrandProductService {
 		
 		String overviewContentType = productOverviewImage.getContentType();
 		String specContentType = productSpecImage.getContentType();
-		String overviewOriginalFileExtension = "";
-	
-		// 확장자 명이 없으면 이 파일은 잘 못 된 것이다
+		// 확장자 명 NULL 검증
 		if (ObjectUtils.isEmpty(overviewContentType)) {
 			return null;
-		} else {
-			if (overviewContentType.contains("image/jpeg")) {
-				overviewOriginalFileExtension = ".jpg";
-			} else if (overviewContentType.contains("image/png")) {
-				overviewOriginalFileExtension = ".png";
-			} else if (overviewContentType.contains("image/gif")) {
-				overviewOriginalFileExtension = ".gif";
-			} else if (overviewContentType.contains("application/pdf")) {
-				overviewOriginalFileExtension = ".pdf";
-			} else if (overviewContentType.contains("application/x-zip-compressed")) {
-				overviewOriginalFileExtension = ".zip";
-			} else if (overviewContentType
-					.contains("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
-				overviewOriginalFileExtension = ".xlsx";
-			} else if (overviewContentType
-					.contains("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-				overviewOriginalFileExtension = ".docx";
-			} else if (overviewContentType.contains("text/plain")) {
-				overviewOriginalFileExtension = ".txt";
-			} else if (overviewContentType.contains("image/x-icon")) {
-				overviewOriginalFileExtension = ".ico";
-			} else if (overviewContentType.contains("application/haansofthwp")) {
-				overviewOriginalFileExtension = ".hwp";
-			}
-		}
-
+		} 
 		
-		String specOriginalFileExtension = "";
 		String specPath = commonPath + "/brandproduct/" + productCode +  "/spec"; 
 		String specRoad = "/administration/brandproduct/" + productCode +  "/spec"; 
 		File specFileFolder = new File(specPath);
@@ -423,33 +378,10 @@ public class BrandProductService {
 			specFileFolder.mkdirs();
 		}
 
-		
+		// 확장자 명 NULL 검증
 		if (ObjectUtils.isEmpty(specContentType)) {
 			return null;
-		} else {
-			if (specContentType.contains("image/jpeg")) {
-				specOriginalFileExtension = ".jpg";
-			} else if (specContentType.contains("image/png")) {
-				specOriginalFileExtension = ".png";
-			} else if (specContentType.contains("image/gif")) {
-				specOriginalFileExtension = ".gif";
-			} else if (specContentType.contains("application/pdf")) {
-				specOriginalFileExtension = ".pdf";
-			} else if (specContentType.contains("application/x-zip-compressed")) {
-				specOriginalFileExtension = ".zip";
-			} else if (specContentType.contains("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
-				specOriginalFileExtension = ".xlsx";
-			} else if (specContentType
-					.contains("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-				specOriginalFileExtension = ".docx";
-			} else if (specContentType.contains("text/plain")) {
-				specOriginalFileExtension = ".txt";
-			} else if (specContentType.contains("image/x-icon")) {
-				specOriginalFileExtension = ".ico";
-			} else if (specContentType.contains("application/haansofthwp")) {
-				specOriginalFileExtension = ".hwp";
-			}
-		}
+		} 
 
 		String overviewFileName = generatedString + "_" + productOverviewImage.getOriginalFilename();
 		String specFileName = generatedString + "_" + productSpecImage.getOriginalFilename();
@@ -459,7 +391,6 @@ public class BrandProductService {
 			index = brandProductRepository.findFirstIndex().get() + 1;
 		}
 		product.setBrandProductIndex(index);
-
 		
 		if (env.equals("local")) {
 			overviewFileFolder = new File(absolutePath + overviewPath + "/" + overviewFileName);
@@ -486,8 +417,6 @@ public class BrandProductService {
 	public String productUpdate(MultipartFile productOverviewImage, MultipartFile productSpecImage,
 			BrandProduct product) throws IllegalStateException, IOException {
 		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String current_date = simpleDateFormat.format(new Date());
 		String absolutePath = new File("").getAbsolutePath() + "\\";
 
 		int leftLimit = 48; // numeral '0'
@@ -516,38 +445,13 @@ public class BrandProductService {
 			}
 
 			String overviewContentType = productOverviewImage.getContentType();
-			String overviewOriginalFileExtension = "";
-
+			// 확장자 명 NULL 검증
 			if (ObjectUtils.isEmpty(overviewContentType)) {
-				return "fail";
-			} else {
-				if (overviewContentType.contains("image/jpeg")) {
-					overviewOriginalFileExtension = ".jpg";
-				} else if (overviewContentType.contains("image/png")) {
-					overviewOriginalFileExtension = ".png";
-				} else if (overviewContentType.contains("image/gif")) {
-					overviewOriginalFileExtension = ".gif";
-				} else if (overviewContentType.contains("application/pdf")) {
-					overviewOriginalFileExtension = ".pdf";
-				} else if (overviewContentType.contains("application/x-zip-compressed")) {
-					overviewOriginalFileExtension = ".zip";
-				} else if (overviewContentType
-						.contains("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
-					overviewOriginalFileExtension = ".xlsx";
-				} else if (overviewContentType
-						.contains("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-					overviewOriginalFileExtension = ".docx";
-				} else if (overviewContentType.contains("text/plain")) {
-					overviewOriginalFileExtension = ".txt";
-				} else if (overviewContentType.contains("image/x-icon")) {
-					overviewOriginalFileExtension = ".ico";
-				} else if (overviewContentType.contains("application/haansofthwp")) {
-					overviewOriginalFileExtension = ".hwp";
-				}
+				return "NONE";
 			}
 
 			String overviewFileName = generatedString + "_" + productOverviewImage.getOriginalFilename();
-//	      
+	      
 			if (env.equals("local")) {
 				overviewFileFolder = new File(absolutePath + overviewPath + "/" + overviewFileName);
 			} else if (env.equals("prod")) {
@@ -563,6 +467,7 @@ public class BrandProductService {
 				brandProductRepository.save(s);
 			});
 		}
+		
 		if (!productSpecImage.isEmpty()) {
 			
 			File exSpecFile = new File(brandProductRepository.findById(product.getId()).get().getSpecImagePath());
@@ -583,38 +488,13 @@ public class BrandProductService {
 			}
 
 			String specContentType = productSpecImage.getContentType();
-			String specOriginalFileExtension = "";
+			
+			// 확장자 명 NULL 검증
 			if (ObjectUtils.isEmpty(specContentType)) {
-				return null;
-			} else {
-				if (specContentType.contains("image/jpeg")) {
-					specOriginalFileExtension = ".jpg";
-				} else if (specContentType.contains("image/png")) {
-					specOriginalFileExtension = ".png";
-				} else if (specContentType.contains("image/gif")) {
-					specOriginalFileExtension = ".gif";
-				} else if (specContentType.contains("application/pdf")) {
-					specOriginalFileExtension = ".pdf";
-				} else if (specContentType.contains("application/x-zip-compressed")) {
-					specOriginalFileExtension = ".zip";
-				} else if (specContentType
-						.contains("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
-					specOriginalFileExtension = ".xlsx";
-				} else if (specContentType
-						.contains("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-					specOriginalFileExtension = ".docx";
-				} else if (specContentType.contains("text/plain")) {
-					specOriginalFileExtension = ".txt";
-				} else if (specContentType.contains("image/x-icon")) {
-					specOriginalFileExtension = ".ico";
-				} else if (specContentType.contains("application/haansofthwp")) {
-					specOriginalFileExtension = ".hwp";
-				}
+				return "NONE";
 			}
 
 			String specFileName = generatedString + "_" + productSpecImage.getOriginalFilename();
-
-//	    	 
 
 			if (env.equals("local")) {
 				specFileFolder = new File(absolutePath + specPath + "/" + specFileName);
@@ -630,6 +510,7 @@ public class BrandProductService {
 			});
 
 		}
+		
 		brandProductRepository.findById(product.getId()).ifPresent(s -> {
 			s.setSmallSort(brandSmallSortRepository.findById(product.getBrandSmallSortId()).get());
 			s.setMiddleSort(brandMiddleSortRepository.findById(product.getBrandMiddleSortId()).get());
@@ -674,34 +555,10 @@ public class BrandProductService {
 			}
 
 			String overviewContentType = productOverviewImage.getContentType();
-			String overviewOriginalFileExtension = "";
-
+			
+			// 확장자 명 NULL 검증
 			if (ObjectUtils.isEmpty(overviewContentType)) {
-				return "fail";
-			} else {
-				if (overviewContentType.contains("image/jpeg")) {
-					overviewOriginalFileExtension = ".jpg";
-				} else if (overviewContentType.contains("image/png")) {
-					overviewOriginalFileExtension = ".png";
-				} else if (overviewContentType.contains("image/gif")) {
-					overviewOriginalFileExtension = ".gif";
-				} else if (overviewContentType.contains("application/pdf")) {
-					overviewOriginalFileExtension = ".pdf";
-				} else if (overviewContentType.contains("application/x-zip-compressed")) {
-					overviewOriginalFileExtension = ".zip";
-				} else if (overviewContentType
-						.contains("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
-					overviewOriginalFileExtension = ".xlsx";
-				} else if (overviewContentType
-						.contains("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-					overviewOriginalFileExtension = ".docx";
-				} else if (overviewContentType.contains("text/plain")) {
-					overviewOriginalFileExtension = ".txt";
-				} else if (overviewContentType.contains("image/x-icon")) {
-					overviewOriginalFileExtension = ".ico";
-				} else if (overviewContentType.contains("application/haansofthwp")) {
-					overviewOriginalFileExtension = ".hwp";
-				}
+				return "NONE";
 			}
 
 			String overviewFileName = generatedString + "_" + productOverviewImage.getOriginalFilename();
@@ -752,33 +609,9 @@ public class BrandProductService {
 			}
 
 			String specContentType = productSpecImage.getContentType();
-			String specOriginalFileExtension = "";
+			// 확장자 명 NULL 검증
 			if (ObjectUtils.isEmpty(specContentType)) {
-				return null;
-			} else {
-				if (specContentType.contains("image/jpeg")) {
-					specOriginalFileExtension = ".jpg";
-				} else if (specContentType.contains("image/png")) {
-					specOriginalFileExtension = ".png";
-				} else if (specContentType.contains("image/gif")) {
-					specOriginalFileExtension = ".gif";
-				} else if (specContentType.contains("application/pdf")) {
-					specOriginalFileExtension = ".pdf";
-				} else if (specContentType.contains("application/x-zip-compressed")) {
-					specOriginalFileExtension = ".zip";
-				} else if (specContentType
-						.contains("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
-					specOriginalFileExtension = ".xlsx";
-				} else if (specContentType
-						.contains("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-					specOriginalFileExtension = ".docx";
-				} else if (specContentType.contains("text/plain")) {
-					specOriginalFileExtension = ".txt";
-				} else if (specContentType.contains("image/x-icon")) {
-					specOriginalFileExtension = ".ico";
-				} else if (specContentType.contains("application/haansofthwp")) {
-					specOriginalFileExtension = ".hwp";
-				}
+				return "NONE";
 			}
 
 			String specFileName = generatedString + "_" + productSpecImage.getOriginalFilename();
@@ -799,6 +632,5 @@ public class BrandProductService {
 		}
 
 		return "success";
-
 	}
 }

@@ -1,16 +1,17 @@
 package com.dev.BionLifeScienceWeb.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dev.BionLifeScienceWeb.model.CompanyInfo;
 import com.dev.BionLifeScienceWeb.repository.CompanyInfoRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class CompanyInfoService {
 
-	@Autowired
-	CompanyInfoRepository companyInfoRepository;
+	private final CompanyInfoRepository companyInfoRepository;
 
 	public void changeCompanyInfo(CompanyInfo companyInfo) {
 		if (companyInfoRepository.findById(1L).isPresent()) {

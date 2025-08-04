@@ -4,17 +4,17 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 
 import com.dev.BionLifeScienceWeb.handler.AjaxAuthenticationEntryPoint;
 import com.dev.BionLifeScienceWeb.handler.CustomAuthFailureHandler;
-import com.dev.BionLifeScienceWeb.handler.CustomAuthenticationProvider;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,15 +25,19 @@ import lombok.RequiredArgsConstructor;
 public class WebSecurityConfig {
 
     private final CustomAuthFailureHandler customFailureHandler;
-    private final CustomAuthenticationProvider customAuthenticationProvider;
 
     @Bean
     SpringSecurityDialect springSecurityDialect() {
         return new SpringSecurityDialect();
     }
 
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+    
     /**
-     * SecurityFilterChain: Spring Security 6.x 
+     * SecurityFilterChain: Spring Security 6 버전 적용
      */
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -64,14 +68,6 @@ public class WebSecurityConfig {
             );
 
         return http.build();
-    }
-
-    /**
-     * 사용자 정의 AuthenticationProvider 등록
-     */
-    @Bean
-    AuthenticationProvider authenticationProvider() {
-        return customAuthenticationProvider;
     }
 
     /**

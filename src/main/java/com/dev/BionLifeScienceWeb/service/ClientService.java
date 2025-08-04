@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,11 +18,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dev.BionLifeScienceWeb.model.Client;
 import com.dev.BionLifeScienceWeb.repository.ClientRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class ClientService {
 
-	@Autowired
-	ClientRepository clientRepository;
+	private final ClientRepository clientRepository;
 	
 	@Value("${spring.upload.env}")
 	private String env;
@@ -58,42 +59,11 @@ public class ClientService {
         }
 		
     	String contentType = file.getContentType();
-        String originalFileExtension = "";
-            // 확장자 명이 없으면 이 파일은 잘 못 된 것이다
-        if (ObjectUtils.isEmpty(contentType)){
-            return "NONE";
-        }else{
-            if(contentType.contains("image/jpeg")){
-                originalFileExtension = ".jpg";
-            }
-            else if(contentType.contains("image/png")){
-                originalFileExtension = ".png";
-            }
-            else if(contentType.contains("image/gif")){
-                originalFileExtension = ".gif";
-            }
-            else if(contentType.contains("application/pdf")) {
-            	originalFileExtension = ".pdf";
-            }
-            else if(contentType.contains("application/x-zip-compressed")) {
-            	originalFileExtension = ".zip";
-            }
-            else if(contentType.contains("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
-            	originalFileExtension = ".xlsx";
-            }
-            else if(contentType.contains("application/vnd.openxmlformats-officedocument.wordprocessingml.document")) {
-            	originalFileExtension = ".docx";
-            }
-            else if(contentType.contains("text/plain")) {
-            	originalFileExtension = ".txt";
-            }
-            else if(contentType.contains("image/x-icon")) {
-            	originalFileExtension = ".ico";
-            }
-            else if(contentType.contains("application/haansofthwp")) {
-            	originalFileExtension = ".hwp";
-            }
-        }
+    	
+    	// 확장자 명 NULL 검증
+		if (ObjectUtils.isEmpty(contentType)) {
+			return "NONE";
+		} 
         String new_file_name = generatedString +  "_" + file.getOriginalFilename();
         if(env.equals("local")) {
         	fileFolder = new File(absolutePath + path + "/" + new_file_name);

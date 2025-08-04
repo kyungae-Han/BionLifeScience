@@ -12,7 +12,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,43 +24,21 @@ import com.dev.BionLifeScienceWeb.model.brand.BrandProduct;
 import com.dev.BionLifeScienceWeb.model.brand.BrandSmallSort;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandBigSortRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandMiddleSortRepository;
-import com.dev.BionLifeScienceWeb.repository.brand.BrandProductFileRepository;
-import com.dev.BionLifeScienceWeb.repository.brand.BrandProductImageRepository;
-import com.dev.BionLifeScienceWeb.repository.brand.BrandProductInfoRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductRepository;
-import com.dev.BionLifeScienceWeb.repository.brand.BrandProductSpecRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandSmallSortRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class BrandCheckService {
 
-	@Autowired
-	BrandRepository brandRepository;
-
-	@Autowired
-	BrandProductRepository productRepository;
-
-	@Autowired
-	BrandBigSortRepository bigSortRepository;
-
-	@Autowired
-	BrandMiddleSortRepository middleSortRepository;
-
-	@Autowired
-	BrandSmallSortRepository smallSortRepository;
-
-	@Autowired
-	BrandProductSpecRepository productSpecRepository;
-
-	@Autowired
-	BrandProductInfoRepository productInfoRepository;
-
-	@Autowired
-	BrandProductImageRepository productImageRepository;
-
-	@Autowired
-	BrandProductFileRepository productFileRepository;
+	private final BrandRepository brandRepository;
+	private final BrandProductRepository productRepository;
+	private final BrandBigSortRepository bigSortRepository;
+	private final BrandMiddleSortRepository middleSortRepository;
+	private final BrandSmallSortRepository smallSortRepository;
 
 	@Value("${spring.upload.path}")
 	private String commonPath;
@@ -608,12 +585,13 @@ public class BrandCheckService {
 	}
 
 	public synchronized List<String> resetZipCheck(MultipartFile file) throws IOException {
+		
 		List<String> result = new ArrayList<String>();
+		
 		// 폴더명이 제대로 되었는지(COMPANY) 체크
 		// 제품 코드의 숫자와 DB에 있는 제품 코드의 숫자를 비교하여 없는 코드 체크
 		// 내부 폴더명이 제대로 되어있는지 체크
 		// 내부 폴더의 파일 수 체크
-
 		List<BrandProduct> products = productRepository.findAll();
 		List<String> dbProrductCodes = new ArrayList<String>();
 		for (BrandProduct p : products) {

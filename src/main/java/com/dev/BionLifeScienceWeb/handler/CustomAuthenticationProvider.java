@@ -2,31 +2,27 @@ package com.dev.BionLifeScienceWeb.handler;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import com.dev.BionLifeScienceWeb.model.Member;
 import com.dev.BionLifeScienceWeb.model.MemberAccount;
 import com.dev.BionLifeScienceWeb.service.MemberService;
 
-@Configuration
+@Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private MemberService userDetailsService;
 
-    @Bean(name="AuthEncoder")
-	PasswordEncoder passwordEncoder() {
-	    return new BCryptPasswordEncoder();
-	}
+    @Autowired
+    private PasswordEncoder passwordEncoder; // 빈 주입
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -39,7 +35,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("NONE");
         }
         Member member = memberAccount.getMember();
-        if (!passwordEncoder().matches(password, member.getPassword())) {
+        if (!passwordEncoder.matches(password, member.getPassword())) {
         	System.out.println("Password not match");
             throw new BadCredentialsException("PWER");
         }
