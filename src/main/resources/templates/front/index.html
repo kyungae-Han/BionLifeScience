@@ -2,7 +2,6 @@
 <html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 홈')">
-
 </head>
 
 <body class="stretched">
@@ -19,23 +18,23 @@
 						<div class="swiper-slide" th:each="b:${ba}">
 							<div class="container">
 								<div class="slider-caption">
-									<h2 data-animate="fadeInUp" th:text="${b.subject}"></h2>
-									<p class="d-none d-sm-block" data-animate="fadeInUp"
-										data-delay="200" th:text="${b.content}"></p>
+									<h2 data-animate="fadeInUp banner-content" th:utext="${b.subject}"></h2>
+									<p class="d-none d-sm-block banner-content" data-animate="fadeInUp"
+										data-delay="200" th:utext="${b.content}"></p>
 								</div>
 							</div>
 							<div class="swiper-slide-bg"
-								th:style="'background-position: center top;'">
-							<video th:if="${#strings.endsWith(b.webroad, '.mp4') 
-							            or #strings.endsWith(b.webroad, '.mov')}"
+							     th:style="'background-position:center top; background-size:cover;'">
+							  <video th:if="${#strings.endsWith(b.webroad, '.mp4')}"
 							       autoplay muted loop playsinline
 							       style="width:100%; height:auto; object-fit:cover;">
-							    <source th:src="@{${b.webroad}}" 
-							            th:attr="type=${#strings.endsWith(b.webroad, '.mov')} ? 'video/quicktime' : 'video/mp4'"/>
+							    <source th:src="@{${b.webroad}}" type="video/mp4"/>
 							</video>
 							</div>
+							
 							<div class="swiper-slide-bg"
-								th:style="'background-image: url(' + @{${b.webroad}} + '); background-position: center top;'">
+							     th:if="${!(#strings.endsWith(b.webroad, '.mp4'))}"
+							     th:style="'background-image:url(' + @{${b.webroad}} + '); background-position:center top; background-size:cover;'">
 							</div>
 						</div>
 					</div>
