@@ -19,22 +19,44 @@
 							<div class="container">
 								<div class="slider-caption banner-flex">
 									<div data-animate="fadeInUp" th:utext="${b.subject}"></div>
-									<div class="d-none d-sm-block" data-animate="fadeInUp"
+									<div data-animate="fadeInUp"
 										data-delay="200" th:utext="${b.content}"></div>
 								</div>
 							</div>
-							<div class="swiper-slide-bg"
-							     th:style="'background-position:center top; background-size:cover;'">
-							  <video th:if="${#strings.endsWith(b.webroad, '.mp4')}"
-							       autoplay muted loop playsinline
-							       style="width:100%; height:auto; object-fit:cover;">
+
+							
+							<!-- 데스크톱용 -->
+							<div class="swiper-slide-bg is-desktop"
+							     th:if="${!#strings.isEmpty(b.webroad)}">
+							
+							  <!-- 비디오(.mp4) -->
+							  <video th:if="${#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4')}"
+							         autoplay muted loop playsinline
+							         style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
 							    <source th:src="@{${b.webroad}}" type="video/mp4"/>
-							</video>
+							  </video>
+							
+							  <!-- 이미지(그 외) -->
+							  <div th:if="${!(#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4'))}"
+							       th:style="'position:absolute; inset:0; background-image:url(' + @{${b.webroad}} + '); background-position:center top; background-size:cover;'">
+							  </div>
 							</div>
 							
-							<div class="swiper-slide-bg"
-							     th:if="${!(#strings.endsWith(b.webroad, '.mp4'))}"
-							     th:style="'background-image:url(' + @{${b.webroad}} + '); background-position:center top; background-size:cover;'">
+							<!-- 모바일용 -->
+							<div class="swiper-slide-bg is-mobile"
+							     th:if="${!#strings.isEmpty(b.mobileroad)}">
+							
+							  <!-- 비디오(.mp4) -->
+							  <video th:if="${#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4')}"
+							         autoplay muted loop playsinline
+							         style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+							    <source th:src="@{${b.mobileroad}}" type="video/mp4"/>
+							  </video>
+							
+							  <!-- 이미지(그 외) -->
+							  <div th:if="${!(#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4'))}"
+							       th:style="'position:absolute; inset:0; background-image:url(' + @{${b.mobileroad}} + '); background-position:center top; background-size:cover;'">
+							  </div>
 							</div>
 						</div>
 					</div>
