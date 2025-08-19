@@ -152,12 +152,15 @@ public class HomeController {
 		return "front/company/address";
 	}
 	
+	
 	@GetMapping("/contact")
 	public String contact(
 			Model model
 			) {
 		return "front/customer/contact";
 	}
+	
+	
 	
 	@GetMapping("/productOverall")
 	public String productOverall(

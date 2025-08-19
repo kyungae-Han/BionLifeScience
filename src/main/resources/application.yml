@@ -22,9 +22,12 @@ spring:
       on-profile: test
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://183.111.199.216:3306/bionls?useUnicode=true&characterEncoding=utf8
-    username: bionls
-    password: bion2272!@
+#    url: jdbc:mariadb://183.111.199.216:3306/bionls?useUnicode=true&characterEncoding=utf8
+#    username: bionls
+#    password: bion2272!@
+    url: jdbc:mariadb://127.0.0.1:3306/bionls?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: 1234
     hikari:
       connectionTimeout: 30000
       maximumPoolSize: 10

@@ -36,7 +36,7 @@ public class BannerService {
 	    String path = commonPath + "/banner/" + current_date;   // 상대 or 절대
 	    String road = "/administration/banner/" + current_date; // 접근 URL
 
-	    // env 분기
+	    // env-분기
 	    String absolutePath = "";
 	    if ("local".equals(env)) {
 	        absolutePath = new File("").getAbsolutePath() + "/";
@@ -92,12 +92,12 @@ public class BannerService {
 	        String mobileSavePath = ("local".equals(env) ? absolutePath + path : path) + "/" + mobileSavedName;
 
 	        // 웹파일
-	        banner.setWebname(webFileName);
+	        banner.setWebname(webSavedName);
 	        banner.setWebpath(webSavePath);
 	        banner.setWebroad(road + "/" + webSavedName);
 
 	        // 모바일파일
-	        banner.setMobilename(mobileFileName);
+	        banner.setMobilename(mobileSavedName);
 	        banner.setMobilepath(mobileSavePath);
 	        banner.setMobileroad(road + "/" + mobileSavedName);
 
