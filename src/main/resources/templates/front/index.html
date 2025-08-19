@@ -17,10 +17,10 @@
 					<div class="swiper-wrapper">
 						<div class="swiper-slide" th:each="b:${ba}">
 							<div class="container">
-								<div class="slider-caption">
-									<h2 data-animate="fadeInUp banner-content" th:utext="${b.subject}"></h2>
-									<p class="d-none d-sm-block banner-content" data-animate="fadeInUp"
-										data-delay="200" th:utext="${b.content}"></p>
+								<div class="slider-caption banner-flex">
+									<div data-animate="fadeInUp" th:utext="${b.subject}"></div>
+									<div class="d-none d-sm-block" data-animate="fadeInUp"
+										data-delay="200" th:utext="${b.content}"></div>
 								</div>
 							</div>
 							<div class="swiper-slide-bg"

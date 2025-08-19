@@ -111,9 +111,60 @@
 														</button>
 													</div>
 												</div>
-												<div class="admin-banner-image row">
+												<!-- <div class="admin-banner-image row">
 													<img width="150px" th:src="${b.webroad}">
 													<img width="150px" th:src="${b.mobileroad}">
+												</div> -->
+												
+												
+												<div class="admin-banner-image row" style="display:flex; gap:12px; align-items:flex-start;">
+												  <!-- Web -->
+												  <div>
+												    <!-- 이미지 -->
+												    <img
+												      th:if="${!#strings.isEmpty(b.webroad) and (
+												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.jpg') or
+												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.jpeg') or
+												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.png') or
+												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.gif') or
+												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.webp')
+												              )}"
+												      th:src="${b.webroad}" width="150" alt="web banner" />
+												
+												    <!-- 동영상 -->
+												    <video
+												      th:if="${!#strings.isEmpty(b.webroad) and (
+												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4') or
+												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.mov')
+												              )}"
+												      width="150" playsinline muted controls preload="metadata"
+												      style="display:block;height:auto;">
+												      <source th:src="${b.webroad}" type="video/mp4"/>
+												    </video>
+												  </div>
+												
+												  <!-- Mobile -->
+												  <div>
+												    <img
+												      th:if="${!#strings.isEmpty(b.mobileroad) and (
+												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.jpg') or
+												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.jpeg') or
+												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.png') or
+												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.gif') or
+												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.webp')
+												              )}"
+												      th:src="${b.mobileroad}" width="150" alt="mobile banner" />
+												
+												    <video
+												      th:if="${!#strings.isEmpty(b.mobileroad) and (
+												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4') or
+												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mov')
+												              )}"
+												      width="150" playsinline muted controls preload="metadata"
+												      style="display:block;height:auto;">
+												      <source th:src="${b.mobileroad}" type="video/mp4"/>
+												    </video>
+												  </div>
 												</div>
 											</div>
 										</li>

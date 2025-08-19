@@ -6205,12 +6205,12 @@ body:not(.has-plugin-html5video) .video-wrap video {
 .slider-caption {
   position: relative;
   display: -ms-flexbox;
-  display: flex;
+  /* display: flex; */
   height: 100%;
   flex-flow: column;
   justify-content: center;
   z-index: 20;
-  max-width: 550px;
+  /* max-width: 580px; */
   color: #eee;
   font-size: 1.375rem;
   font-weight: 300;
@@ -6220,6 +6220,7 @@ body:not(.has-plugin-html5video) .video-wrap video {
   transition: top 0.3s ease;
 }
 
+
 .slider-caption:not(.dark),
 .slider-caption:not(.dark) h2 {
   color: #222;
@@ -6228,11 +6229,12 @@ body:not(.has-plugin-html5video) .video-wrap video {
 
 .slider-caption h2 {
   font-size: 4rem;
-  letter-spacing: 2px;
+  /* letter-spacing: 2px; */
   text-transform: uppercase;
   font-weight: 700;
-  line-height: 1;
+  /* line-height: 1; */
   margin-bottom: 0;
+  white-space: pre-line;
 }
 
 .slider-caption p {
@@ -18370,4 +18372,55 @@ label.checkbox {
 	.entry-image, .entry-image > a, .entry-image .slide a, .entry-image img{
 		height:130px;
 	}
+}
+
+
+/* 주입된 두 컬럼을 감싸는 컨테이너 */
+/* 좌우배치 + 세로 가운데 정렬 + 전체영역 덮기 */
+.slider-caption.banner-flex {
+  position: absolute; 
+  inset: 0;               
+  z-index: 20;
+  display: flex !important; 
+  flex-direction: row;      
+  align-items: center;      
+  justify-content: space-between;
+  gap: 90px;
+}
+
+
+.slider-caption.banner-flex > * {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.slider-caption.banner-flex h1 {font-size: 3.2rem !important;}
+.slider-caption.banner-flex .mvs-right {max-width: 470px;}
+.slider-caption.banner-flex .mvs-right h3 {margin-bottom: 0 !important;}
+.slider-caption.banner-flex .mvs-right p {margin: 0 0 12px !important; padding-bottom: 8px; position:relative; font-size: 1.3rem !important;}
+.slider-caption.banner-flex .mvs-right p::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;                    /* width 대신 좌우 0으로 꽉 채움 */
+  bottom: 0;                   /* '밑에' 라인 */
+  height: 2px;
+  background-color: #292929;   /* 오타: backgorund-color → background-color */
+}
+.mvs-lead {font-size: 1.3rem !important;  font-weight: 500 !important;}
+
+.mvs-right .kp-row + .kp-row { 
+  margin-top: 30px; 
+}
+
+
+/* 모바일에서는 세로 스택 */
+@media (max-width: 768px) {
+  .slider-caption.banner-flex {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 100px 24px 40px;
+    gap: 20px;
+  }
 }
