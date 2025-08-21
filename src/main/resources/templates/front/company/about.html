@@ -2,7 +2,6 @@
 <html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 기업소개')">
-
 </head>
 
 <body class="stretched">
@@ -11,126 +10,540 @@
 
 		<th:block
 			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
-		<section id="page-title"
-			class="page-title-parallax page-title-dark include-header"
-			style="padding: 250px 0; background-image: url('/front/images/about/parallax.jpg'); background-size: cover; background-position: center center;"
-			data-bottom-top="background-position:0px 400px;"
-			data-top-bottom="background-position:0px -500px;">
-
+		<section id="page-title" class="contents-wrap">
 			<div class="container clearfix">
-				<h1>기업소개</h1>
-				<span>Bion Life Science Introduction</span>
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="/index">Home</a></li>
-					<li class="breadcrumb-item"><a href="#">회사소개</a></li>
-					<li class="breadcrumb-item active" aria-current="page">기업소개</li>
-				</ol>
-			</div>
-
-		</section>
-		<section id="content">
-			<div class="content-wrap">
-				<div class="container">
-
-					<div
-						class="row align-items-center col-mb-50 justify-content-between">
-
-						<div class="col-md-6">
-							<div class="feature-box media-box">
-								<div class="fbox-media">
-									<img src="/front/images/services/1.jpg" alt="Why choose Us?">
-								</div>
-							</div>
-						</div>
-						<div class="col-md-5 text-center text-md-start">
-							<div class="heading-block border-bottom-0">
-								<h4>기업 개요</h4>
-								<span>About BionLifeScience</span>
-							</div>
-
-
-							<p>이곳은 바이온라이프사이언스의 기업 개요가 들어가는 영역 입니다.</p>
-							<p>우측의 이미지는 기업개요를 보여줄 수 있는 이미지가 삽입될 예정 입니다.</p>
-
-						</div>
-					</div>
-
-					<div class="line"></div>
-
-					<div
-						class="row align-items-center col-mb-50 justify-content-between">
-						<div class="col-md-6 order-md-last">
-							<div class="feature-box media-box">
-								<div class="fbox-media">
-									<img src="/front/images/services/1.jpg" alt="Why choose Us?">
-								</div>
-							</div>
-						</div>
-
-						<div class="col-md-5 text-md-start text-center">
-							<div class="heading-block border-bottom-0">
-								<h4>추구 가치</h4>
-								<span>Value Sought</span>
-							</div>
-
-							<p>이곳은 바이온라이프사이언스의 추구가치가 들어가는 영역 입니다.</p>
-							<p>좌측의 이미지는 추구가치와 연관된 이미지가 삽입될 예입니다.</p>
-
-						</div>
-					</div>
-				</div>
-
-				<div class="line"></div>
-				<div class="container clearfix mt-5">
-
-					<div class="clear"></div>
-
-					<div class="border-top-0 m-0">
-							<div class="container text-center">
-
-								<div class="heading-block center">
-									<h2>PARTNERS</h2>
-									<span>바이온라이프사이언스의 파트너사 입니다...</span>
-								</div>
-							</div>
-						</div>
-
-					<ul class="clients-grid grid-2 grid-sm-3 grid-md-6 mb-0">
-						<li class="grid-item"><a href="#"><img
-								src="/front/images/clients/1.png" alt="Clients"></a></li>
-						<li class="grid-item"><a href=""><img
-								src="/front/images/clients/2.png" alt="Clients"></a></li>
-						<li class="grid-item"><a href=""><img
-								src="/front/images/clients/3.png" alt="Clients"></a></li>
-						<li class="grid-item"><a href=""><img
-								src="/front/images/clients/4.png" alt="Clients"></a></li>
-						<li class="grid-item"><a
-							href="http://logofaves.com/2021/02/hershel-farms/"><img
-								src="/front/images/clients/5.png" alt="Clients"></a></li>
-						<li class="grid-item"><a href="#"><img
-								src="/front/images/clients/6.png" alt="Clients"></a></li>
-						<li class="grid-item"><a href=""><img
-								src="/front/images/clients/7.png" alt="Clients"></a></li>
-						<li class="grid-item"><a href="#"><img
-								src="/front/images/clients/8.png" alt="Clients"></a></li>
-						<li class="grid-item"><a href="#"><img
-								src="/front/images/clients/9.png" alt="Clients"></a></li>
-						<li class="grid-item"><a href="#"><img
-								src="/front/images/clients/10.png" alt="Clients"></a></li>
-						<li class="grid-item"><a href="#"><img
-								src="/front/images/clients/11.png" alt="Clients"></a></li>
-						<li class="grid-item"><a href="#"><img
-								src="/front/images/clients/12.png" alt="Clients"></a></li>
+				<h1>회사 소개</h1>
+				<div class="breadcrumb-wrap">
+					<ul>
+						<li><a href="#about">기업 소개</a></li>
+						<li><a href="#history">기업 연혁</a></li>
+						<li><a href="#institute">부설 연구소</a></li>
+						<li><a href="#certifications">인증서</a></li>
+						<li><a href="#address">찾아오시는 길</a></li>
 					</ul>
-
 				</div>
-
 			</div>
 		</section>
+
+		<section class="hero about-body" id="hero">
+			<video autoplay muted loop playsinline class="hero-video"
+				id="heroVideo">
+				<source src="/front/images/mobile-first-1.mp4" type="video/mp4">
+			</video>
+
+			<div class="p-wrap">
+				<h2 class="sec-head p-item" data-speed="0.2">About Bion Life
+					Science</h2>
+				<div class="hero-grid">
+					<img class="hero-img p-item" data-speed="0.15"
+						src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1400&auto=format&fit=crop"
+						alt="About hero" />
+					<div class="p-item" data-speed="0.28">
+						<p class="sec-sub">
+							창의적 아이디어와 혁신적인 기술 개발을 통해 Life Science <br>분야에서 Global 시장을
+							선점하는 기업이 되기 위해 노력합니다.
+						</p>
+						<h3>Mission</h3>
+						<p>질병 진단에 도움을 주는 제품으로 더 나은 삶에 기여</p>
+						<h3 style="margin-top: 26px;">Vision</h3>
+						<p>혁신을 통한 Life Science 산업의 지속적인 성장 견인</p>
+						<h3 style="margin-top: 26px;">Strategy</h3>
+						<p>창의적 아이디어 · 지속적인 기술개발 · 지적재산 보호</p>
+					</div>
+				</div>
+			</div>
+
+			<div class="glance-slider" id="at-a-glance">
+				<div class="glance__head">
+					<h2 class="glance__title">AT A GLANCE</h2>
+				</div>
+
+				<div class="glance-nav">
+					<!-- Swiper -->
+					<div class="swiper glance-swiper">
+						<div class="swiper-wrapper">
+							<!-- Slide 1 -->
+							<div class="swiper-slide">
+								<article class="stat-card" aria-label="연 매출">
+									<p class="stat-card__value">
+										<span class="countup" data-target="820" data-suffix="억+">0</span>
+									</p>
+									<p class="stat-card__desc">연 매출 (예시값)</p>
+								</article>
+							</div>
+							<!-- Slide 2 -->
+							<div class="swiper-slide">
+								<article class="stat-card" aria-label="임직원 수">
+									<p class="stat-card__value">
+										<span class="countup" data-target="450">0</span><small>Employees</small>
+									</p>
+									<p class="stat-card__desc">전문가로 구성된 글로벌 팀</p>
+								</article>
+							</div>
+							<!-- Slide 3 -->
+							<div class="swiper-slide">
+								<article class="stat-card" aria-label="해외 거점">
+									<p class="stat-card__value">
+										<span class="countup" data-target="12">0</span><small>Countries</small>
+									</p>
+									<p class="stat-card__desc">생산/영업/서비스 네트워크</p>
+								</article>
+							</div>
+							<!-- Slide 4 (넓은 카드 예시: R&D) -->
+							<div class="swiper-slide">
+								<article class="stat-card" aria-label="R&D 투자 비중">
+									<p class="stat-card__value">
+										<span class="countup" data-target="14">0</span><small>%
+											of Revenue</small>
+									</p>
+									<p class="stat-card__desc">지속 가능한 성장의 핵심인 연구개발 투자 비중(예시값)</p>
+									<div class="progress" role="progressbar" aria-label="R&D ratio">
+										<div class="progress__bar" style="--val: 14"></div>
+									</div>
+								</article>
+							</div>
+							<!-- Slide 5 -->
+							<div class="swiper-slide">
+								<article class="stat-card" aria-label="생산시설">
+									<p class="stat-card__value">
+										<span class="countup" data-target="5">0</span><small>Sites</small>
+									</p>
+									<p class="stat-card__desc">국내외 생산 및 물류 센터</p>
+								</article>
+							</div>
+							<!-- Slide 6 -->
+							<div class="swiper-slide">
+								<article class="stat-card" aria-label="특허">
+									<p class="stat-card__value">
+										<span class="countup" data-target="320">0</span><small>Patents</small>
+									</p>
+									<p class="stat-card__desc">지속 확장 중인 IP 포트폴리오</p>
+								</article>
+							</div>
+						</div>
+
+						<!-- Pagination & Arrows -->
+						<div class="swiper-pagination"></div>
+						<div class="swiper-button-prev" aria-label="이전"></div>
+						<div class="swiper-button-next" aria-label="다음"></div>
+					</div>
+				</div>
+			</div>
+
+		</section>
+
+		<!-- History (Timeline) -->
+		<section id="history" class="section alt about-body">
+			<div class="p-wrap">
+				<h2 class="sec-head p-item" data-speed="0.22">연혁</h2>
+				<p class="sec-sub p-item" data-speed="0.36">주요 이정표를 간결한 타임라인으로
+					제공합니다.</p>
+				<div class="timeline">
+					<div class="t-item p-item" data-speed="0.18">
+						<h3 class="t-year">2025</h3>
+						<div class="t-body">바이온라이프사이언스 공식 홈페이지 론칭, iBio 쇼핑몰 고도화 2.0
+							배포.</div>
+					</div>
+					<div class="t-item p-item" data-speed="0.2">
+						<h3 class="t-year">2024</h3>
+						<div class="t-body">Cafe24 커스텀 모듈 구축, ERP/물류 연동 파일럿 운영.</div>
+					</div>
+					<div class="t-item p-item" data-speed="0.22">
+						<h3 class="t-year">2023</h3>
+						<div class="t-body">기업부설연구소 설립 및 GMP 관련 인증 준비 착수.</div>
+					</div>
+					<div class="t-item p-item" data-speed="0.24">
+						<h3 class="t-year">2021</h3>
+						<div class="t-body">생명과학 연구자 대상 B2B 유통 개시.</div>
+					</div>
+				</div>
+
+				<div class="cards">
+					<div class="card p-item" data-speed="0.25">
+						<h4>파트너십</h4>
+						<p>다수 글로벌 벤더와 공급 계약 체결</p>
+					</div>
+					<div class="card p-item" data-speed="0.27">
+						<h4>플랫폼</h4>
+						<p>iBio 카테고리/검색 M:N 확장</p>
+					</div>
+					<div class="card p-item" data-speed="0.23">
+						<h4>고객 성장</h4>
+						<p>연구기관/병원/기업 고객 다각화</p>
+					</div>
+				</div>
+			</div>
+		</section>
+		`
+		<!-- Corporate Lab -->
+		<section id="institute" class="section about-body">
+			<div class="p-wrap">
+				<h2 class="sec-head p-item" data-speed="0.2">기업부설연구소</h2>
+				<p class="sec-sub p-item" data-speed="0.34">신제품 검증, 품질 표준화, 데이터
+					기반 서비스 R&D를 수행합니다.</p>
+				<div class="cards">
+					<div class="card p-item" data-speed="0.2">
+						<h4>R&amp;D 분야</h4>
+						<p>시약/소모품 품질평가, 자동화 워크플로우</p>
+					</div>
+					<div class="card p-item" data-speed="0.24">
+						<h4>성과</h4>
+						<p>내부 표준화 프로토콜 20+건 정립</p>
+					</div>
+					<div class="card p-item" data-speed="0.22">
+						<h4>협력</h4>
+						<p>대학/병원 공동 프로젝트 다수 진행</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Certificates (Swipe) -->
+		<section id="certificates" class="section alt about-body">
+			<div class="p-wrap">
+				<h2 class="sec-head p-item" data-speed="0.2">인증서</h2>
+				<p class="sec-sub p-item" data-speed="0.34">보유 인증/수상 내역 샘플
+					레이아웃입니다. 좌우 스와이프로 확인하세요.</p>
+				<div class="cert-wrap">
+					<div class="cert-nav">
+						<button class="cert-btn" id="certPrev" aria-label="이전">◀</button>
+						<button class="cert-btn" id="certNext" aria-label="다음">▶</button>
+					</div>
+					<div class="cert-viewport" id="certViewport">
+						<div class="cert-track" id="certTrack">
+							<div class="cert p-item" data-speed="0.22">
+								<img
+									src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop"
+									alt="cert1" /> <span>ISO 9001</span>
+							</div>
+							<div class="cert p-item" data-speed="0.28">
+								<img
+									src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop"
+									alt="cert2" /> <span>ISO 14001</span>
+							</div>
+							<div class="cert p-item" data-speed="0.24">
+								<img
+									src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop"
+									alt="cert3" /> <span>GMP 인증</span>
+							</div>
+							<div class="cert p-item" data-speed="0.26">
+								<img
+									src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop"
+									alt="cert4" /> <span>벤처기업 확인</span>
+							</div>
+							<div class="cert p-item" data-speed="0.22">
+								<img
+									src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=800&auto=format&fit=crop"
+									alt="cert5" /> <span>품질경영 대상</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Location (Map) -->
+		<section id="location" class="section about-body">
+			<div class="p-wrap">
+				<h2 class="sec-head p-item" data-speed="0.2">찾아오시는 길</h2>
+				<p class="sec-sub p-item" data-speed="0.34">주소 및 교통 안내. 아래 지도는
+					임시 예시입니다.</p>
+				<div class="loc-wrap">
+					<iframe class="map-box p-item" data-speed="0.14"
+						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3164.856876770622!2d126.9779693156528!3d37.56653597979815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b7b7c1012d1f3%3A0x6b3d2d3c8f2f9b1!2z7ISc7Jq47Yq567OE7IucIOq1rOq1rA!5e0!3m2!1sko!2skr!4v1686820000000"
+						allowfullscreen="" loading="lazy"
+						referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+					<div class="addr p-item" data-speed="0.22">
+						<dl>
+							<dt>주소</dt>
+							<dd>서울특별시 중구 세종대로 110 (예시)</dd>
+							<dt>대표번호</dt>
+							<dd>02-000-0000</dd>
+							<dt>대중교통</dt>
+							<dd>지하철 1,2호선 시청역 3번 출구 도보 5분</dd>
+						</dl>
+						<div class="btn-row">
+							<button class="btn"
+								onclick="window.open('https://map.naver.com', '_blank')">네이버
+								지도</button>
+							<button class="btn alt"
+								onclick="window.open('https://map.kakao.com', '_blank')">카카오
+								지도</button>
+							<button class="btn alt"
+								onclick="window.open('https://maps.google.com', '_blank')">Google
+								Maps</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+
+
 
 		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
 	</div>
 	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
 	<script src="/front/js/timeline.js"></script>
+
+
+	<script>
+(() => {
+  /* =========================
+     안전 가드: IntersectionObserver.observe 대상 검증
+     ========================= */
+  (function () {
+    if (!('IntersectionObserver' in window)) return;
+    const _observe = IntersectionObserver.prototype.observe;
+    IntersectionObserver.prototype.observe = function (target) {
+      if (!target || !(target instanceof Element)) return;
+      try { return _observe.call(this, target); } catch (e) { /* no-op */ }
+    };
+  })();
+
+  /* =========================
+     Hero video scale / translate / blur
+     ========================= */
+  const hero = document.getElementById('hero');
+  const bg   = document.getElementById('heroVideo');
+  let tickingHero = false;
+
+  function getProgress() {
+    const rect = hero.getBoundingClientRect();
+    const h = rect.height || 1;
+    const p = 1 - Math.max(0, Math.min(1, rect.bottom / h));
+    const speed = 1.7; // 진행 속도 보정
+    return Math.max(0, Math.min(1, p * speed));
+  }
+
+  function updateHero() {
+    tickingHero = false;
+    if (!hero) return;
+    const p = getProgress();
+
+    const scale = 0.85 + 1.75 * p;   // 필요 시 사용 (현재 주석)
+    const translateX = 700 * p;
+    const ty = -24 * p;              // 위로 살짝 이동
+    const blur = 2 * (1 - p);        // 점점 선명
+
+    if (bg) {
+      bg.style.transform = `translate3d(${translateX}px, ${ty}px, 0) /*scale(${scale})*/`;
+      bg.style.filter = `blur(${blur}px)`;
+    }
+  }
+
+  function onScrollHero() {
+    if (!tickingHero) {
+      requestAnimationFrame(updateHero);
+      tickingHero = true;
+    }
+  }
+
+  updateHero();
+  window.addEventListener('scroll', onScrollHero, { passive: true });
+  window.addEventListener('resize', onScrollHero);
+
+  /* =========================
+     페이지 진입 시 LNB 애니메이션
+     ========================= */
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.breadcrumb-wrap')?.classList.add('show');
+  });
+
+  /* =========================
+     .p-item 패럴랙스 & 리빌 (재진입 시 트랜지션 재실행)
+     ========================= */
+  const items = Array.from(document.querySelectorAll('.p-item'));
+  let lastY = window.scrollY;
+
+  const onScrollItems = () => {
+    const y = window.scrollY;
+    if (Math.abs(y - lastY) < 2) return; // 작은 변화 무시
+    lastY = y;
+
+    const vh = window.innerHeight;
+    items.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      const speed = parseFloat(el.dataset.speed || 0.2);
+
+      // reveal 조건: 뷰포트에 들어오면 show 부여, 나가면 제거 -> 재진입 시 트랜지션 재실행
+      const visible = rect.top < vh * 0.86 && rect.bottom > vh * 0.14;
+      if (visible) {
+        if (!el.classList.contains('show')) {
+          void el.offsetWidth;           // 강제 리플로우로 애니메이션 재시작 보장
+          el.classList.add('show');
+        }
+      } else {
+        el.classList.remove('show');
+      }
+
+      // 뷰포트 안에서만 패럴랙스 적용 (CSS에서 transform 사용 시 지속 이동)
+      if (rect.bottom > 0 && rect.top < vh) {
+        const offset = (rect.top - vh / 2) * speed;
+        el.style.setProperty('--py', `${offset}px`);
+        // 필요 시 직접 transform 적용:
+        // el.style.transform = `translateY(${offset}px)`;
+      }
+    });
+  };
+
+  let tickingItems = false;
+  const rafItems = () => { onScrollItems(); tickingItems = false; };
+
+  window.addEventListener('scroll', () => {
+    if (!tickingItems) {
+      tickingItems = true;
+      window.requestAnimationFrame(rafItems);
+    }
+  }, { passive: true });
+
+  window.addEventListener('load', onScrollItems);
+
+  /* =========================
+     LNB Active State Sync
+     ========================= */
+  const sections = document.querySelectorAll('main .section[id]');
+  const links = document.querySelectorAll('.breadcrumb-wrap a');
+
+  if (sections.length && links.length) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const id = '#' + e.target.id;
+          links.forEach(a => a.classList.toggle('is-active', a.getAttribute('href') === id));
+        }
+      });
+    }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+
+    sections.forEach(sec => io.observe(sec));
+  }
+
+  /* =========================
+     Certificates swipe buttons + snap helper
+     ========================= */
+  const viewport = document.getElementById('certViewport');
+  const prev = document.getElementById('certPrev');
+  const next = document.getElementById('certNext');
+
+  if (viewport && prev && next) {
+    const cardWidth = () => viewport.querySelector('.cert')?.offsetWidth || 280;
+
+    const updateBtns = () => {
+      const maxScroll = viewport.scrollWidth - viewport.clientWidth - 2; // tolerance
+      prev.disabled = viewport.scrollLeft <= 2;
+      next.disabled = viewport.scrollLeft >= maxScroll;
+    };
+
+    prev.addEventListener('click', () => {
+      viewport.scrollBy({ left: -cardWidth() - 16, behavior: 'smooth' });
+      setTimeout(updateBtns, 350);
+    });
+
+    next.addEventListener('click', () => {
+      viewport.scrollBy({ left: cardWidth() + 16, behavior: 'smooth' });
+      setTimeout(updateBtns, 350);
+    });
+
+    viewport.addEventListener('scroll', updateBtns, { passive: true });
+    window.addEventListener('load', updateBtns);
+  }
+
+  /* =========================
+     Swiper 초기화 (없으면 CDN 로드 후 초기화)
+     ========================= */
+     
+  function resetCounts(scope){
+	  scope.querySelectorAll('.countup').forEach(el => { el.dataset.counted = ''; });
+	  scope.querySelectorAll('.progress__bar').forEach(el => {
+	    el.dataset.filled = '';
+	    el.style.width = '0';
+	  });
+	}    
+     
+     
+  function initGlanceSwiper() {
+    if (!window.Swiper) return;
+    new Swiper('.glance-swiper', {
+      speed: 600,
+      spaceBetween: 18,
+      slidesPerView: 1,
+      centeredSlides: false,
+      loop: false,
+      grabCursor: true,
+      pagination: { el: '.glance-swiper .swiper-pagination', clickable: true },
+      navigation: {
+        nextEl: '.glance-swiper .swiper-button-next',
+        prevEl: '.glance-swiper .swiper-button-prev'
+      },
+      breakpoints: {
+        640:  { slidesPerView: 2.1 },
+        960:  { slidesPerView: 3.1 },
+        1280: { slidesPerView: 1 }
+      },
+      on: {
+   	  init(sw){
+   	      const slide = sw.slides[sw.activeIndex];
+   	      resetCounts(slide);
+   	      triggerCounts([slide]);             // 첫 화면에서 즉시
+   	    },
+   	    slideChangeTransitionEnd(sw){
+   	      const slide = sw.slides[sw.activeIndex]; // "이 위치"에 고정된 후
+   	      resetCounts(slide);
+   	      triggerCounts([slide]);             // 그때 카운트/프로그레스 시작
+   	    }
+	  }
+    });
+  }
+
+  if (!window.Swiper) {
+    const s = document.createElement('script');
+    s.src = 'https://unpkg.com/swiper@9/swiper-bundle.min.js';
+    s.onload = initGlanceSwiper;
+    document.head.appendChild(s);
+  } else {
+    initGlanceSwiper();
+  }
+  
+  
+//CountUp 효과 & progress bar 채우기
+  function triggerCounts(nodes) {
+    nodes.forEach((s) => {
+      const el = s.querySelector('.countup');
+      if (el && !el.dataset.counted) { startCount(el); el.dataset.counted = '1'; }
+      const bar = s.querySelector('.progress__bar');
+      if (bar && !bar.dataset.filled) {
+    	  requestAnimationFrame(()=>{
+			const cssVal = getComputedStyle(bar).getPropertyValue('--val').trim();
+			const val = parseFloat(cssVal || bar.dataset.val || '0') || 0;
+			bar.style.width = val + '%';
+			bar.dataset.filled = '1';
+		})
+      }
+    });
+  }
+
+  function startCount(el) {
+    const target = Number(el.getAttribute('data-target')) || 0;
+    const suffix = el.getAttribute('data-suffix') || '';
+    const dur = 900; // ms
+    const t0 = performance.now();
+    const start = 0;
+    function step(t) {
+      const p = Math.min(1, (t - t0) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const val = Math.floor(start + (target - start) * eased);
+      el.textContent = val.toLocaleString();
+      if (p < 1) requestAnimationFrame(step); else if (suffix) el.textContent += suffix;
+    }
+    requestAnimationFrame(step);
+  }
+  
+  
+})();
+</script>
+
+
+
 </body>
 </html>

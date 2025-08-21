@@ -19,44 +19,48 @@
 							<div class="container">
 								<div class="slider-caption banner-flex">
 									<div data-animate="fadeInUp" th:utext="${b.subject}"></div>
-									<div data-animate="fadeInUp"
-										data-delay="200" th:utext="${b.content}"></div>
+									<div data-animate="fadeInUp" data-delay="200"
+										th:utext="${b.content}"></div>
 								</div>
 							</div>
 
-							
+
 							<!-- 데스크톱용 -->
 							<div class="swiper-slide-bg is-desktop"
-							     th:if="${!#strings.isEmpty(b.webroad)}">
-							
-							  <!-- 비디오(.mp4) -->
-							  <video th:if="${#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4')}"
-							         autoplay muted loop playsinline
-							         style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
-							    <source th:src="@{${b.webroad}}" type="video/mp4"/>
-							  </video>
-							
-							  <!-- 이미지(그 외) -->
-							  <div th:if="${!(#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4'))}"
-							       th:style="'position:absolute; inset:0; background-image:url(' + @{${b.webroad}} + '); background-position:center top; background-size:cover;'">
-							  </div>
+								th:if="${!#strings.isEmpty(b.webroad)}">
+
+								<!-- 비디오(.mp4) -->
+								<video
+									th:if="${#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4')}"
+									autoplay muted loop playsinline
+									style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+									<source th:src="@{${b.webroad}}" type="video/webm" />
+								</video>
+
+								<!-- 이미지(그 외) -->
+								<div
+									th:if="${!(#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4'))}"
+									th:style="'position:absolute; inset:0; background-image:url(' + @{${b.webroad}} + '); background-position:center top; background-size:cover;'">
+								</div>
 							</div>
-							
+
 							<!-- 모바일용 -->
 							<div class="swiper-slide-bg is-mobile"
-							     th:if="${!#strings.isEmpty(b.mobileroad)}">
-							
-							  <!-- 비디오(.mp4) -->
-							  <video th:if="${#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4')}"
-							         autoplay muted loop playsinline
-							         style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
-							    <source th:src="@{${b.mobileroad}}" type="video/mp4"/>
-							  </video>
-							
-							  <!-- 이미지(그 외) -->
-							  <div th:if="${!(#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4'))}"
-							       th:style="'position:absolute; inset:0; background-image:url(' + @{${b.mobileroad}} + '); background-position:center top; background-size:cover;'">
-							  </div>
+								th:if="${!#strings.isEmpty(b.mobileroad)}">
+
+								<!-- 비디오(.mp4) -->
+								<video
+									th:if="${#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4')}"
+									autoplay muted loop playsinline
+									style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+									<source th:src="@{${b.mobileroad}}" type="video/webm" />
+								</video>
+
+								<!-- 이미지(그 외) -->
+								<div
+									th:if="${!(#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4'))}"
+									th:style="'position:absolute; inset:0; background-image:url(' + @{${b.mobileroad}} + '); background-position:center top; background-size:cover;'">
+								</div>
 							</div>
 						</div>
 					</div>
@@ -79,9 +83,8 @@
 
 		<section id="content">
 			<div class="content-wrap p-b-0">
-
-				<div
-					class="promo promo-light promo-full bottommargin-lg header-stick border-top-0 p-5">
+				<!-- promo promo-light promo-full bottommargin-lg header-stick border-top-0 p-5 -->
+				<div class="promo promo-light header-stick p-5">
 					<div class="container clearfix">
 						<div class="row align-items-center">
 							<div class="col-12 col-lg">
@@ -98,6 +101,53 @@
 					</div>
 				</div>
 
+
+
+
+				<div class="history-section clearfix bg-white">
+					<div class="history-wrap" id="business-history">
+
+						<!-- 비디오 -->
+						<video autoplay muted loop playsinline
+							style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+							<source src="/front/images/history-content.mp4" type="video/webm">
+						</video>
+
+						<!-- 캡션 -->
+						<div class="history-caption">
+							<ul>
+								<li>
+									<i class="history-graphic"></i> 
+								  	<span>도전의 여정</span>
+									<h3>
+										새로운 도전과<br>변화의 시작
+									</h3> <i class="history-arrow"></i>
+								</li>
+								<li><i class="history-graphic"></i> <span>오늘의 성과</span>
+									<h3>
+										지속적인 성장과<br>끊임없는 노력
+									</h3> <i class="history-arrow"></i></li>
+								<li><i class="history-graphic"></i> <span>혁신의 내일</span>
+									<h3>
+										더 나은 미래를<br>향한 한 걸음
+									</h3> <i class="history-arrow"></i></li>
+
+
+								<li><i class="history-graphic"></i> <span>타임캡슐</span>
+									<h3>
+										함께 만들어가는<br>바이온의 역사
+									</h3> <i class="history-arrow"></i></li>
+							</ul>
+						</div>
+
+					</div>
+				</div>
+
+
+
+
+
+
 				<div class="section clearfix bg-white">
 
 					<div class="border-top-0 m-0">
@@ -105,7 +155,9 @@
 
 							<div class="heading-block center">
 								<h2>PRODUCTS</h2>
-								<span>자사의 브랜드 BIOTEAT 제품은<br>핵심 공정의 안정성과 효율을 높이는 솔루션을 합니다.</span>
+								<span>자사의 브랜드 BIOTEAT 제품은<br>핵심 공정의 안정성과 효율을 높이는
+									솔루션을 합니다.
+								</span>
 							</div>
 						</div>
 					</div>
@@ -168,17 +220,18 @@
 										<div class="col-md-12">
 											<div class="entry-title title-xs">
 												<h2>
-													<a th:href="@{/notice#faq-} + ${i.id}" th:text="${i.subject}"
-													th:style="${i.sign == true ? 'color : red;': 'color:black;'}">이곳은
+													<a th:href="@{/notice#faq-} + ${i.id}"
+														th:text="${i.subject}"
+														th:style="${i.sign == true ? 'color : red;': 'color:black;'}">이곳은
 														공지사항의 제목이 들어가는 곳 입니다...</a>
 												</h2>
 											</div>
 											<div class="entry-meta">
 												<ul>
-													<li><a th:href="@{/notice#faq-} + ${i.id}"><i class="icon-time"></i>
-															공지일 : [[${i.date}]]</a></li>
-													<li><a th:href="@{/notice#faq-} + ${i.id}"> # 공지사항주제 :
-															[[${i.noticeSubject.text}]]</a></li>
+													<li><a th:href="@{/notice#faq-} + ${i.id}"><i
+															class="icon-time"></i> 공지일 : [[${i.date}]]</a></li>
+													<li><a th:href="@{/notice#faq-} + ${i.id}"> #
+															공지사항주제 : [[${i.noticeSubject.text}]]</a></li>
 												</ul>
 											</div>
 
@@ -236,7 +289,9 @@
 
 							<div class="heading-block center">
 								<h2>PARTNERS</h2>
-								<span>유명 브랜드를 수요 공급하고 있으며<br>검증된 제품을 안정적인 공급망을 통하여 제공해드립니다.</span>
+								<span>유명 브랜드를 수요 공급하고 있으며<br>검증된 제품을 안정적인 공급망을 통하여
+									제공해드립니다.
+								</span>
 							</div>
 						</div>
 					</div>
@@ -299,7 +354,8 @@
 
 	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
 	<div id="modal-switch" tabindex="-1" role="dialog"
-		aria-labelledby="modal-switch-label" class="modal" style="display:none;">
+		aria-labelledby="modal-switch-label" class="modal"
+		style="display: none;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -310,25 +366,28 @@
 				</div>
 				<div class="modal-body">
 					<div class="clock" style="margin: 2em;"></div>
-					<div class="col-md-11" style="margin:0 auto;">
+					<div class="col-md-11" style="margin: 0 auto;">
 						<div class="col-sm-12 nopadding">
 							<div class="sec-title-container less-padding-4 text-left">
-								<h5
-									class="font-weight-4 line-height-4 ce-title-top-text">Site Re-Modeling</h5>
-								<h2 class="font-weight-6 line-height-5" style="letter-spacing:-3px;">Bion Life Science 의 사이트의 리모델링 기간 입니다.</h2>
+								<h5 class="font-weight-4 line-height-4 ce-title-top-text">Site
+									Re-Modeling</h5>
+								<h2 class="font-weight-6 line-height-5"
+									style="letter-spacing: -3px;">Bion Life Science 의 사이트의
+									리모델링 기간 입니다.</h2>
 								<div class="ce-title-line align-left"></div>
 							</div>
 						</div>
 						<div class="clearfix"></div>
 						<p>테스트</p>
-						<p>고객님들에게 더 나은 서비스와 편리함을 제공하기 위하여 Bion Life Science 웹사이트의 리모델링을 진행하고 있습니다.</p>
+						<p>고객님들에게 더 나은 서비스와 편리함을 제공하기 위하여 Bion Life Science 웹사이트의
+							리모델링을 진행하고 있습니다.</p>
 						<p>더 나은 모습으로 곧 돌아오겠습니다. 항상 많은 관심 부탁드립니다.</p>
 						<p>
-							<address class="mb-0">
-								# ADDRESS : 경기도 남양주시 순화궁로 282, 10층<br> # TEL :
-								031-572-2272<br> # FAX : 031-572-2273<br> # E-MAIL :
-								bionlifescience@hanmail.net
-							</address>
+						<address class="mb-0">
+							# ADDRESS : 경기도 남양주시 순화궁로 282, 10층<br> # TEL : 031-572-2272<br>
+							# FAX : 031-572-2273<br> # E-MAIL :
+							bionlifescience@hanmail.net
+						</address>
 						</p>
 					</div>
 				</div>
@@ -357,6 +416,7 @@
 			});
 		});
 	</script>
+
 </body>
 
 </html>

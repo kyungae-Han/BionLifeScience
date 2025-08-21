@@ -93,9 +93,9 @@ a {
   color: #fe5000;
 }
 
-a:hover {
+/* a:hover {
   color: #222;
-}
+} */
 
 a img {
   border: none;
@@ -3281,6 +3281,7 @@ html[xmlns] .slider-wrap {
   position: relative;
   background-color: #fff;
   border-bottom: 1px solid #f5f5f5;
+  z-index: 800;
 }
 
 #header-wrap {
@@ -3562,8 +3563,9 @@ html[xmlns] .slider-wrap {
   display: flex;
   align-items: center;
   -ms-flex-align: center;
-  margin-right: auto;
+  /* margin-right: auto; */
   max-height: 100%;
+  margin: 0 !important;
 }
 
 #logo a {
@@ -4008,7 +4010,7 @@ body:not(.top-search-open) .top-search-parent #primary-menu-trigger {
   .full-header .primary-menu .menu-container {
     padding-right: 0.5rem;
     margin-right: 0.5rem;
-    border-right: 1px solid #eee;
+    /* border-right: 1px solid #eee; */
   }
 
   .transparent-header.full-header .primary-menu .menu-container {
@@ -18460,4 +18462,302 @@ label.checkbox {
   .slider-caption.banner-flex .mvs-left p {display: none;}
   .slider-caption.banner-flex .mvs-right h3 {font-size: 1.3rem !important;}
   .slider-caption.banner-flex .mvs-right p {font-size: 0.925rem !important;}
+}
+
+
+/*  제품소개/브랜드소개 메가메뉴로  */
+#search-wrap {border-left: 1px solid #eee; position: absolute; right: 30px;}
+.mega-nav a:hover {color: #fff;}
+
+.mega-nav .has-mega{position:static; padding-bottom: 5px;}
+.mega-nav .has-mega > .mega-menu { top: calc(100% - 10px);}
+
+.mega-menu{
+  position:absolute; left:0; right:0; top:100%;
+  background:#0e4661; color:#fff; display:none; z-index:1100;
+  box-shadow:0 12px 24px rgba(0,0,0,.15);
+  margin: auto;
+}
+
+
+.mega-nav .has-mega:hover>.mega-menu,
+.mega-nav .has-mega:focus-within>.mega-menu, 
+.mega-menu:hover { display:block;}
+
+/* 레이아웃 */
+/*기존 : color:#cfe6f2;*/
+.mega-wrap{ display:flex; min-height:320px; width: 1480px; margin: 0 auto; justify-content: center;}
+.mega-tabs{ width:260px; border-right:1px solid rgba(255,255,255,.15); }
+.mega-tabs ul{ list-style:none; margin:0; padding:12px 0; }
+.mega-tab-btn{
+  display:block; width:100%; text-align:left; background:none; border:0;
+  padding:12px 18px; color:#fff;  font-weight:700; cursor:pointer;
+}
+.mega-tab.is-active .mega-tab-btn{ background:rgba(255,255,255,.08); color:#fff; }
+
+.mega-panels{ flex:1; }
+.mega-panel{ display:none; padding:20px 28px; }
+.mega-panel.is-active{ display:block; }
+
+.mega-columns{
+  display:grid; grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:18px 28px;
+}
+
+/* 2depth부터 드롭다운 */
+.mega-2depth{ position:relative; }
+.mega-2depth-link{
+  display:block; font-weight:800; color:#fff; text-decoration:none; padding:6px 0;
+}
+.mega-3depth, .mega-4depth{
+  list-style:none; margin:0; padding:0 0 6px 12px; display:none;
+}
+.mega-2depth:hover>.mega-3depth,
+.mega-2depth:focus-within>.mega-3depth{ display:block; }
+.mega-3depth>li>a{
+  display:block; color:#fff; text-decoration:none; padding:4px 0; font-size:14px;
+}
+.mega-4depth>li>a{ display:block; color:#b9d8e8; padding:3px 0; font-size:13px; }
+
+.mega-more{position:absolute; bottom: 30px; }
+.mega-more a{ color:#8fd3ff; text-decoration:none; font-weight:700; }
+
+
+/* 반응형 */
+@media (max-width:1200px){ .mega-columns{ grid-template-columns:repeat(3,1fr); } }
+@media (max-width:992px){  .mega-columns{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:768px){
+  .mega-menu{ position:static; }
+  .mega-wrap{ flex-direction:column; }
+  .mega-tabs{ width:auto; border-right:0; border-bottom:1px solid rgba(255,255,255,.15); }
+  .mega-columns{ grid-template-columns:1fr; }
+  /* 모바일에선 클릭으로 토글하고 싶다면 JS로 처리(아래 참고) */
+}
+
+
+
+
+/* history-section */
+/* 섹션/랩 높이 통일: 둘 다 860px */
+.history-section {
+  position: relative;
+  height: 860px;           /* max-height 대신 고정 높이 */
+  width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.history-wrap {
+  position: relative;
+  height: 100%;            /* 섹션 높이 따라감 */
+}
+
+/* 비디오는 뒤에서 꽉 채움 */
+.history-wrap video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 캡션은 비디오 위에 전체 덮고 중앙 정렬 */
+.history-caption {
+  position: absolute;      /* relative → absolute */
+  inset: 0;                /* top/right/bottom/left:0 */
+  z-index: 2;
+  color: #fff;
+  text-align: center;
+  display: flex;
+  justify-content: center; /* 가로 중앙 */
+  align-items: center;     /* 세로 중앙 */
+}
+
+/* 옵션: 가독성 향상용 오버레이 */
+.history-caption::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,.35), rgba(0,0,0,.35));
+  z-index: -1;             /* 텍스트 뒤, 비디오 앞 */
+}
+
+.history-caption ul,
+.history-caption li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.history-caption ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;   /* li 전체를 컨테이너 높이에 맞춤 */
+  height: 100%;           /* 비디오 높이와 동일하게 */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.history-caption li {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column; /* 텍스트 세로 정렬 */
+  justify-content: center;
+  padding: 0 24px;
+  align-items: center;
+}
+
+/* 세로 구분선 */
+.history-caption li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;     /* ★ 컨테이너 높이에 맞춰 자동으로 뻗음 */
+  right: 0;
+  width: 1px;
+  background: rgba(255,255,255,0.4);
+}
+
+/* 좁은 화면에서는 라인 감추기(선택) */
+@media (max-width: 768px) {
+  .history-caption li:not(:last-child)::after { display: none; }
+}
+
+.history-caption h3 {
+  color: #fff;
+  margin: 8px 0 0;
+  line-height: 1.65;
+  padding: 8px 0 12px;
+}
+
+.history-caption .history-arrow {
+	display: inline-block;
+	width: 40px;;
+	height: 40px;
+	background: url('/front/images/icons/arrow.svg') no-repeat center center;
+	background-size: contain;
+}
+
+.history-caption .history-graphic{
+  display:block;
+  width:100px; height:100px;
+  margin-bottom:18px;
+  opacity:0; 
+  transform: translateY(8px) scale(.96);
+  transition: opacity .35s ease, transform .35s ease, filter .35s ease;
+  filter: drop-shadow(0 0 0 rgba(255,255,255,0));
+  pointer-events:none;
+  will-change: transform, opacity;
+  z-index: 1;  /* 텍스트와 같은 레벨 */
+}
+
+.history-caption li:hover .history-graphic {
+  opacity: 1 !important;
+  transform: translateY(10px) scale(1);
+  filter: drop-shadow(0 8px 18px rgba(0,0,0,.35))
+          drop-shadow(0 0 10px rgba(255,255,255,.15));
+}
+
+
+.history-caption li:nth-child(1) .history-graphic {
+    background: url('/front/images/target.gif') no-repeat center/contain; 
+}
+.history-caption li:nth-child(2) .history-graphic {
+    background: url('/front/images/analytics.gif') no-repeat center/contain; 
+}
+.history-caption li:nth-child(3) .history-graphic {
+    background: url('/front/images/genomics.gif') no-repeat center/contain; 
+}
+.history-caption li:nth-child(4) .history-graphic {
+    background: url('/front/images/vision.gif') no-repeat center/contain; 
+}
+
+
+.history-caption li a{margin: 0; padding: 0; text-decoration: none;}
+
+.history-caption li:hover span,
+.history-caption li:hover h3,
+.history-caption li:hover .history-arrow{
+  transform: translateY(30px);
+  transition: 0.35s ease;
+  will-change: transform, opacity;
+}
+
+
+
+.history-caption li:hover .history-graphic{
+  animation: softPulse 1.6s ease-in-out infinite;
+}
+
+/* 세로 구분선 유지(마지막 제외) */
+.history-caption li:not(:last-child)::after{
+  content:"";
+  position:absolute; top:0; bottom:0; right:0; width:1px;
+  background:rgba(255,255,255,.45);
+}
+
+/* 접근성: 키보드 포커스에도 동일 효과 */
+.history-caption li:focus-within span,
+.history-caption li:focus-within h3{ transform: translateY(10px); }
+.history-caption li:focus-within .history-graphic{
+  opacity:1; transform: translateY(-6px) scale(1);
+  animation: softPulse 1.6s ease-in-out infinite;
+}
+
+.menu-link {cursor: pointer;}
+
+
+.contents-wrap {
+	width: 100%; 
+	text-align: center; 
+	background-color: #fff !important; 
+	border-top: 1px solid #f1f1f1;
+	font-weight: 500;
+	font-size: 20px;
+}
+	
+.contents-wrap h1 {font-size: 4.5rem !important;}
+.breadcrumb-wrap {
+	width: 100%; 
+	height: 70px; 
+	display: block; 
+	position: relative; 
+	margin: 50px auto;
+	}
+
+.breadcrumb-wrap ul, .breadcrumb-wrap li {list-style: none;}
+
+.breadcrumb-wrap ul {
+	display: flex;
+	justify-content: center;
+	gap: 40px;
+	}
+
+.breadcrumb-wrap li {
+	padding: 20px 10px;
+	opacity: 0;
+	transform: translateY(20px);
+	transition: all 0.6s ease;
+}
+
+.breadcrumb-wrap a {
+	color: #9E9E9E;
+	font-weight: 700;
+	font-family: 'Noto Sans KR', sans-serif;
+	
+	}
+	
+.breadcrumb-wrap a:hover {color: black;}
+
+/*페이지 로드시 활성화 클래스*/
+.breadcrumb-wrap.show li {
+	opacity: 1;
+	transform: translateY(0);
+	transition-delay: 0.1s;
 }

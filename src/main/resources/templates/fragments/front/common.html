@@ -4,53 +4,57 @@
 
 <head th:fragment="headSrc(title)">
 
-	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<meta name="author" content="" />
-	<link
-		href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Poppins:300,400,500,600,700|PT+Serif:400,400i&display=swap"
-		rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" href="/front/css/bootstrap.css" type="text/css" />
-	<link rel="stylesheet" href="/front/style.css" type="text/css" />
-	<link rel="stylesheet" href="/front/css/swiper.css" type="text/css" />
-	<link rel="stylesheet" href="/front/css/dark.css" type="text/css" />
-	<link rel="stylesheet" href="/front/css/font-icons.css" type="text/css" />
-	<link rel="stylesheet" href="/front/css/animate.css" type="text/css" />
-	<link rel="stylesheet" href="/front/css/magnific-popup.css" type="text/css" />
-	<link rel="stylesheet" href="/front/css/custom.css" type="text/css" />
-	<link rel="stylesheet" href="/front/detail.css">
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<script src="https://kit.fontawesome.com/e5334cc6a1.js" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="/front/timeline.css">
-	<link rel="shortcut icon" href="/front/image/logo/favicon.ico">
-	<link rel="stylesheet" href="/front/js/countdown-timers/flipclock.css">
-	<title th:text="${title}">바이온라이프사이언스</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="author" content="" />
+<link
+	href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Poppins:300,400,500,600,700|PT+Serif:400,400i&display=swap"
+	rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/front/css/bootstrap.css" type="text/css" />
+<link rel="stylesheet" href="/front/style.css" type="text/css" />
+<link rel="stylesheet" href="/front/css/swiper.css" type="text/css" />
+<link rel="stylesheet" href="/front/css/dark.css" type="text/css" />
+<link rel="stylesheet" href="/front/css/font-icons.css" type="text/css" />
+<link rel="stylesheet" href="/front/css/animate.css" type="text/css" />
+<link rel="stylesheet" href="/front/css/magnific-popup.css"
+	type="text/css" />
+<link rel="stylesheet" href="/front/css/custom.css" type="text/css" />
+<link rel="stylesheet" href="/front/detail.css">
+<link rel="stylesheet" href="/front/company.css" type="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script src="https://kit.fontawesome.com/e5334cc6a1.js"
+	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="/front/timeline.css">
+<link rel="shortcut icon" href="/front/image/logo/favicon.ico">
+<link rel="stylesheet" href="/front/js/countdown-timers/flipclock.css">
+<title th:text="${title}">바이온라이프사이언스</title>
 
 </head>
 
 <body class="stretched">
 	<div id="wrapper" class="clearfix">
 		<th:block th:fragment="headerSrc(transparent, menuList)">
-			<header id="header" class="full-header" th:classappend="${transparent} == true ? transparent-header">
+			<header id="header" class="full-header"
+				th:classappend="${transparent} == true ? transparent-header">
 				<div id="header-wrap">
 					<div class="container">
 						<div class="header-row">
 							<div id="logo">
 								<a href="/index" class="standard-logo"
 									data-dark-logo="/front/image/logo/logo_one.png"><img
-										src="/front/image/logo/logo_one.png" alt="Logo"></a>
-								<a href="/index" class="retina-logo"
+									src="/front/image/logo/logo_one.png" alt="Logo"></a> <a
+									href="/index" class="retina-logo"
 									data-dark-logo="/front/image/logo/logo_one.png"><img
-										src="/front/image/logo/logo_one.png" alt="Logo"></a>
+									src="/front/image/logo/logo_one.png" alt="Logo"></a>
 							</div>
 
 							<div class="header-misc primary-menu" id="search-wrap">
 								<div id="top-search" class="header-misc-icon">
-									<a href="#" id="top-search-trigger"><i class="icon-line-search"></i><i
-											class="icon-line-cross"></i>검색</a>
+									<a href="#" id="top-search-trigger"><i
+										class="icon-line-search"></i><i class="icon-line-cross"></i>검색</a>
 								</div>
 								<div id="top-cart" class="header-misc-icon d-sm-block">
-									<span><a style="font-weight:600;" href="#">EN </a></span> /
-									<span><a class="active" style="font-weight:600;" href="#"> KO</a></span>
+									<span><a style="font-weight: 600;" href="#">EN </a></span> / <span><a
+										class="active" style="font-weight: 600;" href="#"> KO</a></span>
 								</div>
 							</div>
 
@@ -66,156 +70,144 @@
 									</path>
 								</svg>
 							</div>
-							<nav class="primary-menu">
-								<ul class="menu-container">
-									<li class="menu-item"><a class="menu-link" href="#">
-											<div>회사 소개</div>
-										</a>
-										<ul class="sub-menu-container">
-											<li class="menu-item"><a class="menu-link" href="/about">
-													<div>기업 소개</div>
-												</a></li>
-											<li class="menu-item"><a class="menu-link" href="/history">
-													<div>기업 연혁</div>
-												</a></li>
-											<li class="menu-item"><a class="menu-link" href="/certifications">
-													<div>인증서</div>
-												</a></li>
-											<li class="menu-item"><a class="menu-link" href="/address">
-													<div>찾아오시는 길</div>
-												</a></li>
-										</ul>
-									</li>
-									<li class="menu-item">
-										<a class="menu-link" href="#">
-											<div>제품소개</div>
-										</a>
-										<ul class="sub-menu-container">
-											<li class="menu-item" th:each="b:${menuList.bigSortList}">
-												<a class="menu-link" th:href="@{|/productSorted/main/${b.id}|}">
-													<div>
-														<i class="icon-stack"></i> [[${b.name}]]
-													</div>
-												</a>
-												<ul class="sub-menu-container">
-													<li class="menu-item" th:if="${b.id == m.bigSort.id}"
-														th:each="m : ${menuList.middleSortList}">
-														<a class="menu-link"
-															th:href="@{|/productSorted/middle/${m.id}|}">
-															<div th:text="${m.name}">Screw Caps and Tubes</div>
-														</a>
-														<ul class="sub-menu-container">
-															<li class="menu-item" th:if="${m.id == s.middleSort.id}"
-																th:each="s:${menuList.smallSortList}">
-																<a class="menu-link"
-																	th:href="@{|/productSorted/sub/${s.id}|}">
-																	<div th:text="${s.name}">Product 01</div>
-																</a>
-																<ul class="sub-menu-container">
-																	<li class="menu-item"
-																		th:if="${s.id == p.smallSort.id}"
-																		th:each="p:${menuList.productList}">
-																		<a class="menu-link"
-																			th:href="@{|/productDetail/${p.id}|}">
-																			<div th:text="${p.subject}">Product 01</div>
-																		</a>
-																	</li>
-																</ul>
-															</li>
-														</ul>
-													</li>
-												</ul>
-											</li>
-										</ul>
-									</li>
-									<li class="menu-item">
-										<a class="menu-link" href="#">
-											<div>브랜드소개</div>
-										</a>
-										<ul class="sub-menu-container">
-											<li class="menu-item" th:each="b:${menuList.brandList}">
-												<a class="menu-link" th:href="@{|/brandProductSorted/brand/${b.id}|}">
-													<div>
-														<i class="icon-stack"></i> [[${b.name}]]
-													</div>
-												</a>
-												<ul class="sub-menu-container">
-													<li class="menu-item" th:if="${b.id == bb.brand.id}"
-														th:each="bb : ${menuList.brandBigSortList}">
-														<a class="menu-link"
-															th:href="@{|/brandProductSorted/main/${bb.id}|}">
-															<div th:text="${bb.name}">Screw Caps and Tubes</div>
-														</a>
-														<ul class="sub-menu-container">
-															<li class="menu-item" th:if="${bb.id == bm.bigSort.id}"
-																th:each="bm:${menuList.brandMiddleSortList}">
-																<a class="menu-link"
-																	th:href="@{|/brandProductSorted/middle/${bm.id}|}">
-																	<div th:text="${bm.name}">Product 01</div>
-																</a>
-																<ul class="sub-menu-container left-container">
-																	<li class="menu-item"
-																		th:if="${bs.id == bs.middleSort.id}"
-																		th:each="bs:${menuList.brandSmallSortList}">
-																		<a class="menu-link"
-																			th:href="@{|/brandProductSorted/sub/${bs.id}|}">
-																			<div th:text="${bs.name}">Product 01</div>
-																		</a>
-																		<ul class="sub-menu-container">
-																			<li class="menu-item"
-																				th:if="${bs.id == bp.smallSort.id}"
-																				th:each="bp:${menuList.brandProductList}">
-																				<a class="menu-link"
-																					th:href="@{|/brandProductDetail/${bp.id}|}">
-																					<div th:text="${bp.subject}">Product
-																						01</div>
-																				</a>
-																			</li>
-																		</ul>
-																	</li>
-																</ul>
-															</li>
-														</ul>
-													</li>
-												</ul>
-											</li>
-										</ul>
-									</li>
-									<li class="menu-item"><a class="menu-link" href="#">
-											<div>공지사항</div>
-										</a>
-										<ul class="sub-menu-container">
-											<li class="menu-item"><a class="menu-link" href="/notice">
-													<div>공지사항</div>
-												</a></li>
-										</ul>
-									</li>
-									<li class="menu-item"><a class="menu-link" href="#">
-											<div>자료실</div>
-										</a>
-										<ul class="sub-menu-container">
-											<li class="menu-item"><a class="menu-link" href="/references">
-													<div>카탈로그</div>
-												</a></li>
-										</ul>
-									</li>
-									<li class="menu-item"><a class="menu-link" href="#">
-											<div>고객지원</div>
-										</a>
-										<ul class="sub-menu-container">
-											<li class="menu-item"><a class="menu-link" href="/contact">
-													<div>Contact US</div>
-												</a></li>
 
-										</ul>
-									</li>
+							<nav class="primary-menu mega-nav">
+								<ul class="menu-container">
+									<li class="menu-item"><a class="menu-link" href="/about">
+											<div style="padding-bottom:5px;">회사 소개</div>
+									</a></li>
+									<li class="menu-item has-mega"><a class="menu-link"
+										href="#"><div>제품소개</div></a>
+
+										<div class="mega-menu">
+											<div class="mega-wrap">
+												<!-- 1depth: 대분류(고정 탭) -->
+												<aside class="mega-tabs">
+													<ul>
+														<li class="mega-tab"
+															th:each="b,iter : ${menuList.bigSortList}"
+															th:classappend="${iter.index==0}? 'is-active'">
+															<button type="button" class="mega-tab-btn"
+																th:attr="data-panel='mega-b-' + ${b.id}">
+																[[${b.name}]]</button>
+														</li>
+													</ul>
+												</aside>
+
+												<!-- 2depth~ : 드롭다운(호버 시 펼침) -->
+												<section class="mega-panels">
+													<div class="mega-panel"
+														th:each="b,iter : ${menuList.bigSortList}"
+														th:id="'mega-b-' + ${b.id}"
+														th:classappend="${iter.index==0}? 'is-active'">
+
+														<div class="mega-columns">
+															<!-- 2depth: 중분류 목록 (여기서부터 드롭다운) -->
+															<div class="mega-col"
+																th:each="m : ${menuList.middleSortList}"
+																th:if="${m.bigSort.id == b.id}">
+																<div class="mega-2depth">
+																	<a class="mega-2depth-link"
+																		th:href="@{|/productSorted/middle/${m.id}|}"
+																		th:text="${m.name}">Middle</a>
+
+																	<!-- 3depth: 소분류 (드롭다운, 기본 감춤) -->
+																	<ul class="mega-3depth">
+																		<li th:each="s : ${menuList.smallSortList}"
+																			th:if="${s.middleSort.id == m.id}"><a
+																			th:href="@{|/productSorted/sub/${s.id}|}"
+																			th:text="${s.name}">Small</a></li>
+																	</ul>
+																</div>
+															</div>
+														</div>
+
+														<div class="mega-more">
+															<a th:href="@{|/productSorted/main/${b.id}|}">대분류
+																전체보기 →</a>
+														</div>
+													</div>
+												</section>
+											</div>
+										</div></li>
+
+									<!-- 브랜드소개: 동일 패턴(필요 시) -->
+									<li class="menu-item has-mega"><a class="menu-link"
+										href="#"><div>브랜드소개</div></a>
+
+										<div class="mega-menu">
+											<div class="mega-wrap">
+												<aside class="mega-tabs">
+													<ul>
+														<li class="mega-tab"
+															th:each="br,iter : ${menuList.brandList}"
+															th:classappend="${iter.index==0}? 'is-active'">
+															<button type="button" class="mega-tab-btn"
+																th:attr="data-panel='mega-brand-' + ${br.id}">
+																[[${br.name}]]</button>
+														</li>
+													</ul>
+												</aside>
+
+												<section class="mega-panels">
+													<div class="mega-panel"
+														th:each="br,iter : ${menuList.brandList}"
+														th:id="'mega-brand-' + ${br.id}"
+														th:classappend="${iter.index==0}? 'is-active'">
+
+														<div class="mega-columns">
+															<div class="mega-col"
+																th:each="bb : ${menuList.brandBigSortList}"
+																th:if="${bb.brand.id == br.id}">
+																<div class="mega-2depth">
+																	<a class="mega-2depth-link"
+																		th:href="@{|/brandProductSorted/main/${bb.id}|}"
+																		th:text="${bb.name}"></a>
+
+																	<ul class="mega-3depth">
+																		<li th:each="bm : ${menuList.brandMiddleSortList}"
+																			th:if="${bm.bigSort.id == bb.id}"><a
+																			th:href="@{|/brandProductSorted/middle/${bm.id}|}"
+																			th:text="${bm.name}"></a>
+
+																			<ul class="mega-4depth">
+																				<li th:each="bs : ${menuList.brandSmallSortList}"
+																					th:if="${bs.middleSort.id == bm.id}"><a
+																					th:href="@{|/brandProductSorted/sub/${bs.id}|}"
+																					th:text="${bs.name}"></a></li>
+																			</ul></li>
+																	</ul>
+																</div>
+															</div>
+														</div>
+
+														<div class="mega-more">
+															<a th:href="@{|/brandProductSorted/brand/${br.id}|}">브랜드
+																전체보기 →</a>
+														</div>
+													</div>
+												</section>
+											</div>
+										</div></li>
+									<li class="menu-item"><a class="menu-link" href="/notice">
+											<div style="padding-bottom:5px;">공지사항</div>
+									</a></li>
+									<li class="menu-item"><a class="menu-link"
+										href="/references">
+											<div style="padding-bottom:5px;">자료실</div>
+									</a></li>
+									<li class="menu-item"><a class="menu-link" href="/contact">
+											<div style="padding-bottom:5px;">고객지원</div>
+									</a></li>
 								</ul>
 							</nav>
 
-							<form class="top-search-form" action="/searchAll" method="get" id="top-search-form">
+							<form class="top-search-form" action="/searchAll" method="get"
+								id="top-search-form">
 								<div>
-									<input type="text" name="searchWord" class="form-control" required="required"
-										placeholder="검색어를 입력 하세요." autocomplete="off"> <span class="search-btn"
+									<input type="text" name="searchWord" class="form-control"
+										required="required" placeholder="검색어를 입력 하세요."
+										autocomplete="off"> <span class="search-btn"
 										id="search-btn"><i class="icon-line-search"></i></span>
 								</div>
 							</form>
@@ -252,11 +244,11 @@
 										<div class="row col-mb-30">
 											<div class="col-12">
 												<address class="mb-0">
-													<abbr title="본사"
-														style="display: inline-block; margin-bottom: 7px;"><strong>본사
-															: </strong></abbr><br> 경기도 남양주시 순화궁로 282, 10층<br> TEL :
-													031-572-2272<br> FAX : 031-572-2273<br> E-MAIL :
-													bionlifescience@hanmail.net
+													<p><strong>본사
+															&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;</strong>경기도 남양주시 순화궁로 282,</p> <p>에이스하이엔드타워 10층</p> 
+															<p>TEL : 031-572-2272</p> 
+															<p>FAX : 031-572-2273</p>
+															<p>E-MAIL : bionlifescience@hanmail.net></p>
 												</address>
 											</div>
 										</div>
@@ -297,8 +289,8 @@
 
 						<div class="w-100 text-center">
 							<div class="copyrights-menu copyright-links clearfix">
-								<a href="#">기업소개</a>/<a href="#">제품소개</a>/<a href="#">공지사항</a>/<a href="#">자료실</a>/<a
-									href="#">고객지원</a>/<a href="#">오시는길</a>
+								<a href="#">기업소개</a>/<a href="#">제품소개</a>/<a href="#">공지사항</a>/<a
+									href="#">자료실</a>/<a href="#">고객지원</a>/<a href="#">오시는길</a>
 							</div>
 							Copyrights &copy; 2023 All Rights Reserved by (주)바이온라이프사이언스
 						</div>
@@ -463,6 +455,32 @@
 			getBigSortList();
 			getBrandList();							
 		</script>
+		
+<!-- 		<script>
+			  document.addEventListener("DOMContentLoaded", function () {
+			    const menuAbout = document.getElementById("menu-about");
+			
+			    if (menuAbout) {
+			      menuAbout.addEventListener("click", function (e) {
+			        e.preventDefault();
+			
+			        // 현재 페이지가 메인(index)인지 확인
+			        const path = window.location.pathname;
+			
+			        if (path === "/" || path === "/index" || path === "/index.html") {
+			          // 메인 페이지 → 해당 섹션으로 부드럽게 스크롤
+			          const target = document.querySelector("#business-history");
+			          if (target) {
+			            target.scrollIntoView({ behavior: "smooth", block: "start" });
+			          }
+			        } else {
+			          // 다른 페이지 → /about으로 이동
+			          window.location.href = "/about";
+			        }
+			      });
+			    }
+			  });
+		</script> -->
 	</th:block>
 
 </body>
