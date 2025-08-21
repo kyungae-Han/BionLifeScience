@@ -1,45 +1,34 @@
 /* hero 영역 기본 */
 @charset "UTF-8";
 
-
 :root {
-   --brand: #1e7f7c;         /* 포인트 */
-   --ink: #0b1320;           /* 본문 */
-   --muted: #627084;         /* 보조 텍스트 */
-   --card: #ffffff;          /* 카드 배경 */
-   --bg: #f6f8fb;            /* 섹션 배경 */
-   --ring: rgba(30,127,124,.18);
-   --shadow: 0 10px 30px rgba(3,10,27,.08), 0 2px 8px rgba(3,10,27,.06);
- }
+	--brand: #1e7f7c; /* 포인트 */
+	--ink: #0b1320; /* 본문 */
+	--muted: #627084; /* 보조 텍스트 */
+	--card: #ffffff; /* 카드 배경 */
+	--bg: #f6f8fb; /* 섹션 배경 */
+	--ring: rgba(30, 127, 124, .18);
+	--shadow: 0 10px 30px rgba(3, 10, 27, .08), 0 2px 8px
+		rgba(3, 10, 27, .06);
+}
 
 .about-body {
-	height: 100vh;
+	/* height: 100vh; */
 }
 
 .hero {
 	position: relative;
-	height: 160vh;
+	height: auto;
 	isolation: isolate;
 	overflow: clip;
-	background: radial-gradient(circle at left, #c4df99 0%, #d5e7b3 70%, #cee4a6 100%);
-}
-
-.hero::before {
-	content: '';
-	position: absolute;
-	inset: 0;
-	background: rgba(255, 255, 255, 0.5);
-	mix-blend-mode: screen;
-	pointer-events: none;
-	z-index: 1;
+	background: rgba(196,223,153,.4);
+	padding: 50px 0;
 }
 
 .hero-video {
 	position: sticky;
 	top: 0;
 	width: 55vw;
-	/* height: 100vh; */
-	/* sapect-ratio: 16/9; */
 	max-width: 1400px;
 	object-fit: cover;
 	transform: scale(var(--scale));
@@ -57,8 +46,9 @@
 	mask-size: 100% 100%;
 	-webkit-mask-position: center;
 	mask-position: center;
-	z-index: 0;
+	z-index: -1;
 	pointer-events: none;
+	opacity: .5;
 }
 
 .p-wrap {
@@ -71,8 +61,10 @@
 	right: 0;
 }
 
+.hero h1 {font-size: clamp(24px, 1.5vw, 40px) !important;}
+
 .sec-head {
-	font-size: clamp(24px, 2.8vm, 40px);
+	font-size: 4rem;
 	margin: 0 0 28px !important;
 	letter-spacing: -0.2px;
 }
@@ -97,7 +89,7 @@
 .hero-grid {
 	display: grid;
 	grid-template-columns: 1.2fr 1fr;
-	gap: 28px;
+	gap: 70px;
 	align-items: center;
 	margin: 25px auto;
 }
@@ -107,16 +99,11 @@
 }
 
 .hero-img {
-	width: 100%;
-	height: 360px;
 	object-fit: cover;
 	border-radius: 18px;
 	box-shadow: 0 8px 24px rgba(0, 0, 0, .08);
 }
 
-.sec-head {
-	font-size: 4rem;
-}
 
 .sec-sub {
 	font-size: 1.1rem;
@@ -128,31 +115,38 @@
 }
 
 
-
-
-
-
+.glance-wrap { max-width: 1280px; margin-inline: auto; }
 
 .glance-slider {
+	width: 100%;
 	position: relative;
-	padding: clamp(36px, 6vw, 80px) 0;
-	overflow: hidden;
+	overflow: visible;
 }
 
 .glance__head {
 	z-index: 2;
 	position: relative;
 	width: min(1200px, 100%);
-	margin: 70px auto;
+	margin: 40px auto;
+	transition: transform .8s ease;
+	transform: translateY(0);
+}
+
+.glance__title {
+	font-size: 4rem;
 }
 
 /* Swiper size & spacing */
 .glance-swiper {
-	padding: 0 30px;
+	padding: 0; 
+	overflow: visible;
 }
 
+
 .glance-swiper .swiper-slide {
-	height: auto;
+  width: min(1260px, calc(100% - 48px)); /* 48 = offset 24+24 */
+  margin: 0; padding: 0;                 /* 마진 금지 (치우침 원인) */
+  box-sizing: border-box;
 }
 
 /* Card */
@@ -161,9 +155,32 @@
 	border-radius: 20px;
 	box-shadow: var(--shadow);
 	height: 100%;
-	padding: 200px 22px 200px;
+	margin: 0;
+	padding: 250px 0 250px;
 	border: 1px solid rgba(11, 19, 32, .06);
 	transition: transform .35s ease, box-shadow .35s ease;
+}
+
+.swiper-slide:nth-child(1) .stat-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.swiper-slide:nth-child(1) .stat-card::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: url('/front/images/about/glance-1.jpg') no-repeat center / cover;
+  transition: transform .6s ease;
+  transform: scale(1);
+  will-change: transform; /* 부드럽게 */
+}
+
+.swiper-slide:nth-child(1) .stat-card:hover::before {
+  transform: scale(1.12);
+}
+
+.swiper-wrapper .swiper-slide:nth-child(1) .stat-card p {
+	/* color: #fff !important; */
 }
 
 .stat-card:hover {
@@ -172,17 +189,22 @@
 		rgba(3, 10, 27, .08);
 }
 
-
 .stat-card__value {
 	grid-area: value;
 	margin: 0;
 	font-size: clamp(26px, 4.6vw, 36px);
 	font-weight: 800;
 	letter-spacing: -0.01em;
+	position: absolute;
+	font-size: 4.5rem;
+	top: 50px;
+	left: 50px;
+	display: flex;
+	flex-direction: column;
 }
 
 .stat-card__value span {
-	font-size: 4rem;
+	line-height: 1.1;
 }
 
 .stat-card__value small {
@@ -197,32 +219,31 @@
 	margin: 0;
 	color: var(--muted);
 	font-size: 14px;
-}
-
-/* progress (옵션) */
-.progress {
-	height: 6px;
-	background: #e9eef5;
-	border-radius: 999px;
-	overflow: hidden;
-	margin-top: 10px;
-}
-
-.progress__bar {
-	height: 100%;
-	width: 0%;
-	background: linear-gradient(90deg, var(-brand), #2aa1a0);
-	border-radius: inherit;
-	transition: width 1s ease-out;
+	position: absolute;
+	bottom: 50px;
+	left: 50px;
 }
 
 /* Nav */
 .glance-nav {
 	position: relative;
-	max-width: 1200px;
 	margin: 0 auto;
 	padding: 0 12px;
 }
+
+.container-btn {
+	position: absolute;
+	max-width: 1280px;
+	top: 50%;
+	left: 0;
+	right: 0;
+	transform: translateY(50%);
+	margin: 0 auto;
+	z-index:3;
+}
+
+.glance-nav .swiper-button-prev {margin-left: 44px;}
+
 
 .glance-nav .swiper-button-prev, .glance-nav .swiper-button-next {
 	color: var(--brand);
@@ -240,7 +261,68 @@
 	font-weight: 700;
 }
 
-.glance-nav .swiper-pagination-bullets .swiper-pagination-bullet {
+.glance-indicator {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	width: fit-content;
+	padding: 10px 14px;
+	border-radius: 999px;
+	background: #fff; /* 캡슐 배경 */
+	margin: 30px auto 30px;
+}
+
+/* 도트들 */
+.gi-dots {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.gi-dots .dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #111;
+	opacity: .3;
+	transition: opacity .3s;
+}
+
+.gi-dots .dot.is-active {
+	opacity: 1;
+}
+
+/* 진행바 */
+.gi-bar {
+	position: relative;
+	width: 120px;
+	height: 10px;
+	border-radius: 999px;
+	background: #d9e4f6;
+	overflow: hidden;
+}
+
+.gi-bar .gi-fill {
+	position: absolute;
+	inset: 0 auto 0 0;
+	width: 0%;
+	background: #111; /* 진행 색상 */
+	transition: width .45s ease; /* 슬라이드 이동 시 부드럽게 */
+}
+
+/* (옵션) 토글 버튼 */
+.gi-toggle {
+	width: 36px;
+	height: 36px;
+	border-radius: 50%;
+	border: none;
+	background: #f3f3f3;
+	cursor: pointer;
+	font-size: 14px;
+	line-height: 1;
+}
+
+/* .glance-nav .swiper-pagination-bullets .swiper-pagination-bullet {
 	background: rgba(11, 19, 32, .3);
 	opacity: 1;
 }
@@ -249,7 +331,7 @@
 	{
 	background: var(--ink) !important;
 }
-
+ */
 
 /* ===== Timeline ===== */
 .timeline {

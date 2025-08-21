@@ -36,8 +36,9 @@
 					Science</h2>
 				<div class="hero-grid">
 					<img class="hero-img p-item" data-speed="0.15"
-						src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1400&auto=format&fit=crop"
-						alt="About hero" />
+						src="/front/images/about/about-bion.jpg" 
+						sizes="(min-width: 1200px) 768px, 90vw"
+						alt="About hero" loading="lazy" decoding="async" />
 					<div class="p-item" data-speed="0.28">
 						<p class="sec-sub">
 							창의적 아이디어와 혁신적인 기술 개발을 통해 Life Science <br>분야에서 Global 시장을
@@ -53,9 +54,9 @@
 				</div>
 			</div>
 
-			<div class="glance-slider" id="at-a-glance">
+			<div class="glance-slider">
 				<div class="glance__head">
-					<h2 class="glance__title">AT A GLANCE</h2>
+					<h2 class="sec-head p-item" data-speed="0.2">At a Glance</h2>
 				</div>
 
 				<div class="glance-nav">
@@ -93,13 +94,10 @@
 							<div class="swiper-slide">
 								<article class="stat-card" aria-label="R&D 투자 비중">
 									<p class="stat-card__value">
-										<span class="countup" data-target="14">0</span><small>%
+										<span class="countup" data-target="14" data-suffix="%">0</span><small>
 											of Revenue</small>
 									</p>
 									<p class="stat-card__desc">지속 가능한 성장의 핵심인 연구개발 투자 비중(예시값)</p>
-									<div class="progress" role="progressbar" aria-label="R&D ratio">
-										<div class="progress__bar" style="--val: 14"></div>
-									</div>
 								</article>
 							</div>
 							<!-- Slide 5 -->
@@ -123,9 +121,16 @@
 						</div>
 
 						<!-- Pagination & Arrows -->
-						<div class="swiper-pagination"></div>
-						<div class="swiper-button-prev" aria-label="이전"></div>
-						<div class="swiper-button-next" aria-label="다음"></div>
+						<div class="glance-indicator">
+						  <div class="gi-dots" aria-hidden="true"></div>
+						  <div class="gi-bar"><span class="gi-fill"></span></div>
+						  <!-- (옵션) 재생/일시정지 버튼 -->
+						  <button class="gi-toggle" type="button" aria-pressed="false">⏸</button>
+						</div>
+						<div class="container-btn">
+							<div class="swiper-button-prev" aria-label="이전"></div>
+							<div class="swiper-button-next" aria-label="다음"></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -291,14 +296,14 @@
 	<script>
 (() => {
   /* =========================
-     안전 가드: IntersectionObserver.observe 대상 검증
+     IntersectionObserver 안전 가드
      ========================= */
   (function () {
     if (!('IntersectionObserver' in window)) return;
     const _observe = IntersectionObserver.prototype.observe;
     IntersectionObserver.prototype.observe = function (target) {
       if (!target || !(target instanceof Element)) return;
-      try { return _observe.call(this, target); } catch (e) { /* no-op */ }
+      try { return _observe.call(this, target); } catch (e) {}
     };
   })();
 
@@ -310,36 +315,29 @@
   let tickingHero = false;
 
   function getProgress() {
+    if (!hero) return 0;                           // ✅ null 가드
     const rect = hero.getBoundingClientRect();
     const h = rect.height || 1;
     const p = 1 - Math.max(0, Math.min(1, rect.bottom / h));
-    const speed = 1.7; // 진행 속도 보정
+    const speed = 1.7;
     return Math.max(0, Math.min(1, p * speed));
   }
 
   function updateHero() {
     tickingHero = false;
-    if (!hero) return;
     const p = getProgress();
-
-    const scale = 0.85 + 1.75 * p;   // 필요 시 사용 (현재 주석)
+    const scale = 0.85 + 1.75 * p;
     const translateX = 700 * p;
-    const ty = -24 * p;              // 위로 살짝 이동
-    const blur = 2 * (1 - p);        // 점점 선명
-
+    const ty = -24 * p;
+    const blur = 2 * (1 - p);
     if (bg) {
       bg.style.transform = `translate3d(${translateX}px, ${ty}px, 0) /*scale(${scale})*/`;
       bg.style.filter = `blur(${blur}px)`;
     }
   }
-
   function onScrollHero() {
-    if (!tickingHero) {
-      requestAnimationFrame(updateHero);
-      tickingHero = true;
-    }
+    if (!tickingHero) { requestAnimationFrame(updateHero); tickingHero = true; }
   }
-
   updateHero();
   window.addEventListener('scroll', onScrollHero, { passive: true });
   window.addEventListener('resize', onScrollHero);
@@ -352,14 +350,14 @@
   });
 
   /* =========================
-     .p-item 패럴랙스 & 리빌 (재진입 시 트랜지션 재실행)
+     .p-item 패럴랙스 & 리빌
      ========================= */
   const items = Array.from(document.querySelectorAll('.p-item'));
   let lastY = window.scrollY;
 
   const onScrollItems = () => {
     const y = window.scrollY;
-    if (Math.abs(y - lastY) < 2) return; // 작은 변화 무시
+    if (Math.abs(y - lastY) < 2) return;
     lastY = y;
 
     const vh = window.innerHeight;
@@ -367,37 +365,28 @@
       const rect = el.getBoundingClientRect();
       const speed = parseFloat(el.dataset.speed || 0.2);
 
-      // reveal 조건: 뷰포트에 들어오면 show 부여, 나가면 제거 -> 재진입 시 트랜지션 재실행
       const visible = rect.top < vh * 0.86 && rect.bottom > vh * 0.14;
       if (visible) {
         if (!el.classList.contains('show')) {
-          void el.offsetWidth;           // 강제 리플로우로 애니메이션 재시작 보장
+          void el.offsetWidth;            // 강제 리플로우
           el.classList.add('show');
         }
       } else {
         el.classList.remove('show');
       }
 
-      // 뷰포트 안에서만 패럴랙스 적용 (CSS에서 transform 사용 시 지속 이동)
       if (rect.bottom > 0 && rect.top < vh) {
         const offset = (rect.top - vh / 2) * speed;
         el.style.setProperty('--py', `${offset}px`);
-        // 필요 시 직접 transform 적용:
-        // el.style.transform = `translateY(${offset}px)`;
       }
     });
   };
 
   let tickingItems = false;
   const rafItems = () => { onScrollItems(); tickingItems = false; };
-
   window.addEventListener('scroll', () => {
-    if (!tickingItems) {
-      tickingItems = true;
-      window.requestAnimationFrame(rafItems);
-    }
+    if (!tickingItems) { tickingItems = true; window.requestAnimationFrame(rafItems); }
   }, { passive: true });
-
   window.addEventListener('load', onScrollItems);
 
   /* =========================
@@ -405,7 +394,6 @@
      ========================= */
   const sections = document.querySelectorAll('main .section[id]');
   const links = document.querySelectorAll('.breadcrumb-wrap a');
-
   if (sections.length && links.length) {
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
@@ -415,7 +403,6 @@
         }
       });
     }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
-
     sections.forEach(sec => io.observe(sec));
   }
 
@@ -425,77 +412,159 @@
   const viewport = document.getElementById('certViewport');
   const prev = document.getElementById('certPrev');
   const next = document.getElementById('certNext');
-
   if (viewport && prev && next) {
     const cardWidth = () => viewport.querySelector('.cert')?.offsetWidth || 280;
-
     const updateBtns = () => {
-      const maxScroll = viewport.scrollWidth - viewport.clientWidth - 2; // tolerance
+      const maxScroll = viewport.scrollWidth - viewport.clientWidth - 2;
       prev.disabled = viewport.scrollLeft <= 2;
       next.disabled = viewport.scrollLeft >= maxScroll;
     };
-
     prev.addEventListener('click', () => {
       viewport.scrollBy({ left: -cardWidth() - 16, behavior: 'smooth' });
       setTimeout(updateBtns, 350);
     });
-
     next.addEventListener('click', () => {
-      viewport.scrollBy({ left: cardWidth() + 16, behavior: 'smooth' });
+      viewport.scrollBy({ left:  cardWidth() + 16, behavior: 'smooth' });
       setTimeout(updateBtns, 350);
     });
-
     viewport.addEventListener('scroll', updateBtns, { passive: true });
     window.addEventListener('load', updateBtns);
   }
 
   /* =========================
-     Swiper 초기화 (없으면 CDN 로드 후 초기화)
+     CountUp & helpers
      ========================= */
-     
   function resetCounts(scope){
-	  scope.querySelectorAll('.countup').forEach(el => { el.dataset.counted = ''; });
-	  scope.querySelectorAll('.progress__bar').forEach(el => {
-	    el.dataset.filled = '';
-	    el.style.width = '0';
-	  });
-	}    
-     
-     
-  function initGlanceSwiper() {
-    if (!window.Swiper) return;
-    new Swiper('.glance-swiper', {
-      speed: 600,
-      spaceBetween: 18,
-      slidesPerView: 1,
-      centeredSlides: false,
-      loop: false,
-      grabCursor: true,
-      pagination: { el: '.glance-swiper .swiper-pagination', clickable: true },
-      navigation: {
-        nextEl: '.glance-swiper .swiper-button-next',
-        prevEl: '.glance-swiper .swiper-button-prev'
-      },
-      breakpoints: {
-        640:  { slidesPerView: 2.1 },
-        960:  { slidesPerView: 3.1 },
-        1280: { slidesPerView: 1 }
-      },
-      on: {
-   	  init(sw){
-   	      const slide = sw.slides[sw.activeIndex];
-   	      resetCounts(slide);
-   	      triggerCounts([slide]);             // 첫 화면에서 즉시
-   	    },
-   	    slideChangeTransitionEnd(sw){
-   	      const slide = sw.slides[sw.activeIndex]; // "이 위치"에 고정된 후
-   	      resetCounts(slide);
-   	      triggerCounts([slide]);             // 그때 카운트/프로그레스 시작
-   	    }
-	  }
+    scope.querySelectorAll('.countup').forEach(el => { el.dataset.counted = ''; });
+    scope.querySelectorAll('.progress__bar').forEach(el => {
+      el.dataset.filled = '';
+      el.style.transition = 'none';
+      el.style.width = '0%';              // ✅ 단위 %
+      void el.offsetWidth;
+      el.style.transition = '';
     });
   }
+  function triggerCounts(nodes) {
+    nodes.forEach((s) => {
+      const el = s.querySelector('.countup');
+      if (el && !el.dataset.counted) { startCount(el); el.dataset.counted = '1'; }
+    });
+  }
+  function startCount(el) {
+    const target = Number(el.getAttribute('data-target')) || 0;
+    const suffix = el.getAttribute('data-suffix') || '';
+    const dur = 900;
+    const t0 = performance.now();
+    const start = 0;
+    function step(t) {
+      const p = Math.min(1, (t - t0) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const val = Math.floor(start + (target - start) * eased);
+      el.textContent = val.toLocaleString();
+      if (p < 1) requestAnimationFrame(step);
+      else if (suffix) el.textContent += suffix;
+    }
+    requestAnimationFrame(step);
+  }
 
+  /* =========================
+     Custom Indicator (dots + bar)
+     ========================= */
+  function setupIndicator(sw){
+    const indicator = document.querySelector('.glance-indicator');
+    if (!indicator) return;
+    const dotsWrap = indicator.querySelector('.gi-dots');
+    dotsWrap.innerHTML = '';
+    const total = sw.slides.length;
+    for (let i = 0; i < total; i++){
+      const dot = document.createElement('span');
+      dot.className = 'dot';
+      dot.addEventListener('click', () => sw.slideTo(i));
+      dotsWrap.appendChild(dot);
+    }
+  }
+  function renderIndicator(sw){
+    const indicator = document.querySelector('.glance-indicator');
+    if (!indicator) return;
+    const dots = indicator.querySelectorAll('.gi-dots .dot');
+    const fill = indicator.querySelector('.gi-fill');
+    const total = sw.slides.length;
+    const current = sw.activeIndex; // 0-base
+    dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
+    const denom = Math.max(1, total - 1);
+    fill.style.width = (current / denom * 100) + '%';
+  }
+
+  /* =========================
+  Glance Swiper (autoplay + toggle pause/resume)
+  ========================= */
+function initGlanceSwiper() {
+ if (!window.Swiper) return;
+
+ const sw = new Swiper('.glance-swiper', {
+   speed: 600,
+   spaceBetween: 24,
+   centeredSlides: true,
+   slidesPerView:'auto',
+   loop: false,
+   slidesOffsetBefore: 24,
+   slidesOffsetAfter: 24,
+   grabCursor: true,
+   pagination: { el: '.glance-swiper .swiper-pagination', clickable: true },
+   navigation: {
+     nextEl: '.glance-swiper .swiper-button-next',
+     prevEl: '.glance-swiper .swiper-button-prev'
+   },
+   autoplay: {
+     delay: 6000,
+     disableOnInteraction: false, // 조작 후에도 계속
+     stopOnLastSlide: false
+   },
+   on: {
+     init() {
+       try {
+         const slide = this.slides[this.activeIndex];
+         if (typeof resetCounts === 'function') resetCounts(slide);
+         if (typeof triggerCounts === 'function') triggerCounts([slide]);
+         if (typeof setupIndicator === 'function') setupIndicator(this);
+         if (typeof renderIndicator === 'function') renderIndicator(this);
+       } catch (e) {}
+
+       // ▶/⏸ 토글: autoplay만 stop/start
+       const btn = document.querySelector('.gi-toggle');
+       if (!btn) return;
+
+       const setUI = (running) => {
+         btn.setAttribute('aria-pressed', running ? 'false' : 'true'); // false=재생중(⏸), true=멈춤(▶)
+         btn.textContent = running ? '⏸' : '▶';
+       };
+
+       setUI(this.autoplay && this.autoplay.running === true); // 초기 상태 반영
+
+       btn.addEventListener('click', () => {
+         if (this.autoplay && this.autoplay.running) {
+           this.autoplay.stop();
+           setUI(false);
+         } else {
+           this.autoplay.start();
+           setUI(true);
+         }
+       });
+     },
+     slideChangeTransitionEnd() {
+       try {
+         const slide = this.slides[this.activeIndex];
+         if (typeof resetCounts === 'function') resetCounts(slide);
+         if (typeof triggerCounts === 'function') triggerCounts([slide]);
+         if (typeof renderIndicator === 'function') renderIndicator(this);
+       } catch (e) {}
+     }
+   }
+ });
+
+ return sw;
+}
+  
   if (!window.Swiper) {
     const s = document.createElement('script');
     s.src = 'https://unpkg.com/swiper@9/swiper-bundle.min.js';
@@ -505,45 +574,25 @@
     initGlanceSwiper();
   }
   
-  
-//CountUp 효과 & progress bar 채우기
-  function triggerCounts(nodes) {
-    nodes.forEach((s) => {
-      const el = s.querySelector('.countup');
-      if (el && !el.dataset.counted) { startCount(el); el.dataset.counted = '1'; }
-      const bar = s.querySelector('.progress__bar');
-      if (bar && !bar.dataset.filled) {
-    	  requestAnimationFrame(()=>{
-			const cssVal = getComputedStyle(bar).getPropertyValue('--val').trim();
-			const val = parseFloat(cssVal || bar.dataset.val || '0') || 0;
-			bar.style.width = val + '%';
-			bar.dataset.filled = '1';
-		})
-      }
-    });
-  }
+//버튼 위치 업데이트 함수
+  function setNavPosition(swiper) {
+    // 현재 중앙 슬라이드 찾기
+    const activeSlide = swiper.slides[swiper.activeIndex];
+    if (!activeSlide) return;
 
-  function startCount(el) {
-    const target = Number(el.getAttribute('data-target')) || 0;
-    const suffix = el.getAttribute('data-suffix') || '';
-    const dur = 900; // ms
-    const t0 = performance.now();
-    const start = 0;
-    function step(t) {
-      const p = Math.min(1, (t - t0) / dur);
-      const eased = 1 - Math.pow(1 - p, 3);
-      const val = Math.floor(start + (target - start) * eased);
-      el.textContent = val.toLocaleString();
-      if (p < 1) requestAnimationFrame(step); else if (suffix) el.textContent += suffix;
+    const slideWidth = activeSlide.offsetWidth;
+
+    // 버튼 엘리먼트 가져오기
+    const prevBtn = swiper.el.querySelector('.swiper-button-prev');
+    const nextBtn = swiper.el.querySelector('.swiper-button-next');
+
+    if (prevBtn && nextBtn) {
+      // 예시: 버튼을 슬라이드 width 기준으로 세팅
+      prevBtn.style.top = slideWidth + 'px'; 
+      nextBtn.style.top = slideWidth + 'px';
     }
-    requestAnimationFrame(step);
   }
-  
-  
 })();
 </script>
-
-
-
 </body>
 </html>
