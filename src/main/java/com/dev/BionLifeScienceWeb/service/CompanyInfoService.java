@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import com.dev.BionLifeScienceWeb.model.CompanyInfo;
 import com.dev.BionLifeScienceWeb.repository.CompanyInfoRepository;
 
+
 import lombok.RequiredArgsConstructor;
 
 @Service

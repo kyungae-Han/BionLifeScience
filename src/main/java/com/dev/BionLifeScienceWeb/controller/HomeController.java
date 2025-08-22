@@ -43,6 +43,7 @@ import com.dev.BionLifeScienceWeb.repository.product.BigSortRepository;
 import com.dev.BionLifeScienceWeb.repository.product.MiddleSortRepository;
 import com.dev.BionLifeScienceWeb.repository.product.ProductRepository;
 import com.dev.BionLifeScienceWeb.repository.product.SmallSortRepository;
+//import com.dev.BionLifeScienceWeb.service.HistoryViewService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -66,6 +67,7 @@ public class HomeController {
 	private final BrandSmallSortRepository brandSmallSortRepository;
 	private final BrandProductRepository brandProductRepository;
 	private final CertificationRepository certificationRepository;
+//	private final HistoryViewService historyViewService;
 	
 	@ResponseStatus(value=HttpStatus.NOT_FOUND, reason="잘못된 접근입니다.")
     public class UrlNotFoundException extends RuntimeException {
@@ -120,6 +122,13 @@ public class HomeController {
 	public String about(
 			Model model
 			) {
+		List<HistorySubject> subject = historySubjectRepository.findAllByOrderByStartDesc();
+		for(HistorySubject s : subject) {
+			s.setContents(historyContentRepository.findAllBySubjectIdOrderByDateDesc(s.getId()));
+		}
+		
+        
+		model.addAttribute("list",subject);
 		return "front/company/about";
 	}
 	
@@ -129,10 +138,14 @@ public class HomeController {
 			) {
 		
 		List<HistorySubject> subject = historySubjectRepository.findAllByOrderByStartDesc();
+		
+		
 		for(HistorySubject s : subject) {
 			s.setContents(historyContentRepository.findAllBySubjectIdOrderByDateDesc(s.getId()));
 		}
+		
 		model.addAttribute("list",subject);
+		
 		return "front/company/history";
 	}
 	
