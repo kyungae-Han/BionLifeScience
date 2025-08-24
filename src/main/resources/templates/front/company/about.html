@@ -31,7 +31,7 @@
 				<source src="/front/images/mobile-first-1.mp4" type="video/mp4">
 			</video>
 
-			<div class="p-wrap">
+			<div class="p-wrap" id="about">
 				<h2 class="sec-head p-item" data-speed="0.2">About Bion Life
 					Science</h2>
 				<div class="hero-grid">
@@ -185,8 +185,8 @@
 
 
 
-		<section id="history" class="history-section" aria-label="연혁">
-			<div class="history-wrap">
+		<section id="history" class="about-history-section" aria-label="연혁">
+			<div class="about-history-wrap">
 				<h2 class="history-title p-item" data-speed="0.22">연혁</h2>
 				<p class="history-subtitle p-item" data-speed="0.36">주요 이정표를 간결한
 					타임라인으로 제공합니다.</p>
@@ -218,10 +218,11 @@
 														</time>
 													</header>
 													<div class="bio-history-card__content">
-														<p th:text="${c.contentSubject != null ? '- ' + c.contentSubject : ''}"></p>
+														<p
+															th:text="${c.contentSubject != null ? '- ' + c.contentSubject : ''}"></p>
 													</div>
 												</div>
-												<!-- /.bio-history-card --> 
+												<!-- /.bio-history-card -->
 											</div>
 											<!-- /.bio-history-cards -->
 										</div>
@@ -242,12 +243,20 @@
 				<!-- 하단 카드 3개 -->
 				<div class="history-highlights">
 					<div class="history-highlight p-item" data-speed="0.25">
-						<h4>파트너십</h4>
+						<div class="caption">
+							<h4>파트너십</h4>
+							<!-- <i class="cpation-icon first"
+							style="--bg-img: url('/front/images/icons/integration.svg')"
+							></i> -->
+						</div>
 						<p>다수 글로벌 벤더와 공급 계약 체결</p>
+
 					</div>
 					<div class="history-highlight p-item" data-speed="0.27">
 						<h4>플랫폼</h4>
-						<p>iBio 카테고리/검색 M:N 확장</p>
+						<p>
+							2025, 미래를 여는 혁신의 시작 <br>— 바이온 홈페이지 리뉴얼
+						</p>
 					</div>
 					<div class="history-highlight p-item" data-speed="0.23">
 						<h4>고객 성장</h4>
@@ -265,22 +274,126 @@
 		<!-- Corporate Lab -->
 		<section id="institute" class="section about-body">
 			<div class="p-wrap">
-				<h2 class="sec-head p-item" data-speed="0.2">기업부설연구소</h2>
-				<p class="sec-sub p-item" data-speed="0.34">신제품 검증, 품질 표준화, 데이터
-					기반 서비스 R&D를 수행합니다.</p>
-				<div class="cards">
-					<div class="card p-item" data-speed="0.2">
-						<h4>R&amp;D 분야</h4>
-						<p>시약/소모품 품질평가, 자동화 워크플로우</p>
+				<h2 id="institute-head" class="sec-head p-item" data-speed="0.2">기업부설연구소</h2>
+
+				<!-- 개요 -->
+				<article class="il-overview p-item" data-speed="0.22">
+					<h3 class="il-overview__title">연구소 개요</h3>
+					<div class="il-overview__body">
+						<p>㈜바이온라이프사이언스 기업부설연구소는 생명과학, 질병 진단, 의료기기 관련 소모품, 부자재,
+							Plasticware, 진단 kit 등에 대한 연구 개발 업무를 수행하고 있으며, 2023년에 연구전담부서로 시작하여
+							2025년에 기업부설연구소로 전환하여 운영하고 있습니다.</p>
+						<p>본 연구소는 생명과학 시장을 다수 점유하고 있는 외산 제품에 대응한 국산화를 지속적으로 추진하고 있으며,
+							연구 현장에서 발생하는 제품의 문제점을 신속하게 해결하고, 개선 요구를 적극 반영한 향상된 제품으로 공급하기 위해
+							최선을 다하고 있습니다.</p>
+						<p>
+							또한 지금까지의 연구 개발 노하우를 바탕으로 기존 사업의 역량을 강화하고 새로운 성장 동력을 발굴하기 위하여
+							2025년부터 <strong>천연물 자원 기반 기능성 화장품·건강식품 소재 개발</strong> 연구를 수행하고
+							있으며, <strong>3D 모델링·프린팅</strong>을 도입하여 보다 진보된 방법으로 연구용 기자재
+							R&amp;D를 추진하고 있습니다.
+						</p>
 					</div>
-					<div class="card p-item" data-speed="0.24">
-						<h4>성과</h4>
-						<p>내부 표준화 프로토콜 20+건 정립</p>
+					<div class="il-info">
+						<ul class="il-info__list">
+							<li><span class="il-chip">설립</span><em>2023 연구전담부서 시작 →
+									2025 기업부설연구소 전환·운영</em></li>
+							<li><span class="il-chip">영역</span><em>생명과학, 질병 진단,
+									의료기기 소모품·부자재·Plasticware, 진단 Kit R&amp;D</em></li>
+							<li><span class="il-chip">국산화</span><em>외산 제품 대응 국산화 지속
+									추진, 현장 문제 신속 해결 및 제품 개선 반영</em></li>
+							<li><span class="il-chip">확장</span><em>천연물 기반 기능성
+									화장품·건강식품 소재 연구(2025~), 3D 모델링·프린팅 도입</em></li>
+						</ul>
 					</div>
-					<div class="card p-item" data-speed="0.22">
-						<h4>협력</h4>
-						<p>대학/병원 공동 프로젝트 다수 진행</p>
-					</div>
+				</article>
+
+				<!-- 이미지 카드 (4:5) -->
+				<div class="il-cards il-cards--image il-cards--portrait">
+					<!-- 1) 진단·의료기기 -->
+					<article class="il-image-card"
+						style="--img: url('/front/images/about/default.jpg'); --pos: 50% 45%;">
+						<div class="il-image-card__media" aria-hidden="true"></div>
+						<div class="il-image-card__scrim"></div>
+						<div class="il-image-card__content">
+							<h4 class="il-image-card__title">진단·의료기기</h4>
+							<p class="il-image-card__subtitle">진단용 기자재·진단 Kit·소모품 R&amp;D</p>
+							<ul class="il-image-card__list">
+								<li>Elastomer 재질의 부드러운 소재로 검체 재취용 <strong>Swab</strong> 개발
+								</li>
+								<li><strong>OAB</strong> 채취 Kit 및 <strong>NIPT</strong> 채취
+									Kit 개발</li>
+								<li>급성설사진단용 <strong>검체수송배지</strong> 개발
+								</li>
+								<li>국내외 다수의 <strong>특허출원</strong> 및 <strong>디자인 등록</strong></li>
+							</ul>
+						</div>
+					</article>
+
+					<!-- 2) 연구 기자재 -->
+					<article class="il-image-card"
+						style="--img: url('/front/images/about/2.jpg'); --pos: 48% 40%;">
+						<div class="il-image-card__media" aria-hidden="true"></div>
+						<div class="il-image-card__scrim"></div>
+						<div class="il-image-card__content">
+							<h4 class="il-image-card__title">연구 기자재</h4>
+							<p class="il-image-card__subtitle">생명과학 연구용
+								기자재·소모품·Plasticware</p>
+							<ul class="il-image-card__list">
+								<li><strong>수직형 단백질 전기영동 장치</strong> 개발</li>
+								<li><strong>Filter Tip</strong>, <strong>Internal
+										Screw &amp; Tube</strong> 개발</li>
+								<li>현장 아이디어 → <strong>3D 모델링 설계</strong> → <strong>3D
+										프린팅 시제품</strong></li>
+								<li>대량 생산을 위한 <strong>사출 금형 아이디어</strong> 제공
+								</li>
+							</ul>
+						</div>
+					</article>
+
+					<!-- 3) 천연물·향장 -->
+					<article class="il-image-card"
+						style="--img: url('/front/images/about/4.jpg'); --pos: 55% 42%;">
+						<div class="il-image-card__media" aria-hidden="true"></div>
+						<div class="il-image-card__scrim"></div>
+						<div class="il-image-card__content">
+							<h4 class="il-image-card__title">천연물·향장</h4>
+							<p class="il-image-card__subtitle">기능성 화장품·건강식품 소재</p>
+							<ul class="il-image-card__list">
+								<li><strong>마가목</strong>·<strong>배롱나무</strong> 성분 분석 및 지표성분
+									특정·정량분석</li>
+								<li>2차 대사산물 스크리닝 → 유효물질 특정 → <strong>동정/함량 분석</strong>
+									(HPLC, LC-MS, LC-MS/MS, NMR)
+								</li>
+								<li>활성성분 <strong>추출</strong> 및 <strong>column
+										chromatography</strong>로 유효물질 분리·정제
+								</li>
+								<li>향장 소재 유효 성분 분석 및 문헌/데이터 기반 <strong>활용 기술컨설팅</strong></li>
+							</ul>
+						</div>
+					</article>
+				</div>
+
+				<!-- 3D 모델링/프린팅 콜아웃 -->
+				<aside class="il-callout p-item" data-speed="0.28" role="note">
+					<strong>3D 모델링 &amp; 프린팅</strong> 설계 검증 → 기능 개선 → 대량 생산(사출 금형)으로
+					이어지는 R&amp;D 파이프라인을 운영합니다. 현장 요구를 신속히 반영하는 시제품 제작 체계를 갖추고 있습니다.
+				</aside>
+
+				<!-- 분석 장비/방법 태그 -->
+				<div class="il-tags p-item" data-speed="0.26"
+					aria-label="주요 분석 장비/방법">
+					<span class="il-tag">HPLC</span> <span class="il-tag">LC-MS</span>
+					<span class="il-tag">LC-MS/MS</span> <span class="il-tag">NMR</span>
+					<span class="il-tag">Chromatography</span> <span class="il-tag">3D
+						Modeling</span> <span class="il-tag">3D Printing</span>
+				</div>
+
+				<!-- 파트너/협력 로고 -->
+				<div class="il-logos il-divider">
+					<img src="/front/images/clients/1.png" alt="협력기관 1" /> <img
+						src="/front/images/clients/2.png" alt="협력기관 2" /> <img
+						src="/front/images/clients/3.png" alt="협력기관 3" /> <img
+						src="/front/images/clients/4.png" alt="협력기관 4" />
 				</div>
 			</div>
 		</section>
@@ -288,40 +401,45 @@
 		<!-- Certificates (Swipe) -->
 		<section id="certificates" class="section alt about-body">
 			<div class="p-wrap">
-				<h2 class="sec-head p-item" data-speed="0.2">인증서</h2>
+				<h2 id="certificates-head" class="sec-head p-item" data-speed="0.2">인증서</h2>
 				<p class="sec-sub p-item" data-speed="0.34">보유 인증/수상 내역 샘플
 					레이아웃입니다. 좌우 스와이프로 확인하세요.</p>
+
+
 				<div class="cert-wrap">
-					<div class="cert-nav">
-						<button class="cert-btn" id="certPrev" aria-label="이전">◀</button>
-						<button class="cert-btn" id="certNext" aria-label="다음">▶</button>
+					<div class="cert-nav" aria-hidden="false">
+						<button class="cert-btn" id="certPrev" aria-label="이전" disabled>◀</button>
+						<button class="cert-btn" id="certNext" aria-label="다음" disabled>▶</button>
 					</div>
-					<div class="cert-viewport" id="certViewport">
+
+
+					<div class="cert-viewport" id="certViewport" tabindex="0"
+						role="group" aria-roledescription="수평 스크롤 영역">
 						<div class="cert-track" id="certTrack">
 							<div class="cert p-item" data-speed="0.22">
 								<img
 									src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop"
-									alt="cert1" /> <span>ISO 9001</span>
+									alt="ISO 9001 예시"> <span>ISO 9001</span>
 							</div>
 							<div class="cert p-item" data-speed="0.28">
 								<img
 									src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop"
-									alt="cert2" /> <span>ISO 14001</span>
+									alt="ISO 14001 예시"> <span>ISO 14001</span>
 							</div>
 							<div class="cert p-item" data-speed="0.24">
 								<img
 									src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop"
-									alt="cert3" /> <span>GMP 인증</span>
+									alt="GMP 인증 예시"> <span>GMP 인증</span>
 							</div>
 							<div class="cert p-item" data-speed="0.26">
 								<img
 									src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop"
-									alt="cert4" /> <span>벤처기업 확인</span>
+									alt="벤처기업 확인 예시"> <span>벤처기업 확인</span>
 							</div>
 							<div class="cert p-item" data-speed="0.22">
 								<img
 									src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=800&auto=format&fit=crop"
-									alt="cert5" /> <span>품질경영 대상</span>
+									alt="품질경영 대상 예시"> <span>품질경영 대상</span>
 							</div>
 						</div>
 					</div>
@@ -364,6 +482,77 @@
 					</div>
 				</div>
 			</div>
+			<script>
+			
+			(function(){
+				const sec = document.getElementById('certificates');
+				if(!sec || sec.dataset.sliderInit) return; // guard: run once
+				sec.dataset.sliderInit = '1';
+
+
+				const viewport = sec.querySelector('#certViewport');
+				const track = sec.querySelector('#certTrack');
+				const prevBtn = sec.querySelector('#certPrev');
+				const nextBtn = sec.querySelector('#certNext');
+
+
+				const getStep = () => {
+				const first = track.querySelector('.cert');
+				if(!first) return viewport.clientWidth * 0.8;
+				const rect = first.getBoundingClientRect();
+				const gap = parseFloat(getComputedStyle(track).gap || '16');
+				return rect.width + gap; // one card + gap
+				};
+
+
+				function updateButtons(){
+				const max = viewport.scrollWidth - viewport.clientWidth - 1;
+				prevBtn.disabled = viewport.scrollLeft <= 1;
+				nextBtn.disabled = viewport.scrollLeft >= max;
+				}
+
+
+				function scrollByStep(dir){
+				viewport.scrollBy({ left: dir * getStep(), behavior: 'smooth' });
+				}
+
+
+				// click nav
+				prevBtn.addEventListener('click', () => scrollByStep(-1));
+				nextBtn.addEventListener('click', () => scrollByStep(1));
+
+
+				// pointer drag
+				let isDown = false, startX = 0, startLeft = 0;
+				viewport.addEventListener('pointerdown', (e)=>{ isDown = true; startX = e.clientX; startLeft = viewport.scrollLeft; viewport.setPointerCapture(e.pointerId); });
+				viewport.addEventListener('pointermove', (e)=>{ if(!isDown) return; const dx = e.clientX - startX; viewport.scrollLeft = startLeft - dx; });
+				viewport.addEventListener('pointerup', ()=>{ isDown = false; });
+				viewport.addEventListener('pointercancel', ()=>{ isDown = false; });
+
+
+				// mouse wheel → horizontal scroll (non-passive to prevent vertical page scroll)
+				viewport.addEventListener('wheel', (e)=>{
+				if(Math.abs(e.deltaY) > Math.abs(e.deltaX)){
+				viewport.scrollBy({ left: e.deltaY });
+				e.preventDefault();
+				}
+				}, { passive: false });
+
+
+				// keyboard
+				viewport.addEventListener('keydown', (e)=>{
+				if(e.key === 'ArrowRight') { e.preventDefault(); scrollByStep(1); }
+				if(e.key === 'ArrowLeft') { e.preventDefault(); scrollByStep(-1); }
+				});
+
+
+				// observe & init
+				viewport.addEventListener('scroll', updateButtons, { passive: true });
+				window.addEventListener('resize', updateButtons);
+				updateButtons();
+				})();
+			
+			</script>
 		</section>
 
 
@@ -427,7 +616,7 @@
 			  });
 		});
 	</script>
-	
+
 
 </body>
 </html>
