@@ -456,31 +456,33 @@
 			getBrandList();							
 		</script>
 		
-<!-- 		<script>
-			  document.addEventListener("DOMContentLoaded", function () {
-			    const menuAbout = document.getElementById("menu-about");
-			
-			    if (menuAbout) {
-			      menuAbout.addEventListener("click", function (e) {
-			        e.preventDefault();
-			
-			        // 현재 페이지가 메인(index)인지 확인
-			        const path = window.location.pathname;
-			
-			        if (path === "/" || path === "/index" || path === "/index.html") {
-			          // 메인 페이지 → 해당 섹션으로 부드럽게 스크롤
-			          const target = document.querySelector("#business-history");
-			          if (target) {
-			            target.scrollIntoView({ behavior: "smooth", block: "start" });
-			          }
-			        } else {
-			          // 다른 페이지 → /about으로 이동
-			          window.location.href = "/about";
-			        }
-			      });
-			    }
+		<script>
+		document.addEventListener("DOMContentLoaded", () => {
+			  const tabs   = document.querySelectorAll(".mega-tab");       // li
+			  const btns   = document.querySelectorAll(".mega-tab-btn");   // 버튼
+			  const panels = document.querySelectorAll(".mega-panel");     // 패널
+
+			  btns.forEach(btn => {
+			    btn.addEventListener("click", () => {
+			      // 1) 탭(li) 모두 비활성화
+			      tabs.forEach(tab => tab.classList.remove("is-active"));
+			      // 2) 패널 모두 숨김
+			      panels.forEach(panel => panel.classList.remove("is-active"));
+
+			      // 3) 자기 부모 li에 is-active 추가
+			      btn.closest(".mega-tab").classList.add("is-active");
+
+			      // 4) 연결된 패널 보여주기
+			      const targetId = btn.getAttribute("data-panel");
+			      document.getElementById(targetId).classList.add("is-active");
+			    });
 			  });
-		</script> -->
+			});
+
+		</script>
+
+		
+		
 	</th:block>
 
 </body>

@@ -18495,6 +18495,23 @@ label.checkbox {
 }
 .mega-tab.is-active .mega-tab-btn{ background:rgba(255,255,255,.08); color:#fff; }
 
+.mega-tabs {
+  max-height: 95vh;     /* 화면 높이의 80%까지만 */
+  overflow-y: auto;     /* 세로 스크롤 */
+  padding-right: 4px;   /* 스크롤바와 글자 겹치지 않게 여백 */
+   overscroll-behavior: contain; /* 스크롤이 끝났을 때 바깥영역 스크롤 전파 방지 */
+  -webkit-overflow-scrolling: touch; /* 모바일에서 부드러운 스크롤 */
+}
+
+.mega-tabs::-webkit-scrollbar {
+  width: 6px;           /* 스크롤바 얇게 */
+}
+.mega-tabs::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3); 
+  border-radius: 3px;
+}
+
+
 .mega-panels{ flex:1; }
 .mega-panel{ display:none; padding:20px 28px; }
 .mega-panel.is-active{ display:block; }
