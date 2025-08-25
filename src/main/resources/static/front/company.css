@@ -66,7 +66,7 @@
 }
 
 .sec-head {
-	font-size: 4rem;
+	font-size: clamp(32px, 1.5vw, 80px);
 	margin: 0 0 28px !important;
 	letter-spacing: -0.2px;
 }
@@ -451,45 +451,6 @@
 }
 
 /* ===== Certificates (Swipe) ===== */
-.cert-wrap {
-	position: relative;
-}
-
-.cert-viewport {
-	overflow: hidden;
-}
-
-.cert-track {
-	display: inline-flex;
-	gap: 16px;
-	padding: 4px;
-}
-
-.cert {
-	scroll-snap-align: start;
-	background: #fff;
-	border-radius: 14px;
-	padding: 12px;
-	box-shadow: 0 8px 20px rgba(0, 0, 0, .05);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	min-width: 260px;
-}
-
-.cert img {
-	width: 100%;
-	aspect-ratio: 3/4;
-	object-fit: cover;
-	border-radius: 10px;
-}
-
-.cert span {
-	margin-top: 8px;
-	font-size: 14px;
-	color: #555;
-}
-
 .cert-nav {
 	position: absolute;
 	inset: 0 0 auto 0;
@@ -526,25 +487,35 @@
 
 /* ===== Map / Location ===== */
 .loc-wrap {
+	max-width: 1280px;
 	display: grid;
 	grid-template-columns: 1.2fr 1fr;
 	gap: 24px;
 	align-items: start;
+	margin: 0 auto;
 }
 
-.map-box {
-	width: 100%;
-	height: 420px;
-	border: 0;
-	border-radius: 16px;
-	box-shadow: 0 10px 28px rgba(0, 0, 0, .08);
+#location .sec-head,
+#location .sec-sub {text-align:center;}
+
+.map-box{
+  width: 100%;
+  height: 420px;                      /* 필요 시 다른 값/브레이크포인트 */
+  border: 0;
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.08);
 }
 
-.addr {
-	background: #fff;
-	border-radius: 14px;
-	padding: 18px;
-	box-shadow: 0 8px 24px rgba(0, 0, 0, .06);
+/* 주소 카드가 그 높이에 맞춰 채우도록 */
+.addr{
+  position: relative;
+  height: 100%;                       /* 🔑 부모 그리드 셀 높이를 채움 */
+  display: flex;                      /* 내부 레이아웃 편의 */
+  flex-direction: column;
+  border-radius: 14px;
+  padding: 18px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
 }
 
 .addr dt {
@@ -558,27 +529,44 @@
 }
 
 .btn-row {
+	position: absolute;
 	display: flex;
 	gap: 10px;
 	flex-wrap: wrap;
-	margin-top: 12px;
+	bottom: 12px;
 }
 
+/* 기본 버튼 */
 .btn {
-	appearance: none;
-	border: 1px solid #111;
-	background: #111;
-	color: #fff;
-	padding: 10px 14px;
-	border-radius: 10px;
-	cursor: pointer;
-	font-weight: 600;
+  appearance: none;
+  border: 1px solid #111;
+  background: #111;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.25s ease;   /* 부드러운 전환 */
 }
 
+/* 흰색 배경 버튼 */
 .btn.alt {
-	background: #fff;
-	color: #111;
+  background: #fff;
+  color: #111;
 }
+
+/* hover 시 반전 */
+.btn:hover {
+  background: #fff;
+  color: #111;
+}
+
+.btn.alt:hover {
+  background: #111;
+  color: #fff;
+}
+
+
 
 /*********index 클래스와 겹치지 않게 주의 : 연혁관련***********/
 .history-section ul, .history-section li {
@@ -1091,6 +1079,23 @@
 	padding: clamp(18px, 3.2vw, 26px);
 	color: #fff;
 	z-index: 1;
+	 background: linear-gradient(
+    to top,
+    rgba(0,0,0,1) 0%,     /* 아래쪽 진하게 */
+    rgba(0,0,0,0.0) 100%    /* 위쪽 투명 */
+  	);
+	/* backdrop-filter: blur(8px);    
+   -webkit-backdrop-filter: blur(8px); */
+	opacity: 0;
+	transform: translateY(20px);      /* 아래에서 시작 */
+  	transition: opacity 0.4s ease, 
+              transform 0.4s ease;  /* 부드러운 전환 */
+}
+
+#institute .il-image-card:hover .il-image-card__content {
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: auto; 
 }
 
 #institute .il-image-card__title {
@@ -1112,14 +1117,15 @@
 #institute .il-image-card__list {
 	margin: 4px 0 0 0;
 	padding-left: 16px;
+	list-style-type: disc;
 }
 
 #institute .il-image-card__list li {
 	list-style: disc;
-	font-size: clamp(12px, 1.5vw, 14px);
+	font-size: clamp(14px, 1.5vw, 16px);
 	line-height: 1.55;
-	opacity: .95;
 	margin: 2px 0;
+    margin-bottom: 6px;        /* 항목 간격 */
 }
 
 #institute .il-image-card:hover {
@@ -1150,6 +1156,11 @@
 
 #institute .il-callout strong {
 	color: var(--brand, #1e7f7c);
+}
+
+il-callout.p-item {
+	transform: translateY(12px) !important;
+	transition: opacity .8s ease, transform .8s ease;
 }
 
 /* Tags */
@@ -1202,7 +1213,7 @@
 	opacity: 1;
 }
 /* dotted divider */
-#institute .il-divider::before {
+/* #institute .il-divider::before {
 	content: "";
 	position: absolute;
 	left: 0;
@@ -1213,6 +1224,67 @@
 	background-size: 14px 2px;
 	background-repeat: repeat-x;
 }
+ */
+
+#institute .il-overview__body {
+  position: relative;
+  max-width: 1280px;
+  margin: 28px auto;
+  overflow: hidden;
+  background: var(--bg-img) center/cover no-repeat;
+  border-radius: 28px;
+
+  /* 🔑 더 이상 padding-top으로 밀지 않음 */
+  aspect-ratio: 256/100;   /* 원하는 비율 → 높이 확보 */
+}
+
+#institute .title-container {
+	width: 28.7%;
+	height: 69px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index:2;
+}
+
+
+/* 이너 타이틀 */
+#institute .title-container .il-overview__title {
+  position: relative;
+  margin: 20px auto;
+  font: 800 clamp(18px,2.4vw,24px)/1.2 "Noto Sans KR", system-ui, sans-serif;
+  color: #0b1320;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+
+#institute .il-overview__caption {
+  position: relative;
+  left: 0;
+  bottom: 20px;
+	
+  display: flex;            
+  flex-direction: column;    
+  justify-content: flex-end;  
+  height: 100%;    
+  padding: 0 50px;
+  
+  max-width: 1280px;    
+  box-sizing: border-box;      
+}
+
+#institute .il-overview__caption p{
+	display: block;
+	color: #fff;
+	max-width: 960px;
+	margin: 0 0 16px;
+	font-size: 1rem;
+	word-break: keep-all;
+	overflow-wrap:break-word; 
+}
+
 
 /* Motion reduce */
 @media ( prefers-reduced-motion :reduce) {
@@ -1237,9 +1309,9 @@
 #certificates .cert-nav .cert-btn { margin: -20px 8px 0; }
 
 
-#certificates .cert-viewport { overflow: hidden; padding-bottom: 8px; }
+#certificates .cert-viewport { overflow: hidden;}
 #certificates .cert-viewport:focus { outline: 2px solid var(--brand, #1e7f7c); outline-offset: 4px; }
-#certificates .cert-track { display: inline-flex; gap: var(--gap); padding: 4px; }
+#certificates .cert-track { display: inline-flex; gap: var(--gap); padding: 10px; }
 
 
 #certificates .cert { scroll-snap-align: start; background: #fff; border-radius: 14px; padding: 12px; box-shadow: 0 8px 20px rgba(0,0,0,.05); display: flex; flex-direction: column; align-items: center; flex: 0 0 clamp(240px, 28vw, 320px); }
@@ -1249,3 +1321,275 @@
 
 /* optional: subtle hover */
 #certificates .cert:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(3,10,27,.1); }
+
+
+
+/* 반응형 */
+
+/* =======================
+   MOBILE LAYOUT GUARD
+   ======================= */
+
+/* <= 768px : 태블릿/모바일 공통 보정 */
+@media (max-width: 768px){
+
+  /* 공통 패딩 축소 */
+  .hero .p-wrap,
+  .glance__head,
+  #institute .il-overview,
+  #institute .il-cards,
+  #institute .il-tags,
+  #certificates .p-wrap {
+    padding-inline: clamp(16px, 4vw, 24px);
+  }
+
+  /* hero */
+  .hero{ padding-bottom: clamp(56px, 10vw, 100px); }
+  .hero-grid{ 
+    grid-template-columns: 1fr; 
+    gap: 20px; 
+    margin: 10px auto; 
+  }
+  .hero .hero-video{ 
+    width: 100vw; 
+    max-width: none; 
+    left: 50%; 
+    transform: translateX(-50%) scale(var(--scale, 1));
+    opacity: .35;
+  }
+  
+  .hero .glance-slider {
+  	padding-top: 25px;
+  }
+  
+  .hero .p-item p {
+  	margin-bottom: 5px;
+  }
+  
+  /* glance(슬라이드) */
+  .glance-swiper .swiper-slide{
+    width: calc(100% - 24px);
+  }
+
+  /* stat-card(히어로 카드) */
+  .stat-card{ padding: 160px 0 160px; }
+  .stat-card__value{ top: 28px; left: 24px; }
+  .stat-card__desc{ bottom: 28px; left: 24px; }
+  .container-btn{ transform: translateY(-50%); } /* 가운데 정렬 유지 */
+
+  /* 연구소 개요 카드 */
+  #institute .il-overview__body{
+    aspect-ratio: 16 / 11; /* 너무 납작해지지 않게 */
+    border-radius: 18px;
+  }
+
+  /* 좌상단 타이틀 캡 영역 */
+  #institute .title-container{
+    width: 70%;
+    height: auto;
+    top: 10px; left: 10px;
+  }
+  #institute .title-container .il-overview__title{
+    margin: 12px auto;
+    text-align: center;
+  }
+
+  /* 캡션(본문) */
+  #institute .il-overview__caption{
+    padding: 0 16px 16px;
+  }
+  #institute .il-overview__caption p{
+    max-width: none;            /* 폭 제한 해제 */
+    font-size: 0.98rem;
+  }
+
+  /* 카드 그리드 */
+  #institute .il-cards.il-cards--portrait>.il-image-card{
+    grid-column: span 12;       /* 한 줄 한 장 */
+    min-height: 360px;
+  }
+  /* 미디어와 캡션 */
+  #institute .il-image-card__content{
+    opacity: 1;                 /* 터치 환경: 항상 보이게 */
+    transform: none;            /* 이동 제거 -> 깨짐 방지 */
+    padding: 14px 16px;
+    background: linear-gradient(to top, rgba(0,0,0,.72) 0%, rgba(0,0,0,0) 100%);
+  }
+  #institute .il-image-card:hover{ transform: none; }
+  #institute .il-image-card:hover .il-image-card__media{ transform: none; }
+  #institute .il-image-card:hover .il-image-card__scrim{ opacity: .9; }
+
+  /* 연혁 카드(가로 스크롤) 이미 존재하는 640 규칙 보완 */
+  .bio-history-timeline{ padding: 20px 6px 20px; }
+  .bio-history-timeline__group{ gap: clamp(12px, 2vw, 18px); }
+
+  /* 로고 모음 */
+  #institute .il-logos{ gap: 14px 20px; }
+  #institute .il-logos img{ height: clamp(48px, 10vw, 72px); }
+  
+    /* flex 기반 레이아웃일 때 */
+  .history-highlights{
+    flex-direction: column;
+  }
+  .history-highlights > *{
+    flex: 1 1 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* grid 기반 레이아웃일 때 (cards 같은 그리드 사용 시) */
+  .cards{
+    grid-template-columns: 1fr !important; /* 한 칸 */
+    gap: 14px;
+  }
+
+  /* 카드 안 여백 살짝 줄이기(선택) */
+  .history-highlight{
+    padding: 14px 16px;
+  }
+}
+
+/* ==============================
+   Certificates (horizontal row)
+   ============================== */
+
+/* 카드 한 장 */
+#certificates .cert-viewport {
+  flex-wrap: nowrap;               /* 한 줄 */
+  gap: 20px;                       /* 카드 간격 */
+  overflow-x: auto;                /* 가로 스크롤/스와이프 */
+  overflow-y: visible;
+  scroll-snap-type: x proximity;   /* 카드 단위 스냅 */
+  -webkit-overflow-scrolling: touch;
+  justify-content: center;         /* 내용이 모자랄 때 중앙정렬 */
+  scroll-snap-align: start;
+  flex: 0 0 clamp(260px, 28vw, 340px);  /* 반응형 폭 */
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* 실제 카드 박스 */
+#certificates .cert {
+  background: #fff;                 /* ✅ 여기로 이동 */
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.06);  /* ✅ 여기로 이동 */
+  padding: 12px;                    /* ✅ 여기로 이동 */
+}
+
+
+/* 카드 내부 */
+#certificates .cert-viewport img {
+   width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: contain;   /* contain: 원본비율 유지 / cover: 꽉 채우기 */
+  border-radius: 10px;
+  flex: 1 1 auto;        /* 이미지가 가변적으로 차지 */
+  margin-bottom: 12px;
+}
+#certificates .cert-viewport span {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+  text-align: center;
+}
+
+/* 네비 버튼: 기본 숨김 → 카드가 있을 때만 표시 */
+#certificates .cert-nav { 
+  border: 1px solid red;
+  position: absolute;
+  inset: 0 0 auto 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;                   /* 기본 숨김 */
+  justify-content: center;
+  align-items: center;
+  pointer-events: none;
+  z-index: 2;
+  margin: 0 auto;
+}
+#certificates .cert-nav .cert-btn {
+  pointer-events: auto;
+  width: 40px; height: 40px;
+  border-radius: 999px;
+  border: 0;
+  background: #0b1320;
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(3,10,27,.18);
+}
+
+#certificates .grid-filter-wrap {
+	justify-content: center !important;
+}
+
+#certificates .p-wrap h2,
+#certificates .p-wrap p {text-align: center;}
+
+
+#certificates .cert-nav .cert-btn[disabled] { opacity: .35; cursor: default; }
+
+/* 카드가 하나 이상 있을 때만 네비 보이기 (:has 지원 브라우저) */
+#certificates .cert-wrap:has(.swiper > .cert-viewport) .cert-nav {
+  display: flex;
+}
+
+/* 부트스트랩/기존 그리드 영향 상쇄(있다면) */
+#certificates .swiper [class*="col-"],
+#certificates .swiper .portfolio-item {
+  float: none; width: auto; max-width: none;
+  flex: 0 0 auto;
+}
+
+/* 반응형 미세 조정 */
+@media (max-width: 1024px){
+  #certificates .swiper { gap: 32px; }
+}
+@media (max-width: 768px){
+  #certificates .swiper { gap: 24px; }
+  #certificates .cert-nav .cert-btn { width: 36px; height: 36px; }
+}
+@media (max-width: 480px){
+  #certificates .swiper { gap: 18px; }
+}
+
+
+#certificates .cert {
+  flex-shrink: 0;
+  width: 240px;
+  text-align: center;
+}
+
+.cert img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 8px;
+}
+
+
+/* <= 480px : 작은 폰 추가 보정 */
+@media (max-width: 480px){
+
+  /* hero */
+  .sec-head{ font-size: clamp(22px, 7vw, 28px); }
+  .sec-sub{ font-size: .96rem; }
+
+  /* 연구소 개요 카드 */
+  #institute .il-overview__body{ aspect-ratio: 16 / 12; }
+  #institute .title-container{ width: 82%; top: 8px; left: 8px; }
+  #institute .title-container .il-overview__title{ margin: 10px auto; }
+
+  /* 캡션 */
+  #institute .il-overview__caption{ padding: 0 12px 14px; }
+  #institute .il-overview__caption p{ font-size: .95rem; }
+
+  /* 포트레이트 카드 */
+  #institute .il-cards.il-cards--portrait>.il-image-card{ min-height: 320px; }
+  #institute .il-image-card__title{ font-size: clamp(16px, 5.2vw, 18px); }
+  #institute .il-image-card__subtitle{ font-size: .92rem; }
+  #institute .il-image-card__list li{ font-size: .95rem; }
+
+  /* 연혁 카드 간격 */
+  .bio-history-page{ padding: clamp(8px, 3vw, 12px); }
+}
+

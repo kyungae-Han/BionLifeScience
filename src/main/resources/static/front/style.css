@@ -18767,7 +18767,7 @@ label.checkbox {
 	color: #9E9E9E;
 	font-weight: 700;
 	font-family: 'Noto Sans KR', sans-serif;
-	
+	font-size: clamp(14px, 2.6vw, 18px);
 	}
 	
 .breadcrumb-wrap a:hover {color: black;}
@@ -18778,3 +18778,20 @@ label.checkbox {
 	transform: translateY(0);
 	transition-delay: 0.1s;
 }
+
+
+/* =========================
+   Breadcrumb responsive
+   ========================= */
+
+/* 기본: 줄 수 줄이고 간격 정돈(데스크탑~태블릿) */
+@media (max-width: 768px){
+  .breadcrumb-wrap ul {gap: 0;}
+  .breadcrumb-wrap li{padding: 0;}
+}
+
+/* 모바일: 한 줄 스크롤 or 여러 줄 중 택1 -------------------- */
+/* A. 한 줄 가로 스크롤(권장: 아이템 길어도 깨짐 없음) */
+@media (max-width: 480px){
+}
+

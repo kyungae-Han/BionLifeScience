@@ -43,9 +43,10 @@ import com.dev.BionLifeScienceWeb.repository.product.BigSortRepository;
 import com.dev.BionLifeScienceWeb.repository.product.MiddleSortRepository;
 import com.dev.BionLifeScienceWeb.repository.product.ProductRepository;
 import com.dev.BionLifeScienceWeb.repository.product.SmallSortRepository;
-//import com.dev.BionLifeScienceWeb.service.HistoryViewService;
+import com.dev.BionLifeScienceWeb.model.Certification;
 
 import lombok.RequiredArgsConstructor;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -67,7 +68,8 @@ public class HomeController {
 	private final BrandSmallSortRepository brandSmallSortRepository;
 	private final BrandProductRepository brandProductRepository;
 	private final CertificationRepository certificationRepository;
-//	private final HistoryViewService historyViewService;
+	
+	
 	
 	@ResponseStatus(value=HttpStatus.NOT_FOUND, reason="잘못된 접근입니다.")
     public class UrlNotFoundException extends RuntimeException {
@@ -119,18 +121,20 @@ public class HomeController {
 	}
 	
 	@GetMapping("/about")
-	public String about(
-			Model model
-			) {
-		List<HistorySubject> subject = historySubjectRepository.findAllByOrderByStartDesc();
-		for(HistorySubject s : subject) {
-			s.setContents(historyContentRepository.findAllBySubjectIdOrderByDateDesc(s.getId()));
-		}
-		
+    public String about(Model model) {
+        var subject = historySubjectRepository.findAllByOrderByStartDesc();
+        for (var s : subject) {
+            s.setContents(historyContentRepository.findAllBySubjectIdOrderByDateDesc(s.getId()));
+        }
         
-		model.addAttribute("list",subject);
-		return "front/company/about";
-	}
+        
+        List<Certification> certs = certificationRepository.findAll();
+        model.addAttribute("certification", certs);
+        
+        model.addAttribute("list", subject);
+
+        return "front/company/about";
+    }
 	
 	@GetMapping("/history")
 	public String history(

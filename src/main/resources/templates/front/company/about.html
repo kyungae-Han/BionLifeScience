@@ -18,8 +18,8 @@
 						<li><a href="#about">기업 소개</a></li>
 						<li><a href="#history">기업 연혁</a></li>
 						<li><a href="#institute">부설 연구소</a></li>
-						<li><a href="#certifications">인증서</a></li>
-						<li><a href="#address">찾아오시는 길</a></li>
+						<li><a href="#certificates">인증서</a></li>
+						<li><a href="#location">찾아오시는 길</a></li>
 					</ul>
 				</div>
 			</div>
@@ -123,32 +123,6 @@
 									</div>
 								</article>
 							</div>
-
-							<!-- 이미지 추가 필요시 아래 태그를 주석해제 해주세요.  -->
-							<!-- Slide 5 -->
-							<!-- <div class="swiper-slide">
-								<article class="stat-card" 
-								style="--bg-img:url('/front/images/about/default.jpg')"
-								aria-label="생산시설">
-									<p class="stat-card__value">
-										<span class="countup" data-target="5">0</span><small>Sites</small>
-									</p>
-									<p class="stat-card__desc">국내외 생산 및 물류 센터</p>
-								</article>
-							</div> -->
-
-
-							<!-- Slide 6 -->
-							<!-- <div class="swiper-slide">
-								<article class="stat-card" 
-								style="--bg-img:url('/front/images/about/default.jpg')"
-								aria-label="특허">
-									<p class="stat-card__value">
-										<span class="countup" data-target="320">0</span><small>Patents</small>
-									</p>
-									<p class="stat-card__desc">지속 확장 중인 IP 포트폴리오</p>
-								</article>
-							</div> -->
 						</div>
 
 						<!-- Pagination & Arrows -->
@@ -173,19 +147,17 @@
 
 
 
-		<div th:each="blk : ${subjectBlocks}">
-			<h3 th:text="${blk.subject.title}">제목</h3>
-			<div th:each="h : ${blk.histories}">
-				<strong th:text="${#dates.format(h.date, 'yyyy')}">연도</strong>
-				<ul>
-					<li th:each="it : ${h.items}" th:text="${it}">항목</li>
-				</ul>
-			</div>
-		</div>
-
-
 
 		<section id="history" class="about-history-section" aria-label="연혁">
+			<div th:each="blk : ${subjectBlocks}">
+				<h3 th:text="${blk.subject.title}">제목</h3>
+				<div th:each="h : ${blk.histories}">
+					<strong th:text="${#dates.format(h.date, 'yyyy')}">연도</strong>
+					<ul>
+						<li th:each="it : ${h.items}" th:text="${it}">항목</li>
+					</ul>
+				</div>
+			</div>
 			<div class="about-history-wrap">
 				<h2 class="history-title p-item" data-speed="0.22">연혁</h2>
 				<p class="history-subtitle p-item" data-speed="0.36">주요 이정표를 간결한
@@ -278,20 +250,26 @@
 
 				<!-- 개요 -->
 				<article class="il-overview p-item" data-speed="0.22">
-					<h3 class="il-overview__title">연구소 개요</h3>
-					<div class="il-overview__body">
-						<p>㈜바이온라이프사이언스 기업부설연구소는 생명과학, 질병 진단, 의료기기 관련 소모품, 부자재,
-							Plasticware, 진단 kit 등에 대한 연구 개발 업무를 수행하고 있으며, 2023년에 연구전담부서로 시작하여
-							2025년에 기업부설연구소로 전환하여 운영하고 있습니다.</p>
-						<p>본 연구소는 생명과학 시장을 다수 점유하고 있는 외산 제품에 대응한 국산화를 지속적으로 추진하고 있으며,
-							연구 현장에서 발생하는 제품의 문제점을 신속하게 해결하고, 개선 요구를 적극 반영한 향상된 제품으로 공급하기 위해
-							최선을 다하고 있습니다.</p>
-						<p>
-							또한 지금까지의 연구 개발 노하우를 바탕으로 기존 사업의 역량을 강화하고 새로운 성장 동력을 발굴하기 위하여
-							2025년부터 <strong>천연물 자원 기반 기능성 화장품·건강식품 소재 개발</strong> 연구를 수행하고
-							있으며, <strong>3D 모델링·프린팅</strong>을 도입하여 보다 진보된 방법으로 연구용 기자재
-							R&amp;D를 추진하고 있습니다.
-						</p>
+					<div class="il-overview__body"
+						style="--bg-img: url('/front/images/about/1.jpg')">
+						<div class="title-container">
+							<a href="/history"><h3 class="il-overview__title">바이온연구소
+									더보기 →</h3></a>
+						</div>
+						<div class="il-overview__caption">
+							<p>㈜바이온라이프사이언스 기업부설연구소는 생명과학, 질병 진단, 의료기기 관련 소모품, 부자재,
+								Plasticware, 진단 kit 등에 대한 연구 개발 업무를 수행하고 있으며, 2023년에 연구전담부서로
+								시작하여 2025년에 기업부설연구소로 전환하여 운영하고 있습니다.</p>
+							<p>본 연구소는 생명과학 시장을 다수 점유하고 있는 외산 제품에 대응한 국산화를 지속적으로 추진하고 있으며,
+								연구 현장에서 발생하는 제품의 문제점을 신속하게 해결하고, 개선 요구를 적극 반영한 향상된 제품으로 공급하기 위해
+								최선을 다하고 있습니다.</p>
+							<p>
+								또한 지금까지의 연구 개발 노하우를 바탕으로 기존 사업의 역량을 강화하고 새로운 성장 동력을 발굴하기 위하여
+								2025년부터 <strong>천연물 자원 기반 기능성 화장품·건강식품 소재 개발</strong> 연구를 수행하고
+								있으며, <strong>3D 모델링·프린팅</strong>을 도입하여 보다 진보된 방법으로 연구용 기자재
+								R&amp;D를 추진하고 있습니다.
+							</p>
+						</div>
 					</div>
 					<div class="il-info">
 						<ul class="il-info__list">
@@ -311,7 +289,7 @@
 				<div class="il-cards il-cards--image il-cards--portrait">
 					<!-- 1) 진단·의료기기 -->
 					<article class="il-image-card"
-						style="--img: url('/front/images/about/default.jpg'); --pos: 50% 45%;">
+						style="--img: url('/front/images/about/institute-bg4.jpg'); --pos: 50% 45%;">
 						<div class="il-image-card__media" aria-hidden="true"></div>
 						<div class="il-image-card__scrim"></div>
 						<div class="il-image-card__content">
@@ -331,7 +309,7 @@
 
 					<!-- 2) 연구 기자재 -->
 					<article class="il-image-card"
-						style="--img: url('/front/images/about/2.jpg'); --pos: 48% 40%;">
+						style="--img: url('/front/images/about/institute-bg2.jpg'); --pos: 48% 40%;">
 						<div class="il-image-card__media" aria-hidden="true"></div>
 						<div class="il-image-card__scrim"></div>
 						<div class="il-image-card__content">
@@ -343,7 +321,8 @@
 								<li><strong>Filter Tip</strong>, <strong>Internal
 										Screw &amp; Tube</strong> 개발</li>
 								<li>현장 아이디어 → <strong>3D 모델링 설계</strong> → <strong>3D
-										프린팅 시제품</strong></li>
+										프린팅<br>시제품
+								</strong></li>
 								<li>대량 생산을 위한 <strong>사출 금형 아이디어</strong> 제공
 								</li>
 							</ul>
@@ -352,11 +331,11 @@
 
 					<!-- 3) 천연물·향장 -->
 					<article class="il-image-card"
-						style="--img: url('/front/images/about/4.jpg'); --pos: 55% 42%;">
+						style="--img: url('/front/images/about/institute-bg1.jpg'); --pos: 55% 42%;">
 						<div class="il-image-card__media" aria-hidden="true"></div>
 						<div class="il-image-card__scrim"></div>
 						<div class="il-image-card__content">
-							<h4 class="il-image-card__title">천연물·향장</h4>
+							<h4 class="il-image-card__title">천연물소재 연구개발</h4>
 							<p class="il-image-card__subtitle">기능성 화장품·건강식품 소재</p>
 							<ul class="il-image-card__list">
 								<li><strong>마가목</strong>·<strong>배롱나무</strong> 성분 분석 및 지표성분
@@ -376,7 +355,8 @@
 				<!-- 3D 모델링/프린팅 콜아웃 -->
 				<aside class="il-callout p-item" data-speed="0.28" role="note">
 					<strong>3D 모델링 &amp; 프린팅</strong> 설계 검증 → 기능 개선 → 대량 생산(사출 금형)으로
-					이어지는 R&amp;D 파이프라인을 운영합니다. 현장 요구를 신속히 반영하는 시제품 제작 체계를 갖추고 있습니다.
+					이어지는 R&amp;D 파이프라인을 운영합니다.<br>(주)바이온라이프사이언스는 현장 요구를 신속히 반영하는
+					시제품 제작 체계를 갖추고 있습니다.
 				</aside>
 
 				<!-- 분석 장비/방법 태그 -->
@@ -386,100 +366,6 @@
 					<span class="il-tag">LC-MS/MS</span> <span class="il-tag">NMR</span>
 					<span class="il-tag">Chromatography</span> <span class="il-tag">3D
 						Modeling</span> <span class="il-tag">3D Printing</span>
-				</div>
-
-				<!-- 파트너/협력 로고 -->
-				<div class="il-logos il-divider">
-					<img src="/front/images/clients/1.png" alt="협력기관 1" /> <img
-						src="/front/images/clients/2.png" alt="협력기관 2" /> <img
-						src="/front/images/clients/3.png" alt="협력기관 3" /> <img
-						src="/front/images/clients/4.png" alt="협력기관 4" />
-				</div>
-			</div>
-		</section>
-
-		<!-- Certificates (Swipe) -->
-		<section id="certificates" class="section alt about-body">
-			<div class="p-wrap">
-				<h2 id="certificates-head" class="sec-head p-item" data-speed="0.2">인증서</h2>
-				<p class="sec-sub p-item" data-speed="0.34">보유 인증/수상 내역 샘플
-					레이아웃입니다. 좌우 스와이프로 확인하세요.</p>
-
-
-				<div class="cert-wrap">
-					<div class="cert-nav" aria-hidden="false">
-						<button class="cert-btn" id="certPrev" aria-label="이전" disabled>◀</button>
-						<button class="cert-btn" id="certNext" aria-label="다음" disabled>▶</button>
-					</div>
-
-
-					<div class="cert-viewport" id="certViewport" tabindex="0"
-						role="group" aria-roledescription="수평 스크롤 영역">
-						<div class="cert-track" id="certTrack">
-							<div class="cert p-item" data-speed="0.22">
-								<img
-									src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop"
-									alt="ISO 9001 예시"> <span>ISO 9001</span>
-							</div>
-							<div class="cert p-item" data-speed="0.28">
-								<img
-									src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop"
-									alt="ISO 14001 예시"> <span>ISO 14001</span>
-							</div>
-							<div class="cert p-item" data-speed="0.24">
-								<img
-									src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800&auto=format&fit=crop"
-									alt="GMP 인증 예시"> <span>GMP 인증</span>
-							</div>
-							<div class="cert p-item" data-speed="0.26">
-								<img
-									src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=800&auto=format&fit=crop"
-									alt="벤처기업 확인 예시"> <span>벤처기업 확인</span>
-							</div>
-							<div class="cert p-item" data-speed="0.22">
-								<img
-									src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=800&auto=format&fit=crop"
-									alt="품질경영 대상 예시"> <span>품질경영 대상</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-
-		<!-- Location (Map) -->
-		<section id="location" class="section about-body">
-			<div class="p-wrap">
-				<h2 class="sec-head p-item" data-speed="0.2">찾아오시는 길</h2>
-				<p class="sec-sub p-item" data-speed="0.34">주소 및 교통 안내. 아래 지도는
-					임시 예시입니다.</p>
-				<div class="loc-wrap">
-					<iframe class="map-box p-item" data-speed="0.14"
-						src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3164.856876770622!2d126.9779693156528!3d37.56653597979815!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b7b7c1012d1f3%3A0x6b3d2d3c8f2f9b1!2z7ISc7Jq47Yq567OE7IucIOq1rOq1rA!5e0!3m2!1sko!2skr!4v1686820000000"
-						allowfullscreen="" loading="lazy"
-						referrerpolicy="no-referrer-when-downgrade"></iframe>
-
-					<div class="addr p-item" data-speed="0.22">
-						<dl>
-							<dt>주소</dt>
-							<dd>서울특별시 중구 세종대로 110 (예시)</dd>
-							<dt>대표번호</dt>
-							<dd>02-000-0000</dd>
-							<dt>대중교통</dt>
-							<dd>지하철 1,2호선 시청역 3번 출구 도보 5분</dd>
-						</dl>
-						<div class="btn-row">
-							<button class="btn"
-								onclick="window.open('https://map.naver.com', '_blank')">네이버
-								지도</button>
-							<button class="btn alt"
-								onclick="window.open('https://map.kakao.com', '_blank')">카카오
-								지도</button>
-							<button class="btn alt"
-								onclick="window.open('https://maps.google.com', '_blank')">Google
-								Maps</button>
-						</div>
-					</div>
 				</div>
 			</div>
 			<script>
@@ -497,12 +383,15 @@
 
 
 				const getStep = () => {
-				const first = track.querySelector('.cert');
-				if(!first) return viewport.clientWidth * 0.8;
-				const rect = first.getBoundingClientRect();
-				const gap = parseFloat(getComputedStyle(track).gap || '16');
-				return rect.width + gap; // one card + gap
-				};
+					  const first = track.querySelector('.cert');
+					  if (!first) return viewport.clientWidth * 0.8;
+
+					  const rect = first.getBoundingClientRect();
+					  const cs = getComputedStyle(track);
+					  const gap =
+					    parseFloat(cs.columnGap || cs.gap || '16'); // ← column-gap, gap 모두 대응
+					  return rect.width + gap; // 카드 1장 + 간격
+					};
 
 
 				function updateButtons(){
@@ -555,7 +444,75 @@
 			</script>
 		</section>
 
+		<!-- Certificates (Swipe) -->
+		<section id="certificates" class="section alt about-body">
+			<div class="p-wrap">
+				<h2 id="certificates-head" class="sec-head p-item" data-speed="0.2">인증서</h2>
+				<p class="sec-sub p-item" data-speed="0.34">바이온 국내, 해외 특허증 및
+					의료기기 품질 인증서</p>
+				<!-- 필터 -->
+				<div class="grid-filter-wrap">
+					<ul class="grid-filter" data-container="#certTrack">
+						<li class="activeFilter"><a href="#" data-filter="*">모두보기</a></li>
+						<li><a href="#" data-filter=".pf-기업인증">기업인증</a></li>
+						<li><a href="#" data-filter=".pf-특허인증">특허인증</a></li>
+						<li><a href="#" data-filter=".pf-기타인증">기타인증</a></li>
+					</ul>
+				</div>
 
+				<div class="cert-wrap">
+					<div class="cert-nav" aria-hidden="false">
+						<button class="cert-btn" id="certPrev" aria-label="이전" disabled>◀</button>
+						<button class="cert-btn" id="certNext" aria-label="다음" disabled>▶</button>
+					</div>
+					<div tabindex="0" class="cert-viewport swiper-wrapper"
+						id="certViewport">
+						<div class="cert-track swiper-slide" id="certTrack">
+							<div class="cert" th:each="c : ${certification}"
+								th:classappend="${' pf-' + c.sort}">
+								<img th:src="${c.road}" alt="CERTIFICATION"> <span
+									th:text="${c.content}">혁신성장유형 벤처기업확인서</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Location (Map) -->
+		<section id="location" class="section about-body">
+			<div class="p-wrap">
+				<h2 class="sec-head p-item" data-speed="0.2">찾아오시는 길</h2>
+				<div class="loc-wrap">
+					<iframe class="map-box p-item" data-speed="0.14"
+						src="https://www.google.com/maps?q=경기도+남양주시+순화궁로+282&output=embed"
+						width="400%" height="220" style="border: 0;" allowfullscreen
+						loading="lazy"> </iframe>
+
+					<div class="addr p-item" data-speed="0.22">
+						<dl>
+							<dt>주소</dt>
+							<dd>경기도 남양주시 순화궁로 282, 에이스하이엔드타워 10층</dd>
+							<dt>대표번호</dt>
+							<dd>031-572-2273</dd>
+							<dt>대중교통</dt>
+							<dd>지하철 8호선, 경춘선 별내역</dd>
+						</dl>
+						<div class="btn-row">
+							<button class="btn alt"
+								onclick="window.open('https://map.naver.com/v5/search/경기도%20남양주시%20순화궁로%20282', '_blank')">네이버
+								지도</button>
+							<button class="btn alt"
+								onclick="window.open('https://map.kakao.com/?q=경기도 남양주시 순화궁로 282', '_blank')">카카오
+								지도</button>
+							<button class="btn alt"
+								onclick="window.open('https://www.google.com/maps/search/?api=1&query=경기도+남양주시+순화궁로+282', '_blank')">Google
+								Maps</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 
 
 		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
@@ -616,6 +573,55 @@
 			  });
 		});
 	</script>
+
+	<script>
+	document.addEventListener('DOMContentLoaded', () => {
+		  const filterLinks = document.querySelectorAll('.grid-filter a');
+
+		  // 카드(.cert)도, 혹시 컨테이너를 숨긴 구조라면 컨테이너도 함께 지원
+		  const getItems = () =>
+		    Array.from(document.querySelectorAll('#certTrack > .cert, #certTrack > .cert-viewport'));
+
+		  function showItem(el, show) {
+		    el.style.display = show ? '' : 'none';           // inline style 리셋/적용
+		    el.classList.toggle('is-hidden', !show);         // 숨김 클래스 토글
+		    el.setAttribute('aria-hidden', String(!show));   // 접근성 표시
+		  }
+
+		  function applyFilter(sel) {
+		    const isAll = !sel || sel === '*' || sel === 'all';
+		    getItems().forEach(box => {
+		      // 분류 클래스가 .cert에 있다면 그것도 매칭해 줌
+		      const card = box.classList.contains('cert') ? box
+		                  : box.querySelector('.cert');
+
+		      const match = isAll
+		        ? true
+		        : box.matches(sel) || (card && card.matches(sel));
+
+		      showItem(box, match);
+		    });
+		  }
+
+		  // 클릭 바인딩
+		  filterLinks.forEach(a => {
+		    a.addEventListener('click', (e) => {
+		      e.preventDefault();
+
+		      // active 토글
+		      filterLinks.forEach(l => l.parentElement.classList.remove('activeFilter'));
+		      a.parentElement.classList.add('activeFilter');
+
+		      // 필터 적용
+		      applyFilter(a.dataset.filter || '*');
+		    });
+		  });
+
+		  // 최초 로딩 시 전체 보기
+		  applyFilter('*');
+		});
+
+</script>
 
 
 </body>
