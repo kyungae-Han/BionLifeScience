@@ -18718,19 +18718,32 @@ label.checkbox {
 	pointer-events: none;
 	transform: translateY(8px);
 	transition:opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
+	min-height: 360px;
 }
 
+/*
 .primary-menu .has-mega:hover .mega-menu,
 .primary-menu .has-mega:focus-within .mega-menu{
   visibility:visible; opacity:1; pointer-events:auto; transform:translateY(0);
   transition:opacity .18s ease, transform .18s ease;
 }
+*/
+
+
+.primary-menu .has-mega:hover .mega-menu,
+.primary-menu .has-mega:focus-within .mega-menu, 
+.primary-menu .has-mega.is-active .mega-menu { 
+	visibility: visible; 
+	opacity: 1; 
+	pointer-events: auto;
+	transform: translateY(0); 
+	transition: opacity .18s ease, transform .18s ease; 
+	}
 
 .primary-menu .has-mega {position: static;}
 .primary-menu .has-mega .mega-menu{
 	  width: 100%;
 	  background: #0a1e4e;
-	  border: 1px solid red;
 	  position: fixed;
 	  left:0;
 	  top: calc(100vh-var(--header-h));
@@ -18800,7 +18813,6 @@ label.checkbox {
   padding: 16px 30px;
   display: none;  
   box-sizing: border-box;
-  
   overflow: visible;     /* (기존에 hidden이면 덮어씀) */
   height: auto;
 }
@@ -18810,10 +18822,37 @@ label.checkbox {
 .mega-tab.is-active > .mega-panels { display: block;}
 
 /* 개별 패널 */
-.mega-panel { display: block;}
+.mega-panel { display: flex; flex-direction: column; border-left: 1px solid #fff;}
+.mega-columns {padding-left: 20px;}
 
+.mega-tab .mega-panel  .mega-columns .mega-col {width: var(--tabs-w);}
+.mega-tab .mega-panel  .mega-columns .mega-col .mega-2depth {margin-top: 7px; position: relative;}
+.mega-tab .mega-panel  .mega-columns .mega-col .mega-2depth a {line-height:2.5;}
+.mega-tab .mega-panel .mega-more {/* position: absolute; left:0; bottom: -115px; height: auto; */ display: none;}
 
+/* 3depth 기본 숨김 */
+.mega-tab .mega-panel .mega-columns .mega-col .mega-3depth {
+  display: none;
+  position: fixed;
+  top: 0;     /* 헤더 높이만큼 내려서 상단 고정 */
+  left: calc(var(--tabs-w)*3);
+  height: auto;
+  width: var(--tabs-w);
+  z-index: 1000;
+  overflow: visible;
+  margin-top: 22px;
+  padding-bottom: 200px;
+  background: #0a1e4e;
+}
 
+.mega-tab .mega-panel  .mega-columns .mega-col .mega-2depth.is-active .mega-3depth {display:block;}
+.mega-tab .mega-panel .mega-columns .mega-col .mega-3depth li {line-height: 2.5;}
+
+.mega-tab button,
+.mega-tab .mega-panel button,
+.mega-tab .mega-panel a {
+  color: #fff;
+}
 
 
 

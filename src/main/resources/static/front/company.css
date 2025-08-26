@@ -1567,7 +1567,6 @@ il-callout.p-item {
 }
 
 
-/* <= 480px : 작은 폰 추가 보정 */
 @media (max-width: 480px){
 
   /* hero */
