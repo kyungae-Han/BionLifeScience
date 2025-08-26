@@ -136,6 +136,12 @@ public class HomeController {
         return "front/company/about";
     }
 	
+	@GetMapping("/overview")
+    public String overview(Model model) {
+
+        return "front/business/overview";
+    }
+	
 	@GetMapping("/history")
 	public String history(
 			Model model
