@@ -6,6 +6,10 @@
     --menu-bg-m: #fff;
     --header-h: 56px;
     --tabs-w: 140px; 
+    --panel-h: 100vh; 
+	--clip-top: 0px;
+	--clip-bot: 0px;
+
   }
 }
 
@@ -18700,6 +18704,7 @@ label.checkbox {
 
 
 
+
 /* =========================
    header 메뉴관련
    ========================= */
@@ -18744,12 +18749,12 @@ label.checkbox {
 .primary-menu .has-mega .mega-menu{
 	  width: 100%;
 	  background: #0a1e4e;
-	  position: fixed;
+	  position: absolute;
 	  left:0;
-	  top: calc(100vh-var(--header-h));
+	  top: calc(100%-var(--header-h));
 	  overflow-x: hidden;
 	  z-index: 1000;
-	  padding-top:12px 0;
+	  margin-top: -3px;
 	  
 }
 
@@ -18766,10 +18771,6 @@ label.checkbox {
 	margin: 0;
 	padding: 0;
 }
-
-
-/* 메가메뉴 컨테이너는 위치 기준점 */
-.mega-menu { position: relative; }
 
 /* 감싸는 래퍼: 왼쪽에 탭 폭만큼 패딩을 줘 패널 자리를 확보 */
 .mega-wrap {
@@ -18815,45 +18816,74 @@ label.checkbox {
   box-sizing: border-box;
   overflow: visible;     /* (기존에 hidden이면 덮어씀) */
   height: auto;
+  min-height: 350px;
 }
 
 .mega-tab .mega-panels li{line-height: 2;}
 
 .mega-tab.is-active > .mega-panels { display: block;}
 
-/* 개별 패널 */
-.mega-panel { display: flex; flex-direction: column; border-left: 1px solid #fff;}
-.mega-columns {padding-left: 20px;}
 
-.mega-tab .mega-panel  .mega-columns .mega-col {width: var(--tabs-w);}
-.mega-tab .mega-panel  .mega-columns .mega-col .mega-2depth {margin-top: 7px; position: relative;}
-.mega-tab .mega-panel  .mega-columns .mega-col .mega-2depth a {line-height:2.5;}
+/* 개별 패널 */
+.mega-panel { display: flex; flex-direction: column; position: relative;}
+.mega-tab .mega-panel  .mega-columns {
+	padding: 17px 20px;
+	position: relative;
+	}
+
+.mega-tab .mega-panel .mega-columns .mega-col {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+ 
+
+.mega-tab .mega-panel  .mega-columns .mega-col .mega-2depth {margin: 7px 25px 0; position: relative;}
+.mega-tab .mega-panel  .mega-columns .mega-col .mega-2depth a {padding: 12px 12px;}
 .mega-tab .mega-panel .mega-more {/* position: absolute; left:0; bottom: -115px; height: auto; */ display: none;}
 
 /* 3depth 기본 숨김 */
+
+
 .mega-tab .mega-panel .mega-columns .mega-col .mega-3depth {
   display: none;
   position: fixed;
-  top: 0;     /* 헤더 높이만큼 내려서 상단 고정 */
-  left: calc(var(--tabs-w)*3);
-  height: auto;
+  top: 0;
+  left: calc(var(--tabs-w)*4);
   width: var(--tabs-w);
+  height: 100%;
   z-index: 1000;
-  overflow: visible;
-  margin-top: 22px;
-  padding-bottom: 200px;
+  overflow: auto;
   background: #0a1e4e;
+  
+  clip-path: inset(var(--clip-top, 0px) 0 var(--clip-bot, 0px) 0);
+  will-change: clip-path;
+  margin:0 !important; padding:0 !important; border:0;
+  outline: 1px dashed rgba(255,255,255,.25);
 }
 
 .mega-tab .mega-panel  .mega-columns .mega-col .mega-2depth.is-active .mega-3depth {display:block;}
 .mega-tab .mega-panel .mega-columns .mega-col .mega-3depth li {line-height: 2.5;}
 
+/* section간 line세팅 */
+ .mega-tab .mega-panel  .mega-columns .mega-col::after,
+ .mega-tab .mega-panel .mega-columns .mega-col .mega-3depth::after {
+ 	content: '';
+ 	position: absolute;
+ 	top: 0;
+ 	left: 0;
+ 	width: 1px;
+ 	height: 100%;
+ 	background: #fff;
+ 	margin: 0;
+ 	padding: 0;
+ }
+
+ 
 .mega-tab button,
 .mega-tab .mega-panel button,
 .mega-tab .mega-panel a {
   color: #fff;
 }
-
-
-
 

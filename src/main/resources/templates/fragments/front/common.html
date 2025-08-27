@@ -6,23 +6,19 @@
 
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <meta name="author" content="" />
-<link
-	href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Poppins:300,400,500,600,700|PT+Serif:400,400i&display=swap"
-	rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Poppins:300,400,500,600,700|PT+Serif:400,400i&display=swap" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="/front/css/bootstrap.css" type="text/css" />
 <link rel="stylesheet" href="/front/style.css" type="text/css" />
 <link rel="stylesheet" href="/front/css/swiper.css" type="text/css" />
 <link rel="stylesheet" href="/front/css/dark.css" type="text/css" />
 <link rel="stylesheet" href="/front/css/font-icons.css" type="text/css" />
 <link rel="stylesheet" href="/front/css/animate.css" type="text/css" />
-<link rel="stylesheet" href="/front/css/magnific-popup.css"
-	type="text/css" />
+<link rel="stylesheet" href="/front/css/magnific-popup.css" type="text/css" />
 <link rel="stylesheet" href="/front/css/custom.css" type="text/css" />
 <link rel="stylesheet" href="/front/detail.css">
 <link rel="stylesheet" href="/front/company.css" type="text/css">
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<script src="https://kit.fontawesome.com/e5334cc6a1.js"
-	crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/e5334cc6a1.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/front/timeline.css">
 <link rel="shortcut icon" href="/front/image/logo/favicon.ico">
 <link rel="stylesheet" href="/front/js/countdown-timers/flipclock.css">
@@ -33,40 +29,31 @@
 <body class="stretched">
 	<div id="wrapper" class="clearfix">
 		<th:block th:fragment="headerSrc(transparent, menuList)">
-			<header id="header" class="full-header"
-				th:classappend="${transparent} == true ? transparent-header">
+			<header id="header" class="full-header" th:classappend="${transparent} == true ? transparent-header">
 				<div id="header-wrap">
 					<div class="container">
 						<div class="header-row">
 							<div id="logo">
-								<a href="/index" class="standard-logo"
-									data-dark-logo="/front/image/logo/logo_one.png"> <img
-									src="/front/image/logo/logo_one.png" alt="Logo"></a> <a
-									href="/index" class="retina-logo"
-									data-dark-logo="/front/image/logo/logo_one.png"> <img
-									src="/front/image/logo/logo_one.png" alt="Logo"></a>
+								<a href="/index" class="standard-logo" data-dark-logo="/front/image/logo/logo_one.png"> <img src="/front/image/logo/logo_one.png" alt="Logo"></a> <a href="/index" class="retina-logo"
+									data-dark-logo="/front/image/logo/logo_one.png"> <img src="/front/image/logo/logo_one.png" alt="Logo"></a>
 							</div>
 
 							<div class="header-misc primary-menu" id="search-wrap">
 								<div id="top-search" class="header-misc-icon">
-									<a href="#" id="top-search-trigger"><i
-										class="icon-line-search"></i><i class="icon-line-cross"></i>검색</a>
+									<a href="#" id="top-search-trigger"><i class="icon-line-search"></i><i class="icon-line-cross"></i>검색</a>
 								</div>
 								<div id="top-cart" class="header-misc-icon d-sm-block">
-									<span><a style="font-weight: 600;" href="#">EN </a></span> / <span><a
-										class="active" style="font-weight: 600;" href="#"> KO</a></span>
+									<span><a style="font-weight: 600;" href="#">EN </a></span> / <span><a class="active" style="font-weight: 600;" href="#"> KO</a></span>
 								</div>
 							</div>
 
 
 							<div id="primary-menu-trigger">
 								<svg class="svg-trigger" viewBox="0 0 100 100">
-									<path
-										d="m 30,33 h 40 c 3.722839,0 7.5,3.126468 7.5,8.578427 0,5.451959 -2.727029,8.421573 -7.5,8.421573 h -20">
+									<path d="m 30,33 h 40 c 3.722839,0 7.5,3.126468 7.5,8.578427 0,5.451959 -2.727029,8.421573 -7.5,8.421573 h -20">
 									</path>
 									<path d="m 30,50 h 40"></path>
-									<path
-										d="m 70,67 h -40 c 0,0 -7.5,-0.802118 -7.5,-8.365747 0,-7.563629 7.5,-8.634253 7.5,-8.634253 h 20">
+									<path d="m 70,67 h -40 c 0,0 -7.5,-0.802118 -7.5,-8.365747 0,-7.563629 7.5,-8.634253 7.5,-8.634253 h 20">
 									</path>
 								</svg>
 							</div>
@@ -76,43 +63,30 @@
 									<li class="menu-item"><a class="menu-link" href="/about">
 											<div style="padding-bottom: 5px;">회사 소개</div>
 									</a></li>
-									<li class="menu-item"><a class="menu-link"
-										href="/overview">
+									<li class="menu-item"><a class="menu-link" href="/overview">
 											<div style="padding-bottom: 5px;">연구 개발</div>
 									</a></li>
-									<li class="menu-item has-mega"><a class="menu-link"
-										href="#"><div>제품소개</div></a>
+									<li class="menu-item has-mega"><a class="menu-link" href="#"><div>제품소개</div></a>
 
 										<div class="mega-menu">
 											<div class="mega-wrap">
 												<!-- 1depth: 대분류(고정 탭) -->
 												<ul class="mega-tabs">
-													<li class="mega-tab"
-														th:each="b,iter : ${menuList.bigSortList}"
-														th:classappend="${iter.index==0}? 'is-active'">
+													<li class="mega-tab" th:each="b,iter : ${menuList.bigSortList}" th:classappend="${iter.index==0}? 'is-active'">
 
-														<button type="button" class="mega-tab-btn"
-															th:attr="data-panel='mega-b-' + ${b.id}">[[${b.name}]]</button>
+														<button type="button" class="mega-tab-btn" th:attr="data-panel='mega-b-' + ${b.id}">[[${b.name}]]</button>
 
 														<div class="mega-panels">
-															<div class="mega-panel" th:id="'mega-b-' + ${b.id}"
-																th:classappend="${iter.index==0}? 'is-active'">
+															<div class="mega-panel" th:id="'mega-b-' + ${b.id}" th:classappend="${iter.index==0}? 'is-active'">
 
 																<div class="mega-columns">
-																	<div class="mega-col"
-																		th:each="m : ${menuList.middleSortList}"
-																		th:if="${m.bigSort.id == b.id}">
+																	<div class="mega-col" th:each="m : ${menuList.middleSortList}" th:if="${m.bigSort.id == b.id}">
 
 																		<div class="mega-2depth">
-																			<a class="mega-2depth-link"
-																				th:href="@{|/productSorted/middle/${m.id}|}"
-																				th:text="${m.name}"></a>
+																			<a class="mega-2depth-link" th:href="@{|/productSorted/middle/${m.id}|}" th:text="${m.name}"></a>
 
 																			<ul class="mega-3depth">
-																				<li th:each="s : ${menuList.smallSortList}"
-																					th:if="${s.middleSort.id == m.id}"><a
-																					th:href="@{|/productSorted/sub/${s.id}|}"
-																					th:text="${s.name}"></a></li>
+																				<li th:each="s : ${menuList.smallSortList}" th:if="${s.middleSort.id == m.id}"><a th:href="@{|/productSorted/sub/${s.id}|}" th:text="${s.name}"></a></li>
 																			</ul>
 																		</div>
 
@@ -120,8 +94,7 @@
 																</div>
 
 																<div class="mega-more">
-																	<a th:href="@{|/productSorted/main/${b.id}|}">대분류
-																		전체보기 →</a>
+																	<a th:href="@{|/productSorted/main/${b.id}|}">대분류 전체보기 →</a>
 																</div>
 															</div>
 														</div>
@@ -132,41 +105,27 @@
 										</div></li>
 
 									<!-- 브랜드소개: 동일 패턴(필요 시) -->
-									<li class="menu-item has-mega">
-									<a class="menu-link" href="#"><div>브랜드소개</div></a>
-										<div class="mega-menu"
-										th:if="${#lists.size(menuList.brandBigSortList.?[brand.id == b.id]) > 0}"
-										>
+									<li class="menu-item has-mega"><a class="menu-link" href="#"><div>브랜드소개</div></a>
+										<div class="mega-menu" th:if="${#lists.size(menuList.brandBigSortList.?[brand.id == b.id]) > 0}">
 											<div class="mega-wrap">
 												<ul class="mega-tabs">
-													<li class="mega-tab"
-														th:each="b,iter : ${menuList.brandList}"
-														th:classappend="${iter.index==0}? 'is-active'">
+													<li class="mega-tab" th:each="b,iter : ${menuList.brandList}" th:classappend="${iter.index==0}? 'is-active'">
 
-														<button type="button" class="mega-tab-btn"
-															th:attr="data-panel='mega-b-' + ${b.id}">[[${b.name}]]</button>
+														<button type="button" class="mega-tab-btn" th:attr="data-panel='mega-b-' + ${b.id}">[[${b.name}]]</button>
 
 														<div class="mega-panels">
-															<div class="mega-panel" th:id="'mega-b-' + ${b.id}"
-																th:classappend="${iter.index==0}? 'is-active'">
+															<div class="mega-panel" th:id="'mega-b-' + ${b.id}" th:classappend="${iter.index==0}? 'is-active'">
 
 																<div class="mega-columns">
 																	<!-- 2depth: (브랜드 b에 속하는 대분류) -->
-																	<div class="mega-col"
-																		th:each="m : ${menuList.brandBigSortList}"
-																		th:if="${m.brand.id == b.id}">
+																	<div class="mega-col" th:each="m : ${menuList.brandBigSortList}" th:if="${m.brand.id == b.id}">
 
 																		<div class="mega-2depth">
-																			<a class="mega-2depth-link"
-																				th:href="@{|/brandProductSorted/main/${m.id}|}"
-																				th:text="${m.name}"></a>
+																			<a class="mega-2depth-link" th:href="@{|/brandProductSorted/main/${m.id}|}" th:text="${m.name}"></a>
 
 																			<!-- 3depth: (대분류 m에 속하는 중분류) -->
 																			<ul class="mega-3depth">
-																				<li th:each="s : ${menuList.brandMiddleSortList}"
-																					th:if="${s.bigSort.id == m.id}"><a
-																					th:href="@{|/brandProductSorted/middle/${s.id}|}"
-																					th:text="${s.name}"></a></li>
+																				<li th:each="s : ${menuList.brandMiddleSortList}" th:if="${s.bigSort.id == m.id}"><a th:href="@{|/brandProductSorted/middle/${s.id}|}" th:text="${s.name}"></a></li>
 																			</ul>
 																		</div>
 
@@ -174,8 +133,7 @@
 																</div>
 
 																<div class="mega-more">
-																	<a th:href="@{|/brandProductSorted/brand/${b.id}|}">대분류
-																		전체보기 →</a>
+																	<a th:href="@{|/brandProductSorted/brand/${b.id}|}">대분류 전체보기 →</a>
 																</div>
 															</div>
 														</div>
@@ -187,8 +145,7 @@
 									<li class="menu-item"><a class="menu-link" href="/notice">
 											<div style="padding-bottom: 5px;">공지사항</div>
 									</a></li>
-									<li class="menu-item"><a class="menu-link"
-										href="/references">
+									<li class="menu-item"><a class="menu-link" href="/references">
 											<div style="padding-bottom: 5px;">자료실</div>
 									</a></li>
 									<li class="menu-item"><a class="menu-link" href="/contact">
@@ -196,13 +153,10 @@
 									</a></li>
 								</ul>
 							</nav>
-							<form class="top-search-form" action="/searchAll" method="get"
-								id="top-search-form">
+							<form class="top-search-form" action="/searchAll" method="get" id="top-search-form">
 								<div>
-									<input type="text" name="searchWord" class="form-control"
-										required="required" placeholder="검색어를 입력 하세요."
-										autocomplete="off"> <span class="search-btn"
-										id="search-btn"><i class="icon-line-search"></i></span>
+									<input type="text" name="searchWord" class="form-control" required="required" placeholder="검색어를 입력 하세요." autocomplete="off"> <span class="search-btn" id="search-btn"><i
+										class="icon-line-search"></i></span>
 								</div>
 							</form>
 							<script>
@@ -241,8 +195,7 @@
 											<div class="col-12">
 												<address class="mb-0">
 													<p>
-														<strong>본사 &nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;</strong>경기도
-														남양주시 순화궁로 282,
+														<strong>본사 &nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;</strong>경기도 남양주시 순화궁로 282,
 													</p>
 													<p>에이스하이엔드타워 10층</p>
 													<p>TEL : 031-572-2272</p>
@@ -288,8 +241,7 @@
 
 						<div class="w-100 text-center">
 							<div class="copyrights-menu copyright-links clearfix">
-								<a href="#">기업소개</a>/<a href="#">제품소개</a>/<a href="#">공지사항</a>/<a
-									href="#">자료실</a>/<a href="#">고객지원</a>/<a href="#">오시는길</a>
+								<a href="#">기업소개</a>/<a href="#">제품소개</a>/<a href="#">공지사항</a>/<a href="#">자료실</a>/<a href="#">고객지원</a>/<a href="#">오시는길</a>
 							</div>
 							Copyrights &copy; 2023 All Rights Reserved by (주)바이온라이프사이언스
 						</div>
@@ -362,7 +314,7 @@
     };
 
     items.forEach(el => {
-      const panel = el.querySelector('.mega-3depth');
+      const panel = el.querySelector('.mega-32epth');
 
       el.addEventListener('mouseenter', () => open(el));
       el.addEventListener('mouseleave', () => close(el));
@@ -390,30 +342,22 @@
           items.forEach(i => i.classList.remove('is-active'));
         }
       });
+
+      host.addEventListener('mouseover', () => {
+        // 1. 모든 .mega-menu에서 is-active 제거
+        document.querySelectorAll('.mega-menu').forEach(menu => {
+          menu.classList.remove('is-active');
+        });
+
+        // 2. 현재 .has-mega의 자식 .mega-menu만 활성화
+        const childMenu = host.querySelector('.mega-menu');
+        if (childMenu) {
+          childMenu.classList.add('is-active');
+        }
+      });
     }
   });
 })();
-</script>
-
-		<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const items = document.querySelectorAll('.has-mega');
-
-  items.forEach(item => {
-    item.addEventListener('mouseover', () => {
-      // 1. 모든 .mega-menu에서 is-active 제거
-      document.querySelectorAll('.mega-menu').forEach(menu => {
-        menu.classList.remove('is-active');
-      });
-
-      // 2. 현재 .has-mega의 자식 .mega-menu만 활성화
-      const childMenu = item.querySelector('.mega-menu');
-      if (childMenu) {
-        childMenu.classList.add('is-active');
-      }
-    });
-  });
-});
 </script>
 
 
