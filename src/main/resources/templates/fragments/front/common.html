@@ -96,21 +96,21 @@
                                                         <i class="icon-stack"></i> [[${b.name}]]
                                                     </div>
                                                 </a>
-                                                <ul class="sub-menu-container">
+                                                <ul class="sub-menu-container sub-container">
                                                     <li class="menu-item" th:if="${b.id == m.bigSort.id}"
                                                         th:each="m : ${menuList.middleSortList}">
                                                         <a class="menu-link"
                                                             th:href="@{|/productSorted/middle/${m.id}|}">
                                                             <div th:text="${m.name}">Screw Caps and Tubes</div>
                                                         </a>
-                                                        <ul class="sub-menu-container">
+                                                        <ul class="sub-menu-container sub-container">
                                                             <li class="menu-item" th:if="${m.id == s.middleSort.id}"
                                                                 th:each="s:${menuList.smallSortList}">
                                                                 <a class="menu-link"
                                                                     th:href="@{|/productSorted/sub/${s.id}|}">
                                                                     <div th:text="${s.name}">Product 01</div>
                                                                 </a>
-                                                                <ul class="sub-menu-container">
+                                                                <ul class="sub-menu-container sub-container">
                                                                     <li class="menu-item"
                                                                         th:if="${s.id == p.smallSort.id}"
                                                                         th:each="p:${menuList.productList}">
@@ -318,27 +318,29 @@
 		<script src="/front/js/menu.tree.js"></script>
   
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const roots = document.querySelectorAll('.primary-menu > .menu-container > .menu-item > .sub-menu-container');
-  function maxColHeight(root){
-    let h = 0;
-    root.querySelectorAll(':scope > .sub-menu').forEach(col => {
-      // 절대 배치된 하위 패널까지 합산하려면, 보이는 동안 강제로 측정 영역을 켬
-      const prev = col.style.display;
-      if (getComputedStyle(col).display === 'none') col.style.display = 'block';
-      h = Math.max(h, col.offsetHeight);
-      col.style.display = prev;
+document.addEventListener("DOMContentLoaded", () => {
+  const secondMenus = document.querySelectorAll('.primary-menu .sub-menu-container > li');
+
+  secondMenus.forEach(item => {
+    const thirdMenu = item.querySelector('.sub-menu-container');
+    if (!thirdMenu) return;
+
+    item.addEventListener('mouseenter', () => {
+      const rect = item.getBoundingClientRect();
+      console.log(rect);
+
+      thirdMenu.style.display = 'block';
+      thirdMenu.style.top = rect.top + 'px';
+      thirdMenu.style.left = (rect.right) + 'px';
     });
-    root.style.setProperty('--submenu-h', Math.max(h, 220) + 'px');
-  }
-  roots.forEach(root => {
-    const parent = root.closest('.sub-menu');
-    parent && parent.addEventListener('mouseenter', () => maxColHeight(root));
-    window.addEventListener('resize', () => maxColHeight(root));
-    maxColHeight(root);
+
+    item.addEventListener('mouseleave', () => {
+      thirdMenu.style.display = 'none';
+    });
   });
 });
 </script>
+
  
   
     </th:block>

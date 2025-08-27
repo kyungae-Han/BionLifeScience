@@ -18728,7 +18728,9 @@ label.checkbox {
   z-index:-1;
   pointer-events:none;
   border-top: 2px solid #fe5000;
-  height: calc(100%*2.3);
+  height: auto;
+  min-height: 300px;
+  max-height: 80vh;
 }
 
 /* 하위 레벨은 풀폭 배경 금지(기존 폭 유지) */
@@ -18765,24 +18767,14 @@ label.checkbox {
 }
 
 
-.primary-menu .menu-container .menu-item  .sub-menu-container > .sub-menu-container{
-	border: 1px solid #fff;
-	min-height: calc(100%*2.3);
-	border-bottom:0;
-	border-top: 0;
-}
-
-
 .primary-menu .menu-container > .menu-item > .sub-menu-container .sub-menu-container {
 	position: fixed;
-	top: 100%;
-	left: calc(var(--tabs-w)*2.5);
-	margin-top: calc(var(--header-h)*1.85);
+	 top: auto !important;
+	left: 0;
 }
 .primary-menu .menu-container > .menu-item > .sub-menu-container .sub-menu-container .sub-menu-container {
 	position: fixed;
-	top: 100%;
-	left: calc(var(--tabs-w)*3.5);
-    margin-top: calc(var(--header-h)*1.85);
+	top: auto !important;
+	left: 0;
 }
 }
