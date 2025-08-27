@@ -257,108 +257,264 @@
 		<script src="/front/js/plugins.min.js"></script>
 		<script src="/front/js/functions.js"></script>
 		<script src="/front/js/menu.tree.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const MQ_MOBILE = window.matchMedia('(max-width:768px)');
+  const MQ_DESKTOP = window.matchMedia('(min-width:769px)');
 
+  // 유틸: 메뉴 루트들
+  const menus = () => Array.from(document.querySelectorAll('.primary-menu .has-mega .mega-menu'));
 
-		<script>
-			document.addEventListener('DOMContentLoaded', () => {
-			  const menus = document.querySelectorAll('.mega-menu');
-			
-			  function syncMegaHeight(menu){
-			    const wrap = menu.querySelector('.mega-wrap');
-			    const activePanel = menu.querySelector('.mega-tab.is-active .mega-panels .mega-panel');
-			    if (!wrap || !activePanel) return;
-			    wrap.style.minHeight = activePanel.offsetHeight + 'px';
-			  }
-			
-			  menus.forEach(menu => {
-			    // 탭 클릭 토글(이미 쓰던 로직이 있으면 거기에 sync 호출만 추가)
-			    menu.querySelectorAll('.mega-tab-btn').forEach(btn => {
-			      btn.addEventListener('click', () => {
-			        const li = btn.closest('.mega-tab');
-			        const list = li.parentElement; // .mega-tabs
-			        list.querySelectorAll('.mega-tab.is-active').forEach(x => x.classList.remove('is-active'));
-			        li.classList.add('is-active');
-			        syncMegaHeight(menu);
-			      });
-			    });
-			
-			    // 초기/리사이즈 시 높이 동기화
-			    syncMegaHeight(menu);
-			    window.addEventListener('resize', () => syncMegaHeight(menu));
-			  });
-			});
-		</script>
+  // ===== 데스크톱 모드 =====
+  function initDesktop(){
+    menus().forEach(menu => {
+      if (menu.dataset.desktopBound === '1') return; // 중복방지
+      menu.dataset.desktopBound = '1';
 
-		<script>
-(function(){
-  const menus = document.querySelectorAll('.primary-menu .has-mega .mega-menu');
+      // 탭 활성화
+      const activateTab = li => {
+        if (!li) return;
+        menu.querySelectorAll('.mega-tab.is-active').forEach(x => x.classList.remove('is-active'));
+        li.classList.add('is-active');
+      };
 
-  menus.forEach(menu => {
-    const items = menu.querySelectorAll('.mega-tab .mega-panel .mega-columns .mega-col .mega-2depth');
-    const timers = new WeakMap();
+      // 탭 버튼: hover/focus/click
+      menu.querySelectorAll('.mega-tab-btn').forEach(btn => {
+        const li = btn.closest('.mega-tab');
+        const openPanels = () => menu.querySelectorAll('.mega-panels').forEach(p => p.classList.add('is-active'));
 
-    const open = (el) => {
-      const t = timers.get(el); if (t) clearTimeout(t);
-      items.forEach(other => {
-        if (other !== el) {
-          const to = timers.get(other); if (to) clearTimeout(to);
-          other.classList.remove('is-active');
-        }
-      });
-      el.classList.add('is-active');
-    };
+        const onEnter = () => { activateTab(li); openPanels(); };
+        const onClick  = (e) => { e.preventDefault(); onEnter(); };
 
-    const close = (el) => {
-      const t = setTimeout(() => el.classList.remove('is-active'), 140);
-      timers.set(el, t);
-    };
+        btn.addEventListener('mouseenter', onEnter);
+        btn.addEventListener('focusin',    onEnter);
+        btn.addEventListener('click',      onClick);
 
-    items.forEach(el => {
-      const panel = el.querySelector('.mega-32epth');
-
-      el.addEventListener('mouseenter', () => open(el));
-      el.addEventListener('mouseleave', () => close(el));
-
-      if (panel) {
-        panel.addEventListener('mouseenter', () => open(el));
-        panel.addEventListener('mouseleave', () => close(el));
-      }
-
-      el.addEventListener('focusin', () => open(el));
-      el.addEventListener('focusout', () => close(el));
-      if (panel) {
-        panel.addEventListener('focusin', () => open(el));
-        panel.addEventListener('focusout', () => close(el));
-      }
-    });
-
-    const host = menu.closest('.has-mega');
-    if (host) {
-      host.addEventListener('mouseleave', () => {
-        items.forEach(i => i.classList.remove('is-active'));
-      });
-      host.addEventListener('focusout', (e) => {
-        if (!host.contains(e.relatedTarget)) {
-          items.forEach(i => i.classList.remove('is-active'));
-        }
+        // unbind 저장
+        addUnbind(menu, () => {
+          btn.removeEventListener('mouseenter', onEnter);
+          btn.removeEventListener('focusin',    onEnter);
+          btn.removeEventListener('click',      onClick);
+        });
       });
 
-      host.addEventListener('mouseover', () => {
-        // 1. 모든 .mega-menu에서 is-active 제거
-        document.querySelectorAll('.mega-menu').forEach(menu => {
-          menu.classList.remove('is-active');
+      // 2depth/3depth 지연 닫힘
+      const timers = new WeakMap();
+      menu.querySelectorAll('.mega-2depth').forEach(el => {
+        const panelRootList = menu.querySelectorAll('.mega-panels');
+        let closeTimer;
+
+        const open2 = () => {
+          if (closeTimer) clearTimeout(closeTimer);
+          panelRootList.forEach(p => p.classList.add('is-active'));
+          const scope = el.closest('.mega-panel') || menu;
+          scope.querySelectorAll('.mega-2depth.is-active').forEach(s => { if (s !== el) s.classList.remove('is-active'); });
+          el.classList.add('is-active');
+        };
+        const close2 = () => {
+          closeTimer = setTimeout(() => el.classList.remove('is-active'), 1000); // 유지: 1s
+          timers.set(el, closeTimer);
+        };
+
+        const link = el.querySelector('.mega-2depth-link');
+        const d3   = el.querySelector('.mega-3depth');
+
+        // 2depth 영역
+        const enterEl = () => open2();
+        const leaveEl = () => close2();
+        const focusInEl = () => open2();
+        const focusOutEl = (e) => { if (!el.contains(e.relatedTarget)) close2(); };
+
+        el.addEventListener('mouseenter', enterEl);
+        el.addEventListener('mouseleave', leaveEl);
+        el.addEventListener('focusin',    focusInEl);
+        el.addEventListener('focusout',   focusOutEl);
+
+        addUnbind(menu, () => {
+          el.removeEventListener('mouseenter', enterEl);
+          el.removeEventListener('mouseleave', leaveEl);
+          el.removeEventListener('focusin',    focusInEl);
+          el.removeEventListener('focusout',   focusOutEl);
         });
 
-        // 2. 현재 .has-mega의 자식 .mega-menu만 활성화
-        const childMenu = host.querySelector('.mega-menu');
-        if (childMenu) {
-          childMenu.classList.add('is-active');
+        // 2depth 링크
+        if (link){
+          const enterL = () => open2();
+          const leaveL = () => close2();
+          const focusInL = () => open2();
+          const clickL   = () => open2();
+
+          link.addEventListener('mouseenter', enterL);
+          link.addEventListener('mouseleave', leaveL);
+          link.addEventListener('focusin',    focusInL);
+          link.addEventListener('click',      clickL);
+
+          addUnbind(menu, () => {
+            link.removeEventListener('mouseenter', enterL);
+            link.removeEventListener('mouseleave', leaveL);
+            link.removeEventListener('focusin',    focusInL);
+            link.removeEventListener('click',      clickL);
+          });
+        }
+
+        // 3depth 영역
+        if (d3){
+          const enterD3 = () => open2();
+          const leaveD3 = () => close2();
+          const focusInD3 = () => open2();
+          const focusOutD3 = (e) => { if (!d3.contains(e.relatedTarget)) close2(); };
+
+          d3.addEventListener('mouseenter', enterD3);
+          d3.addEventListener('mouseleave', leaveD3);
+          d3.addEventListener('focusin',    focusInD3);
+          d3.addEventListener('focusout',   focusOutD3);
+
+          addUnbind(menu, () => {
+            d3.removeEventListener('mouseenter', enterD3);
+            d3.removeEventListener('mouseleave', leaveD3);
+            d3.removeEventListener('focusin',    focusInD3);
+            d3.removeEventListener('focusout',   focusOutD3);
+          });
+
+          d3.querySelectorAll('a').forEach(a => {
+            const enterA = () => open2();
+            const leaveA = () => close2();
+            const focusInA = () => open2();
+            const focusOutA = (e) => { if (!a.contains(e.relatedTarget)) close2(); };
+
+            a.addEventListener('mouseenter', enterA);
+            a.addEventListener('mouseleave', leaveA);
+            a.addEventListener('focusin',    focusInA);
+            a.addEventListener('focusout',   focusOutA);
+
+            addUnbind(menu, () => {
+              a.removeEventListener('mouseenter', enterA);
+              a.removeEventListener('mouseleave', leaveA);
+              a.removeEventListener('focusin',    focusInA);
+              a.removeEventListener('focusout',   focusOutA);
+            });
+          });
         }
       });
+
+      // 초기 활성 탭
+      const first = menu.querySelector('.mega-tab.is-active') || menu.querySelector('.mega-tab');
+      if (first) {
+        // panels 켜두기 (호버 없이도 패널 보이도록)
+        menu.querySelectorAll('.mega-panels').forEach(p => p.classList.add('is-active'));
+        const li = first;
+        menu.querySelectorAll('.mega-tab.is-active').forEach(x => x !== li && x.classList.remove('is-active'));
+        li.classList.add('is-active');
+      }
+    });
+  }
+
+  function destroyDesktop(){
+    menus().forEach(menu => {
+      if (menu.dataset.desktopBound !== '1') return;
+      runUnbind(menu); // 이벤트 모두 해제
+      delete menu.dataset.desktopBound;
+      // 데스크톱 상태 클래스 정리(남아있으면 UI 꼬임 방지)
+      menu.querySelectorAll('.mega-panels').forEach(p => p.classList.remove('is-active'));
+      menu.querySelectorAll('.mega-tab.is-active, .mega-2depth.is-active').forEach(x => x.classList.remove('is-active'));
+    });
+  }
+
+  
+  
+  // ===== 모바일 모드 =====
+  function initMobile(){
+	  // [모바일 리셋] 데스크탑/초기 마크업에서 붙은 활성 상태 전부 제거
+	  document.querySelectorAll(`
+	    .primary-menu .mega-tab.is-active,
+	    .primary-menu .mega-panel.is-active,
+	    .primary-menu .mega-2depth.is-active,
+	    .primary-menu .menu-link.is-active
+	  `).forEach(el => el.classList.remove('is-active'));
+
+	  const items = Array.from(document.querySelectorAll('.primary-menu .menu-item.has-mega'));
+
+	  items.forEach(item => {
+	    if (item.dataset.mobileBound === '1') return;
+	    item.dataset.mobileBound = '1';
+
+	    const link = item.querySelector(':scope > .menu-link');
+	    if (!link) return;
+
+	    const onClick = function(e){
+	      e.preventDefault();
+	      const wasOpen = item.classList.contains('is-active');
+
+	      items.forEach(i => {
+	        i.classList.remove('is-active');
+	        i.querySelector(':scope > .menu-link')?.classList.remove('is-active');
+	      });
+
+	      if (!wasOpen){
+	        item.classList.add('is-active');
+	        this.classList.add('is-active');
+	      } else {
+	        this.classList.remove('is-active');
+	      }
+	    };
+
+	    link.addEventListener('click', onClick, {passive:false});
+	    addUnbind(item, () => link.removeEventListener('click', onClick));
+	  });
+	}
+
+
+
+	function destroyMobile(){
+	  menus().forEach(menu => {
+	    if (menu.dataset.mobileBound !== '1') return;
+	    runUnbind(menu);
+	    delete menu.dataset.mobileBound;
+
+	    // 모바일 상태 클래스 전체 정리: LI/링크/하위 탭 모두
+	    const li = menu.closest('.menu-item.has-mega');
+	    if (li) {
+	      li.classList.remove('is-active');
+	      const link = li.querySelector(':scope > .menu-link');
+	      if (link) link.classList.remove('is-active');
+	    }
+	    menu.querySelectorAll('.mega-tab.is-active, .mega-2depth.is-active').forEach(x => x.classList.remove('is-active'));
+	  });
+	}
+
+
+  
+  
+  // ===== 공용: 언바인드 관리 =====
+  function addUnbind(root, fn){
+    if (!root._unbinds) root._unbinds = [];
+    root._unbinds.push(fn);
+  }
+  function runUnbind(root){
+    if (root._unbinds){
+      root._unbinds.forEach(fn => { try{ fn(); }catch(e){} });
+      root._unbinds = [];
     }
-  });
-})();
+  }
+
+  // ===== 초기화 & 모드 전환 =====
+  function applyMode(){
+    if (MQ_DESKTOP.matches){
+      destroyMobile();
+      initDesktop();
+    } else if (MQ_MOBILE.matches){
+      destroyDesktop();
+      initMobile();
+    }
+  }
+
+  applyMode();
+  MQ_MOBILE.addEventListener('change', applyMode);
+  MQ_DESKTOP.addEventListener('change', applyMode);
+});
 </script>
+
+
 
 
 

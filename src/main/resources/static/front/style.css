@@ -9,6 +9,10 @@
     --panel-h: 100vh; 
 	--clip-top: 0px;
 	--clip-bot: 0px;
+	--min-h: 320px;
+	--sub-gap: 12px;
+	--menu-hover-bg: rgba(210, 228, 245, .95); /* hover 배경색 */
+ 	--menu-hover-fg: #2b6ea3;                  /* hover 글자색 */
 
   }
 }
@@ -4023,7 +4027,6 @@ body:not(.top-search-open) .top-search-parent #primary-menu-trigger {
   .full-header .primary-menu .menu-container {
     padding-right: 0.5rem;
     margin-right: 0.5rem;
-    /* border-right: 1px solid #eee; */
   }
 
   .transparent-header.full-header .primary-menu .menu-container {
@@ -18708,182 +18711,250 @@ label.checkbox {
 /* =========================
    header 메뉴관련
    ========================= */
-.primary-menu li {list-style: none;}
+   
+/* ====== Primary menu base ====== */
+.primary-menu { position: relative; }
+.primary-menu li { list-style: none; }
 .primary-menu a,
-.primary-menu button {color: inherit; background: none !important; border: 0;}
+.primary-menu button { color: inherit; background: none; border: 0; }
 
-
-.primary-menu .has-mega .mega-menu {
-	position: absolute; 
-	left:0; 
-	right:0; 
-	top: 100%; 
-	visibility: hidden; 
-	opacity: 0;
-	pointer-events: none;
-	transform: translateY(8px);
-	transition:opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
-	min-height: 360px;
+/* ====== Mega menu container ====== */
+.primary-menu .has-mega .mega-menu{
+  position: fixed;
+  top: 100%;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  background: #0a1e4e;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
+  min-height: var(--min-h);
+  margin-top: -4px;
 }
 
-/*
+/* sticky 상태 */
+.primary-menu .has-mega.sticky-header-shrink .mega-menu{
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(-15px);
+}
+
+/* hover/focus 진입 시 */
 .primary-menu .has-mega:hover .mega-menu,
 .primary-menu .has-mega:focus-within .mega-menu{
-  visibility:visible; opacity:1; pointer-events:auto; transform:translateY(0);
-  transition:opacity .18s ease, transform .18s ease;
-}
-*/
-
-
-.primary-menu .has-mega:hover .mega-menu,
-.primary-menu .has-mega:focus-within .mega-menu, 
-.primary-menu .has-mega.is-active .mega-menu { 
-	visibility: visible; 
-	opacity: 1; 
-	pointer-events: auto;
-	transform: translateY(0); 
-	transition: opacity .18s ease, transform .18s ease; 
-	}
-
-.primary-menu .has-mega {position: static;}
-.primary-menu .has-mega .mega-menu{
-	  width: 100%;
-	  background: #0a1e4e;
-	  position: absolute;
-	  left:0;
-	  top: calc(100%-var(--header-h));
-	  overflow-x: hidden;
-	  z-index: 1000;
-	  margin-top: -3px;
-	  
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition: opacity .18s ease, transform .18s ease;
+  margin-top: -4px;
 }
 
-.primary-menu .has-mega .mega-wrap{
-	 max-width: 1520px;
-	  margin:0 auto;
-	  padding:22px;
-	  overflow: visible;
-	  min-height: 0;
-}
-
-.primary-menu .has-mega .mega-wrap .mega-tab{
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-
-/* 감싸는 래퍼: 왼쪽에 탭 폭만큼 패딩을 줘 패널 자리를 확보 */
-.mega-wrap {
-  position: relative;
-  padding-left: var(--tabs-w);
-}
-
-/* 왼쪽 탭 열 */
-.mega-tab {
-  position: static;
-  top: 0; left: 0;
-  width: auto;
-  margin: 0; padding: 8px 0;
-  list-style: none;
-}
-
-/* 탭 버튼 */
-.mega-tab-btn {
-  display: block;
-  width: 100%;
-  padding: 10px 14px;
-  text-align: left;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  line-height: 1.4;
-}
-
-
-.mega-tab.is-active > .mega-tab-btn {
-  background: #f6f8fb;
-  font-weight: 700;
-}
-
-/* 오른쪽 패널: li 내부에 있지만, 부모(.mega-wrap) 기준으로 오른쪽에 띄움 */
-.mega-tab .mega-panels {
-  position: absolute;
-  top: 0;
-  left: var(--tabs-w);
-  right: 0;
-  padding: 16px 30px;
-  display: none;  
+/* ====== Mega menu inner wrap ====== */
+.primary-menu .has-mega .mega-menu .mega-wrap{
+  width: 83.777%;
+  margin: 0 auto;
+  padding: 0 clamp(2%, 2.5vw, 4%);
   box-sizing: border-box;
-  overflow: visible;     /* (기존에 hidden이면 덮어씀) */
-  height: auto;
-  min-height: 350px;
+  height: 100%;
+  min-height: 100%;
 }
 
-.mega-tab .mega-panels li{line-height: 2;}
+/* ====== LNB: tabs & panels ====== */
+.mega-tabs{ display: contents; }
 
-.mega-tab.is-active > .mega-panels { display: block;}
+.has-mega .mega-tabs .mega-tab{
+  max-width: var(--tabs-w) !important;
+  position: relative;
+  top: 22px;
+  left: 0;
+  right: 0;
+  padding: 7px 0;
+}
 
+.has-mega .mega-tabs .mega-tab .mega-panels{
+  position: fixed;
+  left: calc(var(--tabs-w)*2.5);
+  padding: 0;
+  margin-top: -24px;
+}
 
-/* 개별 패널 */
-.mega-panel { display: flex; flex-direction: column; position: relative;}
-.mega-tab .mega-panel  .mega-columns {
-	padding: 17px 20px;
-	position: relative;
-	}
-
-.mega-tab .mega-panel .mega-columns .mega-col {
+/* 2depth 기본/활성 */
+.has-mega .mega-tabs .mega-tab .mega-panels .mega-2depth{
+  display: none;
+  padding: 0 80px 22px;
+  position: relative;
+  width: auto;
+  border-left: 1px solid #fff;
   height: auto;
+  margin-left: -7px;
+  margin-top: -7px;
+}
+.primary-menu .has-mega .mega-tabs .mega-tab.is-active > .mega-tab-btn{
+  width: 100%;
+  height: 38px;
+  background: var(--menu-hover-bg);
+  color: var(--menu-hover-fg);
+  transition: background .18s ease, color .18s ease;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: left;
+}
+.has-mega .mega-tabs .mega-tab.is-active .mega-2depth{ display: block !important; }
+
+/* 3depth 기본/항목 */
+.has-mega .mega-tabs .mega-tab .mega-panels .mega-2depth .mega-3depth{ display: none; }
+.has-mega .mega-tabs .mega-tab .mega-panels .mega-2depth .mega-3depth li{
+  width: 100%;
+  border-left: 1px solid #fff;
+  padding: 0 0 12px;
+}
+.has-mega .mega-tabs .mega-tab .mega-panels .mega-2depth .mega-3depth li a{ margin-left: 3rem; }
+
+/* 3depth: 2depth 활성 시 노출 */
+.has-mega .mega-tabs .mega-tab .mega-panels .mega-2depth.is-active .mega-3depth{
+  opacity: 1;
+  position: fixed;
+  left: calc(var(--tabs-w)*4.3);
+  top: 32px;
+  padding: 0 0 22px;
   display: flex;
   flex-direction: column;
-  position: relative;
-}
- 
-
-.mega-tab .mega-panel  .mega-columns .mega-col .mega-2depth {margin: 7px 25px 0; position: relative;}
-.mega-tab .mega-panel  .mega-columns .mega-col .mega-2depth a {padding: 12px 12px;}
-.mega-tab .mega-panel .mega-more {/* position: absolute; left:0; bottom: -115px; height: auto; */ display: none;}
-
-/* 3depth 기본 숨김 */
-
-
-.mega-tab .mega-panel .mega-columns .mega-col .mega-3depth {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: calc(var(--tabs-w)*4);
-  width: var(--tabs-w);
-  height: 100%;
-  z-index: 1000;
-  overflow: auto;
-  background: #0a1e4e;
-  
-  clip-path: inset(var(--clip-top, 0px) 0 var(--clip-bot, 0px) 0);
-  will-change: clip-path;
-  margin:0 !important; padding:0 !important; border:0;
-  outline: 1px dashed rgba(255,255,255,.25);
 }
 
-.mega-tab .mega-panel  .mega-columns .mega-col .mega-2depth.is-active .mega-3depth {display:block;}
-.mega-tab .mega-panel .mega-columns .mega-col .mega-3depth li {line-height: 2.5;}
-
-/* section간 line세팅 */
- .mega-tab .mega-panel  .mega-columns .mega-col::after,
- .mega-tab .mega-panel .mega-columns .mega-col .mega-3depth::after {
- 	content: '';
- 	position: absolute;
- 	top: 0;
- 	left: 0;
- 	width: 1px;
- 	height: 100%;
- 	background: #fff;
- 	margin: 0;
- 	padding: 0;
- }
-
- 
+/* 공통 색상 */
 .mega-tab button,
 .mega-tab .mega-panel button,
-.mega-tab .mega-panel a {
-  color: #fff;
+.mega-tab .mega-panel a{ color: #fff; }
+
+/* 기타 */
+.mega-more{ display: none; }
+
+/* ====== Responsive ====== */
+@media (max-width: 1280px){
+  .primary-menu .has-mega .mega-menu .mega-wrap{ width: 89%; }
 }
+@media (max-width:768px){
+  .primary-menu .has-mega .mega-menu{
+    position: static !important;
+    width: 100%;
+    background: #fff;
+    margin-top: 0;
+    transform: none;
+    display: none;
+    opacity: 0;
+    visibility: visible;
+    pointer-events: none;
+    transition: none;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .primary-menu .has-mega.is-active > .mega-menu{
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+
+  .primary-menu .has-mega .mega-tabs{
+    display: block;
+    position: relative;
+  }
+  .primary-menu .has-mega .mega-tab{
+    display: block;
+    position: static;
+    border-top: 1px solid #eceff4;
+  }
+  .primary-menu .has-mega .mega-tab > .mega-tab-btn{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 44px;
+    padding: 0 12px;
+    background: #fff;
+    color: #0b1320;
+  }
+
+  .primary-menu .has-mega .mega-tab > .mega-panels{
+    display: none;
+    position: static !important;
+    left: auto;
+    margin: 0;
+    padding: 8px 0 10px;
+  }
+
+  .primary-menu .has-mega .mega-tab .mega-2depth{
+    display: block;
+    border-left: 0;
+    margin: 0;
+    padding: 6px 0;
+  }
+  .primary-menu .has-mega .mega-tab .mega-2depth > .mega-3depth{
+    display: none;
+    position: static !important;
+    margin-top: 6px;
+    padding: 0;
+  }
+  .primary-menu .has-mega .mega-tab .mega-2depth.is-active > .mega-3depth{
+    display: block;
+  }
+  .primary-menu .has-mega .mega-tab .mega-2depth .mega-3depth li{
+    padding: 6px 0;
+    border-left: 0;
+  }
+  .primary-menu .has-mega .mega-tab .mega-2depth .mega-3depth li a{
+    margin-left: 0;
+    color: #0b1320;
+  }
+
+  .primary-menu .has-mega .mega-tabs .mega-tab.is-active > .mega-tab-btn{
+    background: var(--menu-bg-m);
+    color: var(--menu-hover-fg);
+  }
+
+  #search-wrap{ display:none; }
+}
+
+@media (max-width:768px){
+  /* mega-menu/mega-wrap 강제 높이 제거 */
+  .primary-menu .has-mega .mega-menu,
+  .primary-menu .has-mega .mega-menu .mega-wrap{
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* 기본 접힘: 영역 0으로 */
+  .primary-menu .has-mega .mega-tab > .mega-panels{
+    display: none !important;
+    height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    border: 0 !important;
+  }
+
+  /* this(활성 탭)만 펼침 */
+  .primary-menu .has-mega .mega-tab.is-active > .mega-panels{
+    /* display: block !important; */
+    height: auto !important;
+    padding: 8px 0 10px !important;
+    overflow: visible !important;
+  }
+
+  /* 데스크톱 레이아웃 잔재 제거 */
+  .primary-menu .has-mega .mega-tabs .mega-tab .mega-panels{
+    position: static !important;
+    left: auto !important;
+    margin: 0 !important;
+  }
+}
+
 
