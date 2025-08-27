@@ -29,152 +29,209 @@
 <body class="stretched">
 	<div id="wrapper" class="clearfix">
 		<th:block th:fragment="headerSrc(transparent, menuList)">
-			<header id="header" class="full-header" th:classappend="${transparent} == true ? transparent-header">
-				<div id="header-wrap">
-					<div class="container">
-						<div class="header-row">
-							<div id="logo">
-								<a href="/index" class="standard-logo" data-dark-logo="/front/image/logo/logo_one.png"> <img src="/front/image/logo/logo_one.png" alt="Logo"></a> <a href="/index" class="retina-logo"
-									data-dark-logo="/front/image/logo/logo_one.png"> <img src="/front/image/logo/logo_one.png" alt="Logo"></a>
-							</div>
+            <header id="header" class="full-header" th:classappend="${transparent} == true ? transparent-header">
+                <div id="header-wrap">
+                    <div class="container">
+                        <div class="header-row">
+                            <div id="logo">
+                                <a href="/index" class="standard-logo"
+                                    data-dark-logo="/front/image/logo/logo_one.png"><img
+                                        src="/front/image/logo/logo_one.png" alt="Logo"></a>
+                                <a href="/index" class="retina-logo"
+                                    data-dark-logo="/front/image/logo/logo_one.png"><img
+                                        src="/front/image/logo/logo_one.png" alt="Logo"></a>
+                            </div>
 
-							<div class="header-misc primary-menu" id="search-wrap">
-								<div id="top-search" class="header-misc-icon">
-									<a href="#" id="top-search-trigger"><i class="icon-line-search"></i><i class="icon-line-cross"></i>검색</a>
-								</div>
-								<div id="top-cart" class="header-misc-icon d-sm-block">
-									<span><a style="font-weight: 600;" href="#">EN </a></span> / <span><a class="active" style="font-weight: 600;" href="#"> KO</a></span>
-								</div>
-							</div>
+                            <div class="header-misc primary-menu" id="search-wrap">
+                                <div id="top-search" class="header-misc-icon">
+                                    <a href="#" id="top-search-trigger"><i class="icon-line-search"></i><i
+                                            class="icon-line-cross"></i>검색</a>
+                                </div>
+                                <div id="top-cart" class="header-misc-icon d-sm-block">
+                                    <span><a style="font-weight:600;" href="#">EN </a></span> /
+                                    <span><a class="active" style="font-weight:600;" href="#"> KO</a></span>
+                                </div>
+                            </div>
 
 
-							<div id="primary-menu-trigger">
-								<svg class="svg-trigger" viewBox="0 0 100 100">
-									<path d="m 30,33 h 40 c 3.722839,0 7.5,3.126468 7.5,8.578427 0,5.451959 -2.727029,8.421573 -7.5,8.421573 h -20">
-									</path>
-									<path d="m 30,50 h 40"></path>
-									<path d="m 70,67 h -40 c 0,0 -7.5,-0.802118 -7.5,-8.365747 0,-7.563629 7.5,-8.634253 7.5,-8.634253 h 20">
-									</path>
-								</svg>
-							</div>
+                            <div id="primary-menu-trigger">
+                                <svg class="svg-trigger" viewBox="0 0 100 100">
+                                    <path
+                                        d="m 30,33 h 40 c 3.722839,0 7.5,3.126468 7.5,8.578427 0,5.451959 -2.727029,8.421573 -7.5,8.421573 h -20">
+                                    </path>
+                                    <path d="m 30,50 h 40"></path>
+                                    <path
+                                        d="m 70,67 h -40 c 0,0 -7.5,-0.802118 -7.5,-8.365747 0,-7.563629 7.5,-8.634253 7.5,-8.634253 h 20">
+                                    </path>
+                                </svg>
+                            </div>
+                            <nav class="primary-menu">
+                                <ul class="menu-container">
+                                    <li class="menu-item"><a class="menu-link" href="#">
+                                            <div>회사 소개</div>
+                                        </a>
+                                       <!--  <ul class="sub-menu-container">
+                                            <li class="menu-item"><a class="menu-link" href="/about">
+                                                    <div>기업 소개</div>
+                                                </a></li>
+                                            <li class="menu-item"><a class="menu-link" href="/history">
+                                                    <div>기업 연혁</div>
+                                                </a></li>
+                                            <li class="menu-item"><a class="menu-link" href="/certifications">
+                                                    <div>인증서</div>
+                                                </a></li>
+                                            <li class="menu-item"><a class="menu-link" href="/address">
+                                                    <div>찾아오시는 길</div>
+                                                </a></li>
+                                        </ul> -->
+                                    </li>
+                                    <li class="menu-item">
+                                        <a class="menu-link" href="#">
+                                            <div>제품소개</div>
+                                        </a>
+                                        <ul class="sub-menu-container">
+                                            <li class="menu-item" th:each="b:${menuList.bigSortList}">
+                                                <a class="menu-link" th:href="@{|/productSorted/main/${b.id}|}">
+                                                    <div>
+                                                        <i class="icon-stack"></i> [[${b.name}]]
+                                                    </div>
+                                                </a>
+                                                <ul class="sub-menu-container">
+                                                    <li class="menu-item" th:if="${b.id == m.bigSort.id}"
+                                                        th:each="m : ${menuList.middleSortList}">
+                                                        <a class="menu-link"
+                                                            th:href="@{|/productSorted/middle/${m.id}|}">
+                                                            <div th:text="${m.name}">Screw Caps and Tubes</div>
+                                                        </a>
+                                                        <ul class="sub-menu-container">
+                                                            <li class="menu-item" th:if="${m.id == s.middleSort.id}"
+                                                                th:each="s:${menuList.smallSortList}">
+                                                                <a class="menu-link"
+                                                                    th:href="@{|/productSorted/sub/${s.id}|}">
+                                                                    <div th:text="${s.name}">Product 01</div>
+                                                                </a>
+                                                                <ul class="sub-menu-container">
+                                                                    <li class="menu-item"
+                                                                        th:if="${s.id == p.smallSort.id}"
+                                                                        th:each="p:${menuList.productList}">
+                                                                        <a class="menu-link"
+                                                                            th:href="@{|/productDetail/${p.id}|}">
+                                                                            <div th:text="${p.subject}">Product 01</div>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a class="menu-link" href="#">
+                                            <div>브랜드소개</div>
+                                        </a>
+                                        <ul class="sub-menu-container">
+                                            <li class="menu-item" th:each="b:${menuList.brandList}">
+                                                <a class="menu-link" th:href="@{|/brandProductSorted/brand/${b.id}|}">
+                                                    <div>
+                                                        <i class="icon-stack"></i> [[${b.name}]]
+                                                    </div>
+                                                </a>
+                                                <ul class="sub-menu-container">
+                                                    <li class="menu-item" th:if="${b.id == bb.brand.id}"
+                                                        th:each="bb : ${menuList.brandBigSortList}">
+                                                        <a class="menu-link"
+                                                            th:href="@{|/brandProductSorted/main/${bb.id}|}">
+                                                            <div th:text="${bb.name}">Screw Caps and Tubes</div>
+                                                        </a>
+                                                        <ul class="sub-menu-container">
+                                                            <li class="menu-item" th:if="${bb.id == bm.bigSort.id}"
+                                                                th:each="bm:${menuList.brandMiddleSortList}">
+                                                                <a class="menu-link"
+                                                                    th:href="@{|/brandProductSorted/middle/${bm.id}|}">
+                                                                    <div th:text="${bm.name}">Product 01</div>
+                                                                </a>
+                                                                <ul class="sub-menu-container left-container">
+                                                                    <li class="menu-item"
+                                                                        th:if="${bs.id == bs.middleSort.id}"
+                                                                        th:each="bs:${menuList.brandSmallSortList}">
+                                                                        <a class="menu-link"
+                                                                            th:href="@{|/brandProductSorted/sub/${bs.id}|}">
+                                                                            <div th:text="${bs.name}">Product 01</div>
+                                                                        </a>
+                                                                        <ul class="sub-menu-container">
+                                                                            <li class="menu-item"
+                                                                                th:if="${bs.id == bp.smallSort.id}"
+                                                                                th:each="bp:${menuList.brandProductList}">
+                                                                                <a class="menu-link"
+                                                                                    th:href="@{|/brandProductDetail/${bp.id}|}">
+                                                                                    <div th:text="${bp.subject}">Product
+                                                                                        01</div>
+                                                                                </a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="menu-item"><a class="menu-link" href="#">
+                                            <div>공지사항</div>
+                                        </a>
+                                       <!--  <ul class="sub-menu-container">
+                                            <li class="menu-item"><a class="menu-link" href="/notice">
+                                                    <div>공지사항</div>
+                                                </a></li>
+                                        </ul> -->
+                                    </li>
+                                    <li class="menu-item"><a class="menu-link" href="#">
+                                            <div>자료실</div>
+                                        </a>
+                                        <!-- <ul class="sub-menu-container">
+                                            <li class="menu-item"><a class="menu-link" href="/references">
+                                                    <div>카탈로그</div>
+                                                </a></li>
+                                        </ul> -->
+                                    </li>
+                                    <li class="menu-item"><a class="menu-link" href="#">
+                                            <div>고객지원</div>
+                                        </a>
+                                        <!-- <ul class="sub-menu-container">
+                                            <li class="menu-item"><a class="menu-link" href="/contact">
+                                                    <div>Contact US</div>
+                                                </a></li>
 
-							<nav class="primary-menu mega-nav">
-								<ul class="menu-container">
-									<li class="menu-item"><a class="menu-link" href="/about">
-											<div style="padding-bottom: 5px;">회사 소개</div>
-									</a></li>
-									<li class="menu-item"><a class="menu-link" href="/overview">
-											<div style="padding-bottom: 5px;">연구 개발</div>
-									</a></li>
-									<li class="menu-item has-mega"><a class="menu-link" href="#"><div>제품소개</div></a>
+                                        </ul> -->
+                                    </li>
+                                </ul>
+                            </nav>
 
-										<div class="mega-menu">
-											<div class="mega-wrap">
-												<!-- 1depth: 대분류(고정 탭) -->
-												<ul class="mega-tabs">
-													<li class="mega-tab" th:each="b,iter : ${menuList.bigSortList}" th:classappend="${iter.index==0}? 'is-active'">
+                            <form class="top-search-form" action="/searchAll" method="get" id="top-search-form">
+                                <div>
+                                    <input type="text" name="searchWord" class="form-control" required="required"
+                                        placeholder="검색어를 입력 하세요." autocomplete="off"> <span class="search-btn"
+                                        id="search-btn"><i class="icon-line-search"></i></span>
+                                </div>
+                            </form>
+                            <script>
+                                var searchBtn = document.getElementById('search-btn');
+                                var searchForm = document.getElementById('top-search-form');
+                                searchBtn.addEventListener('click', function () {
+                                    searchForm.submit();
+                                });
+                            </script>
 
-														<button type="button" class="mega-tab-btn" th:attr="data-panel='mega-b-' + ${b.id}">[[${b.name}]]</button>
-
-														<div class="mega-panels">
-															<div class="mega-panel" th:id="'mega-b-' + ${b.id}" th:classappend="${iter.index==0}? 'is-active'">
-
-																<div class="mega-columns">
-																	<div class="mega-col" th:each="m : ${menuList.middleSortList}" th:if="${m.bigSort.id == b.id}">
-
-																		<div class="mega-2depth">
-																			<a class="mega-2depth-link" th:href="@{|/productSorted/middle/${m.id}|}" th:text="${m.name}"></a>
-
-																			<ul class="mega-3depth">
-																				<li th:each="s : ${menuList.smallSortList}" th:if="${s.middleSort.id == m.id}"><a th:href="@{|/productSorted/sub/${s.id}|}" th:text="${s.name}"></a></li>
-																			</ul>
-																		</div>
-
-																	</div>
-																</div>
-
-																<div class="mega-more">
-																	<a th:href="@{|/productSorted/main/${b.id}|}">대분류 전체보기 →</a>
-																</div>
-															</div>
-														</div>
-													</li>
-												</ul>
-
-											</div>
-										</div></li>
-
-									<!-- 브랜드소개: 동일 패턴(필요 시) -->
-									<li class="menu-item has-mega"><a class="menu-link" href="#"><div>브랜드소개</div></a>
-										<div class="mega-menu" th:if="${#lists.size(menuList.brandBigSortList.?[brand.id == b.id]) > 0}">
-											<div class="mega-wrap">
-												<ul class="mega-tabs">
-													<li class="mega-tab" th:each="b,iter : ${menuList.brandList}" th:classappend="${iter.index==0}? 'is-active'">
-
-														<button type="button" class="mega-tab-btn" th:attr="data-panel='mega-b-' + ${b.id}">[[${b.name}]]</button>
-
-														<div class="mega-panels">
-															<div class="mega-panel" th:id="'mega-b-' + ${b.id}" th:classappend="${iter.index==0}? 'is-active'">
-
-																<div class="mega-columns">
-																	<!-- 2depth: (브랜드 b에 속하는 대분류) -->
-																	<div class="mega-col" th:each="m : ${menuList.brandBigSortList}" th:if="${m.brand.id == b.id}">
-
-																		<div class="mega-2depth">
-																			<a class="mega-2depth-link" th:href="@{|/brandProductSorted/main/${m.id}|}" th:text="${m.name}"></a>
-
-																			<!-- 3depth: (대분류 m에 속하는 중분류) -->
-																			<ul class="mega-3depth">
-																				<li th:each="s : ${menuList.brandMiddleSortList}" th:if="${s.bigSort.id == m.id}"><a th:href="@{|/brandProductSorted/middle/${s.id}|}" th:text="${s.name}"></a></li>
-																			</ul>
-																		</div>
-
-																	</div>
-																</div>
-
-																<div class="mega-more">
-																	<a th:href="@{|/brandProductSorted/brand/${b.id}|}">대분류 전체보기 →</a>
-																</div>
-															</div>
-														</div>
-													</li>
-												</ul>
-											</div>
-										</div></li>
-
-									<li class="menu-item"><a class="menu-link" href="/notice">
-											<div style="padding-bottom: 5px;">공지사항</div>
-									</a></li>
-									<li class="menu-item"><a class="menu-link" href="/references">
-											<div style="padding-bottom: 5px;">자료실</div>
-									</a></li>
-									<li class="menu-item"><a class="menu-link" href="/contact">
-											<div style="padding-bottom: 5px;">고객지원</div>
-									</a></li>
-								</ul>
-							</nav>
-							<form class="top-search-form" action="/searchAll" method="get" id="top-search-form">
-								<div>
-									<input type="text" name="searchWord" class="form-control" required="required" placeholder="검색어를 입력 하세요." autocomplete="off"> <span class="search-btn" id="search-btn"><i
-										class="icon-line-search"></i></span>
-								</div>
-							</form>
-							<script>
-								var searchBtn = document
-										.getElementById('search-btn');
-								var searchForm = document
-										.getElementById('top-search-form');
-								searchBtn.addEventListener('click', function() {
-									searchForm.submit();
-								});
-							</script>
-
-						</div>
-					</div>
-				</div>
-				<div class="header-wrap-clone"></div>
-			</header>
-		</th:block>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-wrap-clone"></div>
+            </header>
+        </th:block>
 
 
 		<th:block th:fragment="footerSrc">
@@ -251,275 +308,40 @@
 			</footer>
 		</th:block>
 	</div>
+ 
+ 
 	<th:block th:fragment="scriptSrc">
 		<div id="gotoTop" class="icon-angle-up"></div>
 		<script src="/front/js/jquery.js"></script>
 		<script src="/front/js/plugins.min.js"></script>
 		<script src="/front/js/functions.js"></script>
 		<script src="/front/js/menu.tree.js"></script>
+  
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  const MQ_MOBILE = window.matchMedia('(max-width:768px)');
-  const MQ_DESKTOP = window.matchMedia('(min-width:769px)');
-
-  // 유틸: 메뉴 루트들
-  const menus = () => Array.from(document.querySelectorAll('.primary-menu .has-mega .mega-menu'));
-
-  // ===== 데스크톱 모드 =====
-  function initDesktop(){
-    menus().forEach(menu => {
-      if (menu.dataset.desktopBound === '1') return; // 중복방지
-      menu.dataset.desktopBound = '1';
-
-      // 탭 활성화
-      const activateTab = li => {
-        if (!li) return;
-        menu.querySelectorAll('.mega-tab.is-active').forEach(x => x.classList.remove('is-active'));
-        li.classList.add('is-active');
-      };
-
-      // 탭 버튼: hover/focus/click
-      menu.querySelectorAll('.mega-tab-btn').forEach(btn => {
-        const li = btn.closest('.mega-tab');
-        const openPanels = () => menu.querySelectorAll('.mega-panels').forEach(p => p.classList.add('is-active'));
-
-        const onEnter = () => { activateTab(li); openPanels(); };
-        const onClick  = (e) => { e.preventDefault(); onEnter(); };
-
-        btn.addEventListener('mouseenter', onEnter);
-        btn.addEventListener('focusin',    onEnter);
-        btn.addEventListener('click',      onClick);
-
-        // unbind 저장
-        addUnbind(menu, () => {
-          btn.removeEventListener('mouseenter', onEnter);
-          btn.removeEventListener('focusin',    onEnter);
-          btn.removeEventListener('click',      onClick);
-        });
-      });
-
-      // 2depth/3depth 지연 닫힘
-      const timers = new WeakMap();
-      menu.querySelectorAll('.mega-2depth').forEach(el => {
-        const panelRootList = menu.querySelectorAll('.mega-panels');
-        let closeTimer;
-
-        const open2 = () => {
-          if (closeTimer) clearTimeout(closeTimer);
-          panelRootList.forEach(p => p.classList.add('is-active'));
-          const scope = el.closest('.mega-panel') || menu;
-          scope.querySelectorAll('.mega-2depth.is-active').forEach(s => { if (s !== el) s.classList.remove('is-active'); });
-          el.classList.add('is-active');
-        };
-        const close2 = () => {
-          closeTimer = setTimeout(() => el.classList.remove('is-active'), 1000); // 유지: 1s
-          timers.set(el, closeTimer);
-        };
-
-        const link = el.querySelector('.mega-2depth-link');
-        const d3   = el.querySelector('.mega-3depth');
-
-        // 2depth 영역
-        const enterEl = () => open2();
-        const leaveEl = () => close2();
-        const focusInEl = () => open2();
-        const focusOutEl = (e) => { if (!el.contains(e.relatedTarget)) close2(); };
-
-        el.addEventListener('mouseenter', enterEl);
-        el.addEventListener('mouseleave', leaveEl);
-        el.addEventListener('focusin',    focusInEl);
-        el.addEventListener('focusout',   focusOutEl);
-
-        addUnbind(menu, () => {
-          el.removeEventListener('mouseenter', enterEl);
-          el.removeEventListener('mouseleave', leaveEl);
-          el.removeEventListener('focusin',    focusInEl);
-          el.removeEventListener('focusout',   focusOutEl);
-        });
-
-        // 2depth 링크
-        if (link){
-          const enterL = () => open2();
-          const leaveL = () => close2();
-          const focusInL = () => open2();
-          const clickL   = () => open2();
-
-          link.addEventListener('mouseenter', enterL);
-          link.addEventListener('mouseleave', leaveL);
-          link.addEventListener('focusin',    focusInL);
-          link.addEventListener('click',      clickL);
-
-          addUnbind(menu, () => {
-            link.removeEventListener('mouseenter', enterL);
-            link.removeEventListener('mouseleave', leaveL);
-            link.removeEventListener('focusin',    focusInL);
-            link.removeEventListener('click',      clickL);
-          });
-        }
-
-        // 3depth 영역
-        if (d3){
-          const enterD3 = () => open2();
-          const leaveD3 = () => close2();
-          const focusInD3 = () => open2();
-          const focusOutD3 = (e) => { if (!d3.contains(e.relatedTarget)) close2(); };
-
-          d3.addEventListener('mouseenter', enterD3);
-          d3.addEventListener('mouseleave', leaveD3);
-          d3.addEventListener('focusin',    focusInD3);
-          d3.addEventListener('focusout',   focusOutD3);
-
-          addUnbind(menu, () => {
-            d3.removeEventListener('mouseenter', enterD3);
-            d3.removeEventListener('mouseleave', leaveD3);
-            d3.removeEventListener('focusin',    focusInD3);
-            d3.removeEventListener('focusout',   focusOutD3);
-          });
-
-          d3.querySelectorAll('a').forEach(a => {
-            const enterA = () => open2();
-            const leaveA = () => close2();
-            const focusInA = () => open2();
-            const focusOutA = (e) => { if (!a.contains(e.relatedTarget)) close2(); };
-
-            a.addEventListener('mouseenter', enterA);
-            a.addEventListener('mouseleave', leaveA);
-            a.addEventListener('focusin',    focusInA);
-            a.addEventListener('focusout',   focusOutA);
-
-            addUnbind(menu, () => {
-              a.removeEventListener('mouseenter', enterA);
-              a.removeEventListener('mouseleave', leaveA);
-              a.removeEventListener('focusin',    focusInA);
-              a.removeEventListener('focusout',   focusOutA);
-            });
-          });
-        }
-      });
-
-      // 초기 활성 탭
-      const first = menu.querySelector('.mega-tab.is-active') || menu.querySelector('.mega-tab');
-      if (first) {
-        // panels 켜두기 (호버 없이도 패널 보이도록)
-        menu.querySelectorAll('.mega-panels').forEach(p => p.classList.add('is-active'));
-        const li = first;
-        menu.querySelectorAll('.mega-tab.is-active').forEach(x => x !== li && x.classList.remove('is-active'));
-        li.classList.add('is-active');
-      }
+  const roots = document.querySelectorAll('.primary-menu > .menu-container > .menu-item > .sub-menu-container');
+  function maxColHeight(root){
+    let h = 0;
+    root.querySelectorAll(':scope > .sub-menu').forEach(col => {
+      // 절대 배치된 하위 패널까지 합산하려면, 보이는 동안 강제로 측정 영역을 켬
+      const prev = col.style.display;
+      if (getComputedStyle(col).display === 'none') col.style.display = 'block';
+      h = Math.max(h, col.offsetHeight);
+      col.style.display = prev;
     });
+    root.style.setProperty('--submenu-h', Math.max(h, 220) + 'px');
   }
-
-  function destroyDesktop(){
-    menus().forEach(menu => {
-      if (menu.dataset.desktopBound !== '1') return;
-      runUnbind(menu); // 이벤트 모두 해제
-      delete menu.dataset.desktopBound;
-      // 데스크톱 상태 클래스 정리(남아있으면 UI 꼬임 방지)
-      menu.querySelectorAll('.mega-panels').forEach(p => p.classList.remove('is-active'));
-      menu.querySelectorAll('.mega-tab.is-active, .mega-2depth.is-active').forEach(x => x.classList.remove('is-active'));
-    });
-  }
-
-  
-  
-  // ===== 모바일 모드 =====
-  function initMobile(){
-	  // [모바일 리셋] 데스크탑/초기 마크업에서 붙은 활성 상태 전부 제거
-	  document.querySelectorAll(`
-	    .primary-menu .mega-tab.is-active,
-	    .primary-menu .mega-panel.is-active,
-	    .primary-menu .mega-2depth.is-active,
-	    .primary-menu .menu-link.is-active
-	  `).forEach(el => el.classList.remove('is-active'));
-
-	  const items = Array.from(document.querySelectorAll('.primary-menu .menu-item.has-mega'));
-
-	  items.forEach(item => {
-	    if (item.dataset.mobileBound === '1') return;
-	    item.dataset.mobileBound = '1';
-
-	    const link = item.querySelector(':scope > .menu-link');
-	    if (!link) return;
-
-	    const onClick = function(e){
-	      e.preventDefault();
-	      const wasOpen = item.classList.contains('is-active');
-
-	      items.forEach(i => {
-	        i.classList.remove('is-active');
-	        i.querySelector(':scope > .menu-link')?.classList.remove('is-active');
-	      });
-
-	      if (!wasOpen){
-	        item.classList.add('is-active');
-	        this.classList.add('is-active');
-	      } else {
-	        this.classList.remove('is-active');
-	      }
-	    };
-
-	    link.addEventListener('click', onClick, {passive:false});
-	    addUnbind(item, () => link.removeEventListener('click', onClick));
-	  });
-	}
-
-
-
-	function destroyMobile(){
-	  menus().forEach(menu => {
-	    if (menu.dataset.mobileBound !== '1') return;
-	    runUnbind(menu);
-	    delete menu.dataset.mobileBound;
-
-	    // 모바일 상태 클래스 전체 정리: LI/링크/하위 탭 모두
-	    const li = menu.closest('.menu-item.has-mega');
-	    if (li) {
-	      li.classList.remove('is-active');
-	      const link = li.querySelector(':scope > .menu-link');
-	      if (link) link.classList.remove('is-active');
-	    }
-	    menu.querySelectorAll('.mega-tab.is-active, .mega-2depth.is-active').forEach(x => x.classList.remove('is-active'));
-	  });
-	}
-
-
-  
-  
-  // ===== 공용: 언바인드 관리 =====
-  function addUnbind(root, fn){
-    if (!root._unbinds) root._unbinds = [];
-    root._unbinds.push(fn);
-  }
-  function runUnbind(root){
-    if (root._unbinds){
-      root._unbinds.forEach(fn => { try{ fn(); }catch(e){} });
-      root._unbinds = [];
-    }
-  }
-
-  // ===== 초기화 & 모드 전환 =====
-  function applyMode(){
-    if (MQ_DESKTOP.matches){
-      destroyMobile();
-      initDesktop();
-    } else if (MQ_MOBILE.matches){
-      destroyDesktop();
-      initMobile();
-    }
-  }
-
-  applyMode();
-  MQ_MOBILE.addEventListener('change', applyMode);
-  MQ_DESKTOP.addEventListener('change', applyMode);
+  roots.forEach(root => {
+    const parent = root.closest('.sub-menu');
+    parent && parent.addEventListener('mouseenter', () => maxColHeight(root));
+    window.addEventListener('resize', () => maxColHeight(root));
+    maxColHeight(root);
+  });
 });
 </script>
-
-
-
-
-
-	</th:block>
-
+ 
+  
+    </th:block>
 </body>
 
 </html>
