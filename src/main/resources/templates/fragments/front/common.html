@@ -29,209 +29,239 @@
 <body class="stretched">
 	<div id="wrapper" class="clearfix">
 		<th:block th:fragment="headerSrc(transparent, menuList)">
-            <header id="header" class="full-header" th:classappend="${transparent} == true ? transparent-header">
-                <div id="header-wrap">
-                    <div class="container">
-                        <div class="header-row">
-                            <div id="logo">
-                                <a href="/index" class="standard-logo"
-                                    data-dark-logo="/front/image/logo/logo_one.png"><img
-                                        src="/front/image/logo/logo_one.png" alt="Logo"></a>
-                                <a href="/index" class="retina-logo"
-                                    data-dark-logo="/front/image/logo/logo_one.png"><img
-                                        src="/front/image/logo/logo_one.png" alt="Logo"></a>
-                            </div>
+			<header id="header" class="full-header" th:classappend="${transparent} == true ? transparent-header">
+				<div id="header-wrap">
+					<div class="container">
+						<div class="header-row">
+							<div id="logo">
+								<a href="/index" class="standard-logo" data-dark-logo="/front/image/logo/logo_one.png"><img src="/front/image/logo/logo_one.png" alt="Logo"></a> <a href="/index" class="retina-logo"
+									data-dark-logo="/front/image/logo/logo_one.png"><img src="/front/image/logo/logo_one.png" alt="Logo"></a>
+							</div>
 
-                            <div class="header-misc primary-menu" id="search-wrap">
-                                <div id="top-search" class="header-misc-icon">
-                                    <a href="#" id="top-search-trigger"><i class="icon-line-search"></i><i
-                                            class="icon-line-cross"></i>검색</a>
-                                </div>
-                                <div id="top-cart" class="header-misc-icon d-sm-block">
-                                    <span><a style="font-weight:600;" href="#">EN </a></span> /
-                                    <span><a class="active" style="font-weight:600;" href="#"> KO</a></span>
-                                </div>
-                            </div>
+							<div class="header-misc primary-menu" id="search-wrap">
+								<div id="top-search" class="header-misc-icon">
+									<a href="#" id="top-search-trigger"><i class="icon-line-search"></i><i class="icon-line-cross"></i>검색</a>
+								</div>
+								<div id="top-cart" class="header-misc-icon d-sm-block">
+									<span><a style="font-weight: 600;" href="#">EN </a></span> / <span><a class="active" style="font-weight: 600;" href="#"> KO</a></span>
+								</div>
+							</div>
 
 
-                            <div id="primary-menu-trigger">
-                                <svg class="svg-trigger" viewBox="0 0 100 100">
-                                    <path
-                                        d="m 30,33 h 40 c 3.722839,0 7.5,3.126468 7.5,8.578427 0,5.451959 -2.727029,8.421573 -7.5,8.421573 h -20">
+							<div id="primary-menu-trigger">
+								<svg class="svg-trigger" viewBox="0 0 100 100">
+                                    <path d="m 30,33 h 40 c 3.722839,0 7.5,3.126468 7.5,8.578427 0,5.451959 -2.727029,8.421573 -7.5,8.421573 h -20">
                                     </path>
                                     <path d="m 30,50 h 40"></path>
-                                    <path
-                                        d="m 70,67 h -40 c 0,0 -7.5,-0.802118 -7.5,-8.365747 0,-7.563629 7.5,-8.634253 7.5,-8.634253 h 20">
+                                    <path d="m 70,67 h -40 c 0,0 -7.5,-0.802118 -7.5,-8.365747 0,-7.563629 7.5,-8.634253 7.5,-8.634253 h 20">
                                     </path>
                                 </svg>
-                            </div>
-                            <nav class="primary-menu">
-                                <ul class="menu-container">
-                                    <li class="menu-item"><a class="menu-link" href="#">
-                                            <div>회사 소개</div>
-                                        </a>
-                                       <!--  <ul class="sub-menu-container">
-                                            <li class="menu-item"><a class="menu-link" href="/about">
-                                                    <div>기업 소개</div>
-                                                </a></li>
-                                            <li class="menu-item"><a class="menu-link" href="/history">
-                                                    <div>기업 연혁</div>
-                                                </a></li>
-                                            <li class="menu-item"><a class="menu-link" href="/certifications">
-                                                    <div>인증서</div>
-                                                </a></li>
-                                            <li class="menu-item"><a class="menu-link" href="/address">
-                                                    <div>찾아오시는 길</div>
-                                                </a></li>
-                                        </ul> -->
-                                    </li>
-                                    <li class="menu-item">
-                                        <a class="menu-link" href="#">
-                                            <div>제품소개</div>
-                                        </a>
-                                        <ul class="sub-menu-container">
-                                            <li class="menu-item" th:each="b:${menuList.bigSortList}">
-                                                <a class="menu-link" th:href="@{|/productSorted/main/${b.id}|}">
-                                                    <div>
-                                                        <i class="icon-stack"></i> [[${b.name}]]
-                                                    </div>
-                                                </a>
-                                                <ul class="sub-menu-container sub-container">
-                                                    <li class="menu-item" th:if="${b.id == m.bigSort.id}"
-                                                        th:each="m : ${menuList.middleSortList}">
-                                                        <a class="menu-link"
-                                                            th:href="@{|/productSorted/middle/${m.id}|}">
-                                                            <div th:text="${m.name}">Screw Caps and Tubes</div>
-                                                        </a>
-                                                        <ul class="sub-menu-container sub-container">
-                                                            <li class="menu-item" th:if="${m.id == s.middleSort.id}"
-                                                                th:each="s:${menuList.smallSortList}">
-                                                                <a class="menu-link"
-                                                                    th:href="@{|/productSorted/sub/${s.id}|}">
-                                                                    <div th:text="${s.name}">Product 01</div>
-                                                                </a>
-                                                                <ul class="sub-menu-container sub-container">
-                                                                    <li class="menu-item"
-                                                                        th:if="${s.id == p.smallSort.id}"
-                                                                        th:each="p:${menuList.productList}">
-                                                                        <a class="menu-link"
-                                                                            th:href="@{|/productDetail/${p.id}|}">
-                                                                            <div th:text="${p.subject}">Product 01</div>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item">
-                                        <a class="menu-link" href="#">
-                                            <div>브랜드소개</div>
-                                        </a>
-                                        <ul class="sub-menu-container">
-                                            <li class="menu-item" th:each="b:${menuList.brandList}">
-                                                <a class="menu-link" th:href="@{|/brandProductSorted/brand/${b.id}|}">
-                                                    <div>
-                                                        <i class="icon-stack"></i> [[${b.name}]]
-                                                    </div>
-                                                </a>
-                                                <ul class="sub-menu-container">
-                                                    <li class="menu-item" th:if="${b.id == bb.brand.id}"
-                                                        th:each="bb : ${menuList.brandBigSortList}">
-                                                        <a class="menu-link"
-                                                            th:href="@{|/brandProductSorted/main/${bb.id}|}">
-                                                            <div th:text="${bb.name}">Screw Caps and Tubes</div>
-                                                        </a>
-                                                        <ul class="sub-menu-container">
-                                                            <li class="menu-item" th:if="${bb.id == bm.bigSort.id}"
-                                                                th:each="bm:${menuList.brandMiddleSortList}">
-                                                                <a class="menu-link"
-                                                                    th:href="@{|/brandProductSorted/middle/${bm.id}|}">
-                                                                    <div th:text="${bm.name}">Product 01</div>
-                                                                </a>
-                                                                <ul class="sub-menu-container left-container">
-                                                                    <li class="menu-item"
-                                                                        th:if="${bs.id == bs.middleSort.id}"
-                                                                        th:each="bs:${menuList.brandSmallSortList}">
-                                                                        <a class="menu-link"
-                                                                            th:href="@{|/brandProductSorted/sub/${bs.id}|}">
-                                                                            <div th:text="${bs.name}">Product 01</div>
-                                                                        </a>
-                                                                        <ul class="sub-menu-container">
-                                                                            <li class="menu-item"
-                                                                                th:if="${bs.id == bp.smallSort.id}"
-                                                                                th:each="bp:${menuList.brandProductList}">
-                                                                                <a class="menu-link"
-                                                                                    th:href="@{|/brandProductDetail/${bp.id}|}">
-                                                                                    <div th:text="${bp.subject}">Product
-                                                                                        01</div>
-                                                                                </a>
-                                                                            </li>
-                                                                        </ul>
-                                                                    </li>
-                                                                </ul>
-                                                            </li>
-                                                        </ul>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="menu-item"><a class="menu-link" href="#">
-                                            <div>공지사항</div>
-                                        </a>
-                                       <!--  <ul class="sub-menu-container">
-                                            <li class="menu-item"><a class="menu-link" href="/notice">
-                                                    <div>공지사항</div>
-                                                </a></li>
-                                        </ul> -->
-                                    </li>
-                                    <li class="menu-item"><a class="menu-link" href="#">
-                                            <div>자료실</div>
-                                        </a>
-                                        <!-- <ul class="sub-menu-container">
-                                            <li class="menu-item"><a class="menu-link" href="/references">
-                                                    <div>카탈로그</div>
-                                                </a></li>
-                                        </ul> -->
-                                    </li>
-                                    <li class="menu-item"><a class="menu-link" href="#">
-                                            <div>고객지원</div>
-                                        </a>
-                                        <!-- <ul class="sub-menu-container">
-                                            <li class="menu-item"><a class="menu-link" href="/contact">
-                                                    <div>Contact US</div>
-                                                </a></li>
+							</div>
+							<nav class="primary-menu">
+								<div th:if="${isMobile}">
+									<ul class="menu-container">
+										<li class="menu-item"><a class="menu-link" href="/about">
+												<div>회사 소개</div>
+										</a></li>
+										<li class="menu-item"><a class="menu-link" href="#">
+												<div>제품소개</div>
+										</a>
+											<ul class="mega-menu-content">
+												<li class="menu-item" th:each="b:${menuList.bigSortList}"><a class="menu-link" th:href="@{|/productSorted/main/${b.id}|}">
+														<div>
+															<i class="icon-stack"></i> [[${b.name}]]
+														</div>
+												</a>
+													<ul class="sub-menu-container depth-1">
+														<li class="menu-item" th:if="${b.id == m.bigSort.id}" th:each="m : ${menuList.middleSortList}"><a class="menu-link" th:href="@{|/productSorted/middle/${m.id}|}">
+																<div th:text="${m.name}">Screw Caps and Tubes</div>
+														</a>
+															<ul class="sub-menu-container depth-2">
+																<li class="menu-item" th:if="${m.id == s.middleSort.id}" th:each="s:${menuList.smallSortList}"><a class="menu-link" th:href="@{|/productSorted/sub/${s.id}|}">
+																		<div th:text="${s.name}">Product 01</div>
+																</a>
+																	<ul class="sub-menu-container depth-3">
+																		<li class="menu-item" th:if="${s.id == p.smallSort.id}" th:each="p:${menuList.productList}"><a class="menu-link" th:href="@{|/productDetail/${p.id}|}">
+																				<div th:text="${p.subject}">Product 01</div>
+																		</a></li>
+																	</ul></li>
+															</ul></li>
 
-                                        </ul> -->
-                                    </li>
-                                </ul>
-                            </nav>
+													</ul></li>
+											</ul></li>
+										<li class="menu-item"><a class="menu-link" href="#">
+												<div>브랜드소개</div>
+										</a>
+											<ul class="mega-menu-content">
+												<li class="menu-item" th:each="b:${menuList.brandList}"><a class="menu-link" th:href="@{|/brandProductSorted/brand/${b.id}|}">
+														<div>
+															<i class="icon-stack"></i> [[${b.name}]]
+														</div>
+												</a>
+													<ul class="sub-menu-container">
+														<li class="menu-item" th:if="${b.id == bb.brand.id}" th:each="bb : ${menuList.brandBigSortList}"><a class="menu-link" th:href="@{|/brandProductSorted/main/${bb.id}|}">
+																<div th:text="${bb.name}">Screw Caps and Tubes</div>
+														</a>
+															<ul class="sub-menu-container">
+																<li class="menu-item" th:if="${bb.id == bm.bigSort.id}" th:each="bm:${menuList.brandMiddleSortList}"><a class="menu-link" th:href="@{|/brandProductSorted/middle/${bm.id}|}">
+																		<div th:text="${bm.name}">Product 01</div>
+																</a>
+																	<ul class="sub-menu-container left-container">
+																		<li class="menu-item" th:if="${bs.id == bs.middleSort.id}" th:each="bs:${menuList.brandSmallSortList}"><a class="menu-link" th:href="@{|/brandProductSorted/sub/${bs.id}|}">
+																				<div th:text="${bs.name}">Product 01</div>
+																		</a>
+																			<ul class="sub-menu-container">
+																				<li class="menu-item" th:if="${bs.id == bp.smallSort.id}" th:each="bp:${menuList.brandProductList}"><a class="menu-link" th:href="@{|/brandProductDetail/${bp.id}|}">
+																						<div th:text="${bp.subject}">Product 01</div>
+																				</a></li>
+																			</ul></li>
+																	</ul></li>
+															</ul></li>
+													</ul></li>
+											</ul></li>
+										<li class="menu-item"><a class="menu-link" href="/notice">
+												<div>공지사항</div>
+										</a></li>
+										<li class="menu-item"><a class="menu-link" href="/references">
+												<div>자료실</div>
+										</a></li>
+										<li class="menu-item"><a class="menu-link" href="/contact">
+												<div>고객지원</div>
+										</a></li>
+									</ul>
+								</div>
+								<div th:unless="${isMobile}">
+									<ul class="menu-container">
+										<li class="menu-item"><a class="menu-link" href="/about">
+												<div>회사 소개</div>
+										</a></li>
+										<li class="menu-item product"><a class="menu-link" href="#">
+												<div>제품소개</div>
+										</a></li>
+										<li class="menu-item brand"><a class="menu-link" href="#">
+												<div>브랜드소개</div>
+										</a></li>
+										<li class="menu-item"><a class="menu-link" href="/notice">
+												<div>공지사항</div>
+										</a></li>
+										<li class="menu-item"><a class="menu-link" href="/references">
+												<div>자료실</div>
+										</a></li>
+										<li class="menu-item"><a class="menu-link" href="/contact">
+												<div>고객지원</div>
+										</a></li>
+									</ul>
+								</div>
+							</nav>
+							<form class="top-search-form" action="/searchAll" method="get" id="top-search-form">
+								<div>
+									<input type="text" name="searchWord" class="form-control" required="required" placeholder="검색어를 입력 하세요." autocomplete="off"> <span class="search-btn" id="search-btn"><i
+										class="icon-line-search"></i></span>
+								</div>
+							</form>
+							<script>
+								var searchBtn = document
+										.getElementById('search-btn');
+								var searchForm = document
+										.getElementById('top-search-form');
+								searchBtn.addEventListener('click', function() {
+									searchForm.submit();
+								});
+							</script>
+						</div>
+					</div>
 
-                            <form class="top-search-form" action="/searchAll" method="get" id="top-search-form">
-                                <div>
-                                    <input type="text" name="searchWord" class="form-control" required="required"
-                                        placeholder="검색어를 입력 하세요." autocomplete="off"> <span class="search-btn"
-                                        id="search-btn"><i class="icon-line-search"></i></span>
-                                </div>
-                            </form>
-                            <script>
-                                var searchBtn = document.getElementById('search-btn');
-                                var searchForm = document.getElementById('top-search-form');
-                                searchBtn.addEventListener('click', function () {
-                                    searchForm.submit();
-                                });
-                            </script>
 
-                        </div>
-                    </div>
-                </div>
-                <div class="header-wrap-clone"></div>
-            </header>
-        </th:block>
+					<div th:unless="${isMobile}">
+						<div class="product-mega-wrap debug-open" id="product-items">
+							<div class="inner">
+								<div class="mega-grid">
+									<!-- 1depth -->
+									<ul class="col depth-1" id="col-big">
+										<li class="menu-item" th:each="b : ${menuList.bigSortList}" th:attr="data-id=${b.id}"><a class="menu-link" th:href="@{|/productSorted/main/${b.id}|}">
+												<div>
+													<i class="icon-stack"></i> [[${b.name}]]
+												</div>
+										</a></li>
+									</ul>
+
+									<!-- 2depth -->
+									<ul class="col depth-2" id="col-middle">
+										<li class="menu-item" th:each="m : ${menuList.middleSortList}" th:attr="data-id=${m.id}, data-parent=${m.bigSort.id}"><a class="menu-link" th:href="@{|/productSorted/middle/${m.id}|}">
+												<div th:text="${m.name}">Middle</div>
+										</a></li>
+									</ul>
+
+									<!-- 3depth -->
+									<ul class="col depth-3" id="col-small">
+										<li class="menu-item" th:each="s : ${menuList.smallSortList}" th:attr="data-id=${s.id}, data-parent=${s.middleSort.id}"><a class="menu-link" th:href="@{|/productSorted/sub/${s.id}|}">
+												<div th:text="${s.name}">Small</div>
+										</a></li>
+									</ul>
+
+									<!-- 4depth -->
+									<ul class="col depth-4" id="col-product">
+										<li class="menu-item" th:each="p : ${menuList.productList}" th:attr="data-id=${p.id}, data-parent=${p.smallSort.id}"><a class="menu-link" th:href="@{|/productDetail/${p.id}|}">
+												<div th:text="${p.subject}">Product</div>
+										</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+
+						<div class="product-mega-wrap" id="brands-items">
+							<div class="inner">
+								<div class="mega-grid">
+									<!-- 1depth: Brand -->
+									<ul class="col depth-1" id="brand-col-1">
+										<li class="menu-item" th:each="b : ${menuList.brandList}" th:attr="data-id=${b.id}"><a class="menu-link" th:href="@{|/brandProductSorted/brand/${b.id}|}">
+												<div>
+													<i class="icon-stack"></i> [[${b.name}]]
+												</div>
+										</a></li>
+									</ul>
+
+									<!-- 2depth: Brand Big (parent = brand id) -->
+									<ul class="col depth-2" id="brand-col-2">
+										<li class="menu-item" th:each="bb : ${menuList.brandBigSortList}" th:attr="data-id=${bb.id}, data-parent=${bb.brand.id}"><a class="menu-link"
+											th:href="@{|/brandProductSorted/main/${bb.id}|}">
+												<div th:text="${bb.name}">Brand Big</div>
+										</a></li>
+									</ul>
+
+									<!-- 3depth: Brand Middle (parent = big id) -->
+									<ul class="col depth-3" id="brand-col-3">
+										<li class="menu-item" th:each="bm : ${menuList.brandMiddleSortList}" th:attr="data-id=${bm.id}, data-parent=${bm.bigSort.id}"><a class="menu-link"
+											th:href="@{|/brandProductSorted/middle/${bm.id}|}">
+												<div th:text="${bm.name}">Brand Middle</div>
+										</a></li>
+									</ul>
+
+									<!-- 4depth: Brand Small (parent = middle id) -->
+									<ul class="col depth-4" id="brand-col-4">
+										<li class="menu-item" th:each="bs : ${menuList.brandSmallSortList}" th:attr="data-id=${bs.id}, data-parent=${bs.middleSort.id}"><a class="menu-link"
+											th:href="@{|/brandProductSorted/sub/${bs.id}|}">
+												<div th:text="${bs.name}">Brand Small</div>
+										</a></li>
+									</ul>
+
+									<!-- 5depth: Brand Product (parent = small id) -->
+									<ul class="col depth-5" id="brand-col-5">
+										<li class="menu-item" th:each="bp : ${menuList.brandProductList}" th:attr="data-id=${bp.id}, data-parent=${bp.smallSort.id}"><a class="menu-link"
+											th:href="@{|/brandProductDetail/${bp.id}|}">
+												<div th:text="${bp.subject}">Brand Product</div>
+										</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+				<div class="header-wrap-clone"></div>
+			</header>
+		</th:block>
 
 
 		<th:block th:fragment="footerSrc">
@@ -308,42 +338,140 @@
 			</footer>
 		</th:block>
 	</div>
- 
- 
+
+
 	<th:block th:fragment="scriptSrc">
 		<div id="gotoTop" class="icon-angle-up"></div>
 		<script src="/front/js/jquery.js"></script>
 		<script src="/front/js/plugins.min.js"></script>
 		<script src="/front/js/functions.js"></script>
 		<script src="/front/js/menu.tree.js"></script>
-  
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const secondMenus = document.querySelectorAll('.primary-menu .sub-menu-container > li');
 
-  secondMenus.forEach(item => {
-    const thirdMenu = item.querySelector('.sub-menu-container');
-    if (!thirdMenu) return;
+		<script>
+(function(){
+  const colBig     = document.getElementById('col-big');
+  const colMiddle  = document.getElementById('col-middle');
+  const colSmall   = document.getElementById('col-small');
+  const colProduct = document.getElementById('col-product');
 
-    item.addEventListener('mouseenter', () => {
-      const rect = item.getBoundingClientRect();
-      console.log(rect);
+  const middles  = [...colMiddle.querySelectorAll('li')];
+  const smalls   = [...colSmall.querySelectorAll('li')];
+  const products = [...colProduct.querySelectorAll('li')];
 
-      thirdMenu.style.display = 'block';
-      thirdMenu.style.top = rect.top + 'px';
-      thirdMenu.style.left = (rect.right) + 'px';
+  function setActive(elList, el){
+    elList.forEach(li => li.querySelector('.menu-link')?.classList.remove('is-active'));
+    el?.querySelector('.menu-link')?.classList.add('is-active');
+  }
+
+  function showMiddle(bigId){
+    middles.forEach(li => li.classList.toggle('is-visible', li.dataset.parent === String(bigId)));
+    // 초기 선택: 첫 middle 기준으로 다음 depth 갱신
+    const first = middles.find(li => li.dataset.parent === String(bigId));
+    setActive([...colBig.querySelectorAll('li')], colBig.querySelector(`[data-id="${bigId}"]`));
+    if(first) showSmall(first.dataset.id); else clearSmall();
+  }
+
+  function clearSmall(){
+    smalls.forEach(li => li.classList.remove('is-visible'));
+    clearProduct();
+  }
+  function showSmall(midId){
+    smalls.forEach(li => li.classList.toggle('is-visible', li.dataset.parent === String(midId)));
+    const first = smalls.find(li => li.dataset.parent === String(midId));
+    setActive([...colMiddle.querySelectorAll('li.is-visible')], colMiddle.querySelector(`li[data-id="${midId}"]`));
+    if(first) showProduct(first.dataset.id); else clearProduct();
+  }
+
+  function clearProduct(){
+    products.forEach(li => li.classList.remove('is-visible'));
+  }
+  function showProduct(smId){
+    products.forEach(li => li.classList.toggle('is-visible', li.dataset.parent === String(smId)));
+    setActive([...colSmall.querySelectorAll('li.is-visible')], colSmall.querySelector(`li[data-id="${smId}"]`));
+  }
+
+  // 이벤트 바인딩 (hover + 키보드 포커스 + 클릭)
+  function onHoverClick(container, handler){
+    container.addEventListener('mouseenter', e => {
+      const li = e.target.closest('li'); if(li && container.contains(li)) handler(li.dataset.id);
+    }, true);
+    container.addEventListener('focusin', e => {
+      const li = e.target.closest('li'); if(li && container.contains(li)) handler(li.dataset.id);
     });
-
-    item.addEventListener('mouseleave', () => {
-      thirdMenu.style.display = 'none';
+    container.addEventListener('click', e => {
+      const li = e.target.closest('li'); if(li && container.contains(li)) { handler(li.dataset.id); }
     });
-  });
-});
+  }
+
+  onHoverClick(colBig,    showMiddle);
+  onHoverClick(colMiddle, showSmall);
+  onHoverClick(colSmall,  showProduct);
+
+  // 최초 오픈: 첫 Big 기준으로 체인 오픈
+  const firstBig = colBig.querySelector('li');
+  if(firstBig) showMiddle(firstBig.dataset.id);
+})();
 </script>
 
- 
-  
-    </th:block>
+<script>
+(function(){
+  const nav = document.querySelector('nav.primary-menu');
+  const itemProduct = nav.querySelector('.menu-item.product');
+  const itemBrand   = nav.querySelector('.menu-item.brand');
+  const panelProduct = document.getElementById('product-items');
+  const panelBrand   = document.getElementById('brands-items');
+
+  let hideTimer = null;
+
+  function open(panel){
+    clearTimeout(hideTimer); // 닫힘 예약 취소
+    [panelProduct, panelBrand].forEach(p=>{
+      if(!p) return;
+      if(p === panel){
+        p.style.opacity = '1';
+        p.style.visibility = 'visible';
+        p.style.pointerEvents = 'auto';
+        p.style.transform = 'translateX(-50%)';
+      }else{
+        p.style.opacity = '0';
+        p.style.visibility = 'hidden';
+        p.style.pointerEvents = 'none';
+      }
+    });
+  }
+
+  function delayedClose(delay=300){ // 밀리초 단위
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(()=>{
+      [panelProduct, panelBrand].forEach(p=>{
+        if(!p) return;
+        p.style.opacity = '0';
+        p.style.visibility = 'hidden';
+        p.style.pointerEvents = 'none';
+      });
+    }, delay);
+  }
+
+  if (itemProduct && panelProduct){
+    itemProduct.addEventListener('mouseenter', ()=>open(panelProduct));
+    panelProduct.addEventListener('mouseenter', ()=>clearTimeout(hideTimer));
+    panelProduct.addEventListener('mouseleave', ()=>delayedClose());
+  }
+
+  if (itemBrand && panelBrand){
+    itemBrand.addEventListener('mouseenter', ()=>open(panelBrand));
+    panelBrand.addEventListener('mouseenter', ()=>clearTimeout(hideTimer));
+    panelBrand.addEventListener('mouseleave', ()=>delayedClose());
+  }
+
+  nav.addEventListener('mouseleave', ()=>delayedClose());
+})();
+</script>
+
+
+
+
+	</th:block>
 </body>
 
 </html>

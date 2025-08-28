@@ -47,7 +47,6 @@ import com.dev.BionLifeScienceWeb.model.Certification;
 
 import lombok.RequiredArgsConstructor;
 
-
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
@@ -78,9 +77,9 @@ public class HomeController {
 	
 	@GetMapping({"/", "/index"})
 	public String index(
-			Model model
+		 Model model
 			) {
-
+		
 		List<Banner> b = bannerRepository.findAll();
 		if(b.size()<1) {
 			Banner ba = new Banner();
@@ -111,6 +110,8 @@ public class HomeController {
 				p.setFirstImageRoad("null");
 			}
 		}
+		
+		
 		model.addAttribute("fi", fi);
 		model.addAttribute("notice", notice);
 		model.addAttribute("product", pr);

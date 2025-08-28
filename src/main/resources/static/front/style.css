@@ -9,7 +9,7 @@
     --panel-h: 100vh; 
 	--clip-top: 0px;
 	--clip-bot: 0px;
-	--min-h: 320px;
+	--min-h: 220px;
 	--sub-gap: 12px;
 	--menu-hover-bg: rgba(210, 228, 245, .95); /* hover 배경색 */
  	--menu-hover-fg: #2b6ea3;                  /* hover 글자색 */
@@ -3710,6 +3710,17 @@ html[xmlns] .slider-wrap {
   align-items: center;
 }
 
+.primary-menu > div:first-child{
+	display: contents;
+	position: static;
+	width: auto;
+	height: auto;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background: none;
+}
+
 .primary-menu + .primary-menu {
   border-top: 1px solid #eee;
 }
@@ -3833,7 +3844,7 @@ body:not(.top-search-open) .top-search-parent #primary-menu-trigger {
   vertical-align: top;
 }
 
-.menu-item:hover > .menu-link,
+nav .menu-item:hover > .menu-link,
 .menu-item.current > .menu-link {
   color: #fe5000;
 }
@@ -3926,8 +3937,8 @@ body:not(.top-search-open) .top-search-parent #primary-menu-trigger {
     border-top: 1px solid #eee;
   }
 
-  .mega-menu-content .sub-menu-container:not(.mega-menu-dropdown) {
-    display: block !important;
+  .sub-menu-container:not(.mega-menu-dropdown) {
+    display: block;
   }
 
   .mega-menu-content .mega-menu-column {
@@ -4060,12 +4071,17 @@ body:not(.top-search-open) .top-search-parent #primary-menu-trigger {
     background-color: #dc3545;
   }
 
-  .menu-link {
+  .menu-link.gnb-menu{
+  	padding: 39px 39px;
+  }
+  
+ nav .menu-link {
     padding: 39px 39px;
     -webkit-transition: margin 0.4s ease, padding 0.4s ease;
     -o-transition: margin 0.4s ease, padding 0.4s ease;
     transition: margin 0.4s ease, padding 0.4s ease;
   }
+  
 
   .header-size-sm .menu-container > .menu-item > .menu-link {
     padding-top: 19px;
@@ -4096,11 +4112,11 @@ body:not(.top-search-open) .top-search-parent #primary-menu-trigger {
     display: inline-block;
   }
 
-  .sub-menu-container,
+  /* .sub-menu-container, */
   .mega-menu-content {
     position: absolute;
     visibility: hidden;
-   /*  box-shadow: 0px 13px 42px 11px rgba(0, 0, 0, 0.05); */
+    box-shadow: 0px 13px 42px 11px rgba(0, 0, 0, 0.05);
     border-top: 1px solid #fe5000;
     z-index: 399;
     top: 100%;
@@ -18709,72 +18725,96 @@ label.checkbox {
 	transition-delay: 0.1s;
 }
 
+@media (min-width:1025px){
+	
+	.product-mega-wrap li,
+	.brand-mega-wrap li {list-style:none;}
+	
+	.product-mega-wrap,
+	.brand-mega-wrap {
+	  position: absolute;
+	  left: 0; right: 0; top: 100%;
+	  width: 100vw; 
+	  background: #0a1e4e;
+	  /* flex 불필요하지만 써도 무방. 써도 결과 동일 */
+	  display: block;
+	  border-top: 2px solid #fe5000;
+	}
+	
+	.product-mega-wrap .inner,
+	.brand-mega-wrap .inner {
+		width: 100%;
+		max-width: 1520px;
+		position: relative;
+		height: auto;
+		z-index: 999;
+		margin: 0 auto;
+		padding: 0 30px;
+	}
 
+.mega-grid .col:hover {background: #173B7A}
+.mega-grid .col:hover li {border-bottom: 1px solid #fff;}
 
-@media (min-width: 1025px){
-/* 공통: 드롭다운 박스는 absolute 그대로, 배경이 넘쳐도 보이게 */
-.sub-menu-container{ overflow:visible; isolation:isolate; }
-
-/* 1레벨 드롭다운에만 풀폭 배경 깔기 */
-.primary-menu > .menu-container > .menu-item > .sub-menu-container::before{
-  content:"";
-  position:fixed;
-  top:100%;
-  bottom:0;
-  left:50%;
-  width:100vw;
-  transform:translateX(-50%);
-  background:#0a1e4e;
-  z-index:-1;
-  pointer-events:none;
-  border-top: 2px solid #fe5000;
-  height: auto;
-  min-height: 300px;
-  max-height: 80vh;
+/* 열 레이아웃 */
+.mega-grid{display:flex; gap:0; align-items:flex-start;}
+.mega-grid .col{flex: 0 0 220px; list-style:none; margin:0; padding:0; position: relative;}
+.mega-grid .col li {
+  margin: 0;
+  padding: 4px 8px;
+  line-height: 1.4;
+  /* border-bottom: 1px solid #fff; */
+  list-style: none;
+  white-space: nowrap;
 }
 
-/* 하위 레벨은 풀폭 배경 금지(기존 폭 유지) */
-.primary-menu .menu-container > .menu-item > .sub-menu-container .sub-menu-container::before{ display:none; }
+.depth-4 {width: 100%;}
 
-/* (선택) 애니메이션을 sub-menu-inner에만 적용하면 부모 transform로 인한 fixed/stacking 문제 회피 */
-.primary-menu > .menu-container > .menu-item > .sub-menu-container > .sub-menu-inner{
-  transform:translateY(8px);
-  opacity:0;
-  transition:transform .18s ease, opacity .18s ease;
-}
-.primary-menu > .menu-container > .menu-item:hover > .sub-menu-container > .sub-menu-inner,
-.primary-menu > .menu-container > .menu-item.is-active > .sub-menu-container > .sub-menu-inner{
-  transform:translateY(0);
-  opacity:1;
+.mega-grid .col li a {color: #fff;}
+.brand-mega-wrap .inner .menu-link{display:block; padding:4px 8px !important; white-space:nowrap;}
+.brand-mega-wrap .inner .menu-link menu-link > div{display:inline-flex; gap:6px; align-items:center; overflow:hidden; text-overflow:ellipsis;}
+.menu-link.is-active{font-weight:700; color:#fff;}
+.mega-grid .col li a:hover  {
+	color: #ff6a00;
 }
 
-/* 기존 fixed 사용하던 경우 무효화(겹침/스크롤 꼬임 방지) */
-/* .sub-menu-container.left-container{ position:inherit; }
- */
-/* 비어있는 서브 컨테이너는 자동 제거(타임리프 조건으로 비는 경우 대비) */
-.sub-menu-container:empty{ display:none; }
+/* 필터링 */
+#col-middle li, #col-small li, #col-product li{display:none;}
+#col-middle li.is-visible, #col-small li.is-visible, #col-product li.is-visible{display:block;}
 
-/* .sub-menu-container {display:block; opacity: 1;} */
-
-.sub-menu-container .sub-menu-container:not(:has(> li)){ display:none !important; }
-
-/* 기본 상태 */
-.primary-menu .menu-container > .menu-item > .sub-menu-container a:not(:is(:hover, :focus-visible)),
-.primary-menu .menu-container > .menu-item > .sub-menu-container
-.sub-menu-container > .sub-menu a:not(:is(:hover, :focus-visible)){
-  color:#fff;
-  background:transparent;
+/* 공통: 기본 닫힘 상태 */
+#product-items, #brands-items{
+  position:absolute; top:100%; left:50%; transform:translateX(-50%);
+  width:100%; max-width:none;
+  opacity:0; visibility:hidden; pointer-events:none;
+  transition:opacity .18s ease, transform .18s ease, visibility 0s .18s;
+  z-index:1100;
 }
 
+/* 랩 위에 올려도 계속 열려있게 */
+#product-items:hover, #brands-items:hover{
+  opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%);
+  transition:opacity .18s ease, transform .18s ease;
+}
 
-.primary-menu .menu-container > .menu-item > .sub-menu-container .sub-menu-container {
-	position: fixed;
-	 top: auto !important;
-	left: 0;
+/* 제품소개 호버 → product-items 오픈 */
+nav.primary-menu:has(.menu-item.product:hover) ~ #product-items{
+  opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%);
+  transition:opacity .18s ease, transform .18s ease;
 }
-.primary-menu .menu-container > .menu-item > .sub-menu-container .sub-menu-container .sub-menu-container {
-	position: fixed;
-	top: auto !important;
-	left: 0;
+
+/* 브랜드소개 호버 → brands-items 오픈 */
+nav.primary-menu:has(.menu-item.brand:hover) ~ #brands-items{
+  opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%);
+  transition:opacity .18s ease, transform .18s ease;
 }
+
+/* .product-mega-wrap.debug-open,
+.brand-mega-wrap.debug-open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translateX(-50%) translateY(0) !important;
+  display: block !important;
+} */
+
 }
