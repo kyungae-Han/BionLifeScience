@@ -18727,11 +18727,9 @@ label.checkbox {
 
 @media (min-width:1025px){
 	
-	.product-mega-wrap li,
-	.brand-mega-wrap li {list-style:none;}
+	.product-mega-wrap li{list-style:none;}
 	
-	.product-mega-wrap,
-	.brand-mega-wrap {
+	.product-mega-wrap{
 	  position: absolute;
 	  left: 0; right: 0; top: 100%;
 	  width: 100vw; 
@@ -18739,17 +18737,20 @@ label.checkbox {
 	  /* flex 불필요하지만 써도 무방. 써도 결과 동일 */
 	  display: block;
 	  border-top: 2px solid #fe5000;
+	  overflow:hidden;
+	  z-index:1100;
 	}
 	
-	.product-mega-wrap .inner,
-	.brand-mega-wrap .inner {
+	.product-mega-wrap .inner{
 		width: 100%;
 		max-width: 1520px;
 		position: relative;
 		height: auto;
 		z-index: 999;
 		margin: 0 auto;
-		padding: 0 30px;
+		padding: 0 7rem;
+		height: 100%;
+		box-sizing: border-box;
 	}
 
 .mega-grid .col:hover {background: #173B7A}
@@ -18757,12 +18758,26 @@ label.checkbox {
 
 /* 열 레이아웃 */
 .mega-grid{display:flex; gap:0; align-items:flex-start;}
-.mega-grid .col{flex: 0 0 220px; list-style:none; margin:0; padding:0; position: relative;}
+.mega-grid .col{
+	flex: 0 0 220px; 
+	list-style:none; 
+	margin:0; 
+	padding:0; 
+	position: relative;
+    max-height: 720px;
+    overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+}
+
+mega-grid .col .menu-item{
+  display: block;
+}
+
 .mega-grid .col li {
   margin: 0;
   padding: 4px 8px;
   line-height: 1.4;
-  /* border-bottom: 1px solid #fff; */
   list-style: none;
   white-space: nowrap;
 }
@@ -18770,8 +18785,8 @@ label.checkbox {
 .depth-4 {width: 100%;}
 
 .mega-grid .col li a {color: #fff;}
-.brand-mega-wrap .inner .menu-link{display:block; padding:4px 8px !important; white-space:nowrap;}
-.brand-mega-wrap .inner .menu-link menu-link > div{display:inline-flex; gap:6px; align-items:center; overflow:hidden; text-overflow:ellipsis;}
+.product-mega-wrap .inner .menu-link{display:block; padding:8px 8px !important; white-space:nowrap;}
+.product-mega-wrap .inner .menu-link menu-link > div{display:inline-flex; gap:6px; align-items:center; overflow:hidden; text-overflow:ellipsis;}
 .menu-link.is-active{font-weight:700; color:#fff;}
 .mega-grid .col li a:hover  {
 	color: #ff6a00;
@@ -18808,13 +18823,118 @@ nav.primary-menu:has(.menu-item.brand:hover) ~ #brands-items{
   transition:opacity .18s ease, transform .18s ease;
 }
 
-/* .product-mega-wrap.debug-open,
-.brand-mega-wrap.debug-open {
+/* .product-mega-wrap.debug-open{
   opacity: 1 !important;
   visibility: visible !important;
   pointer-events: auto !important;
   transform: translateX(-50%) translateY(0) !important;
   display: block !important;
-} */
+}
+ */
+/* 스크롤바세팅 */
+/* 컬럼: 세로만 스크롤, 가로 차단 */
+.product-mega-wrap .mega-grid .col {
+  overflow-y: auto;
+  overflow-x: hidden;
+  /* Firefox */
+  scrollbar-width: thin;                 /* 얇게 */
+  scrollbar-color: #111 #eaeaea;         /* thumb, track */
+  scrollbar-gutter: stable both-edges;   /* 스크롤 등장해도 레이아웃 흔들림 최소화(지원 브라우저) */
+}
+
+/* WebKit(Chrome/Edge/Safari) */
+.product-mega-wrap .mega-grid .col::-webkit-scrollbar {
+  width: 0;                            /* 아주 얇게 */
+}
+
+.product-mega-wrap .mega-grid .col::-webkit-scrollbar-track {
+  background: none;                   /* 옅은 회색 트랙 */
+  border-radius: 2px;
+}
+
+.product-mega-wrap .mega-grid .col::-webkit-scrollbar-thumb {
+  background: #fff;                 
+  border-radius: 2px;
+}
+
+/* 접근성: 호버 시 살짝 두껍게 */
+.product-mega-wrap .mega-grid .col:hover::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* 트랙을 투명하게 해서 검은 얇은 선만 뜨는 느낌 */
+.product-mega-wrap .mega-grid .col {
+  scrollbar-color: #fff transparent;  /* Firefox */
+}
+
+.product-mega-wrap .mega-grid .col::-webkit-scrollbar-track {
+  background: transparent;            /* WebKit */
+}
+
+.product-mega-wrap .mega-grid .col .menu-item,
+.product-mega-wrap .mega-grid .col .menu-link,
+.product-mega-wrap .mega-grid .col .menu-item > div {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+
+:root{
+  --depth-bg: #0e2a5a;          /* 기본 컬럼 배경 */
+  --depth-bg-ancestor: #12346b; /* 상위(부모/조상) 컬럼 배경 */
+  --depth-bg-selected: #173B7A; /* 현재 선택 컬럼 배경 */
+  --accent: #ff6a00;            /* 포인트 바 */
+}
+
+
+/* 항목 강조(은은하게) */
+.menu-link{ position: relative; display:block; padding:10px 12px; }
+.menu-link.is-active{
+  /*background: rgba(255,255,255,.06);*/
+  color:#fff; font-weight:700; border-radius:4px;
+}
+.menu-link.is-active::before{
+  content:""; position:absolute; left:0; top:0; bottom:0; width:3px;
+  background:var(--accent); border-radius:2px 0 0 2px;
+}
+
+/* 세로만 스크롤, 바는 숨김 */
+[id^="col-"]{
+  overflow-y:auto; overflow-x:hidden; min-width:0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none !important; -ms-overflow-style: none !important;
+}
+[id^="col-"]::-webkit-scrollbar{ width:0; height:0; display:none; }
+
+
+/* 브랜드/제품 패널 래퍼와 내부 컬럼(필요한 곳에 적용) */
+#brands-items,
+#brands-items .mega-grid .col,
+#product-items,
+#product-items .mega-grid .col {
+  overscroll-behavior: contain;      /* 스크롤 체이닝 방지 */
+  /* 가로 영향 차단이 필요하면 아래도 함께 */
+  overscroll-behavior-y: contain;
+}
+
+/* 세로만 스크롤 + 바 숨김을 쓰고 계시면 그대로 유지 */
+#brands-items .mega-grid .col,
+#product-items .mega-grid .col {
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-width: 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+#brands-items .mega-grid .col::-webkit-scrollbar,
+#product-items .mega-grid .col::-webkit-scrollbar {
+  width: 0; height: 0; display: none;
+}
 
 }
+
+
+
