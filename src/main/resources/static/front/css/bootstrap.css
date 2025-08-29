@@ -6,6 +6,10 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
 :root {
+	--depth-bg: #0e2a5a;       
+  	--depth-bg-ancestor: #12346b; 
+  	--depth-bg-selected: #173B7A;
+  	--accent: #ff6a00;           
 	--bs-blue: #0d6efd;
 	--bs-indigo: #6610f2;
 	--bs-purple: #6f42c1;
@@ -73,7 +77,25 @@
 	--bs-link-hover-color: #0a58ca;
 	--bs-code-color: #d63384;
 	--bs-highlight-bg: #fff3cd;
+	 --menu-bg: #0e4661;
+    --menu-bg-m: #fff;
+    --header-h: 56px;
+    --tabs-w: 220px; 
+    --panel-h: 100vh; 
+	--clip-top: 0px;
+	--clip-bot: 0px;
+	--min-h: 220px;
+	--sub-gap: 12px;
+	--menu-hover-bg: rgba(210, 228, 245, .95);
+ 	--menu-hover-fg: #2b6ea3;
+ 	--submenu-h: clamp(220px, 22vh, 320px);
+ 	--m-header-h: 100px;
+    --m-header-h-compact: 75px;
+    --m-logo-h: 100px;
+    --m-logo-h-compact: 70px;
+    --m-ease: cubic-bezier(.2,.65,.2,1);
 }
+
 
 *,
 *::before,
@@ -645,17 +667,20 @@ progress {
 
 @media (min-width: 576px) {
 	.container-sm, .container {
-		max-width: 540px;
+		max-width: 100%;
+		padding: 0 20px;
 	}
 }
 @media (min-width: 768px) {
 	.container-md, .container-sm, .container {
-		max-width: 720px;
+		max-width: 100%;
+		padding: 0 40px;
 	}
 }
 @media (min-width: 992px) {
 	.container-lg, .container-md, .container-sm, .container {
-		max-width: 960px;
+		max-width: 100%;
+		padding: 0 40px;
 	}
 }
 @media (min-width: 1200px) {
@@ -11885,3 +11910,4 @@ textarea.form-control-lg {
 		display: none !important;
 	}
 }
+

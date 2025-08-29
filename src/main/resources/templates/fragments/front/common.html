@@ -4,7 +4,8 @@
 
 <head th:fragment="headSrc(title)">
 
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8"  />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="author" content="" />
 <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Poppins:300,400,500,600,700|PT+Serif:400,400i&display=swap" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="/front/css/bootstrap.css" type="text/css" />
@@ -58,7 +59,7 @@
                                 </svg>
 							</div>
 							<nav class="primary-menu">
-								<div th:if="${isMobile}">
+								<div th:if="${isMobile}" class="nav is-mobile">
 									<ul class="menu-container">
 										<li class="menu-item"><a class="menu-link" href="/about">
 												<div>회사 소개</div>
@@ -130,8 +131,8 @@
 										</a></li>
 									</ul>
 								</div>
-								<div th:unless="${isMobile}">
-        <p th:text="'isMobile 값: ' + ${isMobile}"></p>
+								<div th:unless="${isMobile}" class="nav is-desktop">
+       								
 									<ul class="menu-container">
 										<li class="menu-item"><a class="menu-link" href="/about">
 												<div>회사 소개</div>
@@ -173,7 +174,7 @@
 					</div>
 
 
-					<div th:unless="${isMobile}">
+					<div th:unless="${isMobile}" class="nav is-desktop">
 						<div class="product-mega-wrap debug-open" id="product-items">
 							<div class="inner">
 								<div class="mega-grid">
@@ -542,7 +543,164 @@ document.addEventListener('DOMContentLoaded', () => {
   })();
 });
 </script>
-	</th:block>
+
+
+
+<script>
+(function () {
+  const MOBILE_MAX = 991.98;      // 모바일 한정
+  const THRESHOLD  = 0;           // 이 값 초과 시 sticky+shrink
+  const header     = document.getElementById('header');
+  const headerWrap = document.getElementById('header-wrap');
+  if (!header || !headerWrap) return;
+
+  // 1) 콘텐츠 점프 방지용 스페이서 (한 번만 생성)
+  let spacer = document.querySelector('.header-spacer');
+  if (!spacer) {
+    spacer = document.createElement('div');
+    spacer.className = 'header-spacer';
+    header.after(spacer);
+  }
+
+  // 2) 축소 트리거용 센티넬 (헤더 바로 아래 1px 지점)
+  let sentinel = document.getElementById('shrink-sentinel');
+  if (!sentinel) {
+    sentinel = document.createElement('div');
+    sentinel.id = 'shrink-sentinel';
+    sentinel.style.position = 'absolute';
+    sentinel.style.top = '1px';
+    sentinel.style.height = '1px';
+    sentinel.style.width = '1px';
+    header.after(sentinel);
+  }
+
+  const isMobile = () => window.innerWidth <= MOBILE_MAX;
+
+  function syncSpacer() {
+    // sticky일 때만 헤더 실제 높이만큼 확보
+    const h = header.classList.contains('sticky-header') ? headerWrap.offsetHeight : 0;
+    spacer.style.height = h + 'px';
+  }
+
+  function enterSticky(withShrink){
+	  if (!header.classList.contains('sticky-header')) {
+	    header.classList.add('sticky-header');
+	    header.classList.add('sticky-enter');
+	    header.offsetHeight; // reflow
+	    header.classList.remove('sticky-enter');
+	  }
+	  const on = !!withShrink;
+	  // ⬇ 헤더와 바디 둘 다 토글 (예전 CSS와의 호환)
+	  header.classList.toggle('sticky-header-shrink', on);
+	  document.body.classList.toggle('header-shrink', on);
+
+	  syncSpacer();
+	}
+
+
+  function leaveSticky(){
+	  header.classList.remove('sticky-header', 'sticky-header-shrink');
+	  document.body.classList.remove('header-shrink');
+	  syncSpacer();
+	}
+
+  function apply() {
+    if (!isMobile()) {
+      // PC로 돌아오면 정리
+      leaveSticky();
+      return;
+    }
+    const y = window.scrollY || document.documentElement.scrollTop || 0;
+    const on = y > THRESHOLD;
+    if (on) enterSticky(true);
+    else    leaveSticky();
+  }
+
+  // IntersectionObserver: 최상단이면 확장, 벗어나면 축소
+  if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver(([e]) => {
+    if (header.classList.contains('sticky-header')) {
+      const on = !e.isIntersecting;
+      header.classList.toggle('sticky-header-shrink', on);
+      document.body.classList.toggle('header-shrink', on);
+      syncSpacer();
+    }
+  }, { rootMargin: "-1px 0px 0px 0px", threshold: 0 });
+  io.observe(sentinel);
+}
+
+  // 스크롤/리사이즈 처리 (RAF 스로틀)
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { apply(); ticking = false; });
+  }
+
+  document.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', apply);
+  document.addEventListener('DOMContentLoaded', apply);
+  apply(); // 초기 1회
+})();
+</script>
+
+<script>
+(function () {
+  var NAME='vw', AGE=60*60*24*7, DESKTOP_MIN=1025;
+
+  function set(name,val){ document.cookie = name+'='+val+'; Max-Age='+AGE+'; Path=/; SameSite=Lax'; }
+  function get(name){
+    var m = document.cookie.split('; ').find(function(s){ return s.indexOf(name+'=')===0; });
+    return m ? m.split('=')[1] : null;
+  }
+  function curWidth(){ // iPad 포함 정확도↑
+    return Math.round((window.visualViewport && window.visualViewport.width) ||
+                      window.innerWidth || document.documentElement.clientWidth || 0);
+  }
+  function bucket(w){ return w >= DESKTOP_MIN ? 'D' : 'M'; }
+
+  function apply(w){
+    set(NAME, w);
+    var b = bucket(w);
+    var prevB = sessionStorage.getItem('vw_bucket');
+    if (prevB && prevB !== b && !sessionStorage.getItem('vw_switch')) {
+      sessionStorage.setItem('vw_switch','1');
+      sessionStorage.setItem('vw_bucket', b);
+      location.reload();
+      return;
+    }
+    sessionStorage.setItem('vw_bucket', b);
+  }
+
+  // 초기 1회 (첫 방문이면 쿠키 심고 자동 1회 리로드)
+  var prev = parseInt(get(NAME)||'-1',10), now = curWidth();
+  if (isNaN(prev) || prev < 0) {
+    set(NAME, now);
+    if (!sessionStorage.getItem('vw_init')) {
+      sessionStorage.setItem('vw_init','1'); location.reload(); return;
+    }
+  } else if (prev !== now) {
+    apply(now);
+  } else {
+    // 동일이면 버킷만 보관
+    sessionStorage.setItem('vw_bucket', bucket(now));
+  }
+
+  // 리사이즈/기기 전환
+  var t;
+  window.addEventListener('resize', function(){
+    clearTimeout(t);
+    t = setTimeout(function(){ apply(curWidth()); }, 120);
+  });
+})();
+</script>
+
+
+
+
+
+
+</th:block>
 </body>
 
 </html>
