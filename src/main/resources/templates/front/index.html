@@ -6,11 +6,9 @@
 
 <body class="stretched">
 	<div id="wrapper" class="clearfix">
-		<th:block
-			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+		<th:block th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
 
-		<section id="slider"
-			class="slider-element slider-parallax swiper_wrapper vh-75">
+		<section id="slider" class="slider-element slider-parallax swiper_wrapper vh-75">
 			<div class="slider-inner">
 
 				<div class="swiper-container swiper-parent">
@@ -19,48 +17,36 @@
 							<div class="container">
 								<div class="slider-caption banner-flex">
 									<div data-animate="fadeInUp" th:utext="${b.subject}"></div>
-									<div data-animate="fadeInUp" data-delay="200"
-										th:utext="${b.content}"></div>
+									<div data-animate="fadeInUp" data-delay="200" th:utext="${b.content}"></div>
 								</div>
 							</div>
 
 
 							<!-- 데스크톱용 -->
-							<div class="swiper-slide-bg is-desktop"
-								th:if="${!#strings.isEmpty(b.webroad)}">
+							<div class="swiper-slide-bg is-desktop" th:if="${!#strings.isEmpty(b.webroad)}">
 
 								<!-- 비디오(.mp4) -->
-								<video
-									th:if="${#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4')}"
-									autoplay muted loop playsinline
-									style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+								<video th:if="${#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4')}" autoplay muted loop playsinline style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
 									<source th:src="@{${b.webroad}}" type="video/webm" />
 								</video>
 
 								<!-- 이미지(그 외) -->
-								<div
-									th:if="${!(#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4'))}"
-									th:style="'position:absolute; inset:0; background-image:url(' + @{${b.webroad}} + '); background-position:center top; background-size:cover;'">
-								</div>
+								<div th:if="${!(#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4'))}"
+									th:style="'position:absolute; inset:0; background-image:url(' + @{${b.webroad}} + '); background-position:center top; background-size:cover;'"></div>
 							</div>
 
 							<!-- 모바일용 -->
-							<div class="swiper-slide-bg is-mobile"
-								th:if="${!#strings.isEmpty(b.mobileroad)}">
+							<div class="swiper-slide-bg is-mobile" th:if="${!#strings.isEmpty(b.mobileroad)}">
 
 								<!-- 비디오(.mp4) -->
-								<video
-									th:if="${#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4')}"
-									autoplay muted loop playsinline
+								<video th:if="${#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4')}" autoplay muted loop playsinline
 									style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
 									<source th:src="@{${b.mobileroad}}" type="video/webm" />
 								</video>
 
 								<!-- 이미지(그 외) -->
-								<div
-									th:if="${!(#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4'))}"
-									th:style="'position:absolute; inset:0; background-image:url(' + @{${b.mobileroad}} + '); background-position:center top; background-size:cover;'">
-								</div>
+								<div th:if="${!(#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4'))}"
+									th:style="'position:absolute; inset:0; background-image:url(' + @{${b.mobileroad}} + '); background-position:center top; background-size:cover;'"></div>
 							</div>
 						</div>
 					</div>
@@ -89,13 +75,10 @@
 						<div class="row align-items-center">
 							<div class="col-12 col-lg">
 								<h3 th:text="${ev.subject}">EVENT LINE BANNER SECTION</h3>
-								<span th:text="${ev.content}">이벤트 혹은 뉴스 등 이벤트 배너로 활용할 수
-									있는 공간입니다.</span>
+								<span th:text="${ev.content}">이벤트 혹은 뉴스 등 이벤트 배너로 활용할 수 있는 공간입니다.</span>
 							</div>
 							<div class="col-12 col-lg-auto mt-4 mt-lg-0">
-								<a th:href="@{${ev.link}}"
-									class="button button-rounded button-reveal button-large button-dirtygreen"><i
-									class="icon-arrow-right"></i><span>살펴보기</span></a>
+								<a th:href="@{${ev.link}}" class="button button-rounded button-reveal button-large button-dirtygreen"><i class="icon-arrow-right"></i><span>살펴보기</span></a>
 							</div>
 						</div>
 					</div>
@@ -108,21 +91,17 @@
 					<div class="history-wrap" id="business-history">
 
 						<!-- 비디오 -->
-						<video autoplay muted loop playsinline
-							style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
+						<video autoplay muted loop playsinline style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
 							<source src="/front/images/history-content.mp4" type="video/webm">
 						</video>
 
 						<!-- 캡션 -->
 						<div class="history-caption">
 							<ul>
-								<li>
-									<i class="history-graphic"></i> 
-								  	<span>도전의 여정</span>
+								<li><i class="history-graphic"></i> <span>도전의 여정</span>
 									<h3>
 										새로운 도전과<br>변화의 시작
-									</h3> <i class="history-arrow"></i>
-								</li>
+									</h3> <i class="history-arrow"></i></li>
 								<li><i class="history-graphic"></i> <span>오늘의 성과</span>
 									<h3>
 										지속적인 성장과<br>끊임없는 노력
@@ -147,61 +126,35 @@
 
 
 
+				<section class="section clearfix bg-white section-line" id="productsItems">
+					<div class="pro-container">
+						<header class="pro-head">
+							<p class="eyebrow">PRODUCTS</p>
+							<h2>BIOTEAT 라인업</h2>
+							<p class="sub">핵심 공정의 안정성과 효율을 높여 주는 솔루션을 한눈에.</p>
+						</header>
 
-				<div class="section clearfix bg-white">
-
-					<div class="border-top-0 m-0">
-						<div class="container text-center">
-
-							<div class="heading-block center">
-								<h2>PRODUCTS</h2>
-								<span>자사의 브랜드 BIOTEAT 제품은<br>핵심 공정의 안정성과 효율을 높이는
-									솔루션을 합니다.
-								</span>
-							</div>
-						</div>
-					</div>
-					<div class="container">
-						<div id="oc-portfolio"
-							class="owl-carousel portfolio-carousel carousel-widget"
-							data-pagi="false" data-items-xs="1" data-items-sm="2"
-							data-items-md="3" data-items-lg="4">
-
-							<div class="portfolio-item" th:each="product:${product}">
-								<div class="portfolio-image">
-									<a href="#"> <img th:src="${product.firstImageRoad}"
-										alt="PRODUCT">
-									</a>
-									<div class="bg-overlay">
-										<div class="bg-overlay-content dark"
-											data-hover-animate="fadeIn" data-hover-speed="350">
-											<a th:href="@{${product.firstImageRoad}}"
-												class="overlay-trigger-icon bg-light text-dark"
-												data-hover-animate="fadeInDownSmall"
-												data-hover-animate-out="fadeInUpSmall"
-												data-hover-speed="350" data-lightbox="image"><i
-												class="icon-line-plus"></i></a> <a
-												th:href="@{|/productDetail/${product.id}|}"
-												class="overlay-trigger-icon bg-light text-dark"
-												data-hover-animate="fadeInDownSmall"
-												data-hover-animate-out="fadeInUpSmall"
-												data-hover-speed="350"><i class="icon-line-ellipsis"></i></a>
-										</div>
-										<div class="bg-overlay-bg dark" data-hover-animate="fadeIn"
-											data-hover-speed="350"></div>
+						<!-- 모바일: 가로 스와이프 / 데스크탑: 그리드 -->
+						<div class="portfolio-item" th:each="product:${product}">
+							<div class="portfolio-image">
+								<a href="#"> <img th:src="${product.firstImageRoad}" alt="PRODUCT">
+								</a>
+								<div class="bg-overlay">
+									<div class="bg-overlay-content dark" data-hover-animate="fadeIn" data-hover-speed="350">
+										<a th:href="@{${product.firstImageRoad}}" class="overlay-trigger-icon bg-light text-dark" data-hover-animate="fadeInDownSmall" data-hover-animate-out="fadeInUpSmall" data-hover-speed="350"
+											data-lightbox="image"><i class="icon-line-plus"></i></a> <a th:href="@{|/productDetail/${product.id}|}" class="overlay-trigger-icon bg-light text-dark" data-hover-animate="fadeInDownSmall"
+											data-hover-animate-out="fadeInUpSmall" data-hover-speed="350"><i class="icon-line-ellipsis"></i></a>
 									</div>
-								</div>
-								<div class="portfolio-desc">
-									<h3>
-										<a href="javascript:void(0);"
-											th:text="${product.smallSort.name}">Sorts of Product</a>
-									</h3>
+									<div class="bg-overlay-bg dark" data-hover-animate="fadeIn" data-hover-speed="350"></div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="line"></div>
-				</div>
+				</section>
+
+
+
+
+
 				<div class="container clearfix">
 					<div class="border-top-0 m-0">
 						<div class="container text-center">
@@ -220,18 +173,13 @@
 										<div class="col-md-12">
 											<div class="entry-title title-xs">
 												<h2>
-													<a th:href="@{/notice#faq-} + ${i.id}"
-														th:text="${i.subject}"
-														th:style="${i.sign == true ? 'color : red;': 'color:black;'}">이곳은
-														공지사항의 제목이 들어가는 곳 입니다...</a>
+													<a th:href="@{/notice#faq-} + ${i.id}" th:text="${i.subject}" th:style="${i.sign == true ? 'color : red;': 'color:black;'}">이곳은 공지사항의 제목이 들어가는 곳 입니다...</a>
 												</h2>
 											</div>
 											<div class="entry-meta">
 												<ul>
-													<li><a th:href="@{/notice#faq-} + ${i.id}"><i
-															class="icon-time"></i> 공지일 : [[${i.date}]]</a></li>
-													<li><a th:href="@{/notice#faq-} + ${i.id}"> #
-															공지사항주제 : [[${i.noticeSubject.text}]]</a></li>
+													<li><a th:href="@{/notice#faq-} + ${i.id}"><i class="icon-time"></i> 공지일 : [[${i.date}]]</a></li>
+													<li><a th:href="@{/notice#faq-} + ${i.id}"> # 공지사항주제 : [[${i.noticeSubject.text}]]</a></li>
 												</ul>
 											</div>
 
@@ -241,9 +189,7 @@
 							</div>
 
 							<div class="d-flex justify-content-end m-t-5">
-								<a href="/notice"
-									class="button button-rounded button-reveal button-small button-border text-end"><span>더
-										보기 &rarr;</span></a>
+								<a href="/notice" class="button button-rounded button-reveal button-small button-border text-end"><span>더 보기 &rarr;</span></a>
 							</div>
 
 						</div>
@@ -256,14 +202,12 @@
 										<div class="col-md-12">
 											<div class="entry-title title-xs">
 												<h2>
-													<a th:href="@{${f.fileroad}}" download
-														th:text="${f.filesubject}">이곳은 카탈로그의 제목이 들어가는 곳 입니다.</a>
+													<a th:href="@{${f.fileroad}}" download th:text="${f.filesubject}">이곳은 카탈로그의 제목이 들어가는 곳 입니다.</a>
 												</h2>
 											</div>
 											<div class="entry-meta">
 												<ul>
-													<li><a href="#"><i class="icon-time"></i> 업로드 시간 :
-															[[${f.filedate}]]</a></li>
+													<li><a href="#"><i class="icon-time"></i> 업로드 시간 : [[${f.filedate}]]</a></li>
 													<li><a href="#"># 파일 확장자 : [[${f.fileextension}]]</a></li>
 												</ul>
 											</div>
@@ -274,9 +218,7 @@
 							</div>
 
 							<div class="d-flex justify-content-end m-t-5">
-								<a href="/references"
-									class="button button-rounded button-reveal button-small button-border text-end"><span>더
-										보기 &rarr;</span></a>
+								<a href="/references" class="button button-rounded button-reveal button-small button-border text-end"><span>더 보기 &rarr;</span></a>
 							</div>
 						</div>
 					</div>
@@ -289,57 +231,42 @@
 
 							<div class="heading-block center">
 								<h2>PARTNERS</h2>
-								<span>유명 브랜드를 수요 공급하고 있으며<br>검증된 제품을 안정적인 공급망을 통하여
-									제공해드립니다.
+								<span>유명 브랜드를 수요 공급하고 있으며<br>검증된 제품을 안정적인 공급망을 통하여 제공해드립니다.
 								</span>
 							</div>
 						</div>
 					</div>
-					<div id="oc-clients"
-						class="owl-carousel owl-carousel-full image-carousel carousel-widget"
-						data-margin="30" data-loop="true" data-nav="true"
-						data-autoplay="5000" data-pagi="false" data-items-xs="3"
-						data-items-sm="4" data-items-md="5" data-items-lg="6"
+					<div id="oc-clients" data-margin="30" data-loop="true" data-nav="true" data-autoplay="5000" data-pagi="false" data-items-xs="3" data-items-sm="4" data-items-md="5" data-items-lg="6"
 						data-items-xl="8" style="padding: 20px 0;">
 						<div class="oc-item">
-							<a href="#"><img src="/front/images/clients/1.png"
-								alt="Clients"></a>
+							<a href="#"><img src="/front/images/clients/1.png" alt="Clients"></a>
 						</div>
 						<div class="oc-item">
-							<a href="#"><img src="/front/images/clients/2.png"
-								alt="Clients"></a>
+							<a href="#"><img src="/front/images/clients/2.png" alt="Clients"></a>
 						</div>
 						<div class="oc-item">
-							<a href="#"><img src="/front/images/clients/3.png"
-								alt="Clients"></a>
+							<a href="#"><img src="/front/images/clients/3.png" alt="Clients"></a>
 						</div>
 						<div class="oc-item">
-							<a href="#"><img src="/front/images/clients/4.png"
-								alt="Clients"></a>
+							<a href="#"><img src="/front/images/clients/4.png" alt="Clients"></a>
 						</div>
 						<div class="oc-item">
-							<a href="#"><img src="/front/images/clients/5.png"
-								alt="Clients"></a>
+							<a href="#"><img src="/front/images/clients/5.png" alt="Clients"></a>
 						</div>
 						<div class="oc-item">
-							<a href="#"><img src="/front/images/clients/6.png"
-								alt="Clients"></a>
+							<a href="#"><img src="/front/images/clients/6.png" alt="Clients"></a>
 						</div>
 						<div class="oc-item">
-							<a href="#"><img src="/front/images/clients/7.png"
-								alt="Clients"></a>
+							<a href="#"><img src="/front/images/clients/7.png" alt="Clients"></a>
 						</div>
 						<div class="oc-item">
-							<a href="#"><img src="/front/images/clients/8.png"
-								alt="Clients"></a>
+							<a href="#"><img src="/front/images/clients/8.png" alt="Clients"></a>
 						</div>
 						<div class="oc-item">
-							<a href="#"><img src="/front/images/clients/9.png"
-								alt="Clients"></a>
+							<a href="#"><img src="/front/images/clients/9.png" alt="Clients"></a>
 						</div>
 						<div class="oc-item">
-							<a href="#"><img src="/front/images/clients/10.png"
-								alt="Clients"></a>
+							<a href="#"><img src="/front/images/clients/10.png" alt="Clients"></a>
 						</div>
 
 					</div>
@@ -353,14 +280,11 @@
 	</div>
 
 	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
-	<div id="modal-switch" tabindex="-1" role="dialog"
-		aria-labelledby="modal-switch-label" class="modal"
-		style="display: none;">
+	<div id="modal-switch" tabindex="-1" role="dialog" aria-labelledby="modal-switch-label" class="modal" style="display: none;">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" data-dismiss="modal" class="close"
-						onclick="closeModal();">
+					<button type="button" data-dismiss="modal" class="close" onclick="closeModal();">
 						<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
 					</button>
 				</div>
@@ -369,24 +293,18 @@
 					<div class="col-md-11" style="margin: 0 auto;">
 						<div class="col-sm-12 nopadding">
 							<div class="sec-title-container less-padding-4 text-left">
-								<h5 class="font-weight-4 line-height-4 ce-title-top-text">Site
-									Re-Modeling</h5>
-								<h2 class="font-weight-6 line-height-5"
-									style="letter-spacing: -3px;">Bion Life Science 의 사이트의
-									리모델링 기간 입니다.</h2>
+								<h5 class="font-weight-4 line-height-4 ce-title-top-text">Site Re-Modeling</h5>
+								<h2 class="font-weight-6 line-height-5" style="letter-spacing: -3px;">Bion Life Science 의 사이트의 리모델링 기간 입니다.</h2>
 								<div class="ce-title-line align-left"></div>
 							</div>
 						</div>
 						<div class="clearfix"></div>
 						<p>테스트</p>
-						<p>고객님들에게 더 나은 서비스와 편리함을 제공하기 위하여 Bion Life Science 웹사이트의
-							리모델링을 진행하고 있습니다.</p>
+						<p>고객님들에게 더 나은 서비스와 편리함을 제공하기 위하여 Bion Life Science 웹사이트의 리모델링을 진행하고 있습니다.</p>
 						<p>더 나은 모습으로 곧 돌아오겠습니다. 항상 많은 관심 부탁드립니다.</p>
 						<p>
 						<address class="mb-0">
-							# ADDRESS : 경기도 남양주시 순화궁로 282, 10층<br> # TEL : 031-572-2272<br>
-							# FAX : 031-572-2273<br> # E-MAIL :
-							bionlifescience@hanmail.net
+							# ADDRESS : 경기도 남양주시 순화궁로 282, 10층<br> # TEL : 031-572-2272<br> # FAX : 031-572-2273<br> # E-MAIL : bionlifescience@hanmail.net
 						</address>
 						</p>
 					</div>
@@ -416,6 +334,27 @@
 			});
 		});
 	</script>
+
+	<script>
+/* 스크롤 들어올 때 페이드업 */
+(function(){
+  if(!('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver((ents)=>{
+    ents.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:.2});
+  document.querySelectorAll('.pro-card').forEach(c=>{
+    c.style.opacity=.001; c.style.transform='translateY(10px)';
+    c.style.transition='opacity .5s cubic-bezier(.2,.65,.2,1), transform .5s cubic-bezier(.2,.65,.2,1)';
+    io.observe(c);
+  });
+  const css = document.createElement('style');
+  css.textContent = '.pro-card.in{opacity:1 !important; transform:none !important;}';
+  document.head.appendChild(css);
+})();
+</script>
+
 
 </body>
 

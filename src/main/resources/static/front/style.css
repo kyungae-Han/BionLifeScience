@@ -18808,6 +18808,7 @@ label.checkbox {
     gap: 12px 12px;
     height: auto;   /* 데스크탑처럼 꽉 채우지 않음 */
     width: 100%;
+    padding: 0 17px;
   }
   
   @media (max-width: 575.98px) {
@@ -19096,3 +19097,5 @@ nav.primary-menu:has(.menu-item.brand:hover) ~ #brands-items{
 
 
 
+
+/*main product 레이아웃 수정*/
