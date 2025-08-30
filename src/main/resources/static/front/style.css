@@ -3586,19 +3586,18 @@ html[xmlns] .slider-wrap {
   #header.sticky-header.sticky-header-shrink #primary-menu-trigger,
   #header.sticky-header.sticky-header-shrink #top-search,
   #header.sticky-header.sticky-header-shrink #languages,
-   #header.sticky-header.sticky-header-shrink .svg-trigger,
   #header.sticky-header.sticky-header-shrink .header-extras{
     transform: scale(.92);
     transform-origin: right center;
     transition: transform .3s var(--m-ease);
   }
-
+  
+  
   /* 스페이서(점프 방지) */
   .header-spacer { transition: height .35s var(--m-ease); }
   
   .header-row {
   	justify-content: space-between;
-  	padding: 0 25px;
   }
   
   
@@ -3618,6 +3617,7 @@ html[xmlns] .slider-wrap {
   /* margin-right: auto; */
   max-height: 100%;
   margin: 0 !important;
+  padding-left: 25px;
 }
 
 #logo a {
@@ -3794,7 +3794,7 @@ body:not(.top-search-open) .top-search-parent #primary-menu-trigger {
   -ms-user-select: none;
   user-select: none;
   position: absolute;
-  right: 15px;
+  right: 0;
 }
 
 .svg-trigger path {
@@ -3839,6 +3839,7 @@ body:not(.top-search-open) .top-search-parent #primary-menu-trigger {
   list-style: none;
   margin: 0;
   width: 100%;
+  padding: 0 25px;
 }
 
 .menu-item {
@@ -7383,8 +7384,9 @@ body:not(.device-touch) .grid-container {
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
-/* Portfolio - Items
------------------------------------------------------------------*/
+/* 
+Portfolio - Items
+-----------------------------------------------------------------
 
 .portfolio,
 .portfolio-item {
@@ -7428,8 +7430,8 @@ body:not(.device-touch) .portfolio {
   }
 }
 
-/* Portfolio - Item Title
------------------------------------------------------------------*/
+Portfolio - Item Title
+-----------------------------------------------------------------
 
 .portfolio-desc {
   position: relative;
@@ -7546,10 +7548,10 @@ body:not(.device-touch) .portfolio {
 .col-md-9 .portfolio-desc span {
   font-size: 0.875rem;
 }
-
+ */
 /* Portfolio - Parallax
 -----------------------------------------------------------------*/
-
+/* 
 .portfolio-parallax .portfolio-image {
   height: 60vh;
   background-attachment: fixed;
@@ -7560,16 +7562,11 @@ body:not(.device-touch) .portfolio {
     height: 500px;
   }
 }
-
-/* Portfolio Single
------------------------------------------------------------------*/
-
-.portfolio-single {
-}
+ */
 
 /* Portfolio Single - Image
 -----------------------------------------------------------------*/
-
+/* 
 .portfolio-single-image > a,
 .portfolio-single-image .slide a,
 .portfolio-single-image img,
@@ -7589,7 +7586,7 @@ body:not(.device-touch) .portfolio {
 .portfolio-single-video {
   height: auto !important;
 }
-
+ */
 /* Masonry Thumbs
 -----------------------------------------------------------------*/
 
@@ -10184,18 +10181,18 @@ body:not(.device-touch) .button.button-full strong {
 }
 
 .button-dirtygreen:not(.button-border) {
-  background-color: #fe5000 !important;
+  background-color: var(--bs-orange) !important;
 }
 .button-3d.button-dirtygreen:hover,
 .button-reveal.button-dirtygreen:hover,
 .button-border.button-dirtygreen:hover,
 .button-border.button-dirtygreen.button-fill::before {
-  background-color: #fe5000 !important;
+  background-color: var(--bs-orange) !important;
 }
 
 .button-border.button-dirtygreen {
-  color: #fe5000;;
-  border-color: #fe5000;;
+  color: var(--bs-orange);
+  border-color: var(--bs-orange);
 }
 
 .button-blue:not(.button-border) {
@@ -14375,6 +14372,13 @@ blockquote.float-end {
   position: relative;
   top: 1px;
 }
+
+/* ← 전역이 아니라 제품 섹션에만 적용 */
+#productsItems .owl-carousel,
+#productsItems .carousel-widget{ display:block !important; visibility:visible !important; }
+#productsItems .owl-stage-outer,
+#productsItems .owl-stage{ width:auto !important; transform:none !important; }
+
 
 /* ----------------------------------------------------------------
 	Flip Cards
@@ -18560,7 +18564,7 @@ label.checkbox {
 /* 섹션/랩 높이 통일: 둘 다 860px */
 .history-section {
   position: relative;
-  height: 860px;           /* max-height 대신 고정 높이 */
+  /*height: 860px;*/           /* max-height 대신 고정 높이 */
   width: 100%;
   margin: 0 auto;
   overflow: hidden;
@@ -18908,7 +18912,7 @@ label.checkbox {
 	  z-index:1100;
 	}
 	
-	.product-mega-wrap .inner{
+.product-mega-wrap .inner{
 		width: 100%;
 		max-width: 1520px;
 		position: relative;
@@ -19096,6 +19100,222 @@ nav.primary-menu:has(.menu-item.brand:hover) ~ #brands-items{
 }
 
 
-
-
 /*main product 레이아웃 수정*/
+
+/* 공통 */
+:root {
+  --pro-radius: var(--bs-border-radius-xl, 1rem);
+  --pro-shadow: 0 10px 30px rgba(var(--bs-black-rgb, 0,0,0), .08);
+  --pro-shadow-lg: 0 18px 50px rgba(var(--bs-black-rgb, 0,0,0), .14);
+}
+
+
+/* 컨테이너 */
+#productsItems .pro-container{ width:min(1240px, 92%); margin:0 auto; }
+
+/* 헤더 */
+#productsItems .pro-head{ text-align:left; margin: clamp(8px,3vw,16px) 0 12px; }
+#productsItems .pro-head .eyebrow{ font-weight:700; color:var(--bs-blue,#0d6efd); letter-spacing:.12em; }
+#productsItems .pro-head h2{ font-weight:800; color:var(--pro-ink); font-size: clamp(22px, 4.8vw, 38px); margin:.25rem 0 .5rem; }
+#productsItems .pro-head .sub{ color:var(--pro-muted); }
+
+/* 슬라이더 */
+.pro-slider{ position:relative; }
+.pro-track{
+  display:flex;
+  gap: var(--pro-gap);
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  padding: 8px 0 36px;   /* 아래 여백: 프로그레스 자리 */
+}
+.pro-track::-webkit-scrollbar{ display:none; }
+
+/* 카드 */
+.pro-track .portfolio-item{
+  scroll-snap-align:start;
+  flex: 0 0 clamp(260px, 28vw, 320px); /* 카드 폭 */
+  background:var(--pro-card-bg);
+  border-radius:var(--pro-radius);
+  overflow:hidden;
+  box-shadow:var(--pro-shadow);
+  transition: transform .35s var(--m-ease, cubic-bezier(.2,.65,.2,1)), box-shadow .35s var(--m-ease, cubic-bezier(.2,.65,.2,1));
+}
+.pro-track .portfolio-item:hover{ transform:translateY(-3px); box-shadow:var(--pro-shadow-lg); }
+
+/* 이미지 영역 */
+.pro-track .portfolio-image{ position:relative; aspect-ratio:3/3; overflow:hidden; }
+.pro-track a {color: var(--bs-gray-900);} 
+
+/*비율조정*/
+@media (max-width:1024.98px){ 
+	.pro-track .portfolio-image{ aspect-ratio:16/16; }
+}
+
+.pro-track .portfolio-image img{
+  width:100%; height:100%; object-fit:cover; display:block; contain:size;
+  transform:scale(1.02); transition:transform .6s var(--m-ease, cubic-bezier(.2,.65,.2,1));
+}
+
+
+.pro-track .portfolio-item:hover .portfolio-image img{ transform:scale(1.06); }
+
+/* 캡션 */
+.pro-track .portfolio-desc{ padding:14px 16px 18px; background: var(--bs-gray-200);}
+.pro-track .portfolio-desc h3{ margin:0; color:var(--pro-ink); font-weight:800; font-size: clamp(15px, 3.8vw, 18px); }
+
+/* 화살표 */
+#productsItems .pro-controls{
+  position: static !important;  /* absolute 제거 */
+  inset: auto !important;
+  display:flex; align-items:center; justify-content:center; gap:18px;
+  pointer-events:auto;           /* 컨트롤 영역 클릭 가능 */
+  margin: 0 !important;          /* 위로 밀리던 margin 제거 */
+}
+
+/* 화살표는 불투명하게 확실히 */
+#productsItems .pro-arrow{
+  background-color: var(--bs-orange, #fe5000) !important;
+  color:#fff; opacity:1 !important;
+  padding: 0 0 3px;
+  filter:none; mix-blend-mode: normal;
+  cursor: pointer;
+}
+
+.pro-arrow{
+  width:44px; height:44px; border-radius:999px; background: var(--depth-bg-selected);
+  border:1px solid rgba(0,0,0,.08);
+  display:grid; place-items:center; font-size:22px; line-height:1; color:#fff;
+  box-shadow:0 6px 20px rgba(0,0,0,.1);
+  pointer-events:auto; cursor:pointer;
+  transition: transform .2s, background-color .2s, color .2s, box-shadow .2s;
+}
+
+#productsItems .pro-arrow:hover{
+  background-color:#fe5000 !important;
+}
+
+
+
+
+.pro-arrow:disabled{ opacity:.35; cursor:default; }
+.pro-arrow:hover:not(:disabled){ transform: translateY(-1px); }
+
+/* 프로그레스 바 */
+.pro-progress{
+  width:min(560px, 60%); height:2px; background:rgba(0,0,0,.12);
+  border-radius:999px; position:relative; overflow:hidden;
+}
+.pro-progress .pro-bar{
+  position:absolute; left:0; top:0; bottom:0; width:0%;
+  background:#111; transition:width .25s;
+}
+
+/* 슬라이더를 2행 그리드: [트랙] + [컨트롤] */
+#productsItems .pro-slider{
+  display: grid;
+  grid-template-rows: auto auto;
+  row-gap: 12px;
+}
+
+/* 트랙은 더 이상 바닥 여백 불필요 */
+#productsItems .pro-track{ padding-bottom: 0 !important; }
+
+/* 컨트롤을 일반 흐름으로 (absolute 해제) */
+#productsItems .pro-controls{
+  position: static !important;
+  display: flex; align-items: center; justify-content: center;
+  gap: 18px; pointer-events: auto;
+  margin-top: 4px;
+}
+
+/* 프로그레스 바 */
+#productsItems .pro-progress{ width: min(560px, 60%); height: 2px; }
+#productsItems .pro-progress .pro-bar{ transition: width .25s; }
+
+/* 화살표는 그대로 */
+#productsItems .pro-arrow{ width:44px; height:44px; border-radius:999px; }
+
+
+/* 데스크탑에서 카드 여백 맞춤 */
+@media (min-width:1280px){
+  .pro-track{ padding-bottom:48px; }
+}
+
+
+
+:root{
+  --news-gap: 20px;
+  --news-radius: var(--bs-border-radius-2xl, 2rem);
+  --news-shadow: 0 10px 30px rgba(0,0,0,.08);
+  --news-shadow-lg: 0 18px 50px rgba(0,0,0,.14);
+}
+
+/* 래퍼 */
+#newsSection .news-wrap{ width:min(1240px,92%); margin:0 auto; }
+
+/* 헤더 & 탭 */
+#newsSection .news-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:24px; }
+#newsSection .news-head h2{ font-size:clamp(28px,4.8vw,42px); font-weight:800; color:var(--bs-black,#111); }
+
+.news-tabs{ position:relative; display:flex; gap:28px; }
+.news-tabs .tab-btn{
+  appearance:none; background:none; border:0; padding:10px 2px;
+  font-weight:700; color:var(--bs-gray-700,#495057); cursor:pointer;
+}
+.news-tabs .tab-btn.is-active{ color:#111; }
+.news-tabs .tab-ink{
+  position:absolute; left:0; bottom:0; width:108px; height:3px;
+  background:#111; border-radius:999px; transform:translateX(0); transition:transform .25s,width .25s;
+}
+
+/* 슬라이더 2행: [트랙] + [컨트롤] */
+#newsSection .news-slider{
+  display:grid; grid-template-rows:auto auto; row-gap:14px; margin-top:18px;
+}
+
+/* 트랙 (가로 스크롤) */
+#newsSection .news-track{
+  display:flex; gap:var(--news-gap);
+  overflow-x:auto; scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+  padding:6px 0 8px;
+}
+#newsSection .news-track::-webkit-scrollbar{ display:none; }
+#newsSection .news-track[hidden]{ display:none !important; }
+
+/* 카드 */
+.news-card{
+  scroll-snap-align:start;
+  flex:0 0 clamp(280px, 36vw, 420px);
+  background:#f6f7f8; border-radius:20px; box-shadow:var(--news-shadow);
+  transition:transform .25s, box-shadow .25s; overflow:hidden;
+}
+.news-card:hover{ transform:translateY(-2px); box-shadow:var(--news-shadow-lg); }
+.news-card .card-link{ display:grid; grid-template-rows:auto 1fr auto; gap:12px; padding:28px; color:inherit; text-decoration:none; }
+.news-card .headline{ font-weight:900; font-size:clamp(18px,2.6vw,26px); line-height:1.25; color:#111; margin:0; }
+.news-card .excerpt{ color:var(--bs-gray-700,#495057); margin:2px 0 0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+
+/* 날짜 배지 */
+.news-card .meta{ 
+	margin-top:12px; 
+	font-size:clamp(12px,2vw,14px); 
+	font-weight:900; 
+	letter-spacing:-.5px; 
+	}
+
+/* 컨트롤(제품 슬라이더와 동일 룩) */
+#newsSection .news-controls{
+  position:static; display:flex; align-items:center; justify-content:center; gap:18px;
+}
+#newsSection .pro-progress{ width:min(560px,60%); height:2px; background:rgba(0,0,0,.12); border-radius:999px; position:relative; overflow:hidden; }
+#newsSection .pro-progress .pro-bar{ position:absolute; left:0; top:0; bottom:0; width:0%; background:#111; transition:width .25s; }
+
+/* 화살표는 기존 .pro-arrow 정의 재사용(이미 만들어 둔 스타일) */
+
+
+
+
+
+/*모바일PC 동시 로드 제거*/
+@media (min-width: 1025px){ .is-desktop{display:block} .is-mobile{display:none} }
+@media (max-width: 1024px){ .is-desktop{display:none} .is-mobile{display:block} }

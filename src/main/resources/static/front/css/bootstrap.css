@@ -94,6 +94,13 @@
     --m-logo-h: 100px;
     --m-logo-h-compact: 70px;
     --m-ease: cubic-bezier(.2,.65,.2,1);
+    --depth-bg-ancestor: #12346b;
+    --pro-arrow-fg: #fff;
+    --pro-arrow-shadow: 0 6px 20px rgba(0,0,0,.10);
+    --pro-arrow-hover: #000;
+    --pro-arrow-disabled: #cbd5e1;
+    --pro-ink: var(--bs-dark, #212529);
+    --pro-muted: var(--bs-gray-700, #495057);
 }
 
 
