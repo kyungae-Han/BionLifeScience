@@ -43,7 +43,7 @@
 									<a href="#" id="top-search-trigger"><i class="icon-line-search"></i><i class="icon-line-cross"></i>검색</a>
 								</div>
 								<div id="top-cart" class="header-misc-icon d-sm-block">
-									<span><a style="font-weight: 600;" href="#">EN </a></span> / <span><a class="active" style="font-weight: 600;" href="#"> KO</a></span>
+									<span><a style="font-weight: 600;" href="#">ENG </a></span> / <span><a class="active" style="font-weight: 600;" href="#"> KOR</a></span>
 								</div>
 							</div>
 
@@ -58,7 +58,7 @@
                                 </svg>
 							</div>
 							<nav class="primary-menu">
-								<div th:if="${isMobile}" class="nav is-mobile">
+								<div th:if="${isMobile}" class="is-mobile">
 									<ul class="menu-container">
 										<li class="menu-item"><a class="menu-link" href="/about">
 												<div>회사 소개</div>
@@ -174,7 +174,7 @@
 
 
 					<div th:unless="${isMobile}" class="nav is-desktop">
-						<div class="product-mega-wrap debug-open" id="product-items">
+						<div class="product-mega-wrap debug-open nav-product-list" id="product-items">
 							<div class="inner">
 								<div class="mega-grid">
 									<!-- 1depth -->
@@ -210,12 +210,13 @@
 							</div>
 						</div>
 
-						<div class="product-mega-wrap" id="brands-items">
+						<div class="product-mega-wrap debug-open nav-brand-list" id="brands-items">
 							<div class="inner">
 								<div class="mega-grid">
 									<!-- 1depth: Brand -->
 									<ul class="col depth-1" id="brand-col-1">
-										<li class="menu-item" th:each="b : ${menuList.brandList}" th:attr="data-id=${b.id}"><a class="menu-link" th:href="@{|/brandProductSorted/brand/${b.id}|}">
+										<li class="menu-item" th:each="b : ${menuList.brandList}" th:attr="data-id=${b.id}">
+											<a class="menu-link" th:href="@{|/brandProductSorted/brand/${b.id}|}">
 												<div>
 													<i class="icon-stack"></i> [[${b.name}]]
 												</div>
@@ -224,7 +225,8 @@
 
 									<!-- 2depth: Brand Big (parent = brand id) -->
 									<ul class="col depth-2" id="brand-col-2">
-										<li class="menu-item" th:each="bb : ${menuList.brandBigSortList}" th:attr="data-id=${bb.id}, data-parent=${bb.brand.id}"><a class="menu-link"
+										<li class="menu-item" th:each="bb : ${menuList.brandBigSortList}" th:attr="data-id=${bb.id}, data-parent=${bb.brand.id}">
+											<a class="menu-link"
 											th:href="@{|/brandProductSorted/main/${bb.id}|}">
 												<div th:text="${bb.name}">Brand Big</div>
 										</a></li>
@@ -232,7 +234,8 @@
 
 									<!-- 3depth: Brand Middle (parent = big id) -->
 									<ul class="col depth-3" id="brand-col-3">
-										<li class="menu-item" th:each="bm : ${menuList.brandMiddleSortList}" th:attr="data-id=${bm.id}, data-parent=${bm.bigSort.id}"><a class="menu-link"
+										<li class="menu-item" th:each="bm : ${menuList.brandMiddleSortList}" th:attr="data-id=${bm.id}, data-parent=${bm.bigSort.id}">
+											<a class="menu-link"
 											th:href="@{|/brandProductSorted/middle/${bm.id}|}">
 												<div th:text="${bm.name}">Brand Middle</div>
 										</a></li>
@@ -240,7 +243,8 @@
 
 									<!-- 4depth: Brand Small (parent = middle id) -->
 									<ul class="col depth-4" id="brand-col-4">
-										<li class="menu-item" th:each="bs : ${menuList.brandSmallSortList}" th:attr="data-id=${bs.id}, data-parent=${bs.middleSort.id}"><a class="menu-link"
+										<li class="menu-item" th:each="bs : ${menuList.brandSmallSortList}" th:attr="data-id=${bs.id}, data-parent=${bs.middleSort.id}">
+											<a class="menu-link"
 											th:href="@{|/brandProductSorted/sub/${bs.id}|}">
 												<div th:text="${bs.name}">Brand Small</div>
 										</a></li>
@@ -248,8 +252,8 @@
 
 									<!-- 5depth: Brand Product (parent = small id) -->
 									<ul class="col depth-5" id="brand-col-5">
-										<li class="menu-item" th:each="bp : ${menuList.brandProductList}" th:attr="data-id=${bp.id}, data-parent=${bp.smallSort.id}"><a class="menu-link"
-											th:href="@{|/brandProductDetail/${bp.id}|}">
+										<li class="menu-item" th:each="bp : ${menuList.brandProductList}" th:attr="data-id=${bp.id}, data-parent=${bp.smallSort.id}">
+											<a class="menu-link" th:href="@{|/brandProductDetail/${bp.id}|}">
 												<div th:text="${bp.subject}">Brand Product</div>
 										</a></li>
 									</ul>
@@ -295,7 +299,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="col-sm-6 col-lg-3 footer-client-center">
+							<div class="col-lg-4 footer-client-center">
 
 								<div class="widget clearfix">
 									<h2>고객상담</h2>
@@ -351,7 +355,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // 데스크톱 판별: 마우스 호버 가능 + 정밀 포인터 + 최소 폭
   const mqDesktop = window.matchMedia('(hover: hover) and (pointer: fine)');
-  const DESKTOP_MIN_WIDTH = 1025;
+  const DESKTOP_MIN_WIDTH = 998;
   const isDesktop = () => mqDesktop.matches && window.innerWidth >= DESKTOP_MIN_WIDTH;
 
   /* =========================
@@ -368,6 +372,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let hideTimer = null;
     let handlers = [];
+	
+	document.body.classList.add('js-nav');
 
     const open = (panel) => {
       clearTimeout(hideTimer);
@@ -547,7 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <script>
 (function () {
-  const MOBILE_MAX = 991.98;      // 모바일 한정
+  const MOBILE_MAX = 998;      // 모바일 한정
   const THRESHOLD  = 0;           // 이 값 초과 시 sticky+shrink
   const header     = document.getElementById('header');
   const headerWrap = document.getElementById('header-wrap');
@@ -694,7 +700,55 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 </script>
 
+<script>
+/* 브랜드 패널: 링크 활성 토글 */
+document.addEventListener('DOMContentLoaded', () => {
+  const panel = document.getElementById('brands-items');
+  if (!panel) return;
 
+  // 데스크톱에서만 작동(제품쪽 기준과 동일)
+  const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
+  const DESKTOP_MIN_WIDTH = 998;
+  const isDesktop = () => mq.matches && window.innerWidth >= DESKTOP_MIN_WIDTH;
+
+  const container = panel.querySelector('.mega-grid') || panel;
+
+  function activate(a){
+    panel.querySelectorAll('.menu-link.is-active').forEach(x => x.classList.remove('is-active'));
+    if (a) a.classList.add('is-active');
+  }
+
+  // 최초 열릴 때 첫 항목 기본 활성
+  panel.addEventListener('mouseenter', () => {
+    if (!isDesktop()) return;
+    if (!panel.querySelector('.menu-link.is-active')) {
+      const first = panel.querySelector('.menu-link');
+      if (first) activate(first);
+    }
+  });
+
+  // 이벤트 위임: hover / focus / click
+  container.addEventListener('mouseover', (e) => {
+    if (!isDesktop()) return;
+    const a = e.target.closest('.menu-link');
+    if (a && container.contains(a)) activate(a);
+  });
+  container.addEventListener('focusin', (e) => {
+    if (!isDesktop()) return;
+    const a = e.target.closest('.menu-link');
+    if (a && container.contains(a)) activate(a);
+  });
+  container.addEventListener('click', (e) => {
+    if (!isDesktop()) return;
+    const a = e.target.closest('.menu-link');
+    if (a && container.contains(a)) activate(a);
+  });
+
+  // 뷰 전환에도 자연스럽게
+  mq.addEventListener?.('change', () => { panel.querySelectorAll('.menu-link.is-active').forEach(x=>x.classList.remove('is-active')); });
+  window.addEventListener('resize', () => { panel.querySelectorAll('.menu-link.is-active').forEach(x=>x.classList.remove('is-active')); });
+});
+</script>
 
 
 

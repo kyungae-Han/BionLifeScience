@@ -59,7 +59,7 @@
      </div>
      <div class="slide-number">
       <div class="slide-number-current"></div>
-      <span>/</span>
+      <span></span>
       <div class="slide-number-total"></div>
      </div>
      <div class="swiper-pagination"></div>
@@ -186,85 +186,15 @@
 
 
 
-<!--/*-->
-    <div class="container clearfix">
-      div class="border-top-0 m-0">
-      <div class="container text-center">
-
-       <div class="heading-block center">
-        <h2>NOTICE</h2>
-        <span>바이온라이프사이언스의 공지사항과 제품 카탈로그 입니다.</span>
-       </div>
-      </div>
-     </div> 
-     <div class="row main-notice">
-      <div class="postcontent col-lg-6">
-       <div class="row">
-        <div class="entry event col-12" th:each="i:${notice}">
-         <div class="grid-inner row align-items-center g-0 p-4">
-          <div class="col-md-12">
-           <div class="entry-title title-xs">
-            <h2>
-             <a th:href="@{/notice#faq-} + ${i.id}" th:text="${i.subject}"
-              th:style="${i.sign == true ? 'color : red;': 'color:black;'}">이곳은 공지사항의 제목이 들어가는 곳 입니다...</a>
-            </h2>
-           </div>
-           <div class="entry-meta">
-            <ul>
-             <li><a th:href="@{/notice#faq-} + ${i.id}"><i class="icon-time"></i> 공지일 : [[${i.date}]]</a></li>
-             <li><a th:href="@{/notice#faq-} + ${i.id}"> # 공지사항주제 : [[${i.noticeSubject.text}]]</a></li>
-            </ul>
-           </div>
-
-          </div>
-         </div>
-        </div>
-       </div>
-
-       <div class="d-flex justify-content-end m-t-5">
-        <a href="/notice" class="button button-rounded button-reveal button-small button-border text-end"><span>더
-          보기 &rarr;</span></a>
-       </div>
-
-      </div>
-      <div class="postcontent col-lg-6">
-
-       <div class="row">
-
-        <div class="entry event col-12" th:each="f:${fi}">
-         <div class="grid-inner row align-items-center g-0 p-4">
-          <div class="col-md-12">
-           <div class="entry-title title-xs">
-            <h2>
-            </h2>
-           </div>
-           <div class="entry-meta">
-            <ul>
-             <li><a href="#"><i class="icon-time"></i> 업로드 시간 : [[${f.filedate}]]</a></li>
-             <li><a href="#"># 파일 확장자 : [[${f.fileextension}]]</a></li>
-            </ul>
-           </div>
-
-          </div>
-         </div>
-        </div>
-       </div>
-
-     <div class="d-flex justify-content-end m-t-5">
-        <a href="/references" class="button button-rounded button-reveal button-small button-border text-end"><span>더
-          보기 &rarr;</span></a>
-       </div>
-      </div>
-     </div>
-     <div class="line"></div>
-    </div>
-<!--*/-->
-
-
-<section id="newsSection" class="section bg-white">
+<section id="newsSection" class="section bg-white clearfix">
   <div class="news-wrap">
     <header class="news-head">
       <h2>News</h2>
+	  <!-- 더보기 -->
+	   <div class="news-more" style="display:flex; gap:12px; justify-content:flex-end; margin-top:8px;">
+	     <a class="button button-rounded button-small button-border" href="/notice">공지 더보기 →</a>
+	     <a class="button button-rounded button-small button-border" href="/references">자료 더보기 →</a>
+	   </div>
       <nav class="news-tabs" role="tablist" aria-label="뉴스 탭">
         <button class="tab-btn is-active" data-target="#noticeTrack" role="tab" aria-selected="true">공지사항</button>
         <button class="tab-btn" data-target="#refsTrack" role="tab" aria-selected="false">자료(카탈로그)</button>
@@ -276,23 +206,35 @@
     <div class="news-slider" id="newsSlider">
 
       <!-- 공지사항 -->
-      <div class="news-track is-active" id="noticeTrack">
+	  <div class="news-track is-active" id="noticeTrack">
+	  	<div class="news-card" th:each="i:${notice}">
+	  		<a th:href="@{/notice#faq-} + ${i.id}">
+	  		<p class="meta notice"><i class="icon-time"></i> 공지일 : [[${i.date}]]</p>
+	  		<h3 class="headline" th:text="${i.subject}">
+	            이곳은 공지사항의 제목이 들어가는 곳 입니다..
+	           </h3>
+	  		<div class="card-link">
+	           <p># 공지사항주제 : [[${i.noticeSubject.text}]]</p>
+	  		</div>
+	  		</a>
+	  	</div>
+	     </div>
 
-      </div>
-
-      <!-- 자료(카탈로그) -->
-      <div class="news-track" id="refsTrack" hidden>
-           <div class="news-card" th:each="f:${fi}">
-            <h3 class="headline" th:text="${f.filesubject}">이곳은 카탈로그의 제목이 들어가는 곳 입니다.
-            </h3>
-            
-            
-           <div class="card-link">
-             <p class="meta"></i> 업로드 시간 : [[${f.filedate}]]</p>
-             <p><a th:href="@{${f.fileroad}}" download th:text="${f.filesubject}">파일다운로드</a></p>
-           </div>
-        </div>
-      </div>
+	     <!-- 자료(카탈로그) -->
+	     <div class="news-track" id="refsTrack" hidden>
+	          <div class="news-card" th:each="f:${fi}">
+	           <h3 class="headline" th:text="${f.filesubject}">이곳은 카탈로그의 제목이 들어가는 곳 입니다.
+	           </h3>
+	           
+	           
+	          <div class="card-link">
+	            <p class="meta"></i> 업로드 시간 : [[${f.filedate}]]</p>
+	  		 <p>
+	  		   <a th:href="@{${f.fileroad}}" th:download="${f.filesubject}"><span th:text="${f.filesubject}"></span> &nbsp;파일다운로드</a>
+	  		 </p>
+	          </div>
+	       </div>
+	     </div>
 
       <!-- 컨트롤 -->
       <div class="news-controls">
@@ -300,12 +242,6 @@
         <div class="pro-progress"><span class="pro-bar"></span></div>
         <button type="button" class="pro-arrow pro-next" aria-label="다음"><span>›</span></button>
       </div>
-    </div>
-
-    <!-- 더보기 -->
-    <div class="news-more" style="display:flex; gap:12px; justify-content:flex-end; margin-top:8px;">
-      <a class="button button-rounded button-small button-border" href="/notice">공지 더보기 →</a>
-      <a class="button button-rounded button-small button-border" href="/references">자료 더보기 →</a>
     </div>
   </div>
 </section>
@@ -321,12 +257,14 @@
     <div class="section clearfix m-b-0">
      <div class="border-top-0 m-0">
       <div class="container text-center">
-
+		<!--/*-->
        <div class="heading-block center">
         <h2>PARTNERS</h2>
         <span>유명 브랜드를 수요 공급하고 있으며<br>검증된 제품을 안정적인 공급망을 통하여 제공해드립니다.
         </span>
        </div>
+	     <!--*/-->
+	   
       </div>
      </div>
      <div id="oc-clients" class="owl-carousel carousel-widget" data-margin="30" data-loop="true" data-nav="true" data-autoplay="5000" data-pagi="false"
@@ -510,23 +448,26 @@
 <script>
 (function(){
   const root = document.getElementById('newsSection');
-  if(!root) return;
+  if (!root) return;
 
-  const slider   = root.querySelector('.news-slider');
-  const tracks   = [...root.querySelectorAll('.news-track')];
-  const tabs     = [...root.querySelectorAll('.news-tabs .tab-btn')];
-  const ink      = root.querySelector('.news-tabs .tab-ink');
-  const btnPrev  = root.querySelector('.pro-prev');
-  const btnNext  = root.querySelector('.pro-next');
-  const bar      = root.querySelector('.pro-bar');
+  const slider  = root.querySelector('.news-slider');
+  const tracks  = [...root.querySelectorAll('.news-track')];
+  const tabs    = [...root.querySelectorAll('.news-tabs .tab-btn')];
+  const ink     = root.querySelector('.news-tabs .tab-ink');
+  const btnPrev = root.querySelector('.pro-prev');
+  const btnNext = root.querySelector('.pro-next');
+  const bar     = root.querySelector('.pro-bar');
+
+  if (tracks.length === 0) return;
 
   let activeTrack = tracks.find(t => t.classList.contains('is-active')) || tracks[0];
 
   /* 탭 언더라인 위치 갱신 */
   function updateInk(){
-    const act = root.querySelector('.news-tabs .tab-btn.is-active');
-    if(!act) return;
-    const r = act.getBoundingClientRect();
+    if (!ink) return;
+    const act  = root.querySelector('.news-tabs .tab-btn.is-active') || tabs[0];
+    if (!act) return;
+    const r    = act.getBoundingClientRect();
     const base = act.parentElement.getBoundingClientRect();
     ink.style.width = r.width + 'px';
     ink.style.transform = `translateX(${r.left - base.left}px)`;
@@ -534,53 +475,127 @@
 
   /* 진행률/버튼 상태 */
   function updateProgress(){
-    const max = activeTrack.scrollWidth - activeTrack.clientWidth;
+    if (!activeTrack || !bar) return;
+    const max = Math.max(0, activeTrack.scrollWidth - activeTrack.clientWidth);
     const cur = activeTrack.scrollLeft;
-    const p = max > 0 ? cur / max : 0;
-    bar.style.width = (p*100) + '%';
-    btnPrev.disabled = cur <= 2;
-    btnNext.disabled = cur >= max - 2;
+    const p   = max ? cur / max : 0;
+    bar.style.width = (p * 100) + '%';
+    if (btnPrev) btnPrev.disabled = cur <= 2;
+    if (btnNext) btnNext.disabled = cur >= max - 2;
   }
 
   function step(){
+    if (!activeTrack) return 0;
     const card = activeTrack.querySelector('.news-card');
-    if(!card) return activeTrack.clientWidth * .8;
-    const r = card.getBoundingClientRect();
-    const next = card.nextElementSibling?.getBoundingClientRect();
-    const gap = next ? Math.max(0, Math.round(next.left - r.right)) : 20;
+    if (!card) return activeTrack.clientWidth * 0.9;
+    const r    = card.getBoundingClientRect();
+    const next = card.nextElementSibling?.getBoundingClientRect?.();
+    const gap  = next ? Math.max(0, Math.round(next.left - r.right)) : 0;
     return Math.round(r.width + gap);
   }
+
   function go(dir){
-    activeTrack.scrollTo({ left: activeTrack.scrollLeft + dir*step(), behavior:'smooth' });
+    if (!activeTrack) return;
+    activeTrack.scrollTo({ left: activeTrack.scrollLeft + dir * step(), behavior: 'smooth' });
+  }
+
+  /* 스크롤 리스너 attach/detach (탭 전환 대응) */
+  let onScroll = null;
+  function attachScroll(track){
+    if (onScroll && activeTrack) activeTrack.removeEventListener('scroll', onScroll);
+    activeTrack = track || null;
+    if (!activeTrack) return;
+    onScroll = () => updateProgress();
+    activeTrack.addEventListener('scroll', onScroll, { passive: true });
   }
 
   /* 탭 클릭 */
   tabs.forEach(btn=>{
     btn.addEventListener('click', ()=>{
-      if(btn.classList.contains('is-active')) return;
-      tabs.forEach(b=>{ b.classList.remove('is-active'); b.setAttribute('aria-selected','false'); });
+      if (btn.classList.contains('is-active')) return;
+
+      tabs.forEach(b => { b.classList.remove('is-active'); b.setAttribute('aria-selected','false'); });
       btn.classList.add('is-active'); btn.setAttribute('aria-selected','true');
 
-      tracks.forEach(t=>{ t.classList.remove('is-active'); t.hidden = true; });
-      activeTrack = root.querySelector(btn.dataset.target);
-      activeTrack.hidden = false;
-      activeTrack.classList.add('is-active');
+      tracks.forEach(t => { t.classList.remove('is-active'); t.hidden = true; });
 
-      updateInk(); updateProgress();
+      const nextTrack = root.querySelector(btn.dataset.target);
+      if (!nextTrack) return;
+      nextTrack.hidden = false;
+      nextTrack.classList.add('is-active');
+      nextTrack.scrollLeft = 0;
+
+      attachScroll(nextTrack);
+      updateInk();
+      updateProgress();
     });
   });
 
-  /* 스크롤/리사이즈 */
-  function onScroll(){ updateProgress(); }
-  activeTrack.addEventListener('scroll', onScroll, {passive:true});
+  /* 화살표 */
+  if (btnPrev) btnPrev.addEventListener('click', ()=>go(-1));
+  if (btnNext) btnNext.addEventListener('click', ()=>go(+1));
+
+  /* 리사이즈 */
   window.addEventListener('resize', ()=>{ updateInk(); updateProgress(); });
 
-  /* 화살표 */
-  btnPrev.addEventListener('click', ()=>go(-1));
-  btnNext.addEventListener('click', ()=>go(+1));
+  /* 초기 */
+  attachScroll(activeTrack);
+  updateInk();
+  updateProgress();
+})();
+</script>
 
-  // 초기
-  updateInk(); updateProgress();
+<script>
+(function(){
+  // ① 숫자 박스 바로 뒤에 버튼 하나만 삽입
+  const sn = document.querySelector('#slider .slide-number');
+  if (!sn) return;
+
+  let btn = sn.parentElement.querySelector('.slide-toggle');
+  if (!btn) {
+    btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'slide-toggle';
+    btn.setAttribute('aria-label', '일시정지');
+    sn.insertAdjacentElement('afterend', btn);  // slide-number 바로 뒤
+  }
+
+  // ② Swiper 인스턴스(있으면 제어), 없으면 비디오만 제어
+  const swiperEl = document.querySelector('#slider .swiper, #slider .swiper-container');
+  const swiper   = swiperEl && swiperEl.swiper ? swiperEl.swiper : null;
+
+  function setPaused(paused){
+    btn.classList.toggle('is-paused', paused);
+    btn.setAttribute('aria-label', paused ? '재생' : '일시정지');
+  }
+
+  function getActiveVideo(){
+    const active = document.querySelector('#slider .swiper-slide-active') || document.querySelector('#slider video')?.closest('.swiper-slide');
+    return active ? active.querySelector('video') : null;
+  }
+
+  // ③ 토글 동작: Swiper 자동재생 + 현재 슬라이드 비디오 동시 제어
+  let paused = false;
+  btn.addEventListener('click', () => {
+    paused = !paused; setPaused(paused);
+
+    // Swiper autoplay
+    if (swiper && swiper.params && swiper.params.autoplay) {
+      paused ? swiper.autoplay.stop() : swiper.autoplay.start();
+    }
+
+    // 현재 슬라이드 비디오
+    const vid = getActiveVideo();
+    if (vid) {
+      if (paused) { vid.pause(); }
+      else { vid.play().catch(()=>{}); }
+    }
+  });
+
+  // ④ 초기 상태 동기화(autoplay가 꺼져 시작하면 ▶ 표시)
+  if (swiper && swiper.params && swiper.params.autoplay && swiper.autoplay && swiper.autoplay.running === false) {
+    paused = true; setPaused(true);
+  }
 })();
 </script>
 
