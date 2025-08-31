@@ -16,7 +16,7 @@ public class DeviceDetector implements WebMvcConfigurer {
 
     // 일반적인 모바일/태블릿 패턴
     private static final Pattern MOBILE_UA = Pattern.compile(
-        "(Mobile|Android|iPhone|iPad|iPad Pro|iPod|Windows Phone|IEMobile|BlackBerry|Opera Mini|Mobi|Tablet)",
+        "(Mobile|Android|iPhone|iPad|iPod|Windows Phone|IEMobile|BlackBerry|Opera Mini|Mobi|Tablet)",
         Pattern.CASE_INSENSITIVE
     );
 
@@ -70,6 +70,10 @@ public class DeviceDetector implements WebMvcConfigurer {
                 boolean isMobile = (vw != null)
                         ? (vw < DESKTOP_MIN_VW)
                         : (mobileByCH || mobileByUA);
+                
+                if (ua != null && ua.contains("iPad Pro")) {
+                    isMobile = false;
+                }
 
                 
                 String deviceType = isMobile ? "MOBILE" : "PC";
