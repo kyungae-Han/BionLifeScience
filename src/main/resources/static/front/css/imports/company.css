@@ -10,10 +10,229 @@
 	--ring: rgba(30, 127, 124, .18);
 	--shadow: 0 10px 30px rgba(3, 10, 27, .08), 0 2px 8px
 		rgba(3, 10, 27, .06);
+	--bs-green: #198754;
+	--bs-orange: #fd7e14;
+	  --mint-light: #dff7f3;
+	  --mint-mid: #f7e4dc;
+	  --mint-dark: #8cc8be;
+	  --mint-accent: #5fafa3;
 }
+
+
+/*---------------------------------
+	page nav
+----------------------------------*/
+
+
+.breadcrumb-wrap {
+	width: 100%; 
+	height: 70px; 
+	display: block; 
+	position: static; 
+	margin: 0 auto 35px;
+	transition: transform 0.55s ease, opacity 0.35s ease, visibility 0.3s ease ;
+  	z-index: 3;
+  	opacity: 1;
+  	transform: translateY(0);
+  	box-shadow: none;
+}
+
+.breadcrumb-wrap.fixed-bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: 0 -2px 6px rgba(0,0,0,.1);
+  /*opacity: 0.8;*/
+  transform: translateY(0); /* 제자리 */
+  max-width: 1280px;
+}
+
+.breadcrumb-wrap:not(.fixed-bottom) {
+  transform: translateY(100%);
+}
+
+
+.breadcrumb-wrap.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.breadcrumb-wrap ul, 
+.breadcrumb-wrap li {list-style: none;}
+
+.breadcrumb-wrap ul {
+	display: flex;
+	justify-content: center;
+	gap: 40px;
+	background: black;
+	border-radius: 15px;
+	}
+
+.breadcrumb-wrap ul {
+  display: flex;
+  justify-content: center; /* 전체 중앙 정렬 */
+  align-items: center;
+  gap: 120px; /* 아이템 간격 */
+}
+
+.breadcrumb-wrap li {
+  position: relative;
+  padding: 20px 0;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease;
+}
+
+/* li 마지막은 제외하고 오른쪽에만 선 넣기 */
+.breadcrumb-wrap li:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -60px;  /* 선 위치 (gap 절반만큼) */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 34px;
+  background: #fff;
+}
+
+
+.breadcrumb-wrap a {
+	color: #fff;
+	font-weight: 700;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: clamp(14px, 2.6vw, 18px);
+}
+
+/*페이지nav바 hover*/
+.breadcrumb-wrap a:hover {color: var(--bs-);}
+
+
+/*페이지 로드시 활성화 클래스*/
+.breadcrumb-wrap.show li {
+	opacity: 1;
+	transform: translateY(0);
+	transition-delay: 0.1s;
+}
+
+
+
+/* my company description */
+@media (max-width: 1024.98px){
+	
+  /* 섹션 높이는 자동으로 (비디오가 충분히 채움) */
+  .history-section { height: auto; }
+
+  .history-wrap { height: auto; }
+
+  /* 비디오는 그대로 뒤에서 커버. (최소 높이만 보조) */
+  .history-wrap video {
+    min-height: 420px;
+  }
+
+  /* 캡션은 절대→상대 + 패딩 확보 (중앙정렬 유지) */
+  .history-caption {
+    position: relative;
+    inset: auto;
+    padding: clamp(16px, 4vw, 24px) 0;
+    text-align: left; /* 카드 타이포는 좌정렬이 가독성 좋음 */
+  }
+
+  /* 2열 그리드(작은 폰은 1열) */
+  .history-caption ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 12px;
+    height: auto;   /* 데스크탑처럼 꽉 채우지 않음 */
+    width: 100%;
+    padding: 0 17px;
+  }
+  
+  @media (max-width: 575.98px) {
+    .history-caption ul { grid-template-columns: 1fr; }
+  }
+
+  /* 카드화: 배경/모서리/여백 */
+  .history-caption li {
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-height: 160px;
+    padding: 24px 14px 48px;
+    border-radius: 12px;
+    background: rgba(0,0,0,.28);         /* 비디오 위 가독성 ↑ */
+    backdrop-filter: blur(2px);
+  }
+
+  /* 세로 구분선 제거 (그리드에서는 불필요) */
+  .history-caption li::after { content: none !important; }
+
+  /* 타이포 스케일 */
+  .history-caption h3 {
+    font-size: clamp(18px, 5.2vw, 22px);
+    line-height: 1.4;
+    margin: 6px 0 0;
+    padding: 0;
+    color: #fff;
+  }
+  .history-caption span {
+    display: block;
+    color: #e6e6e6;
+    font-size: clamp(12px, 3.4vw, 14px);
+    margin-bottom: 4px;
+  }
+
+  /* 아이콘/화살표 사이즈 다운 & 위치 고정 */
+  .history-caption .history-graphic{
+    width: 64px; height: 64px;
+    margin: 0 0 10px 0;
+    opacity: 1; transform: none; filter: none; /* 항상 보이게 */
+    animation: none !important;                /* 터치에서 과한 애니메이션 제거 */
+  }
+  .history-caption .history-arrow{
+    position: absolute; right: 12px; bottom: 48px;
+    width: 28px; height: 28px;
+    background-size: contain;
+  }
+
+  /* 터치 환경: hover 변형 제거(튀는 이동 방지) */
+  @media (hover: none) and (pointer: coarse) {
+    .history-caption li:hover span,
+    .history-caption li:hover h3,
+    .history-caption li:hover .history-arrow { transform: none !important; }
+    .history-caption li:hover .history-graphic { animation: none !important; }
+  }
+
+  /* 브레드크럼 여백/폰트 다운 */
+  .breadcrumb-wrap { height: auto; margin: 28px auto; }
+  .breadcrumb-wrap ul { gap: 18px; flex-wrap: wrap; }
+  .breadcrumb-wrap li { padding: 10px 6px; }
+  .breadcrumb-wrap a { font-size: clamp(13px, 3.2vw, 16px); }
+}
+
+/* 992~1024 구간에서 Bootstrap lg(992) 확장 막기 (있는 경우만) */
+@media (min-width: 992px) and (max-width: 1024.98px) {
+  .navbar-expand-lg .navbar-collapse { display: none !important; }
+  .navbar-expand-lg .navbar-toggler { display: inline-flex !important; }
+}
+
+/* 1025+: 기존 데스크탑 4분할 유지(네가 작성한 기본 규칙이 적용됨) */
+@media (min-width: 1025px) {
+  /* 필요 시 PC 전용 보정만 추가 */
+}
+
+/* 모션 민감 사용자 보호 */
+@media (prefers-reduced-motion: reduce){
+  * { transition: none !important; animation: none !important; }
+}
+
+
+
 
 .about-body {
 	height: auto;
+	margin-top:100px;
 }
 
 .hero {
@@ -22,6 +241,7 @@
 	overflow: hidden;
 	background: rgba(196, 223, 153, .4);
 	padding-bottom: clamp(80px, 8vw, 180px);
+	
 }
 
 .hero .hero-video {
@@ -602,7 +822,7 @@
 	text-align: center;
 	color: var(--muted);
 	font-size: clamp(13px, 1.6vw, 16px);
-	margin-bottom: clamp(24px, 3.4vw, 36px);
+	margin: clamp(12px, 3.4vw, 20px) 0  clamp(24px, 3.4vw, 36px);
 }
 
 /* 기간 탭(칩) */
@@ -610,7 +830,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: 8px;
-	justify-content: center;
+	/*justify-content: center;*/
 	margin: 0 0 18px;
 	padding: 0;
 	list-style: none;
@@ -619,13 +839,13 @@
 .bio-history-tab-nav li a {
 	display: inline-block;
 	padding: 9px 14px;
-	border-radius: 999px;
+	border-radius: 5px;
 	background: #fff;
 	border: 1px solid rgba(11, 19, 32, .08);
 	box-shadow: 0 3px 10px rgba(3, 10, 27, .05);
 	color: var(--ink);
 	font-weight: 600;
-	font-size: 13px;
+	font-size: 1.2rem;
 	transition: transform .18s ease, box-shadow .18s ease, border-color .18s
 		ease;
 }
@@ -634,35 +854,86 @@
 	transform: translateY(-2px);
 	border-color: var(--ring);
 	box-shadow: 0 12px 24px rgba(3, 10, 27, .08);
+	border-color:black;
+	/*color: #fff;*/
 }
+
+.bio-history-tab-nav li a:focus,
+.bio-history-tab-nav li a:focus-visible {
+  background:black;
+  color: #fff;
+}
+
+/* 선택된 탭(클릭/활성) 스타일 */
+.bio-history-tab-nav li a.is-active,
+.bio-history-tab-nav a[aria-selected="true"] {
+   background:var(--depth-bg);
+   color: #fff;
+}
+
+
+#history .bio-history-tab-nav a.is-active,
+#history .bio-history-tab-nav a[aria-selected="true"]{
+  border-color: var(--ring);
+  box-shadow: 0 10px 24px rgba(3,10,27,.08);
+}
+#history .bio-history-tab-nav li a:focus,
+#history .bio-history-tab-nav li a:focus-visible{
+  transform: translateY(-2px);
+  border-color: var(--ring);
+  box-shadow: 0 12px 24px rgba(3,10,27,.08);
+  outline: none;
+}
+
+
 
 /* 탭 콘텐츠 카드 배경 */
 .bio-history-page {
 	position: relative;
-	background: #fff;
+	/*background: black;*/
 	border-radius: 18px;
-	box-shadow: var(--shadow);
-	padding: clamp(12px, 2vw, 18px);
+	/*box-shadow: var(--shadow);*/
+	padding: clamp(12px, 2vw, 18px) 0;
 	overflow: hidden; /* 페이드 힌트용 */
 }
 
 /* 가로 타임라인 스크롤 영역 */
 .bio-history-timeline {
-	position: relative;
-	display: block;
 	overflow-x: auto;
-	overflow-y: visible;
-	padding: 28px 8px 24px;
-	scroll-snap-type: x proximity; /* 카드 단위로 착착 멈춤 */
-	-webkit-overflow-scrolling: touch;
-	overscroll-behavior-x: contain;
-	scroll-behavior: smooth;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain; 
+  scroll-snap-type: none;  
 }
 
-/* 스크롤바 */
-.bio-history-timeline::-webkit-scrollbar {
-	height: 8px
+@media (max-width: 991.98px){
+  .bio-history-timeline{ scroll-snap-type: x proximity; scroll-padding-inline: 12px; }
+  .bio-history-card{ scroll-snap-align: start; }
 }
+
+@media (hover: hover) and (pointer: fine){
+  .bio-history-timeline{ scroll-snap-type: none; }
+  .bio-history-card{ scroll-snap-align: none; }
+}
+
+@media (hover: none) and (pointer: coarse){
+  .bio-history-timeline{ scroll-snap-type: x proximity; scroll-padding-inline: 12px; }
+  .bio-history-card{ scroll-snap-align: start; }
+}
+
+
+/* 스크롤바 */
+.bio-history-timeline::-webkit-scrollbar{
+  height: 8px;       
+  display: none;
+  opacity: 0;
+}
+
+.bio-history-timeline{
+  scrollbar-width: none; 
+  -ms-overflow-style: none;
+}
+
 
 .bio-history-timeline::-webkit-scrollbar-track {
 	background: rgba(11, 19, 32, .06);
@@ -674,6 +945,10 @@
 	border-radius: 999px
 }
 
+.bio-history-timeline.is-grabbable { cursor: grab; }
+.bio-history-timeline.is-grabbing  { cursor: grabbing; }
+
+
 /* 가로 레일 + 카드 그리드 */
 .bio-history-timeline__group {
 	--railY: 78px;
@@ -682,20 +957,70 @@
 	grid-auto-columns: minmax(clamp(260px, 30vw, 360px), 1fr);
 	gap: clamp(16px, 2.4vw, 26px);
 	position: relative;
-	padding: 14px 16px 32px; /* 레일/도트 여백 */
+	padding: 0 0 32px; /* 레일/도트 여백 */
 }
 
-/* 중앙 레일(가로 선) */
-.bio-history-timeline__group::before {
-	content: '';
-	position: absolute;
-	left: 16px;
-	right: 16px;
-	top: var(--railY);
-	height: 2px;
-	background: var(--rail);
-	pointer-events: none;
+/* 진행률 래퍼 */
+.bio-history-tab-container{
+  position: relative;
+  overflow: hidden;
+  transition: none;
 }
+
+.hist-progress{
+  position: absolute;
+  left: 50%;
+  /*bottom: 16px;*/                 /* 필요 시 조절 */
+  transform: translateX(-50%);
+  /*width: min(480px, 70%);*/
+  width: 100%;
+  height: 3px;
+  background: rgba(0,0,0,.08);
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.hist-progress__bar{
+  width: 0%;
+  height: 100%;
+  background: black;
+  transition: width .25s ease;
+}
+
+
+/* 스크롤 불필요(컨텐츠가 꽉 차지 않는) 탭은 바 숨김 */
+.bio-history-page[data-progress="hidden"] .hist-progress{ display:none; }
+
+
+
+.bio-history-tab-content{
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  /*transform: translateX(2%);*/
+  transition: opacity .25s ease, transform .25s ease, visibility 0s .25s;
+}
+
+.bio-history-tab-content.is-active{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0);
+  transition: opacity .25s ease, transform .25s ease, visibility 0s 0s;
+  top:0;
+  left:0;
+}
+
+/* 탭 버튼 상태 */
+.bio-history-tab-nav a[aria-selected="true"]{
+  border-color: var(--ring);
+  box-shadow: 0 10px 24px rgba(3,10,27,.08);
+}
+
+
 
 /* 카드 컨테이너 */
 .bio-history-cards {
@@ -707,51 +1032,73 @@
 	position: relative;
 	scroll-snap-align: start;
 	background: var(--card);
-	border: 1px solid rgba(11, 19, 32, .06);
+	border: 5px solid rgba(11, 19, 32, .06);
 	border-radius: 16px;
 	box-shadow: 0 10px 22px rgba(3, 10, 27, .06);
 	transition: transform .2s ease, box-shadow .2s ease, border-color .2s
 		ease, background .2s ease;
 	/* 상단에 날짜/도트/레일 공간 확보 → 본문은 레일 아래에 배치 */
 	padding: calc(var(--railY)+ 26px) 16px 18px 16px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100%;
 }
+
 
 /* 호버 강조 */
-.bio-history-card:hover {
-	transform: translateY(-4px);
-	box-shadow: 0 16px 34px rgba(3, 10, 27, .12);
-	border-color: var(--ring);
+/* 점 기본 */
+.bio-history-card::before{
+  content:'';
+  position:absolute;
+  left:50%;
+  transform: translate(-50%, -50%) scale(1);
+  width:14px; height:14px;
+  border-radius:50%;
+  border:3px solid var(--depth-bg);
+  box-shadow:0 0 0 4px rgba(30,127,124,.12);
+  background:#fff;
+  opacity:0;                      /* 👈 기본은 숨김 */
+  transition: transform .3s ease, opacity .2s ease;
+  bottom:-15px;
 }
 
-/* 공통 기본값: 도트를 위쪽(top)에 */
-.bio-history-card::before {
-	content: '';
-	position: absolute;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 14px;
-	height: 14px;
-	border-radius: 50%;
-	background: #fff;
-	border: 3px solid var(--brand);
-	box-shadow: 0 0 0 4px rgba(30, 127, 124, .12);
+/* 현재(활성) 카드에만 점 표시 + 원하는 바운스 그대로 */
+.bio-history-card.is-active::before{
+  opacity:1;
+  animation: dot-bounce-scale .6s ease-in-out 0s 2; /* 이미 쓰는 키프레임 */
 }
 
-/* 첫 번째 그룹의 카드 → 도트를 아래쪽(bottom)에 */
-.bio-history-tab-content:nth-child(1) .bio-history-timeline__group .bio-history-card::before
-	{
-	top: auto; /* 기존 top 무효화 */
-	bottom: 0; /* 카드 하단에 붙임 */
-	transform: translate(-50%, 50%); /* 가운데 정렬 + 아래쪽 */
+
+@keyframes dot-bounce-scale{
+  0%   { transform: translate(-50%,-50%) scale(1); }
+  30%  { transform: translate(-50%,-50%) scale(2); opacity:0.85; }
+  60%  { transform: translate(-50%,-50%) scale(0.85); }
+  100% { transform: translate(-50%,-50%) scale(1); }
 }
 
-/* 두 번째 그룹의 카드 → 도트를 위쪽(top)에 */
-.bio-history-tab-content:nth-of-type(2) .bio-history-timeline__group .bio-history-card::before
-	{
-	top: 0 !important; /* 카드 상단 */
-	bottom: auto !important;
-	transform: translate(-50%, -50%);
+
+/* 카드에 포커스 테두리(접근성) */
+/* 점은 기본 숨김, 활성 카드에만 표시+애니메이션 */
+.bio-history-card::before{ opacity:0; transition:transform .3s, opacity .2s; }
+.bio-history-card.is-active::before{ opacity:1; animation:dot-bounce-scale .6s ease-in-out 0s 2; }
+
+/* 활성 카드 테두리(원하는 스타일) */
+
+.bio-history-card.is-active{
+	border-color: var(--depth-bg);
+	/*background: linear-gradient(135deg, #E8F3D8 0%, #D6EFC8 100%);
+	color: #2C3E3B;
+	*/
 }
+
+
+
+/* 탭 전환 시 튐 방지용(위 JS에서 사용하는 보조 클래스) */
+html.is-switching-tab{ scroll-behavior:auto !important; }
+html.is-switching-tab, body.is-switching-tab{ overflow-anchor:none !important; }
+
+
 
 /* 카드 스템(도트 ↔ 날짜 뱃지 연결) */
 .bio-history-card::after {
@@ -767,35 +1114,31 @@
 
 /* 날짜(연/월) 뱃지를 도트 위쪽 중앙에 고정 */
 .bio-history-card__header {
-	position: absolute;
-	left: 12px;
-	right: 12px;
-	top: calc(var(--railY)- 54px); /* 뱃지가 레일 위에 뜨도록 */
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	pointer-events: none; /* 클릭 포커스는 본문에 맡김 */
+  margin-bottom: auto; /* 상단에 고정 */
+  text-align: center;
+  background: var(--depth-bg);
+  border-radius: 10px 10px 0 0;
+  color: #fff;
 }
 
 /* time pill */
 .bio-history-time {
 	display: inline-flex;
 	align-items: center;
-	margin: 30px 0;
+	/*margin: 30px 0;*/
 }
 
 .bio-history-time__day {
 	display: inline-block;
 	min-width: 94px;
 	text-align: center;
-	padding: 8px 10px;
+	padding: 0 17px !important;
 	border-radius: 999px;
-	background: rgba(30, 127, 124, .08);
-	border: 1px solid rgba(30, 127, 124, .18);
-	color: var(--brand);
+	/*background: var(bs-gray-200);*/
+	/*border: 1px solid rgba(30, 127, 124, .18);*/
+	/*color: var(--bs-gray-500);*/
 	font-weight: 800;
-	font-size: 13px;
-	letter-spacing: .02em;
+	font-size: 3rem !important;
 	white-space: nowrap;
 	pointer-events: auto; /* 필요시 선택 가능 */
 }
@@ -805,7 +1148,7 @@
 	color: var(--ink);
 	font-size: 15px;
 	line-height: 1.6;
-	margin-top: 30px;
+	margin-top:  auto;
 }
 
 .bio-history-card__content p {
@@ -860,12 +1203,12 @@
 
 .bio-history-page::before {
 	left: 0;
-	background: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0) 100%)
+	/*background: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0) 100%)*/
 }
 
 .bio-history-page::after {
 	right: 0;
-	background: linear-gradient(270deg, #fff 0%, rgba(255, 255, 255, 0) 100%)
+	/*background: linear-gradient(270deg, #fff 0%, rgba(255, 255, 255, 0) 100%)*/
 }
 
 /* 반응형: 카드 폭, 레일 높이 미세조정 */
@@ -911,21 +1254,16 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
-	min-height: 180px; /* 필요 시 원하는 값으로 조정 */
+	min-height: 180px;
 	padding: 18px 20px;
 	border-radius: 14px;
 	background: #fff;
 	box-shadow: 0 8px 24px rgba(0, 0, 0, .06);
 	border: 1px solid rgba(11, 19, 32, .06);
 	box-sizing: border-box;
+	align-content: space-between;
 }
 
-.caption {
-	position: relative;
-	display: flex;
-	align-items: center; /* 세로 중앙 정렬 */
-	gap: 12px; /* 아이콘과 텍스트 간격 */;
-}
 
 .cpation-icon {
 	display: inline-block;
@@ -994,13 +1332,13 @@
 
 #institute .il-chip {
 	display: inline-block;
-	background: rgba(30, 127, 124, .1);
-	color: #155e59;
+	background: var(--bs-gray-300);
+	color: black;
 	font-weight: 700;
 	font-size: 12px;
 	letter-spacing: .02em;
-	padding: 4px 10px;
-	border-radius: 999px;
+	padding: 5px 20px;
+	border-radius: 5px;
 	margin-right: 8px;
 }
 
@@ -1146,16 +1484,16 @@
 #institute .il-callout {
 	max-width: 1280px;
 	margin: clamp(18px, 3.6vw, 35px) auto 0;
-	background: linear-gradient(180deg, #f6fbfb 0%, #f2f8f8 100%);
+	 background: linear-gradient(180deg, #1e2a38 0%, #2c3e50 100%);
 	border: 1px solid rgba(30, 127, 124, .18);
 	border-radius: 14px;
 	padding: clamp(14px, 2.6vw, 20px);
-	color: #314155;
+	color: #fff;
 	line-height: 1.7;
 }
 
 #institute .il-callout strong {
-	color: var(--brand, #1e7f7c);
+	color: #fff;
 }
 
 il-callout.p-item {
@@ -1174,8 +1512,8 @@ il-callout.p-item {
 
 #institute .il-tag {
 	display: inline-block;
-	background: #eef6f6;
-	color: #0b534f;
+	background: var(--bs-gray-300);
+	color: black;
 	border: 1px solid rgba(30, 127, 124, .18);
 	border-radius: 10px;
 	padding: 6px 10px;
@@ -1497,7 +1835,6 @@ il-callout.p-item {
 
 /* 네비 버튼: 기본 숨김 → 카드가 있을 때만 표시 */
 #certificates .cert-nav { 
-  border: 1px solid red;
   position: absolute;
   inset: 0 0 auto 0;
   top: 50%;
@@ -1523,6 +1860,26 @@ il-callout.p-item {
 	justify-content: center !important;
 }
 
+
+#certificates a{
+	padding: 10px 20px;
+}
+
+#certificates .grid-filter-wrap li.activeFilter a,
+#certificates .grid-filter a:hover{
+	background-color: var(--bs-body-color) !important;
+	color: #fff;
+	/*
+	border-top:1px;
+	border-bottom:1px;
+	border-style:solid;
+	border-color: #1f2126;
+	*/
+  	transform: none;  
+}
+
+
+
 #certificates .p-wrap h2,
 #certificates .p-wrap p {text-align: center;}
 
@@ -1540,6 +1897,8 @@ il-callout.p-item {
   float: none; width: auto; max-width: none;
   flex: 0 0 auto;
 }
+
+
 
 /* 반응형 미세 조정 */
 @media (max-width: 1024px){
@@ -1591,4 +1950,6 @@ il-callout.p-item {
   /* 연혁 카드 간격 */
   .bio-history-page{ padding: clamp(8px, 3vw, 12px); }
 }
+
+
 

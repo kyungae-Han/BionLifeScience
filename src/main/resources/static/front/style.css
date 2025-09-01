@@ -3880,7 +3880,7 @@ body:not(.top-search-open) .top-search-parent #primary-menu-trigger {
   font-size: 0.875rem;
   width: 16px;
   text-align: center;
-  /*margin-right: 6px;*/
+  margin-top: 6px;
   vertical-align: center;
 }
 
@@ -6954,7 +6954,7 @@ body:not(.has-plugin-html5video) .video-wrap video {
   position: relative;
   padding: 4rem 0;
   background-color: #f5f5f5;
-  border-bottom: 1px solid #eee;
+  /*border-bottom: 1px solid #eee;*/
 }
 
 #page-title .container {
@@ -18810,155 +18810,6 @@ label.checkbox {
 }
 	
 .contents-wrap h1 {font-size: 4.5rem !important;}
-.breadcrumb-wrap {
-	width: 100%; 
-	height: 70px; 
-	display: block; 
-	position: relative; 
-	margin: 50px auto;
-	}
-
-.breadcrumb-wrap ul, .breadcrumb-wrap li {list-style: none;}
-
-.breadcrumb-wrap ul {
-	display: flex;
-	justify-content: center;
-	gap: 40px;
-	}
-
-.breadcrumb-wrap li {
-	padding: 20px 10px;
-	opacity: 0;
-	transform: translateY(20px);
-	transition: all 0.6s ease;
-}
-
-.breadcrumb-wrap a {
-	color: #9E9E9E;
-	font-weight: 700;
-	font-family: 'Noto Sans KR', sans-serif;
-	font-size: clamp(14px, 2.6vw, 18px);
-	}
-	
-.breadcrumb-wrap a:hover {color: black;}
-
-/*페이지 로드시 활성화 클래스*/
-.breadcrumb-wrap.show li {
-	opacity: 1;
-	transform: translateY(0);
-	transition-delay: 0.1s;
-}
-
-
-
-/* my company description */
-@media (max-width: 1024.98px){
-	
-  /* 섹션 높이는 자동으로 (비디오가 충분히 채움) */
-  .history-section { height: auto; }
-
-  .history-wrap { height: auto; }
-
-  /* 비디오는 그대로 뒤에서 커버. (최소 높이만 보조) */
-  .history-wrap video {
-    min-height: 420px;
-  }
-
-  /* 캡션은 절대→상대 + 패딩 확보 (중앙정렬 유지) */
-  .history-caption {
-    position: relative;
-    inset: auto;
-    padding: clamp(16px, 4vw, 24px) 0;
-    text-align: left; /* 카드 타이포는 좌정렬이 가독성 좋음 */
-  }
-
-  /* 2열 그리드(작은 폰은 1열) */
-  .history-caption ul {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px 12px;
-    height: auto;   /* 데스크탑처럼 꽉 채우지 않음 */
-    width: 100%;
-    padding: 0 17px;
-  }
-  
-  @media (max-width: 575.98px) {
-    .history-caption ul { grid-template-columns: 1fr; }
-  }
-
-  /* 카드화: 배경/모서리/여백 */
-  .history-caption li {
-    align-items: flex-start;
-    justify-content: flex-start;
-    min-height: 160px;
-    padding: 24px 14px 48px;
-    border-radius: 12px;
-    background: rgba(0,0,0,.28);         /* 비디오 위 가독성 ↑ */
-    backdrop-filter: blur(2px);
-  }
-
-  /* 세로 구분선 제거 (그리드에서는 불필요) */
-  .history-caption li::after { content: none !important; }
-
-  /* 타이포 스케일 */
-  .history-caption h3 {
-    font-size: clamp(18px, 5.2vw, 22px);
-    line-height: 1.4;
-    margin: 6px 0 0;
-    padding: 0;
-    color: #fff;
-  }
-  .history-caption span {
-    display: block;
-    color: #e6e6e6;
-    font-size: clamp(12px, 3.4vw, 14px);
-    margin-bottom: 4px;
-  }
-
-  /* 아이콘/화살표 사이즈 다운 & 위치 고정 */
-  .history-caption .history-graphic{
-    width: 64px; height: 64px;
-    margin: 0 0 10px 0;
-    opacity: 1; transform: none; filter: none; /* 항상 보이게 */
-    animation: none !important;                /* 터치에서 과한 애니메이션 제거 */
-  }
-  .history-caption .history-arrow{
-    position: absolute; right: 12px; bottom: 48px;
-    width: 28px; height: 28px;
-    background-size: contain;
-  }
-
-  /* 터치 환경: hover 변형 제거(튀는 이동 방지) */
-  @media (hover: none) and (pointer: coarse) {
-    .history-caption li:hover span,
-    .history-caption li:hover h3,
-    .history-caption li:hover .history-arrow { transform: none !important; }
-    .history-caption li:hover .history-graphic { animation: none !important; }
-  }
-
-  /* 브레드크럼 여백/폰트 다운 */
-  .breadcrumb-wrap { height: auto; margin: 28px auto; }
-  .breadcrumb-wrap ul { gap: 18px; flex-wrap: wrap; }
-  .breadcrumb-wrap li { padding: 10px 6px; }
-  .breadcrumb-wrap a { font-size: clamp(13px, 3.2vw, 16px); }
-}
-
-/* 992~1024 구간에서 Bootstrap lg(992) 확장 막기 (있는 경우만) */
-@media (min-width: 992px) and (max-width: 1024.98px) {
-  .navbar-expand-lg .navbar-collapse { display: none !important; }
-  .navbar-expand-lg .navbar-toggler { display: inline-flex !important; }
-}
-
-/* 1025+: 기존 데스크탑 4분할 유지(네가 작성한 기본 규칙이 적용됨) */
-@media (min-width: 1025px) {
-  /* 필요 시 PC 전용 보정만 추가 */
-}
-
-/* 모션 민감 사용자 보호 */
-@media (prefers-reduced-motion: reduce){
-  * { transition: none !important; animation: none !important; }
-}
-
 
 
 .product-mega-wrap li{list-style:none;}
@@ -18985,12 +18836,14 @@ label.checkbox {
 		z-index: 999;
 		margin: 0 auto;
 		padding: 0 13rem;
-		height: 100%;
+		/*height: 100%;*/
 		box-sizing: border-box;
 	}
 
 .mega-grid .col:hover {background: #173B7A}
 .mega-grid .col:hover li {border-bottom: 1px solid #fff;}
+
+
 
 /* 열 레이아웃 */
 .mega-grid{display:flex; gap:0; align-items:flex-start;}
@@ -19006,7 +18859,7 @@ label.checkbox {
   scrollbar-gutter: stable;
 }
 
-mega-grid .col .menu-item{
+.mega-grid .col .menu-item{
   display: block;
 }
 
@@ -19021,8 +18874,8 @@ mega-grid .col .menu-item{
 .depth-4 {width: 100%;}
 
 .mega-grid .col li a {color: #fff;}
-.product-mega-wrap .inner .menu-link{display:block; padding: clamp(8px, 1.2vw, 10px) clamp(8px, 2.2vw, 12px) !important; !important; white-space:nowrap;}
-.product-mega-wrap .inner .menu-link menu-link > div{display:inline-flex; gap:6px; align-items:center; overflow:hidden; text-overflow:ellipsis;}
+.product-mega-wrap .inner .menu-link{display:block; padding: clamp(8px, 1.2vw, 10px) clamp(8px, 2.2vw, 12px) !important; white-space:nowrap;}
+.product-mega-wrap .inner .menu-link > div{display:inline-flex; gap:6px; align-items:center; overflow:hidden; text-overflow:ellipsis;}
 .menu-link.is-active{font-weight:700; color:#fff;}
 .mega-grid .col li a:hover  {
 	color: #ff6a00;
@@ -19065,6 +18918,8 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
   visibility: hidden !important;
   pointer-events: none !important;
 }
+
+
 
 
 
@@ -19147,12 +19002,12 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
  .nav .menu-link
 { position: relative; 
 	display:block; 
-	padding: clamp(6px, 1.2vw, 10px) clamp(10px, 2.4vw, 16px);
+	/*padding: clamp(6px, 1.2vw, 10px) clamp(10px, 2.4vw, 16px);*/
 	margin: 0 clamp(8px, 2.4vw, 16px);
 }
 
 .nav a {
-	font-size: 1.2rem;
+	font-size: 1rem;
 }
 
 .menu-link.is-active{
@@ -19208,6 +19063,13 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
     background: var(--accent);
     border-radius: 2px 0 0 2px;
 }
+
+
+
+
+
+
+
 
 
 

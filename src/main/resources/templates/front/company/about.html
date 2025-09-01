@@ -161,10 +161,7 @@
 				</div>
 			</div>
 			<div class="about-history-wrap">
-				<h2 class="history-title p-item" data-speed="0.22">연혁</h2>
-				<p class="history-subtitle p-item" data-speed="0.36">주요 이정표를 간결한
-					타임라인으로 제공합니다.</p>
-
+				<h2 class="history-title p-item" data-speed="0.22">TimeLine</h2>
 
 				<section class="bio-history-wrap">
 					<div class="bio-history-tabs tabs-alt tabs-tb clearfix" id="tab-8">
@@ -177,14 +174,14 @@
 
 						<div class="bio-history-tab-container">
 
-							<div class="bio-history-tab-content clearfix"
+							<div class="bio-history-tab-content"
 								th:each="list:${list}" th:id="@{|tabs-${list.id}|}">
 								<div class="bio-history-page">
 									<div class="bio-history-timeline">
 										<div class="bio-history-timeline__group">
 											<div class="bio-history-cards">
 												<div class="bio-history-card card"
-													th:each="c:${list.contents}">
+													th:each="c:${list.contents}" tabindex="0">
 													<header class="bio-history-card__header">
 														<time class="bio-history-time" datetime="2008-02-02">
 															<span class="bio-history-time__day"
@@ -203,11 +200,15 @@
 										<!-- /.bio-history-timeline__group -->
 									</div>
 									<!-- /.bio-history-timeline -->
+									
 								</div>
 								<!-- /.bio-history-page -->
 							</div>
 							<!-- /.bio-history-tab-content -->
 
+							<div class="hist-progress" aria-hidden="true">
+						   		<div class="hist-progress__bar"></div>
+						  </div>
 						</div>
 						<!-- /.bio-history-tab-container -->
 					</div>
@@ -215,16 +216,11 @@
 				</section>
 
 				<!-- 하단 카드 3개 -->
+				<!--
 				<div class="history-highlights">
 					<div class="history-highlight p-item" data-speed="0.25">
-						<div class="caption">
-							<h4>파트너십</h4>
-							<!-- <i class="cpation-icon first"
-							style="--bg-img: url('/front/images/icons/integration.svg')"
-							></i> -->
-						</div>
-						<p>다수 글로벌 벤더와 공급 계약 체결</p>
-
+						<h4>파트너십</h4>
+						 <p>다수 글로벌 벤더와 공급 계약 체결</p>
 					</div>
 					<div class="history-highlight p-item" data-speed="0.27">
 						<h4>플랫폼</h4>
@@ -237,6 +233,7 @@
 						<p>연구기관/병원/기업 고객 다각화</p>
 					</div>
 				</div>
+				 -->
 				<!-- /하단 카드 -->
 			</div>
 			<!-- /.history-wrap -->
@@ -275,14 +272,14 @@
 					</div>
 					<div class="il-info">
 						<ul class="il-info__list">
-							<li><span class="il-chip">설립</span><em>2023 연구전담부서 시작 →
-									2025 기업부설연구소 전환·운영</em></li>
-							<li><span class="il-chip">영역</span><em>생명과학, 질병 진단,
-									의료기기 소모품·부자재·Plasticware, 진단 Kit R&amp;D</em></li>
-							<li><span class="il-chip">국산화</span><em>외산 제품 대응 국산화 지속
-									추진, 현장 문제 신속 해결 및 제품 개선 반영</em></li>
-							<li><span class="il-chip">확장</span><em>천연물 기반 기능성
-									화장품·건강식품 소재 연구(2025~), 3D 모델링·프린팅 도입</em></li>
+							<li><span class="il-chip">설립</span>2023 연구전담부서 시작 →
+									2025 기업부설연구소 전환·운영</li>
+							<li><span class="il-chip">영역</span>생명과학, 질병 진단,
+									의료기기 소모품·부자재·Plasticware, 진단 Kit R&amp;D</li>
+							<li><span class="il-chip">국산화</span>외산 제품 대응 국산화 지속
+									추진, 현장 문제 신속 해결 및 제품 개선 반영</li>
+							<li><span class="il-chip">확장</span>천연물 기반 기능성
+									화장품·건강식품 소재 연구(2025~), 3D 모델링·프린팅 도입</li>
 						</ul>
 					</div>
 				</article>
@@ -521,109 +518,436 @@
 	</div>
 	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
 	<script src="/front/js/timeline.js"></script>
-
-	<!-- about관련 script -->
 	<script src="/front/js/company/about.js"></script>
 
 
 	<!-- history관련 script -->
 	<script>
-		document.addEventListener("DOMContentLoaded", function () {
-			  document.querySelectorAll("#history .bio-history-card").forEach(card => {
-			    // 1) 연도 처리
-			    const yearSpan = card.querySelector(".bio-history-time__day");
-			    if (yearSpan) {
-			      let yearText = yearSpan.textContent.trim();
-			      if (yearText.length >= 4) {
-			        yearSpan.textContent = yearText.substring(0, 4);
-			        yearSpan.classList.add("hist-year");
-			      }
-			    }
-			
-			    // 2) 내용 처리
-			    const p = card.querySelector(".bio-history-card__content p");
-			    if (!p) return;
-			
-			    let raw = (p.textContent || "").trim();
-			    if (!raw) return;
-			
-			    raw = raw.replace(/&quot;/g, '"');
-			
-			    // 따옴표 그룹 추출
-			    const quoted = [];
-			    const re = /"([^"]+)"/g;
-			    let m;
-			    while ((m = re.exec(raw)) !== null) quoted.push(m[1].trim());
-			
-			    let items;
-			    if (quoted.length > 0) {
-			      items = quoted; // 따옴표 그룹만 사용
-			    } else {
-			      items = [raw];  // 따옴표 없으면 전체를 한 줄로 표시
-			    }
-			
-			    // <ul> 구성
-			    const ul = document.createElement("ul");
-			    ul.classList.add("hist-items");
-			    items.forEach(it => {
-			      const li = document.createElement("li");
-			      li.textContent = it;
-			      ul.appendChild(li);
-			    });
-			
-			    p.replaceWith(ul);
-			  });
-		});
-	</script>
+/* ===============================
+   Bion History UI (single module)
+   - 카드 텍스트 파싱
+   - 자격증 필터
+   - 브레드크럼 고정
+   - 타임라인 진행바
+   - 가로 드래그 스크롤
+   - 탭 전환(컨테이너 높이 고정 + 카드만 교체)
+   =============================== */
+   (function(){
+     "use strict";
 
+     /* ========== Utilities ========== */
+     const $  = (sel, root=document) => root.querySelector(sel);
+     const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+     const rafThrottle = (fn) => {
+       let ticking = false;
+       return (...args) => {
+         if (ticking) return;
+         requestAnimationFrame(() => { fn(...args); ticking = false; });
+         ticking = true;
+       };
+     };
+     function freezeScrollWhile(run){
+       const sx = window.scrollX, sy = window.scrollY;
+       document.documentElement.classList.add('is-switching-tab');
+       document.body.classList.add('is-switching-tab');
+       run();
+       requestAnimationFrame(() => {
+         window.scrollTo(sx, sy);
+         requestAnimationFrame(() => {
+           window.scrollTo(sx, sy);
+           document.documentElement.classList.remove('is-switching-tab');
+           document.body.classList.remove('is-switching-tab');
+         });
+       });
+     }
+
+     /* ========== 1) History Cards: 내용 파싱(따옴표 → li) ========== */
+     function parseHistoryCards(){
+       $$("#history .bio-history-card").forEach(card => {
+         // 연도 4자리만 노출
+         const yearSpan = $(".bio-history-time__day", card);
+         if (yearSpan) {
+           const t = yearSpan.textContent.trim();
+           if (t.length >= 4) {
+             yearSpan.textContent = t.substring(0,4);
+             yearSpan.classList.add("hist-year");
+           }
+         }
+         // 내용 파싱
+         const p = $(".bio-history-card__content p", card);
+         if (!p) return;
+         let raw = (p.textContent || "").trim();
+         if (!raw) return;
+         raw = raw.replace(/&quot;/g, '"');
+         const quoted = [];
+         let m, re = /"([^"]+)"/g;
+         while ((m = re.exec(raw)) !== null) quoted.push(m[1].trim());
+         const items = quoted.length ? quoted : [raw];
+         const ul = document.createElement("ul");
+         ul.className = "hist-items";
+         items.forEach(it => { const li = document.createElement("li"); li.textContent = it; ul.appendChild(li); });
+         p.replaceWith(ul);
+       });
+     }
+
+     /* ========== 2) Cert Filter (선택) ========== */
+     function initCertFilter(){
+       const links = $$(".grid-filter a");
+       if (!links.length) return;
+       const getItems = () => $$("#certTrack > .cert, #certTrack > .cert-viewport");
+       const show = (el, on) => { el.style.display = on ? "" : "none"; el.classList.toggle("is-hidden", !on); el.setAttribute("aria-hidden", String(!on)); };
+       const apply = (sel) => {
+         const isAll = !sel || sel === "*" || sel === "all";
+         getItems().forEach(box => {
+           const card = box.classList.contains("cert") ? box : $(".cert", box);
+           const match = isAll ? true : box.matches(sel) || (card && card.matches(sel));
+           show(box, match);
+         });
+       };
+       links.forEach(a => a.addEventListener("click", e => {
+         e.preventDefault();
+         links.forEach(l => l.parentElement.classList.remove("activeFilter"));
+         a.parentElement.classList.add("activeFilter");
+         apply(a.dataset.filter || "*");
+       }));
+       apply("*");
+     }
+
+     /* ========== 3) Breadcrumb bottom pin ========== */
+     function initBreadcrumbPin(){
+       const breadcrumb = $(".breadcrumb-wrap");
+       const sentinel   = $("#page-title");
+       if (!breadcrumb || !sentinel) return;
+       const io = new IntersectionObserver(entries => {
+         entries.forEach(entry => {
+           breadcrumb.classList.toggle("fixed-bottom", !entry.isIntersecting);
+         });
+       });
+       io.observe(sentinel);
+     }
+
+     /* ========== 4) Drag-to-scroll (가로 드래그) ========== */
+     function initDragScroll(){
+       $$(".bio-history-timeline").forEach(scroller => {
+         let startX=0, startLeft=0, dragging=false;
+         const down = (e) => {
+           dragging = true;
+           scroller.classList.add("is-grabbing");
+           startX = (e.touches ? e.touches[0].pageX : e.pageX);
+           startLeft = scroller.scrollLeft;
+           e.preventDefault();
+         };
+         const move = (e) => {
+           if (!dragging) return;
+           const x = (e.touches ? e.touches[0].pageX : e.pageX);
+           scroller.scrollLeft = startLeft - (x - startX);
+         };
+         const up = () => { dragging = false; scroller.classList.remove("is-grabbing"); };
+         scroller.classList.add("is-grabbable");
+         scroller.addEventListener("mousedown", down);
+         scroller.addEventListener("mousemove", move);
+         document.addEventListener("mouseup", up);
+         scroller.addEventListener("touchstart", down, {passive:false});
+         scroller.addEventListener("touchmove",  move, {passive:false});
+         scroller.addEventListener("touchend",   up);
+       });
+     }
+
+     /* ========== 5) 진행바 + 활성카드 이동(점/테두리 싱크) ========== */
+     function bindProgressFor(container, root){
+       const bar = container.querySelector('.hist-progress__bar');
+      		root?.querySelector('.hist-progress__bar') ||
+    		container?.querySelector('.hist-progress__bar');
+       if (!bar) return;
+
+       const getActiveContent = () =>
+	       root.querySelector('.bio-history-tab-content.is-active') ||
+	       root.querySelector('.bio-history-tab-content'); 
+
+       const getScroller = () => getActiveContent()?.querySelector('.bio-history-timeline');
+       const getPage     = () => getActiveContent()?.querySelector('.bio-history-page');
+       const getCards    = () => Array.from(getActiveContent()?.querySelectorAll('.bio-history-card') || []);
+
+       // 진행바
+       const updateBar = rafThrottle(() => {
+         const s = getScroller();
+         if (!s) return;
+         const max = s.scrollWidth - s.clientWidth;
+         bar.style.width = (max > 0 ? (s.scrollLeft / max) * 100 : 0) + "%";
+       });
+
+       // ✅ 활성 카드: 뷰포트 중앙에 가장 가까운 카드
+      const updateActiveCard = (() => {
+		  let ticking = false;
+		  return () => {
+		    if (ticking) return;
+		    requestAnimationFrame(() => {
+		      const s = getScroller();
+		      const cards = getCards();
+		      if (!s || !cards.length) return;
+		
+		      const left   = s.scrollLeft;
+		      const vw     = s.clientWidth;
+		      const max    = s.scrollWidth - vw;
+		      const center = left + vw / 2;
+		      const EPS    = 2; // 임계 보정값(픽셀)
+		
+		      // ◀️ 거의 처음(좌측 끝) : 무조건 첫 카드
+		      if (left <= EPS) {
+		        cards.forEach((el, i) => el.classList.toggle('is-active', i === 0));
+		        ticking = false;
+		        return;
+		      }
+		
+		      // ▶️ 거의 끝(우측 끝) : 무조건 마지막 카드
+		      if (left >= max - EPS) {
+		        cards.forEach((el, i) => el.classList.toggle('is-active', i === cards.length - 1));
+		        ticking = false;
+		        return;
+		      }
+		
+		      // 그 외 구간: 중앙에 가장 가까운 카드 선택
+		      let best = cards[0], bestDist = Infinity;
+		      for (const el of cards){
+		        const mid = el.offsetLeft + el.offsetWidth / 2;
+		        const d = Math.abs(mid - center);
+		        if (d < bestDist){ bestDist = d; best = el; }
+		      }
+		      cards.forEach(el => el.classList.toggle('is-active', el === best));
+		
+		      ticking = false;
+		    });
+		    ticking = true;
+		  };
+		})();
+
+       // 진행바 표시/숨김
+       const setVisibility = () => {
+         const page = getPage();
+         const s = getScroller();
+         if (!page || !s) return;
+         const over = s.scrollWidth > s.clientWidth + 1;
+         page.dataset.progress = over ? "show" : "hidden";
+         if (!over) bar.style.width = "0%";
+       };
+
+       // 리바인드(탭 전환마다 호출)
+       let userSelecting = false;
+       
+       function rebind(){
+         container._unbindProgress?.();
+
+         const s = getScroller();
+         if (!s) return;
+
+         const onScroll = () => {
+        	    updateBar();
+        	    if (!userSelecting) updateActiveCard();
+        	  };
+        	 
+         const onResize = () => { setVisibility(); updateBar(); updateActiveCard(); };
+
+         s.addEventListener('scroll', onScroll, { passive: true });
+         window.addEventListener('resize', onResize, { passive: true });
+
+         container._unbindProgress = () => {
+           s.removeEventListener('scroll', onScroll);
+           window.removeEventListener('resize', onResize);
+         };
+
+         // 초기 상태
+         setVisibility();
+         updateBar();
+         updateActiveCard();
+       getCards().forEach(card => {
+    	       if (card._clickedBound) return;           // 중복 바인딩 방지
+    	       card._clickedBound = true;
+    	       card.addEventListener('click', () => {
+    	         const sc = getScroller();
+    	         if (!sc) return;
+    	         userSelecting = true; 
+    	         const leftForCenter =
+    	           card.offsetLeft - (sc.clientWidth - card.offsetWidth) / 2;
+    	         const max = sc.scrollWidth - sc.clientWidth;
+    	         const clamped = Math.max(0, Math.min(leftForCenter, max));
+    	         // 부드럽게 중앙으로
+    	         sc.scrollTo({ left: clamped, behavior: 'smooth' });
+    	   
+    	         // 즉시 UI 반응(스크롤 애니메이션 기다리지 않고 표시)
+    	         getCards().forEach(el => el.classList.toggle('is-active', el === card));
+    	         setTimeout(() => { userSelecting = false; }, 800);
+    	         
+    	         // (선택) 점 튀김 효과를 주고 싶다면 아래 클래스 토글
+    	         card.classList.add('just-activated');
+    	         setTimeout(() => card.classList.remove('just-activated'), 400);
+    	   		});
+    	   });
+       
+       }
+
+       container._recalcProgress = rebind;
+       rebind();
+     }
+
+     /* ========== 6) Tabs: 내용만 교체(스크롤 튐 방지) + 진행바 리바인드 ========== */
+     const Tabs = (function(){
+    	 let root, container, contents, tabs, idSet;
+
+       function cache(){
+    	   root = document.querySelector('#history .bio-history-tabs') ||
+    	   document.querySelector('.bio-history-wrap .bio-history-tabs');
+    	   
+    	   if (!root) return false;
+    	   
+    	   container = root.querySelector('.bio-history-tab-container');
+    	   contents = Array.from(root.querySelectorAll('.bio-history-tab-content'));
+    	   tabs = Array.from(root.querySelectorAll('.bio-history-tab-nav a'));
+    	   
+    	   idSet = new Set(contents.map(c => c.id));
+    	   
+    	   return container && contents.length && tabs.length;
+       }
+
+       function lockContainerHeight(){
+         if (!container) return;
+         const prev = contents.map(c => c.classList.contains("is-active"));
+         contents.forEach(c => { c.style.visibility='hidden'; c.style.opacity='1'; c.style.pointerEvents='none'; c.style.transform='none'; });
+         let maxH = 0;
+         contents.forEach(c => { maxH = Math.max(maxH, c.scrollHeight); });
+         contents.forEach((c,i) => {
+           c.style.visibility=''; c.style.opacity=''; c.style.pointerEvents=''; c.style.transform='';
+           c.classList.toggle('is-active', prev[i]);
+         });
+         container.style.height = maxH + "px";
+       }
+
+       function activeContent(){
+         const hashEl = location.hash && $(location.hash);
+         if (hashEl && hashEl.classList.contains("bio-history-tab-content")) return hashEl;
+         return contents[0];
+       }
+
+       function activateById(id){
+         const target = (id && idSet.has(id)) ? root.querySelector('#'+id) : activeContent();
+         if (!target) return;
+         
+         contents.forEach(c => c.classList.toggle("is-active", c === target));
+         
+         tabs.forEach(a => {
+        	    const isActive = a.getAttribute('href') === '#' + target.id;
+        	    a.setAttribute('aria-selected', isActive);
+        	    a.classList.toggle('is-active', isActive);   // ✅ 이 줄은 forEach 안으로
+       	  });
+         
+         container?._recalcProgress?.();   // 진행바/활성카드 리바인드
+       }
+
+       
+       function init(){
+         if (!cache()) return;
+
+         // 진행바(컨테이너당 1회)
+         bindProgressFor(container, root);
+
+         // 초기 활성화
+         activateById(location.hash && location.hash.slice(1));
+         const initial = location.hash && location.hash.slice(1);
+         activateById(idSet.has(initial) ? initial : null);
+
+         // 컨테이너 높이 고정
+         const relock = () => requestAnimationFrame(lockContainerHeight);
+         window.addEventListener("load", relock);
+         setTimeout(relock, 0);
+         window.addEventListener("resize", relock, { passive: true });
+
+         // 탭 클릭: 앵커 점프 방지 + 해시만 갱신
+         tabs.forEach(a => a.addEventListener("click", (e) => {
+           e.preventDefault();
+           const id = a.getAttribute("href").slice(1);
+           freezeScrollWhile(() => {
+             activateById(id);
+             history.replaceState(null, '', a.hash);
+           });
+         }));
+
+         // 해시 변경(뒤로가기 등)
+         window.addEventListener("hashchange", () => {
+
+           const id = location.hash.slice(1);
+           freezeScrollWhile(() => { activateById(id); });
+           
+         });
+       }
+
+       return { init };
+     })();
+
+     /* ========== Boot ========== */
+     document.addEventListener("DOMContentLoaded", () => {
+       parseHistoryCards();
+       initCertFilter();
+       initBreadcrumbPin();
+       initDragScroll();
+       Tabs.init();
+     });
+
+   })();
+   </script>
+
+	<!-- nav top body 스크롤 이벤트 -->
 	<script>
-	document.addEventListener('DOMContentLoaded', () => {
-		  const filterLinks = document.querySelectorAll('.grid-filter a');
-
-		  // 카드(.cert)도, 혹시 컨테이너를 숨긴 구조라면 컨테이너도 함께 지원
-		  const getItems = () =>
-		    Array.from(document.querySelectorAll('#certTrack > .cert, #certTrack > .cert-viewport'));
-
-		  function showItem(el, show) {
-		    el.style.display = show ? '' : 'none';           // inline style 리셋/적용
-		    el.classList.toggle('is-hidden', !show);         // 숨김 클래스 토글
-		    el.setAttribute('aria-hidden', String(!show));   // 접근성 표시
+		document.addEventListener("DOMContentLoaded", () => {
+		  const breadcrumb = document.querySelector(".breadcrumb-wrap");
+		  const footer     = document.querySelector("footer");
+		  if (!breadcrumb) return;
+		
+		  let scrollTimer   = null;
+		  let footerVisible = false; 
+		  let isHidden      = false;  
+		
+		  /* ✅ 추가: 클래스 토글을 일관되게 처리하는 헬퍼 */
+		  function setHidden(nextHidden){
+		    if (isHidden === nextHidden) return;
+		    isHidden = nextHidden;
+		    breadcrumb.classList.toggle("hide", isHidden);
 		  }
-
-		  function applyFilter(sel) {
-		    const isAll = !sel || sel === '*' || sel === 'all';
-		    getItems().forEach(box => {
-		      // 분류 클래스가 .cert에 있다면 그것도 매칭해 줌
-		      const card = box.classList.contains('cert') ? box
-		                  : box.querySelector('.cert');
-
-		      const match = isAll
-		        ? true
-		        : box.matches(sel) || (card && card.matches(sel));
-
-		      showItem(box, match);
-		    });
+		
+		  function showByScroll(){
+		    if (footerVisible) return
+		    setHidden(false);
 		  }
-
-		  // 클릭 바인딩
-		  filterLinks.forEach(a => {
-		    a.addEventListener('click', (e) => {
-		      e.preventDefault();
-
-		      // active 토글
-		      filterLinks.forEach(l => l.parentElement.classList.remove('activeFilter'));
-		      a.parentElement.classList.add('activeFilter');
-
-		      // 필터 적용
-		      applyFilter(a.dataset.filter || '*');
-		    });
-		  });
-
-		  // 최초 로딩 시 전체 보기
-		  applyFilter('*');
+		  function hideByInactivity(){
+		    if (footerVisible) return;         
+		    setHidden(true);
+		  }
+		
+		  /* === Footer 감지 === */
+		  if (footer) {
+		    const io = new IntersectionObserver((entries) => {
+		      for (const entry of entries) {
+		        footerVisible = entry.isIntersecting;     
+		        if (footerVisible) {
+		          clearTimeout(scrollTimer);              
+		          setHidden(true);                       
+		        } else {
+		          setHidden(false);                     
+		        }
+		      }
+		    }, { threshold: 0 });
+		    io.observe(footer);
+		  }
+		
+		  /* === 스크롤 멈춤 감지 === */
+		  window.addEventListener("scroll", () => {
+		    showByScroll();                               
+		
+		    clearTimeout(scrollTimer);
+		    scrollTimer = setTimeout(() => {
+		      hideByInactivity();                          
+		    }, 2000);
+		  }, { passive: true });
 		});
-
-</script>
+		</script>
 
 
 </body>
