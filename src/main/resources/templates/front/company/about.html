@@ -485,8 +485,7 @@
 				<div class="loc-wrap">
 					<iframe class="map-box p-item" data-speed="0.14"
 						src="https://www.google.com/maps?q=경기도+남양주시+순화궁로+282&output=embed"
-						width="400%" height="220" style="border: 0;" allowfullscreen
-						loading="lazy"> </iframe>
+						width="400%" height="220" style="border: 0;" allowfullscreen loading="lazy"> </iframe>
 
 					<div class="addr p-item" data-speed="0.22">
 						<dl>
@@ -909,8 +908,24 @@
 		  function setHidden(nextHidden){
 		    if (isHidden === nextHidden) return;
 		    isHidden = nextHidden;
-		    breadcrumb.classList.toggle("hide", isHidden);
+		    
+		    if(!nextHidden){
+		    	breadcrumb.classList.remove('gone'); 
+		    	
+		    	requestAnimationFrame(() => {
+		            breadcrumb.classList.remove("hide");
+		         });
+		    	
+		    }else {
+		        breadcrumb.classList.add("hide");
+		    }
 		  }
+		  
+		  breadcrumb.addEventListener('transitionend', (e) => {
+		     if (isHidden && (e.propertyName === 'opacity' || e.propertyName === 'transform')) {
+		       breadcrumb.classList.add('gone');
+		     }
+		   });
 		
 		  function showByScroll(){
 		    if (footerVisible) return

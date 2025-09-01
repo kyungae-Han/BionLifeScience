@@ -53,11 +53,18 @@
 }
 
 
-.breadcrumb-wrap.hide {
-  opacity: 0;
+.breadcrumb-wrap.hide{
+  opacity: 0;                          
+  transform: translateX(0) translateY(30%); 
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  backdrop-filter: none !important;        
+  box-shadow: none !important;            
+  z-index: 0;                              
+}
+
+.breadcrumb-wrap.gone{
+  display: none;                 
 }
 
 .breadcrumb-wrap ul, 
