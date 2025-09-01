@@ -560,12 +560,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!header || !headerWrap) return;
 
   // 1) 콘텐츠 점프 방지용 스페이서 (한 번만 생성)
-  let spacer = document.querySelector('.header-spacer');
+  let spacer = document.querySelector('.header-wrap-clone');
   if (!spacer) {
     spacer = document.createElement('div');
     spacer.className = 'header-spacer';
     header.after(spacer);
   }
+  
 
   // 2) 축소 트리거용 센티넬 (헤더 바로 아래 1px 지점)
   let sentinel = document.getElementById('shrink-sentinel');

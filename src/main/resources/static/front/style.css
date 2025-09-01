@@ -3283,6 +3283,20 @@ html[xmlns] .slider-wrap {
 	Header
 -----------------------------------------------------------------*/
 
+/*
+헤더스페이서
+*/
+.header-wrap-clone {
+  visibility: hidden;
+  pointer-events: none;
+  background: transparent;
+  height: calc(100px + 1px);
+}
+
+@media(max-width:998px){
+	.header-wrap-clone {visibility: hidden; height: calc(100px + 1px);}
+}
+
 #header {
   position: relative;
   background-color: #fff;
@@ -3296,9 +3310,6 @@ html[xmlns] .slider-wrap {
   width: 100%;
 }
 
-.header-wrap-clone {
-  display: none;
-}
 
 .header-row {
   position: relative;
@@ -3335,10 +3346,6 @@ html[xmlns] .slider-wrap {
     position: absolute;
   }
 
-  .header-wrap-clone {
-    display: block;
-    height: calc(100px + 1px);
-  }
 
   .header-size-sm .header-wrap-clone {
     height: calc(60px + 1px);
@@ -3602,7 +3609,7 @@ html[xmlns] .slider-wrap {
   
   
   /* 스페이서(점프 방지) */
-  .header-spacer { transition: height .35s var(--m-ease); }
+  /*.header-spacer { transition: height .35s var(--m-ease); }*/
   
   .header-row {
   	justify-content: space-between;
@@ -4661,6 +4668,7 @@ nav .menu-item:hover > .menu-link,
     display: -ms-flexbox;
     display: flex;
   }
+
 
   .side-header .header-wrap-clone {
     display: none;
@@ -18814,20 +18822,21 @@ label.checkbox {
 
 .product-mega-wrap li{list-style:none;}
 	
-	.product-mega-wrap{
-	  position: absolute;
-	  left: 0; right: 0; top: 100%;
-	  width: 100vw; 
-	  background: #0a1e4e;
-	  /* flex 불필요하지만 써도 무방. 써도 결과 동일 */
-	  display: block;
-	  border-top: 2px solid #fe5000;
-	  overflow:hidden;
-	  z-index:1100;
-	}
+.product-mega-wrap{
+  position: absolute;
+  left: 0; right: 0; top: 100%;
+  width: 100vw; 
+  background: #0a1e4e;
+  /* flex 불필요하지만 써도 무방. 써도 결과 동일 */
+  display: block;
+  border-top: 2px solid #fe5000;
+  overflow:hidden;
+  z-index:1100;
+}
+	
 	
 .header-wrap-clone {display: none;}
-	
+
 .product-mega-wrap .inner{
 		width: 100%;
 		/*max-width: 1520px;*/
@@ -19213,15 +19222,29 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
 #newsSection{background:#f5f5f5 !important;}
 
 /* 래퍼 */
-#newsSection .news-wrap{ width:min(1240px,92%); margin:0 auto; }
+#newsSection .news-wrap{
+  width: min(1240px, 92%);
+  margin: 0 auto;
+  position: relative;
+  padding-bottom: 64px;          /* 버튼이 콘텐츠와 겹치지 않도록 여유 */
+}
+
 
 /* 헤더 & 탭 */
-#newsSection .news-head{display:flex;align-items:flex-end;justify-content: flex-start;gap:24px;position: relative;}
-#newsSection .news-head h2{ 
-	font-size:clamp(28px,4.8vw,42px); 
-	font-weight:800; 
-	color:var(--bs-black,#111); 
-	margin: 0 !important;
+#newsSection .news-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-start;
+  gap:24px;
+  position:relative;              /* 유지! */
+}
+
+
+#newsSection .news-head h2{
+  font-size:clamp(28px,4.8vw,42px);
+  font-weight:800;
+  color:var(--bs-black,#111);
+  margin:0 !important;
 }
 
 .news-tabs{position: absolute;display:flex;gap:28px;right: 0;}
@@ -19229,6 +19252,34 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
   appearance:none; background:none; border:0; padding:10px 2px;
   font-weight:700; color:var(--bs-gray-700,#495057); cursor:pointer;
 }
+
+.news-more {
+  position: absolute;
+  left: 125px;     /* PC에서 타이틀 옆 */
+  top: 7px;    /* 헤더 내부 하단 */
+  transform: none;
+  height: auto;
+}
+
+@media (max-width: 991px) {
+  .news-more {
+    position: absolute;
+    top: auto;
+    left: 50%;
+    bottom: -50px; /* 콘텐츠 하단으로 띄우기 */
+    transform: translateX(-50%); /* 중앙정렬 */
+    right: auto;
+    height: 45px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  #newsSection .news-wrap {
+    padding-bottom: 25px; /* 버튼 공간 확보 */
+  }
+}
+
 .news-tabs .tab-btn.is-active{ color:#111; }
 .news-tabs .tab-ink{
   position:absolute; left:0; bottom:0; width:108px; height:3px;

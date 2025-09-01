@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
-
 <head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 기업소개')">
 </head>
 
 <link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
+
 
 <body class="stretched">
 
@@ -12,6 +12,7 @@
 
 		<th:block
 			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+			
 		<section id="page-title" class="contents-wrap">
 			<div class="container clearfix">
 				<h1>회사 소개</h1>
@@ -27,7 +28,7 @@
 			</div>
 		</section>
 
-		<section class="hero about-body" id="hero">
+		<section class="hero about-body clearfix" id="hero">
 			<video autoplay muted loop playsinline class="hero-video"
 				id="heroVideo">
 				<source src="/front/images/mobile-first-1.mp4" type="video/mp4">
@@ -367,80 +368,7 @@
 						Modeling</span> <span class="il-tag">3D Printing</span>
 				</div>
 			</div>
-			<script>
-			
-			(function(){
-				const sec = document.getElementById('certificates');
-				if(!sec || sec.dataset.sliderInit) return; // guard: run once
-				sec.dataset.sliderInit = '1';
-
-
-				const viewport = sec.querySelector('#certViewport');
-				const track = sec.querySelector('#certTrack');
-				const prevBtn = sec.querySelector('#certPrev');
-				const nextBtn = sec.querySelector('#certNext');
-
-
-				const getStep = () => {
-					  const first = track.querySelector('.cert');
-					  if (!first) return viewport.clientWidth * 0.8;
-
-					  const rect = first.getBoundingClientRect();
-					  const cs = getComputedStyle(track);
-					  const gap =
-					    parseFloat(cs.columnGap || cs.gap || '16'); // ← column-gap, gap 모두 대응
-					  return rect.width + gap; // 카드 1장 + 간격
-					};
-
-
-				function updateButtons(){
-				const max = viewport.scrollWidth - viewport.clientWidth - 1;
-				prevBtn.disabled = viewport.scrollLeft <= 1;
-				nextBtn.disabled = viewport.scrollLeft >= max;
-				}
-
-
-				function scrollByStep(dir){
-				viewport.scrollBy({ left: dir * getStep(), behavior: 'smooth' });
-				}
-
-
-				// click nav
-				prevBtn.addEventListener('click', () => scrollByStep(-1));
-				nextBtn.addEventListener('click', () => scrollByStep(1));
-
-
-				// pointer drag
-				let isDown = false, startX = 0, startLeft = 0;
-				viewport.addEventListener('pointerdown', (e)=>{ isDown = true; startX = e.clientX; startLeft = viewport.scrollLeft; viewport.setPointerCapture(e.pointerId); });
-				viewport.addEventListener('pointermove', (e)=>{ if(!isDown) return; const dx = e.clientX - startX; viewport.scrollLeft = startLeft - dx; });
-				viewport.addEventListener('pointerup', ()=>{ isDown = false; });
-				viewport.addEventListener('pointercancel', ()=>{ isDown = false; });
-
-
-				// mouse wheel → horizontal scroll (non-passive to prevent vertical page scroll)
-				viewport.addEventListener('wheel', (e)=>{
-				if(Math.abs(e.deltaY) > Math.abs(e.deltaX)){
-				viewport.scrollBy({ left: e.deltaY });
-				e.preventDefault();
-				}
-				}, { passive: false });
-
-
-				// keyboard
-				viewport.addEventListener('keydown', (e)=>{
-				if(e.key === 'ArrowRight') { e.preventDefault(); scrollByStep(1); }
-				if(e.key === 'ArrowLeft') { e.preventDefault(); scrollByStep(-1); }
-				});
-
-
-				// observe & init
-				viewport.addEventListener('scroll', updateButtons, { passive: true });
-				window.addEventListener('resize', updateButtons);
-				updateButtons();
-				})();
-			
-			</script>
+		
 		</section>
 
 		<!-- Certificates (Swipe) -->
@@ -518,6 +446,82 @@
 	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
 	<script src="/front/js/timeline.js"></script>
 	<script src="/front/js/company/about.js"></script>
+
+	<script>
+			
+			(function(){
+				const sec = document.getElementById('certificates');
+				if(!sec || sec.dataset.sliderInit) return; // guard: run once
+				sec.dataset.sliderInit = '1';
+
+
+				const viewport = sec.querySelector('#certViewport');
+				const track = sec.querySelector('#certTrack');
+				const prevBtn = sec.querySelector('#certPrev');
+				const nextBtn = sec.querySelector('#certNext');
+
+
+				const getStep = () => {
+					  const first = track.querySelector('.cert');
+					  if (!first) return viewport.clientWidth * 0.8;
+
+					  const rect = first.getBoundingClientRect();
+					  const cs = getComputedStyle(track);
+					  const gap =
+					    parseFloat(cs.columnGap || cs.gap || '16'); // ← column-gap, gap 모두 대응
+					  return rect.width + gap; // 카드 1장 + 간격
+					};
+
+
+				function updateButtons(){
+				const max = viewport.scrollWidth - viewport.clientWidth - 1;
+				prevBtn.disabled = viewport.scrollLeft <= 1;
+				nextBtn.disabled = viewport.scrollLeft >= max;
+				}
+
+
+				function scrollByStep(dir){
+				viewport.scrollBy({ left: dir * getStep(), behavior: 'smooth' });
+				}
+
+
+				// click nav
+				prevBtn.addEventListener('click', () => scrollByStep(-1));
+				nextBtn.addEventListener('click', () => scrollByStep(1));
+
+
+				// pointer drag
+				let isDown = false, startX = 0, startLeft = 0;
+				viewport.addEventListener('pointerdown', (e)=>{ isDown = true; startX = e.clientX; startLeft = viewport.scrollLeft; viewport.setPointerCapture(e.pointerId); });
+				viewport.addEventListener('pointermove', (e)=>{ if(!isDown) return; const dx = e.clientX - startX; viewport.scrollLeft = startLeft - dx; });
+				viewport.addEventListener('pointerup', ()=>{ isDown = false; });
+				viewport.addEventListener('pointercancel', ()=>{ isDown = false; });
+
+
+				// mouse wheel → horizontal scroll (non-passive to prevent vertical page scroll)
+				viewport.addEventListener('wheel', (e)=>{
+				if(Math.abs(e.deltaY) > Math.abs(e.deltaX)){
+				viewport.scrollBy({ left: e.deltaY });
+				e.preventDefault();
+				}
+				}, { passive: false });
+
+
+				// keyboard
+				viewport.addEventListener('keydown', (e)=>{
+				if(e.key === 'ArrowRight') { e.preventDefault(); scrollByStep(1); }
+				if(e.key === 'ArrowLeft') { e.preventDefault(); scrollByStep(-1); }
+				});
+
+
+				// observe & init
+				viewport.addEventListener('scroll', updateButtons, { passive: true });
+				window.addEventListener('resize', updateButtons);
+				updateButtons();
+				})();
+			
+			</script>
+
 
 
 	<!-- history관련 script -->
@@ -894,76 +898,111 @@
    </script>
 
 	<!-- nav top body 스크롤 이벤트 -->
-	<script>
-		document.addEventListener("DOMContentLoaded", () => {
-		  const breadcrumb = document.querySelector(".breadcrumb-wrap");
-		  const footer     = document.querySelector("footer");
-		  if (!breadcrumb) return;
-		
-		  let scrollTimer   = null;
-		  let footerVisible = false; 
-		  let isHidden      = false;  
-		
-		  /* ✅ 추가: 클래스 토글을 일관되게 처리하는 헬퍼 */
-		  function setHidden(nextHidden){
-		    if (isHidden === nextHidden) return;
-		    isHidden = nextHidden;
-		    
-		    if(!nextHidden){
-		    	breadcrumb.classList.remove('gone'); 
-		    	
-		    	requestAnimationFrame(() => {
-		            breadcrumb.classList.remove("hide");
-		         });
-		    	
-		    }else {
-		        breadcrumb.classList.add("hide");
-		    }
-		  }
-		  
-		  breadcrumb.addEventListener('transitionend', (e) => {
-		     if (isHidden && (e.propertyName === 'opacity' || e.propertyName === 'transform')) {
-		       breadcrumb.classList.add('gone');
-		     }
-		   });
-		
-		  function showByScroll(){
-		    if (footerVisible) return
-		    setHidden(false);
-		  }
-		  function hideByInactivity(){
-		    if (footerVisible) return;         
-		    setHidden(true);
-		  }
-		
-		  /* === Footer 감지 === */
-		  if (footer) {
-		    const io = new IntersectionObserver((entries) => {
-		      for (const entry of entries) {
-		        footerVisible = entry.isIntersecting;     
-		        if (footerVisible) {
-		          clearTimeout(scrollTimer);              
-		          setHidden(true);                       
-		        } else {
-		          setHidden(false);                     
-		        }
-		      }
-		    }, { threshold: 0 });
-		    io.observe(footer);
-		  }
-		
-		  /* === 스크롤 멈춤 감지 === */
-		  window.addEventListener("scroll", () => {
-		    showByScroll();                               
-		
-		    clearTimeout(scrollTimer);
-		    scrollTimer = setTimeout(() => {
-		      hideByInactivity();                          
-		    }, 2000);
-		  }, { passive: true });
-		});
-		</script>
 
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const breadcrumb = document.querySelector(".breadcrumb-wrap");
+  const footer     = document.querySelector("footer");
+  const header     = document.querySelector("#header") || document.querySelector(".header-wrap");
+  if (!breadcrumb) return;
+
+  // 상태값
+  let footerVisible = false;
+  let isHidden      = false;
+  let idleTimer     = null;
+
+  // 파라미터
+  const AT_TOP_EPS = 1;    // 최상단 판정 오차
+  const IDLE_MS    = 1800; // 정지 후 숨김 대기시간(ms)
+
+  // 헬퍼
+  const atTop = () => window.scrollY <= AT_TOP_EPS;
+  const headerH = () => (header ? header.offsetHeight || 0 : 0);
+  const inHeaderZone = () => window.scrollY <= Math.max(0, headerH() - AT_TOP_EPS);
+
+  function setFixedBottom(toBottom) {
+    breadcrumb.classList.toggle("fixed-bottom", !!toBottom);
+  }
+
+  function setHidden(nextHidden) {
+    if (isHidden === nextHidden) return;
+    isHidden = nextHidden;
+    if (!nextHidden) {
+      breadcrumb.classList.remove('gone');
+      requestAnimationFrame(() => breadcrumb.classList.remove("hide"));
+    } else {
+      breadcrumb.classList.add("hide");
+    }
+  }
+
+  // 전환 종료 후 gone 처리
+  breadcrumb.addEventListener('transitionend', (e) => {
+    if (isHidden && (e.propertyName === 'opacity' || e.propertyName === 'transform')) {
+      breadcrumb.classList.add('gone');
+    }
+  });
+
+  // Footer 감지
+  if (footer) {
+    const io = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        footerVisible = entry.isIntersecting;
+        if (footerVisible) {
+          setHidden(true); // footer 보이면 숨김
+        }
+      }
+    }, { threshold: 0 });
+    io.observe(footer);
+  }
+
+  // 스크롤 시 동작
+  function onScroll() {
+    // footer 보이면 숨김 유지
+    if (footerVisible) {
+      setHidden(true);
+      return;
+    }
+
+    // top/헤더 영역이면 top 모드
+    if (atTop() || inHeaderZone()) {
+      setFixedBottom(false);
+      setHidden(false);
+    } else {
+      // 그 외엔 bottom 모드
+      setFixedBottom(true);
+      setHidden(false);
+    }
+
+    // 정지 후 숨김 타이머
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      if (footerVisible) { setHidden(true); return; }
+      if (atTop() || inHeaderZone()) {
+        setHidden(false); // top에서는 숨김 안함
+      } else {
+        setHidden(true);
+      }
+    }, IDLE_MS);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  // 초기/리사이즈 보정
+  function sync() {
+    if (atTop() || inHeaderZone()) {
+      setFixedBottom(false);
+    } else {
+      setFixedBottom(true);
+    }
+    setHidden(false);
+  }
+  window.addEventListener("load", sync);
+  window.addEventListener("resize", sync);
+});
+</script>
+<script>
+document.documentElement.style.setProperty('--header-bottom', header.offsetHeight + 'px');
+</script>
 
 </body>
 </html>
