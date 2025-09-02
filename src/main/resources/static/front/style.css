@@ -2367,7 +2367,6 @@ html[xmlns] .slider-wrap {
   #header.sticky-header.sticky-header-shrink #top-search,
   #header.sticky-header.sticky-header-shrink #languages,
   #header.sticky-header.sticky-header-shrink .header-extras{
-    /*transform: scale(1);*/
     transform-origin: right center;
     transition: transform .3s var(--m-ease);
   }
@@ -2489,7 +2488,6 @@ html[xmlns] .slider-wrap {
 
 .primary-menu {
   display: -ms-flexbox;
-  display: flex;
   flex-basis: 100%;
   -ms-flex-positive: 1;
   flex-grow: 1;
@@ -2545,7 +2543,7 @@ body:not(.top-search-open) .top-search-parent #primary-menu-trigger {
   -ms-user-select: none;
   user-select: none;
   position:absolute;
-  right:7px;
+  right:40px;
   top: auto;
 }
 
@@ -15732,9 +15730,24 @@ label.checkbox {
   position:absolute; top:100%; left:50%; transform:translateX(-50%);
   width:100%; max-width:none;
   opacity:0; visibility:hidden; pointer-events:none;
-  transition:opacity .18s ease, transform .18s ease, visibility 0s .18s;
+  transition:opacity .12s ease, transform .12s ease, visibility 0s .18s;
   z-index:1100;
 }
+
+/* ≥1024px: 항상 열림 */
+
+/*
+@media (min-width:1024px){
+  #product-items,
+  #brands-items{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transition: opacity .18s ease, transform .18s ease, visibility 0s;
+  }
+}
+*/
+
 
 /* 랩 위에 올려도 계속 열려있게 */
 #product-items:hover, #brands-items:hover{
@@ -15743,23 +15756,29 @@ label.checkbox {
 }
 
 /* 제품소개 호버 → product-items 오픈 */
+/*
 nav.primary-menu:has(.menu-item.product:hover) ~ #product-items{
   opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%);
   transition:opacity .18s ease, transform .18s ease;
 }
+*/
 
 /* 브랜드소개 호버 → brands-items 오픈 */
+/*
 nav.primary-menu:has(.menu-item.brand:hover) ~ #brands-items{
   opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%);
   transition:opacity .18s ease, transform .18s ease;
 }
+*/
 
+/*
 body.js-nav nav.primary-menu:has(.menu-item.product:hover) ~ #product-items,
 body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
 }
+*/
 
 /*메가메뉴 디버*/
 
@@ -17675,7 +17694,7 @@ h4 {
     border-top: 0;
   }
 
-#primary-menu-trigger,
+  #primary-menu-trigger,
   #page-menu-trigger {
     display: none;
     opacity: 0;
@@ -17683,14 +17702,45 @@ h4 {
     z-index: 0;
   }
 
+
 .menu-container:not(.mobile-primary-menu) {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    -ms-flex-align: center;
-    align-items: center;
+  display: grid;             /* 가로 배치 */
+  align-items: center;
+  grid-auto-flow: column;
+  gap: 24px;                 /* 필요 시 조정 */
+}
+
+/* === Mobile: 데스크탑 GNB 완전 비표시 === */
+@media (max-width: 991.98px) {
+  .menu-container:not(.mobile-primary-menu) {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    height: 0 !important;
+    overflow: hidden !important;
   }
+  /* 모바일 메뉴 보이기 (필요 시) */
+  .mobile-primary-menu {
+    display: block !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+}
+
+/* === Desktop 복귀 시 명시적으로 원복 === */
+@media (min-width: 991.99px) {
+  .menu-container:not(.mobile-primary-menu) {
+    display: grid !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .mobile-primary-menu {
+    display: none !important;
+  }
+}
+
 
 .full-header .primary-menu .menu-container {
     padding-right: 0.5rem;
@@ -19708,4 +19758,58 @@ body:not(.stretched) #wrapper {
     padding-right: 20px;
     border-top: 0;
   }
+}
+
+/* 기본: 데스크탑 보임, 모바일 숨김 */
+.primary-menu .nav.is-desktop { display: block !important; }
+.primary-menu .nav.is-mobile  { display: none  !important; }
+
+/* 모바일 구간: 반대로 */
+@media (max-width: 991.98px) {
+  .primary-menu .nav.is-desktop { display: none  !important; }
+  .primary-menu .nav.is-mobile  { display: block !important; }
+}
+
+
+/* ===== Hamburger rotation: single source of truth ===== */
+
+/* 1) 기본값 고정: 어떤 상황에서도 초기 상태는 회전 없음 */
+#primary-menu-trigger,
+#primary-menu-trigger i,
+#primary-menu-trigger .icon,
+#primary-menu-trigger .icon-line-cross {
+  transform: none !important;
+  animation: none !important;     /* 혹시 남아있는 키프레임 회전 제거 */
+  transition: transform .24s ease; /* 회전만 부드럽게 */
+}
+
+/* 2) 열림 상태(= body에 붙이는 클래스 1개로만 제어) */
+body.primary-menu-open #primary-menu-trigger .icon,
+body.primary-menu-open #primary-menu-trigger .icon-line-cross {
+  transform: rotate(180deg) !important;  /* 원하는 각도 90/135/180 중 선택 */
+}
+
+/* 3) 호버/포커스 등에서 transform 덮어쓰지 못하게 차단 */
+#primary-menu-trigger:hover .icon,
+#primary-menu-trigger:focus .icon,
+#primary-menu-trigger:hover .icon-line-cross,
+#primary-menu-trigger:focus .icon-line-cross {
+  transform: inherit !important;   /* hover가 회전값을 바꾸지 못하도록 */
+}
+
+/* 4) 부트스트랩/공통 규칙의 aria-expanded 간섭 차단 (있을 때만) */
+#primary-menu-trigger[aria-expanded="true"] .icon,
+#primary-menu-trigger[aria-expanded="true"] .icon-line-cross {
+  transform: inherit !important;   /* 실제 회전은 body.primary-menu-open이 담당 */
+}
+
+/* 5) 사이드헤더/데스크탑 전용 회전 규칙 무력화(있을 때만) */
+.side-header #primary-menu-trigger .icon,
+.side-header #primary-menu-trigger .icon-line-cross {
+  transform: none !important;
+}
+
+@media (max-width: 991.98px) {
+  .primary-menu .nav.is-mobile,
+  .primary-menu .nav.is-mobile .menu-container { max-width: none !important; }
 }

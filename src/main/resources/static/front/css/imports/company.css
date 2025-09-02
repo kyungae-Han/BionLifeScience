@@ -1931,6 +1931,7 @@ il-callout.p-item {
 /* 반응형 미세 조정 */
 @media (max-width: 1024px){
   #certificates .swiper { gap: 32px; }
+  .is-desktop {display:none;}
 }
 @media (max-width: 768px){
   #certificates .swiper { gap: 24px; }
@@ -1978,6 +1979,4 @@ il-callout.p-item {
   /* 연혁 카드 간격 */
   .bio-history-page{ padding: clamp(8px, 3vw, 12px); }
 }
-
-
 
