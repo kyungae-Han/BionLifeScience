@@ -364,6 +364,66 @@
 		.forEach(el => el.removeAttribute('style'));
 		</script>
 		
+		<script>
+		(() => {
+		  const mqDesktop = window.matchMedia('(min-width: 991px)');
+		  const mqCoarse  = window.matchMedia('(hover: none), (pointer: coarse)');
+		  const isTouchDesktop = () => mqDesktop.matches && mqCoarse.matches;
+
+		  // 패널과 컬럼 체인 정의 (네 마크업 id에 맞춤)
+		  const panels = [
+		    { panelId: 'product-items', chain: ['col-big','col-middle','col-small','col-product'] },
+		    { panelId: 'brands-items',  chain: ['brand-col-1','brand-col-2','brand-col-3','brand-col-4','brand-col-5'] },
+		  ];
+
+		  const hasChild = (li, chain) => {
+		    const colId = li.parentElement?.id;
+		    const idx   = chain.indexOf(colId);
+		    if (idx < 0 || idx === chain.length - 1) return false;
+		    const next  = document.getElementById(chain[idx + 1]);
+		    return !!next?.querySelector(`li[data-parent="${li.dataset.id}"]`);
+		  };
+
+		  panels.forEach(({ panelId, chain }) => {
+		    const panel = document.getElementById(panelId);
+		    if (!panel) return;
+
+		    // 캡처 단계에서 선점: 첫 탭은 이동 막고 펼치기만
+		    panel.addEventListener('click', (e) => {
+		      if (!isTouchDesktop()) return;
+
+		      const a = e.target.closest('.menu-item > .menu-link');
+		      if (!a || !panel.contains(a)) return;
+
+		      const li = a.closest('.menu-item');
+		      // 자식 없으면(리프) 그대로 이동
+		      if (!hasChild(li, chain)) return;
+
+		      if (li.dataset.armed !== '1') {
+		        e.preventDefault();
+		        // 같은 컬럼 형제의 armed 해제
+		        [...li.parentElement.children].forEach(sib => { if (sib !== li) delete sib.dataset.armed; });
+		        li.dataset.armed = '1'; // 두 번째 탭부터 이동 허용
+		        // (기존 initDepth()의 클릭 위임이 실행되어 다음 depth가 보이게 됨)
+		      } else {
+		        delete li.dataset.armed; // 두 번째 탭 → 이동
+		      }
+		    }, { capture: true }); // 중요!
+		  });
+
+		  // 패널 밖을 탭하면 armed 초기화
+		  document.addEventListener('click', (e) => {
+		    if (!isTouchDesktop()) return;
+		    const inside = panels.some(({panelId}) => document.getElementById(panelId)?.contains(e.target));
+		    if (inside) return;
+		    document.querySelectorAll('.menu-item[data-armed]').forEach(li => delete li.dataset.armed);
+		  }, { capture: true });
+		})();
+		</script>
+
+
+		
+		
 		</th:block>
 </body>
 </html>
