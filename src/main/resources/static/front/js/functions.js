@@ -43,6 +43,21 @@ $.fn.scrollEnd = function(callback, timeout) {
 }());
 
 
+// 모바일 메뉴/아코디언에 남는 인라인 스타일 제거
+function clearInlineMenuStyles() {
+  try {
+    primaryMenu
+      .find('.mobile-primary-menu, .menu-container, .mega-menu-content, .sub-menu-container')
+      .each(function () {
+        this.style.removeProperty('display');
+        this.style.removeProperty('height');
+        this.style.removeProperty('overflow');
+      });
+  } catch(e) {}
+}
+
+
+
 
 function debounce(func, wait, immediate) {
 	let timeout, args, context, timestamp, result;
@@ -560,112 +575,164 @@ window.scwEvents = window.scwEvents || {};
 
 		menufunctions: function(){
 
-			let menuItemSubs		= $( '.menu-item:has(.sub-menu-container)' ),
-				menuItemSubsLinks	= menuItemSubs.children( '.menu-link' ),
-				submenusT			= '.mega-menu-content, .sub-menu-container',
-				submenus			= $( submenusT ),
-				menuItemT			= '.menu-item',
-				subMenuT			= '.sub-menu',
-				menuSpeed			= primaryMenu.attr( 'data-trigger-speed' ) || 200,
-				subMenuTriggerT		= '.sub-menu-trigger',
-				menuItemTrigger;
+		  let menuItemSubs        = $('.menu-item:has(.sub-menu-container)'),
+		      menuItemSubsLinks   = menuItemSubs.children('.menu-link'),
+		      submenusT           = '.mega-menu-content, .sub-menu-container',
+		      submenus            = $(submenusT),
+		      menuItemT           = '.menu-item',
+		      subMenuT            = '.sub-menu',
+		      menuSpeed           = primaryMenu.attr('data-trigger-speed') || 200,
+		      subMenuTriggerT     = '.sub-menu-trigger',
+		      menuItemTrigger;
 
-			menuSpeed = Number( menuSpeed );
+		  menuSpeed = Number(menuSpeed);
+		  menuItemTrigger = menuItemSubs.children(subMenuTriggerT);
 
-			menuItemTrigger	= menuItemSubs.children( subMenuTriggerT );
+		  // 데스크탑 진입 시 기본 상태 정리
+		  if ($body.hasClass('device-xl') || $body.hasClass('device-lg')) {
+		    setTimeout(function(){
+		      if ($headerWrapClone.length > 0) {
+		        $headerWrapClone.css({ 'height': initHeaderHeight });
+		      }
+		      SEMICOLON.header.includeOffset();
+		    }, 1000);
 
-			if( $body.hasClass('device-xl') || $body.hasClass('device-lg') ) {
-				setTimeout( function(){
-					if( $headerWrapClone.length > 0 ) {
-						$headerWrapClone.css({ 'height': initHeaderHeight });
-					}
-					SEMICOLON.header.includeOffset();
-				}, 1000);
-				primaryMenu.find( submenus ).css({ 'display': '' });
-			} else {
-				$headerInc.css({ 'margin-top': '' });
-			}
+		    // 잔여 인라인 제거 + 기본 display 복구
+		    clearInlineMenuStyles();
+		    primaryMenu.find(submenus).css({ 'display': '' });
 
-			if( ( $body.hasClass('overlay-menu') && primaryMenu.hasClass('on-click') ) && ( $body.hasClass('device-xl') || $body.hasClass('device-lg') ) ) {
-				menuItemSubsLinks.off( 'click' ).on( 'click', function(e){
-					let triggerEl = $(this);
-					triggerEl.parents( subMenuT ).siblings().find( submenus ).stop( true, true ).slideUp( menuSpeed );
-					triggerEl.parent( menuItemT ).children( submenusT ).stop( true, true ).slideToggle( menuSpeed );
-					e.preventDefault();
-				});
-			} else if( ( $body.hasClass('side-header') && primaryMenu.hasClass('on-click') ) || ( $body.hasClass('device-md') || $body.hasClass('device-sm') || $body.hasClass('device-xs') ) ) {
-				menuItemTrigger.removeClass('icon-rotate-90');
-				$( menuItemT ).find( submenus ).filter(':not(:animated)').stop( true, true ).slideUp( menuSpeed , function(){
-					$body.toggleClass("primary-menu-open", false);
-				});
+		  } else {
+		    $headerInc.css({ 'margin-top': '' });
+		  }
 
-				menuItemTrigger = menuItemTrigger.add( menuItemSubsLinks.filter('[href^="#"]') );
+		  if ( ($body.hasClass('overlay-menu') && primaryMenu.hasClass('on-click')) &&
+		       ($body.hasClass('device-xl') || $body.hasClass('device-lg')) ) {
 
-				menuItemTrigger.off( 'click' ).on( 'click', function(e){
-					let triggerEl = $(this);
-					triggerEl.parents( subMenuT ).siblings().find( subMenuTriggerT ).removeClass('icon-rotate-90');
-					triggerEl.parents( subMenuT ).siblings().find( submenus ).filter(':not(:animated)').stop( true, true ).slideUp( menuSpeed );
-					triggerEl.parent( menuItemT ).children( submenusT ).filter(':not(:animated)').stop( true, true ).slideToggle( menuSpeed );
+		    menuItemSubsLinks.off('click').on('click', function(e){
+		      let triggerEl = $(this);
+		      triggerEl.parents(subMenuT).siblings().find(submenus).stop(true,true).slideUp(menuSpeed, function(){
+		        clearInlineMenuStyles();
+		      });
+		      triggerEl.parent(menuItemT).children(submenusT).stop(true,true).slideToggle(menuSpeed, function(){
+		        if ($(this).is(':hidden')) clearInlineMenuStyles();
+		      });
+		      e.preventDefault();
+		    });
 
-					let subMenuTriggerEl = triggerEl.parent( menuItemT ).children( subMenuTriggerT );
+		  } else if ( ($body.hasClass('side-header') && primaryMenu.hasClass('on-click')) ||
+		              ($body.hasClass('device-md') || $body.hasClass('device-sm') || $body.hasClass('device-xs')) ) {
 
-					if( !subMenuTriggerEl.hasClass( 'icon-rotate-90' ) ) {
-						subMenuTriggerEl.addClass('icon-rotate-90');
-					} else {
-						subMenuTriggerEl.removeClass('icon-rotate-90');
-					}
+		    menuItemTrigger.removeClass('icon-rotate-90');
 
-					e.preventDefault();
-				});
-			} else if( ( $body.hasClass('overlay-menu') || $body.hasClass('side-header') ) && ( $body.hasClass('device-xl') || $body.hasClass('device-lg') ) ) {
-				primaryMenu.find( submenus ).stop( true, true ).slideUp( menuSpeed );
-				$( menuItemT ).hover( function(e){
-					$(this).children( submenusT ).stop( true, true ).slideDown( menuSpeed );
-				}, function(){
-					$(this).children( submenusT ).stop( true, true ).slideUp( menuSpeed );
-				});
-			} else {
-				if( primaryMenu.hasClass('on-click') ) {
-					menuItemSubsLinks.off( 'click' ).on( 'click', function(e){
-						let triggerEl = $(this);
-						triggerEl.parents( subMenuT ).siblings().find( submenus ).removeClass('d-block');
-						triggerEl.parent( menuItemT ).children( submenusT ).toggleClass('d-block');
-						triggerEl.parent( menuItemT ).siblings().removeClass('current');
-						triggerEl.parent( menuItemT ).toggleClass('current');
-						e.preventDefault();
-					});
-				}
-			}
+		    $(menuItemT).find(submenus).filter(':not(:animated)').stop(true,true).slideUp(menuSpeed, function(){
+		      $body.toggleClass('primary-menu-open', false);
+		      clearInlineMenuStyles();          // ← 닫힐 때 잔여 인라인 제거
+		    });
 
-			if( $('.top-links').hasClass('on-click') || ( $body.hasClass('device-md') || $body.hasClass('device-sm') || $body.hasClass('device-xs') ) ) {
-				$('.top-links-item:has(.top-links-sub-menu,.top-links-section) > a').on( 'click', function(e){
-					$(this).parents('li').siblings().find('.top-links-sub-menu,.top-links-section').removeClass('d-block');
-					$(this).parent('li').children('.top-links-sub-menu,.top-links-section').toggleClass('d-block');
-					e.preventDefault();
-				});
-			}
+		    menuItemTrigger = menuItemTrigger.add(menuItemSubsLinks.filter('[href^="#"]'));
 
-			SEMICOLON.header.menuInvert( $('.top-links-section') );
+		    menuItemTrigger.off('click').on('click', function(e){
+		      let triggerEl = $(this);
 
-			$('#primary-menu-trigger').off( 'click' ).on( 'click', function() {
-				if( $body.hasClass('device-md') || $body.hasClass('device-sm') || $body.hasClass('device-xs') ) {
-					if( primaryMenu.find('.mobile-primary-menu').length > 0 ) {
-						$( '.primary-menu:not(.mobile-menu-off-canvas) .mobile-primary-menu' ).stop( true, true ).slideToggle( menuSpeed );
-						$( '.primary-menu.mobile-menu-off-canvas .mobile-primary-menu' ).toggleClass('d-block');
-					} else {
-						$( '.primary-menu:not(.mobile-menu-off-canvas) .menu-container' ).stop( true, true ).slideToggle( menuSpeed );
-						$( '.primary-menu.mobile-menu-off-canvas .menu-container' ).toggleClass('d-block');
-					}
-				}
-				$body.toggleClass("primary-menu-open");
-				return false;
-			});
+		      triggerEl.parents(subMenuT).siblings().find(subMenuTriggerT).removeClass('icon-rotate-90');
 
-			$( '.menu-container:not(.mobile-primary-menu)' ).css({ 'display': '' });
-			if( $body.hasClass('device-xl') || $body.hasClass('device-lg') ) {
-				primaryMenu.find('.mobile-primary-menu').removeClass('d-block');
-			}
+		      triggerEl.parents(subMenuT).siblings().find(submenus)
+		        .filter(':not(:animated)').stop(true,true).slideUp(menuSpeed, function(){
+		          clearInlineMenuStyles();
+		        });
 
+		      triggerEl.parent(menuItemT).children(submenusT)
+		        .filter(':not(:animated)').stop(true,true).slideToggle(menuSpeed, function(){
+		          if ($(this).is(':hidden')) clearInlineMenuStyles();
+		        });
+
+		      let subMenuTriggerEl = triggerEl.parent(menuItemT).children(subMenuTriggerT);
+		      subMenuTriggerEl.toggleClass('icon-rotate-90');
+
+		      e.preventDefault();
+		    });
+
+		  } else if ( ($body.hasClass('overlay-menu') || $body.hasClass('side-header')) &&
+		              ($body.hasClass('device-xl') || $body.hasClass('device-lg')) ) {
+
+		    primaryMenu.find(submenus).stop(true,true).slideUp(menuSpeed, function(){
+		      clearInlineMenuStyles();
+		    });
+
+		    $(menuItemT).hover(function(){
+		      $(this).children(submenusT).stop(true,true).slideDown(menuSpeed);
+		    }, function(){
+		      $(this).children(submenusT).stop(true,true).slideUp(menuSpeed, function(){
+		        clearInlineMenuStyles();
+		      });
+		    });
+
+		  } else {
+		    if (primaryMenu.hasClass('on-click')) {
+		      menuItemSubsLinks.off('click').on('click', function(e){
+		        let triggerEl = $(this);
+		        triggerEl.parents(subMenuT).siblings().find(submenus).removeClass('d-block');
+		        triggerEl.parent(menuItemT).children(submenusT).toggleClass('d-block');
+		        triggerEl.parent(menuItemT).siblings().removeClass('current');
+		        triggerEl.parent(menuItemT).toggleClass('current');
+		        e.preventDefault();
+		      });
+		    }
+		  }
+
+		  if ($('.top-links').hasClass('on-click') ||
+		      ($body.hasClass('device-md') || $body.hasClass('device-sm') || $body.hasClass('device-xs')) ) {
+		    $('.top-links-item:has(.top-links-sub-menu,.top-links-section) > a').on('click', function(e){
+		      $(this).parents('li').siblings().find('.top-links-sub-menu,.top-links-section').removeClass('d-block');
+		      $(this).parent('li').children('.top-links-sub-menu,.top-links-section').toggleClass('d-block');
+		      e.preventDefault();
+		    });
+		  }
+
+		  SEMICOLON.header.menuInvert($('.top-links-section'));
+
+		  // 모바일 햄버거
+		  $('#primary-menu-trigger').off('click').on('click', function() {
+		    if ($body.hasClass('device-md') || $body.hasClass('device-sm') || $body.hasClass('device-xs')) {
+		      if (primaryMenu.find('.mobile-primary-menu').length > 0) {
+		        $('.primary-menu:not(.mobile-menu-off-canvas) .mobile-primary-menu')
+		          .stop(true,true).slideToggle(menuSpeed, function(){
+		            if ($(this).is(':hidden')) clearInlineMenuStyles();
+		          });
+		        $('.primary-menu.mobile-menu-off-canvas .mobile-primary-menu').toggleClass('d-block');
+		      } else {
+		        $('.primary-menu:not(.mobile-menu-off-canvas) .menu-container')
+		          .stop(true,true).slideToggle(menuSpeed, function(){
+		            if ($(this).is(':hidden')) clearInlineMenuStyles();
+		          });
+		        $('.primary-menu.mobile-menu-off-canvas .menu-container').toggleClass('d-block');
+		      }
+		    }
+		    $body.toggleClass('primary-menu-open');
+
+		    // 닫힘 상태면 즉시 정리
+		    if (!$body.hasClass('primary-menu-open')) clearInlineMenuStyles();
+
+		    return false;
+		  });
+
+		  // 기존 초기화 + 모바일 컨테이너 인라인도 함께 정리
+		  $('.menu-container:not(.mobile-primary-menu)').css({ 'display': '' });
+		  if ($body.hasClass('device-xl') || $body.hasClass('device-lg')) {
+		    primaryMenu.find('.mobile-primary-menu').removeClass('d-block').each(function(){
+		      this.style.removeProperty('display');
+		    });
+		    clearInlineMenuStyles();
+		  }
+
+		  // 데스크탑으로 넘어갈 때 강제 초기화(리사이즈 방어)
+		  let __resizeClean = debounce(function () {
+		    if ($body.hasClass('device-xl') || $body.hasClass('device-lg')) {
+		      $body.toggleClass('primary-menu-open', false);
+		      clearInlineMenuStyles();
+		    }
+		  }, 150);
+		  $(window).off('resize.menuclean').on('resize.menuclean', __resizeClean);
 		},
 
 		fullWidthMenu: function(){

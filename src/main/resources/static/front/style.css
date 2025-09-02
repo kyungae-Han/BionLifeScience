@@ -2359,17 +2359,6 @@ html[xmlns] .slider-wrap {
     transition: .2s ease;
   }
 
-  #header.sticky-header.sticky-header-shrink .svg-trigger {width: auto;}
-
-
-  #header.sticky-header.sticky-header-shrink #primary-menu,
-  #header.sticky-header.sticky-header-shrink #primary-menu-trigger,
-  #header.sticky-header.sticky-header-shrink #top-search,
-  #header.sticky-header.sticky-header-shrink #languages,
-  #header.sticky-header.sticky-header-shrink .header-extras{
-    transform-origin: right center;
-    transition: transform .3s var(--m-ease);
-  }
   
   @media(max-width:1024.98){
   	.header-row{justify-content: space-between;}
@@ -2511,7 +2500,7 @@ html[xmlns] .slider-wrap {
 }
 
 
-#primary-menu-trigger,
+#hamburger-menu-trigger,
 #page-menu-trigger {
   display: flex;
   justify-content: center;
@@ -2521,69 +2510,15 @@ html[xmlns] .slider-wrap {
 }
 
 
-body:not(.top-search-open) .top-search-parent #primary-menu-trigger {
+body:not(.top-search-open) .top-search-parent #hamburger-menu-trigger {
   opacity: 1;
   -webkit-transition: opacity 0.2s 0.2s ease, top 0.4s ease;
   -o-transition: opacity 0.2s 0.2s ease, top 0.4s ease;
   transition: opacity 0.2s 0.2s ease, top 0.4s ease;
 }
 
-.top-search-open .top-search-parent #primary-menu-trigger {
+.top-search-open .top-search-parent #hamburger-menu-trigger {
   opacity: 0;
-}
-
-
-.svg-trigger {
-  width:60px;
-  height: 60px;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  position:absolute;
-  right:40px;
-  top: auto;
-}
-
-
-
-.svg-trigger path {
-  fill: none;
-  transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;
-  stroke: #333;
-  stroke-width: 5;
-  stroke-linecap: round;
-}
-
-.svg-trigger path:nth-child(1) {
-  stroke-dasharray: 40 160;
-}
-
-.svg-trigger path:nth-child(2) {
-  stroke-dasharray: 40 142;
-  transform-origin: 50%;
-  transition: transform 400ms;
-}
-
-.svg-trigger path:nth-child(3) {
-  stroke-dasharray: 40 85;
-  transform-origin: 50%;
-  transition: transform 400ms, stroke-dashoffset 400ms;
-}
-
-.primary-menu-open .svg-trigger {
-  transform: rotate(45deg);
-}
-
-.primary-menu-open .svg-trigger path:nth-child(1),
-.primary-menu-open .svg-trigger path:nth-child(3) {
-  stroke-dashoffset: -64px;
-}
-
-.primary-menu-open .svg-trigger path:nth-child(2) {
-  transform: rotate(90deg);
 }
 
 .menu-container {
@@ -6428,11 +6363,10 @@ td.actions {
   line-height: 24px;
   background-color: #fe5000;
   color: #fff;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 1px;
   border: none;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 body:not(.device-touch) .button {
@@ -7204,7 +7138,6 @@ body:not(.device-touch) .button.button-full strong {
 .promo h3 + span {
   display: block;
   color: #444;
-  font-weight: 300;
   font-size: 1.125rem;
   margin-top: 0px;
 
@@ -17694,7 +17627,7 @@ h4 {
     border-top: 0;
   }
 
-  #primary-menu-trigger,
+  #hamburger-menu-trigger,
   #page-menu-trigger {
     display: none;
     opacity: 0;
@@ -18589,7 +18522,7 @@ nav .menu-link {
 /* Primary Menu - Overlay Menu
 	-----------------------------------------------------------------*/
 
-  .overlay-menu:not(.top-search-open) #primary-menu-trigger {
+  .overlay-menu:not(.top-search-open) #hamburger-menu-trigger {
     display: -ms-flexbox;
     display: flex;
     opacity: 1;
@@ -18612,7 +18545,7 @@ nav .menu-link {
     color: #444;
   }
 
-.overlay-menu #primary-menu-trigger {
+.overlay-menu #hamburger-menu-trigger {
     z-index: 599;
   }
 
@@ -19760,56 +19693,72 @@ body:not(.stretched) #wrapper {
   }
 }
 
-/* 기본: 데스크탑 보임, 모바일 숨김 */
-.primary-menu .nav.is-desktop { display: block !important; }
-.primary-menu .nav.is-mobile  { display: none  !important; }
 
-/* 모바일 구간: 반대로 */
-@media (max-width: 991.98px) {
-  .primary-menu .nav.is-desktop { display: none  !important; }
-  .primary-menu .nav.is-mobile  { display: block !important; }
+/* 트리거 박스 */
+#hamburger-menu-trigger {
+  cursor: pointer;
+  width: 60px;
+  height: 60px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  position: relative;
+}
+
+/* SVG 래퍼: 회전은 이 요소 하나만 건드림 */
+#hamburger-menu-trigger .svg-trigger {
+  width: 60px; height: 60px;
+  transform-origin: center;
+  transform-box: fill-box;
+  transition: transform 0.4s ease;
+}
+
+/* 선 공통 */
+#hamburger-menu-trigger .svg-trigger path {
+  fill: none;
+  stroke: #333;
+  stroke-width: 5;
+  stroke-linecap: round;
+  transform-origin: center;
+  transform-box: fill-box;
+  transition: transform 0.4s ease, stroke-dasharray 0.4s ease, stroke-dashoffset 0.4s ease;
+}
+
+/* 각 선의 기본 dash — 길이가 서로 달라요! */
+#hamburger-menu-trigger .svg-trigger path:nth-of-type(1) { /* top */
+  stroke-dasharray: 40 160;
+  stroke-dashoffset: 0;
+}
+#hamburger-menu-trigger .svg-trigger path:nth-of-type(2) { /* middle */
+  stroke-dasharray: 40 142;
+  stroke-dashoffset: 0;
+}
+#hamburger-menu-trigger .svg-trigger path:nth-of-type(3) { /* bottom (짧음) */
+  stroke-dasharray: 40 85;
+  stroke-dashoffset: 0;
+}
+
+/* === 활성(닫기) 상태 ===
+   1) 전체 SVG 45° 회전
+   2) 가운데 선만 90° 회전
+   3) 위/아래 선 끝을 살짝 잘라내어 X 중앙을 또렷하게 */
+#hamburger-menu-trigger.active .svg-trigger {
+  transform: rotate(45deg);
+}
+#hamburger-menu-trigger.active .svg-trigger path:nth-of-type(2) {
+  transform: rotate(90deg);
+}
+#hamburger-menu-trigger.active .svg-trigger path:nth-of-type(1),
+#hamburger-menu-trigger.active .svg-trigger path:nth-of-type(3) {
+  stroke-dashoffset: -64px; /* 필요하면 -56 ~ -68px 사이로 미세조정 */
 }
 
 
-/* ===== Hamburger rotation: single source of truth ===== */
-
-/* 1) 기본값 고정: 어떤 상황에서도 초기 상태는 회전 없음 */
-#primary-menu-trigger,
-#primary-menu-trigger i,
-#primary-menu-trigger .icon,
-#primary-menu-trigger .icon-line-cross {
-  transform: none !important;
-  animation: none !important;     /* 혹시 남아있는 키프레임 회전 제거 */
-  transition: transform .24s ease; /* 회전만 부드럽게 */
-}
-
-/* 2) 열림 상태(= body에 붙이는 클래스 1개로만 제어) */
-body.primary-menu-open #primary-menu-trigger .icon,
-body.primary-menu-open #primary-menu-trigger .icon-line-cross {
-  transform: rotate(180deg) !important;  /* 원하는 각도 90/135/180 중 선택 */
-}
-
-/* 3) 호버/포커스 등에서 transform 덮어쓰지 못하게 차단 */
-#primary-menu-trigger:hover .icon,
-#primary-menu-trigger:focus .icon,
-#primary-menu-trigger:hover .icon-line-cross,
-#primary-menu-trigger:focus .icon-line-cross {
-  transform: inherit !important;   /* hover가 회전값을 바꾸지 못하도록 */
-}
-
-/* 4) 부트스트랩/공통 규칙의 aria-expanded 간섭 차단 (있을 때만) */
-#primary-menu-trigger[aria-expanded="true"] .icon,
-#primary-menu-trigger[aria-expanded="true"] .icon-line-cross {
-  transform: inherit !important;   /* 실제 회전은 body.primary-menu-open이 담당 */
-}
-
-/* 5) 사이드헤더/데스크탑 전용 회전 규칙 무력화(있을 때만) */
-.side-header #primary-menu-trigger .icon,
-.side-header #primary-menu-trigger .icon-line-cross {
-  transform: none !important;
-}
-
-@media (max-width: 991.98px) {
-  .primary-menu .nav.is-mobile,
-  .primary-menu .nav.is-mobile .menu-container { max-width: none !important; }
+@media (min-width: 998px) {
+  #hamburger-menu-trigger {
+    display: none !important;
+  }
 }
