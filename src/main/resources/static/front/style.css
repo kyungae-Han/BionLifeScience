@@ -2325,7 +2325,7 @@ html[xmlns] .slider-wrap {
 
   /* 내부 래퍼가 실제 높이/패딩을 애니메이션 */
   #header-wrap {transition: height .4s ease, padding .4s ease, gap .35s ease; }
-  #header-wrap .container {background: #fff; padding: 0; }
+  #header-wrap .container {background: #fff; padding: 0 20px; }
 
   /* 진입 애니메이션 */
   @keyframes sticky-in { from { transform: translateY(-12px); opacity:0; }
@@ -2526,11 +2526,11 @@ body:not(.top-search-open) .top-search-parent #hamburger-menu-trigger {
   list-style: none;
   margin: 0;
   width: 100%;
-  padding: 0 25px;
 }
 
 .menu-item {
   position: relative;
+  padding-left:20px;
 }
 
 .menu-item:not(:first-child) {
@@ -2707,8 +2707,7 @@ nav .menu-item:hover > .menu-link,
   display: -ms-flexbox;
   display: flex;
   align-items: center;
-  margin-left: 15px;
-  right: clamp(20px, 4vw, 55px);
+  right: clamp(20px, 4vw, 20px);
   max-height: 100px;
   top: 0px;
   bottom: 0px;
@@ -15667,21 +15666,6 @@ label.checkbox {
   z-index:1100;
 }
 
-/* ≥1024px: 항상 열림 */
-
-/*
-@media (min-width:1024px){
-  #product-items,
-  #brands-items{
-    opacity:1;
-    visibility:visible;
-    pointer-events:auto;
-    transition: opacity .18s ease, transform .18s ease, visibility 0s;
-  }
-}
-*/
-
-
 /* 랩 위에 올려도 계속 열려있게 */
 #product-items:hover, #brands-items:hover{
   opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%);
@@ -15689,53 +15673,23 @@ label.checkbox {
 }
 
 /* 제품소개 호버 → product-items 오픈 */
-/*
 nav.primary-menu:has(.menu-item.product:hover) ~ #product-items{
   opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%);
   transition:opacity .18s ease, transform .18s ease;
 }
-*/
 
 /* 브랜드소개 호버 → brands-items 오픈 */
-/*
 nav.primary-menu:has(.menu-item.brand:hover) ~ #brands-items{
   opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%);
   transition:opacity .18s ease, transform .18s ease;
 }
-*/
 
-/*
 body.js-nav nav.primary-menu:has(.menu-item.product:hover) ~ #product-items,
 body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
   opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
 }
-*/
-
-/*메가메뉴 디버*/
-
-/*
-.product-mega-wrap.debug-open.nav-brand-list{
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  transform: translateX(-50%) translateY(0) !important;
-  display: block !important;
-}
-
-.product-mega-wrap.debug-open.nav-product-list{
-  opacity: 1 !important;
-  visibility: visible !important;
-  pointer-events: auto !important;
-  transform: translateX(-50%) translateY(0) !important;
-  display: block !important;
-}
-*/
-
-
-
-
 
 /* 스크롤바세팅 */
 /* 컬럼: 세로만 스크롤, 가로 차단 */
@@ -15792,7 +15746,7 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
 { position: relative;
 	display:block;
 	/*padding: clamp(6px, 1.2vw, 10px) clamp(10px, 2.4vw, 16px);*/
-	margin: 0 clamp(8px, 2.4vw, 16px);
+	/*margin: 0 clamp(8px, 2.4vw, 16px);*/
 }
 
 .nav a {
@@ -17640,7 +17594,6 @@ h4 {
   display: grid;             /* 가로 배치 */
   align-items: center;
   grid-auto-flow: column;
-  gap: 24px;                 /* 필요 시 조정 */
 }
 
 /* === Mobile: 데스크탑 GNB 완전 비표시 === */
@@ -17713,7 +17666,6 @@ h4 {
   }
 
 nav .menu-link {
-    padding: 39px 39px;
     -webkit-transition: margin 0.4s ease, padding 0.4s ease;
     -o-transition: margin 0.4s ease, padding 0.4s ease;
     transition: margin 0.4s ease, padding 0.4s ease;
@@ -19761,4 +19713,35 @@ body:not(.stretched) #wrapper {
   #hamburger-menu-trigger {
     display: none !important;
   }
-}
+  
+  
+  @media (min-width: 998px) {
+    nav.primary-menu .nav.is-desktop { display: block !important; }
+    nav.primary-menu .nav.is-mobile  { display: none  !important; }
+    #hamburger-menu-trigger           { display: none  !important; }
+  }
+  @media (max-width: 997.98px) {
+    nav.primary-menu .nav.is-desktop { display: none  !important; }
+    nav.primary-menu .nav.is-mobile  { display: block !important; }
+    #hamburger-menu-trigger           { display: flex  !important; }
+  }
+
+  /* 패널이 다른 요소에 가려지지 않게 (안전망) */
+  #product-items, #brands-items { z-index: 1100; position: absolute; }
+
+  @media (min-width: 998px) {
+    /* PC용 패널은 hover/스크립트로 열리게 강제 초기화 */
+    #product-items,
+    #brands-items {
+      opacity: 1;
+      visibility: visibilty;
+      pointer-events: none;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: opacity .18s ease, transform .18s ease, visibility 0s .18s;
+      z-index: 1100;
+    }
+  }
+
