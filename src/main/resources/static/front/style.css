@@ -2378,7 +2378,6 @@ html[xmlns] .slider-wrap {
   /* margin-right: auto; */
   max-height: 100%;
   margin: 0 !important;
-  padding-left: 25px;
 }
 
 #logo a {
@@ -2714,7 +2713,6 @@ nav .menu-item:hover > .menu-link,
   height: auto;
   box-sizing: border-box;
   border-left: 1px solid #eee;
-  padding-left: 25px;
 }
 
 .header-misc-element,
@@ -4243,7 +4241,6 @@ body:not(.has-plugin-html5video) .video-wrap video {
   font-weight: 600;
   letter-spacing: 1px;
   color: #333;
-  font-size: 2rem;
   text-transform: uppercase;
 }
 
@@ -15340,6 +15337,7 @@ label.checkbox {
   align-items: center;
   justify-content: space-between;
   gap: 90px;
+  padding: 0 20px;
 }
 
 .slider-caption.banner-flex > * {
@@ -16336,7 +16334,6 @@ h4 {
 
 #page-title h1 {
     line-height: 1.5;
-    font-size: calc(1rem + 2vw);
   }
 
 .page-title-parallax span {
@@ -19709,18 +19706,18 @@ body:not(.stretched) #wrapper {
 }
 
 
-@media (min-width: 998px) {
+@media (min-width: 991px) {
   #hamburger-menu-trigger {
     display: none !important;
   }
   
   
-  @media (min-width: 998px) {
+  @media (min-width: 991px) {
     nav.primary-menu .nav.is-desktop { display: block !important; }
     nav.primary-menu .nav.is-mobile  { display: none  !important; }
     #hamburger-menu-trigger           { display: none  !important; }
   }
-  @media (max-width: 997.98px) {
+  @media (max-width: 990.98px) {
     nav.primary-menu .nav.is-desktop { display: none  !important; }
     nav.primary-menu .nav.is-mobile  { display: block !important; }
     #hamburger-menu-trigger           { display: flex  !important; }
@@ -19729,7 +19726,7 @@ body:not(.stretched) #wrapper {
   /* 패널이 다른 요소에 가려지지 않게 (안전망) */
   #product-items, #brands-items { z-index: 1100; position: absolute; }
 
-  @media (min-width: 998px) {
+  @media (min-width: 991px) {
     /* PC용 패널은 hover/스크립트로 열리게 강제 초기화 */
     #product-items,
     #brands-items {
@@ -19744,4 +19741,6 @@ body:not(.stretched) #wrapper {
       z-index: 1100;
     }
   }
+  
+  .page-title h1 {font-size: clamp(24px, 4vw, 32px);}
 

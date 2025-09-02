@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 	
-  const mqDesktopWidth = window.matchMedia('(min-width: 998px)');  
+  const mqDesktopWidth = window.matchMedia('(min-width: 991px)');  
   const isDesktop = () => mqDesktopWidth.matches;                  
 
   (function initNav(){
@@ -190,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 (function () {
-  const MOBILE_MAX = 998;
+  const MOBILE_MAX = 991;
   const THRESHOLD  = 0;
   const header     = document.getElementById('header');
   const headerWrap = document.getElementById('header-wrap');
@@ -276,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {                  
   const hamburger  = document.getElementById('hamburger-menu-trigger');
   const primaryMenu = document.querySelector('nav.primary-menu .nav.is-mobile .mobile-primary-menu');
-  const mqDesktop  = window.matchMedia('(min-width: 998px)');        
+  const mqDesktop  = window.matchMedia('(min-width: 991px)');        
 
   if (!hamburger || !primaryMenu) return;
 

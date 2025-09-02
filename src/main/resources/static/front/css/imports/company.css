@@ -18,7 +18,6 @@
 	  --mint-accent: #5fafa3;
 }
 
-
 /*---------------------------------
 	page nav
 ----------------------------------*/
@@ -43,6 +42,7 @@
       visibility 0.3s ease;
     will-change: opacity, transform;
     box-shadow: none;
+	padding: 0 20px;
   }
   
   
