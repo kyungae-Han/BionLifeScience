@@ -18,10 +18,18 @@
 	  --mint-accent: #5fafa3;
 }
 
+/*-----------------------------------
+	common
+-------------------------------------*/
+
 .clearfix::after { content:""; display: table; clear: both; }
 
 .p-wrap h2 {font-size: clamp(38px, 4vw, 55px);}
 .p-wrap h2 small {font-size: clamp(50px, 5vw, 70px);}
+
+.top-sm{margin-top:40px;}
+.top-md{margin-top:70px;}
+.top-lg{margin-top:120px;}
 
 /*---------------------------------
 	page nav
@@ -310,6 +318,15 @@
 	margin: 0;
 	letter-spacing: -0.2px;
 }
+
+.sec-head.center {
+	text-align: center; 
+	font-size: clamp(55px, 1.5vw, 80px); 
+	margin-bottom:34px; 
+	color: var(--bs-gray-900);
+}
+
+.sec-head.center.top-md{margin-top:70px;}
 
 .sec-sub {
 	color: #666;
@@ -809,21 +826,6 @@
 	padding-top: clamp(100px, 1vh, 120px);
 }
 
-.history-title {
-	text-align: center;
-	color: var(--ink);
-	font-size: clamp(24px, 3.2vw, 40px);
-	font-weight: 800;
-	letter-spacing: -.02em;
-	margin-bottom: 8px;
-}
-
-.history-subtitle {
-	text-align: center;
-	color: var(--muted);
-	font-size: clamp(13px, 1.6vw, 16px);
-	margin: clamp(12px, 3.4vw, 20px) 0  clamp(24px, 3.4vw, 36px);
-}
 
 /* 기간 탭(칩) */
 .bio-history-tab-nav {
@@ -1267,9 +1269,6 @@ html.is-switching-tab, body.is-switching-tab{ overflow-anchor:none !important; }
 }
 
 /***부설연구소관련****/
-
-#institute .sec-head {text-align: center;}
-
 #institute .il-overview {
 	background: #fff;
 	border-radius: 18px;
@@ -1365,7 +1364,7 @@ html.is-switching-tab, body.is-switching-tab{ overflow-anchor:none !important; }
 	min-height: 420px;
 }
 
-@supports (aspect-ratio:4 /5) { #institute .il-cards--portrait
+@supports (aspect-ratio:5 /5) { #institute .il-cards--portrait
 	.il-image-card{aspect-ratio:4/ 5;
 	min-height: auto;
 }
@@ -1541,8 +1540,6 @@ il-callout.p-item {
   overflow: hidden;
   background: var(--bg-img) center/cover no-repeat;
   border-radius: 28px;
-
-  /* 🔑 더 이상 padding-top으로 밀지 않음 */
   aspect-ratio: 256/100;   /* 원하는 비율 → 높이 확보 */
 }
 
@@ -1679,7 +1676,10 @@ il-callout.p-item {
 	  .swiper-button-next,
 	  .swiper-button-prev {display:none;}
 	  
-	  .bio-history-wrap {}
+	  #institute .il-overview__body {
+		aspect-ratio: 256/256;
+		background-position:left;
+	  }
 	  
 }
 
