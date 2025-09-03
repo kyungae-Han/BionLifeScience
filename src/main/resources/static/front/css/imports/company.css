@@ -469,20 +469,10 @@
 	text-overflow: clip;
 }
 
-
-.stat-card-right__desc {
-	position: absolute;
-	bottom: 50px;
-	left: 50px;
-}
-
 .stat-card-right__desc p {
 	margin: 0;
 	padding: 0;
-}
-
-.stat-card-right__desc p {
-	font-size: 1.2rem;
+	font-size: clamp(18px, 4rem, 24px);
 }
 
 /* Nav */
@@ -805,13 +795,18 @@
 }
 
 .about-history-section, .bio-history-tab-content {
-	scroll-margin-top: var(--headerH, 96px);
+	overflow: hidden;
+	display: block;
+	position: relative;
+	top: clamp(120px,10dvh,240px);
+	bottom: auto;
+	z-index: 1;
 }
 
 .about-history-wrap {
 	max-width: 1280px;
-	margin: 0 auto;
-	padding: 4rem 0;
+	margin:  0 auto;
+	padding-top: clamp(100px, 1vh, 120px);
 }
 
 .history-title {
@@ -1664,24 +1659,29 @@ il-callout.p-item {
     padding: 200px 0 200px !important;
   }
   
-  .stat-card__value {left:20px;}
+  .stat-card__value {left:20px; font-size:clamp(40px, 4rem, 60px);}
   
-  .stat-card__desc,
-  .stat-card-right__desc{
-	  left: 20px; 
+  .stat-card__desc{
+	  left: 10px; 
 	  bottom: 20px;
 	  white-space: pre-line; 
 	  overflow: hidden; 
 	  text-overflow: ellipsis;
 	  word-break: normal; 
 	  max-width:95%;
-	  font-size: clamp(12px, 1rem, 14px);
+	  font-size: clamp(12px, 0.9rem, 16px);
+	  word-break: break-all;
+	  text-overflow: ellipsis; 
 	  }
 	  
-	.stat-card-right__desc p {
-	  font-size: clamp(12px, 1rem, 14px); 
-	  height:18px;
-	}
+	  .stat-card__desc.long {display:none;}
+	  
+	  .swiper-button-next,
+	  .swiper-button-prev {display:none;}
+	  
+	  .bio-history-wrap {}
+	  
 }
+
 
 
