@@ -207,12 +207,29 @@ function initGlanceSwiper() {
 
  const sw = new Swiper('.glance-swiper', {
    speed: 600,
-   spaceBetween: 24,
-   centeredSlides: true,
    slidesPerView:'auto',
+   autoHeight: 'auto',
    loop: false,
-   slidesOffsetBefore: 24,
-   slidesOffsetAfter: 24,
+   //centeredSlides: true,
+   //spaceBetween: 24,
+   //slidesOffsetBefore: 24,
+   //slidesOffsetAfter: 24,
+   breakpoints: {
+		0:{
+			slidesPerView: 1,
+			centeredSlides: true,
+			centeredSlidesBounds:true,
+		},
+		762: {
+			slidesPerView: 1,
+			centeredSlides: false,
+		},
+		991: {
+			slidesPerView: 1,
+			centeredSlides: true,
+		},
+
+   },
    grabCursor: true,
    pagination: { el: '.glance-swiper .swiper-pagination', clickable: true },
    navigation: {
