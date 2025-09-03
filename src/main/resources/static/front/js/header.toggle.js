@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   (function initNav(){
     const nav = document.querySelector('nav.primary-menu');
     if (!nav) return;
+	
 
     const itemProduct  = nav.querySelector('.menu-item.product');
     const itemBrand    = nav.querySelector('.menu-item.brand');
@@ -68,6 +69,18 @@ document.addEventListener('DOMContentLoaded', () => {
         add(panelBrand,   'pointerleave', ()=>delayedClose());
         add(itemBrand,    'click', (e)=>{ e.preventDefault(); open(panelBrand); });
       }
+	  
+	  const nonTriggers = nav.querySelectorAll(
+	     '.is-desktop .menu-container > .menu-item:not(.product):not(.brand)'
+	   );
+	   nonTriggers.forEach(li => {
+	     add(li, 'pointerenter', () => delayedClose(0));
+	     add(li, 'focusin',     () => delayedClose(0)); // 키보드 접근 시도
+	   });
+
+	   const topBar = nav.querySelector('.is-desktop .menu-container');
+	   if (topBar) add(topBar, 'pointerleave', () => delayedClose(0));
+	  
       add(nav, 'pointerleave', ()=>delayedClose());
     };
     const update = () => { detach(); if (isDesktop()) attach(); };
@@ -79,112 +92,90 @@ document.addEventListener('DOMContentLoaded', () => {
 
   
   (function initDepth(){
-    const colBig     = document.getElementById('col-big');
-    const colMiddle  = document.getElementById('col-middle');
-    const colSmall   = document.getElementById('col-small');
-    const colProduct = document.getElementById('col-product');
-    if (!colBig || !colMiddle || !colSmall) return;
+	const PANEL_IDS = ['product-items', 'brands-items']; // 루트 패널 id만 유지
 
-    let middles = [];
-    let smalls = [];
-    let products = [];
+	 // root 패널 하나를 바인딩
+	 function initDepthPanel(root){
+	   if (!root) return;
 
-    const refreshLists = () => {
-      middles  = [...colMiddle.querySelectorAll('li')];
-      smalls   = [...colSmall.querySelectorAll('li')];
-      products = colProduct ? [...colProduct.querySelectorAll('li')] : [];
-    };
-    refreshLists();
+	   // 존재하는 depth만 순서대로 수집 (1~5)
+	   const cols = [];
+	   for (let d = 1; d <= 5; d++){
+	     const ul = root.querySelector(`.col.depth-${d}`);
+	     if (ul) cols.push(ul);
+	   }
+	   if (cols.length < 2) return; // 최소 2열 이상일 때만
 
-    const setActive = (elList, el) => {
-      elList.forEach(li => li.querySelector('.menu-link')?.classList.remove('is-active'));
-      el?.querySelector('.menu-link')?.classList.add('is-active');
-    };
+	   const setActive = (ul, id) => {
+	     if (!ul) return;
+	     [...ul.children].forEach(li => li.querySelector('.menu-link')?.classList.remove('is-active'));
+	     ul.querySelector(`li[data-id="${id}"] .menu-link`)?.classList.add('is-active');
+	   };
 
-    const showMiddle = (bigId) => {
-      middles.forEach(li => li.classList.toggle('is-visible', li.dataset.parent === String(bigId)));
-      const first = middles.find(li => li.dataset.parent === String(bigId));
-      setActive([...colBig.querySelectorAll('li')], colBig.querySelector(`[data-id="${bigId}"]`));
-      if (first) showSmall(first.dataset.id); else clearSmall();
-    };
+	   const clearFrom = (startIdx) => {
+	     for (let i = startIdx; i < cols.length; i++) {
+	       [...cols[i].children].forEach(li => li.classList.remove('is-visible'));
+	     }
+	   };
 
-    const clearSmall = () => {
-      smalls.forEach(li => li.classList.remove('is-visible'));
-      clearProduct();
-    };
+	   // 현재 depth(k)의 항목을 선택하면 다음 depth(k+1)를 필터링해 보여줌
+	   const showNext = (nextIdx, parentId) => {
+	     if (!cols[nextIdx]) return;
+	     [...cols[nextIdx].children].forEach(li => {
+	       li.classList.toggle('is-visible', li.dataset.parent === String(parentId));
+	     });
+	     // active 표시 (현재 depth는 nextIdx-1)
+	     setActive(cols[nextIdx - 1], parentId);
 
-    const showSmall = (midId) => {
-      smalls.forEach(li => li.classList.toggle('is-visible', li.dataset.parent === String(midId)));
-      const first = smalls.find(li => li.dataset.parent === String(midId));
-      setActive([...colMiddle.querySelectorAll('li.is-visible')], colMiddle.querySelector(`li[data-id="${midId}"]`));
-      if (first) showProduct(first.dataset.id); else clearProduct();
-    };
+	     // 그 아래 depth들은 일단 숨김
+	     clearFrom(nextIdx + 1);
 
-    const clearProduct = () => {
-      products.forEach(li => li.classList.remove('is-visible'));
-    };
+	     // 다음 depth에 보이는 첫 항목이 있으면 자동 진행
+	     const first = cols[nextIdx].querySelector('li.is-visible');
+	     if (first && cols[nextIdx + 1]) {
+	       showNext(nextIdx + 1, first.dataset.id);
+	     }
+	   };
 
-    const showProduct = (smId) => {
-      products.forEach(li => li.classList.toggle('is-visible', li.dataset.parent === String(smId)));
-      setActive([...colSmall.querySelectorAll('li.is-visible')], colSmall.querySelector(`li[data-id="${smId}"]`));
-    };
+	   // 위임 핸들러: 특정 depth의 UL에서 li를 선택하면 다음 depth를 표시
+	   const delegate = (ul, nextIdx) => (e) => {
+	     if (!isDesktop()) return;
+	     const li = e.target.closest('li');
+	     if (!li || !ul.contains(li)) return;
+	     showNext(nextIdx, li.dataset.id);
+	   };
 
-    const makeDelegates = (container, handler) => {
-      const over = (e) => {
-        if (!isDesktop()) return;
-        const li = e.target.closest('li');
-        if(li && container.contains(li)) handler(li.dataset.id);
-      };
-      const focus = (e) => {
-        if (!isDesktop()) return;
-        const li = e.target.closest('li');
-        if(li && container.contains(li)) handler(li.dataset.id);
-      };
-      const click = (e) => {
-        if (!isDesktop()) return;
-        const li = e.target.closest('li');
-        if(li && container.contains(li)) handler(li.dataset.id);
-      };
-      return { over, focus, click };
-    };
+	   // 이벤트 바인딩: depth-1 → depth-2, depth-2 → depth-3, …
+	   const disposers = [];
+	   const attach = () => {
+	     if (!isDesktop()) return;
+	     for (let i = 0; i < cols.length - 1; i++){
+	       const ul = cols[i];
+	       const fn = delegate(ul, i + 1);
+	       ul.addEventListener('mouseover', fn);
+	       ul.addEventListener('focusin',  fn);
+	       ul.addEventListener('click',    fn);
+	       disposers.push(()=>{ ul.removeEventListener('mouseover', fn); ul.removeEventListener('focusin', fn); ul.removeEventListener('click', fn); });
+	     }
+	     // 초기 표시: depth-1의 첫 항목 기준
+	     const first = cols[0].querySelector('li');
+	     if (first) showNext(1, first.dataset.id);
+	   };
 
-    let disposers = [];
-    const attach = () => {
-      if (!isDesktop()) return;
+	   const detach = () => { disposers.splice(0).forEach(fn => fn()); };
+	   const update = () => { detach(); if (isDesktop()) attach(); };
 
-      refreshLists();
+	   update();
+	   window.addEventListener('resize', update);
+	   mqDesktopWidth.addEventListener?.('change', update);
 
-      const d1 = makeDelegates(colBig, showMiddle);
-      colBig.addEventListener('mouseover', d1.over);
-      colBig.addEventListener('focusin',  d1.focus);
-      colBig.addEventListener('click',    d1.click);
-      disposers.push(()=>{ colBig.removeEventListener('mouseover', d1.over); colBig.removeEventListener('focusin', d1.focus); colBig.removeEventListener('click', d1.click); });
+	   // 데이터 변경 대응 (필요 시)
+	   const mo = new MutationObserver(() => { /* 데이터가 바뀌면 다시 초기화하고 싶으면 여기에서 update(); */ });
+	   cols.forEach(col => mo.observe(col, { childList: true, subtree: true }));
+	 }
 
-      const d2 = makeDelegates(colMiddle, showSmall);
-      colMiddle.addEventListener('mouseover', d2.over);
-      colMiddle.addEventListener('focusin',  d2.focus);
-      colMiddle.addEventListener('click',    d2.click);
-      disposers.push(()=>{ colMiddle.removeEventListener('mouseover', d2.over); colMiddle.removeEventListener('focusin', d2.focus); colMiddle.removeEventListener('click', d2.click); });
-
-      const d3 = makeDelegates(colSmall, showProduct);
-      colSmall.addEventListener('mouseover', d3.over);
-      colSmall.addEventListener('focusin',  d3.focus);
-      colSmall.addEventListener('click',    d3.click);
-      disposers.push(()=>{ colSmall.removeEventListener('mouseover', d3.over); colSmall.removeEventListener('focusin', d3.focus); colSmall.removeEventListener('click', d3.click); });
-
-      const firstBig = colBig.querySelector('li');
-      if(firstBig) showMiddle(firstBig.dataset.id);
-    };
-    const detach = () => { disposers.forEach(fn=>fn()); disposers = []; };
-    const update = () => { detach(); if (isDesktop()) attach(); };
-
-    update();
-    window.addEventListener('resize', update);
-    mqDesktopWidth.addEventListener?.('change', update);
-
-    const cols = [colMiddle, colSmall, colProduct].filter(Boolean);
-    const mo = new MutationObserver(()=>{ refreshLists(); });
-    cols.forEach(col => mo.observe(col, {childList:true, subtree:true}));
+	 // 두 패널 모두 적용
+	 PANEL_IDS.forEach(id => initDepthPanel(document.getElementById(id)));
   })();
 });
 
@@ -273,12 +264,16 @@ document.addEventListener('DOMContentLoaded', () => {
 })();
 
 
+
+/*
 document.addEventListener('DOMContentLoaded', () => {                  
   const hamburger  = document.getElementById('hamburger-menu-trigger');
   const primaryMenu = document.querySelector('nav.primary-menu .nav.is-mobile .mobile-primary-menu');
   const mqDesktop  = window.matchMedia('(min-width: 991px)');        
 
   if (!hamburger || !primaryMenu) return;
+ 
+  
 
   function resetForDesktop() {
     if (!mqDesktop.matches) return;
@@ -300,6 +295,79 @@ document.addEventListener('DOMContentLoaded', () => {
     primaryMenu.classList.toggle('open', willOpen);
     if (willOpen) primaryMenu.style.display = 'block';
     else          primaryMenu.style.removeProperty('display');
+  });
+
+  resetForDesktop();
+  mqDesktop.addEventListener?.('change', resetForDesktop);
+  window.addEventListener('resize', resetForDesktop);
+});
+
+*/
+
+
+document.addEventListener('DOMContentLoaded', () => {                  
+  const hamburger   = document.getElementById('hamburger-menu-trigger');
+  // 구조에 따라 fallback 하나 더 둠
+  const primaryMenu = document.querySelector('nav.primary-menu .nav.is-mobile .mobile-primary-menu')
+                    || document.querySelector('nav.primary-menu .nav.is-mobile .menu-container');
+  const mqDesktop   = window.matchMedia('(min-width: 991px)');
+
+  if (!hamburger || !primaryMenu) return;
+
+  // 데스크톱으로 돌아오면 초기 상태로
+  function resetForDesktop() {
+    if (!mqDesktop.matches) return;
+    hamburger.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+    primaryMenu.classList.remove('open');
+    primaryMenu.style.removeProperty('display');
+    primaryMenu.style.removeProperty('visibility');
+    primaryMenu.style.removeProperty('pointer-events');
+    // 펼친 표시도 정리(선택)
+    primaryMenu.querySelectorAll('.menu-link[aria-expanded="true"]')
+               .forEach(a => a.setAttribute('aria-expanded','false'));
+  }
+
+  // 햄버거 토글 (기존 로직 유지)
+  hamburger.addEventListener('click', () => {
+    if (mqDesktop.matches) return;
+    const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+    const willOpen = !expanded;
+
+    hamburger.classList.toggle('active', willOpen);
+    hamburger.setAttribute('aria-expanded', String(willOpen));
+
+    primaryMenu.classList.toggle('open', willOpen);
+    if (willOpen) primaryMenu.style.display = 'block';
+    else          primaryMenu.style.removeProperty('display');
+  });
+
+  // 아코디언: 하위 UL이 있는 항목만 링크 이동을 막고 펼침/접힘
+  primaryMenu.addEventListener('click', (e) => {
+    if (mqDesktop.matches) return;
+
+    // 토글 트리거: 링크/아이콘/버튼 등
+    const trigger = e.target.closest('.menu-link, .sub-menu-trigger, .toggle, .chevron, button');
+    if (!trigger || !primaryMenu.contains(trigger)) return;
+
+    const li = trigger.closest('li');
+    if (!li) return;
+
+    // 직계 하위 리스트(테마에 따라 클래스가 다를 수 있음)
+    const childList = li.querySelector(':scope > ul, :scope > .mega-menu-content, :scope > .sub-menu-container');
+    if (!childList) return; // 자식 없으면 기본 이동
+
+    // 자식 있으면 아코디언 토글
+    e.preventDefault();
+    const willOpen = trigger.getAttribute('aria-expanded') !== 'true';
+
+    // 같은 레벨 형제 닫기(원하면 유지해도 됨)
+    [...li.parentElement.children].forEach(sib => {
+      const a = sib.querySelector(':scope > .menu-link[aria-expanded="true"]');
+      a && a.setAttribute('aria-expanded', 'false');
+    });
+
+    trigger.setAttribute('aria-expanded', String(willOpen));
   });
 
   resetForDesktop();

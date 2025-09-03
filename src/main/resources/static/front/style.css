@@ -2529,7 +2529,7 @@ body:not(.top-search-open) .top-search-parent #hamburger-menu-trigger {
 
 .menu-item {
   position: relative;
-  padding-left:20px;
+  /*padding-left:20px;*/
 }
 
 .menu-item:not(:first-child) {
@@ -2547,6 +2547,8 @@ body:not(.top-search-open) .top-search-parent #hamburger-menu-trigger {
   text-transform: uppercase;
   font-family: "Noto Sans KR", sans-serif;
 }
+
+.menu-link div {padding: 0;}
 
 .menu-link span {
   display: none;
@@ -15564,6 +15566,14 @@ label.checkbox {
   animation: softPulse 1.6s ease-in-out infinite;
 }
 
+
+/*------------------------------------------
+
+			여기서부터 메가메뉴 이벤트바인딩
+--------------------------------------------*/
+
+
+
 .menu-link {cursor: pointer;}
 
 .contents-wrap {
@@ -15651,9 +15661,10 @@ label.checkbox {
 }
 
 /* 필터링 */
-#col-middle li, #col-small li, #col-product li{display:none;}
+.product-mega-wrap .col:not(.depth-1) > li { display: none; }
 
-#col-middle li.is-visible, #col-small li.is-visible, #col-product li.is-visible{display:block;}
+.product-mega-wrap .col > li.is-visible { display: block; }
+
 
 /* 공통: 기본 닫힘 상태 */
 #product-items, #brands-items{
@@ -15681,6 +15692,7 @@ nav.primary-menu:has(.menu-item.brand:hover) ~ #brands-items{
   opacity:1; visibility:visible; pointer-events:auto; transform:translateX(-50%);
   transition:opacity .18s ease, transform .18s ease;
 }
+
 
 body.js-nav nav.primary-menu:has(.menu-item.product:hover) ~ #product-items,
 body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
@@ -15743,13 +15755,12 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
  .nav .menu-link
 { position: relative;
 	display:block;
-	/*padding: clamp(6px, 1.2vw, 10px) clamp(10px, 2.4vw, 16px);*/
-	/*margin: 0 clamp(8px, 2.4vw, 16px);*/
 }
 
 .nav a {
 	font-size: 1rem;
 }
+
 
 .menu-link.is-active{
   /*background: rgba(255,255,255,.06);*/
@@ -19710,13 +19721,15 @@ body:not(.stretched) #wrapper {
   #hamburger-menu-trigger {
     display: none !important;
   }
-  
+}  
   
   @media (min-width: 991px) {
     nav.primary-menu .nav.is-desktop { display: block !important; }
     nav.primary-menu .nav.is-mobile  { display: none  !important; }
     #hamburger-menu-trigger           { display: none  !important; }
   }
+  
+  
   @media (max-width: 990.98px) {
     nav.primary-menu .nav.is-desktop { display: none  !important; }
     nav.primary-menu .nav.is-mobile  { display: block !important; }
@@ -19744,12 +19757,57 @@ body:not(.stretched) #wrapper {
   
   .page-title h1 {font-size: clamp(36px, 4vw, 60px); text-align: center;}
   
-  .product-mega-wrap { opacity:0; visibility:hidden; pointer-events:none; }
+  
+@media (max-width: 991px) {
+  /* 1) 가장 정확: 해당 li 안에서 menu-link가 열려 있으면 그 li의 .mega-menu-content에만 적용
+     (Chrome/Edge/Safari OK, Firefox는 최신버전에서 점진 도입 중) */
+  nav.primary-menu .nav.is-mobile .mobile-primary-menu.open
+  li:has(> .menu-link[aria-expanded="true"]) .mega-menu-content {
+    max-height: 40vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
 
-  /* 열림: 닫힘 규칙(특히 display:none)을 확실히 덮어씀 */
-  .product-mega-wrap.is-active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-	}
+  /* 2) Fallback: menu-link와 .mega-menu-content가 '같은 li'의 형제일 때,
+        중간에 래퍼가 끼어 있어도(~) 적용 */
+  nav.primary-menu .nav.is-mobile .mobile-primary-menu.open
+  li > .menu-link[aria-expanded="true"] ~ .mega-menu-content {
+    max-height: 150PX;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* 3) 가장 보수적(현재 네 코드와 동일 구조일 때만 매칭)
+  nav.primary-menu .nav.is-mobile .mobile-primary-menu.open
+  li > .menu-link[aria-expanded="true"] + .mega-menu-content { … } */
+}
+
+
+@media(max-width:991px){
+	.sub-menu > .mega-menu-content > .sub-menu > a.menu-link{padding:10px 0; margin:0; font-size:clamp(12px, 2vw, 14px);}
+	
+     .sub-menu.is-open a.menu-link:is(:hover, :focus) {
+		  background-color: var(--bs-gray-100);
+		  font-weight: 600;
+		}
+	
+	.sub-menu-container {padding:0;}
+	
+	.sub-menu > .mega-menu-content > .menu-item div {padding-left:20px;}
+	.sub-menu-container.depth-1 div,
+	.sub-menu-container.depth-2 div,
+	.sub-menu-container.depth-3 div,
+	.sub-menu-containe.depth-4 div,
+	.sub-menu-container.depth-5 div {padding-left:32px !important; min-height:29px; display: flex; justify-content: space-between; align-items: center;}
+	
+	
+}
+
+@media (min-width:991px){
+	.header-misc {padding-left:20px;}
+	 nav {padding-left:20px;}
+	.nav.is-desktop .menu-item > .menu-link div {padding:0 clamp(10px, 1vw, 20px);}
+}
 

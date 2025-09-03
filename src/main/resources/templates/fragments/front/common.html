@@ -184,7 +184,7 @@
 							<div class="inner">
 								<div class="mega-grid">
 									<!-- 1depth -->
-									<ul class="col depth-1" id="col-big">
+									<ul class="col depth-1">
 										<li class="menu-item" th:each="b : ${menuList.bigSortList}" th:attr="data-id=${b.id}"><a class="menu-link" th:href="@{|/productSorted/main/${b.id}|}">
 												<div>
 													<i class="icon-stack"></i> [[${b.name}]]
@@ -193,21 +193,21 @@
 									</ul>
 
 									<!-- 2depth -->
-									<ul class="col depth-2" id="col-middle">
+									<ul class="col depth-2">
 										<li class="menu-item" th:each="m : ${menuList.middleSortList}" th:attr="data-id=${m.id}, data-parent=${m.bigSort.id}"><a class="menu-link" th:href="@{|/productSorted/middle/${m.id}|}">
 												<div th:text="${m.name}">Middle</div>
 										</a></li>
 									</ul>
 
 									<!-- 3depth -->
-									<ul class="col depth-3" id="col-small">
+									<ul class="col depth-3">
 										<li class="menu-item" th:each="s : ${menuList.smallSortList}" th:attr="data-id=${s.id}, data-parent=${s.middleSort.id}"><a class="menu-link" th:href="@{|/productSorted/sub/${s.id}|}">
 												<div th:text="${s.name}">Small</div>
 										</a></li>
 									</ul>
 
 									<!-- 4depth -->
-									<ul class="col depth-4" id="col-product">
+									<ul class="col depth-4">
 										<li class="menu-item" th:each="p : ${menuList.productList}" th:attr="data-id=${p.id}, data-parent=${p.smallSort.id}"><a class="menu-link" th:href="@{|/productDetail/${p.id}|}">
 												<div th:text="${p.subject}">Product</div>
 										</a></li>
@@ -220,7 +220,7 @@
 							<div class="inner">
 								<div class="mega-grid">
 									<!-- 1depth: Brand -->
-									<ul class="col depth-1" id="brand-col-1">
+									<ul class="col depth-1">
 										<li class="menu-item" th:each="b : ${menuList.brandList}" th:attr="data-id=${b.id}">
 											<a class="menu-link" th:href="@{|/brandProductSorted/brand/${b.id}|}">
 												<div>
@@ -230,7 +230,7 @@
 									</ul>
 
 									<!-- 2depth: Brand Big (parent = brand id) -->
-									<ul class="col depth-2" id="brand-col-2">
+									<ul class="col depth-2">
 										<li class="menu-item" th:each="bb : ${menuList.brandBigSortList}" th:attr="data-id=${bb.id}, data-parent=${bb.brand.id}">
 											<a class="menu-link"
 											th:href="@{|/brandProductSorted/main/${bb.id}|}">
@@ -239,7 +239,7 @@
 									</ul>
 
 									<!-- 3depth: Brand Middle (parent = big id) -->
-									<ul class="col depth-3" id="brand-col-3">
+									<ul class="col depth-3">
 										<li class="menu-item" th:each="bm : ${menuList.brandMiddleSortList}" th:attr="data-id=${bm.id}, data-parent=${bm.bigSort.id}">
 											<a class="menu-link"
 											th:href="@{|/brandProductSorted/middle/${bm.id}|}">
@@ -248,7 +248,7 @@
 									</ul>
 
 									<!-- 4depth: Brand Small (parent = middle id) -->
-									<ul class="col depth-4" id="brand-col-4">
+									<ul class="col depth-4">
 										<li class="menu-item" th:each="bs : ${menuList.brandSmallSortList}" th:attr="data-id=${bs.id}, data-parent=${bs.middleSort.id}">
 											<a class="menu-link"
 											th:href="@{|/brandProductSorted/sub/${bs.id}|}">
@@ -257,7 +257,7 @@
 									</ul>
 
 									<!-- 5depth: Brand Product (parent = small id) -->
-									<ul class="col depth-5" id="brand-col-5">
+									<ul class="col depth-5">
 										<li class="menu-item" th:each="bp : ${menuList.brandProductList}" th:attr="data-id=${bp.id}, data-parent=${bp.smallSort.id}">
 											<a class="menu-link" th:href="@{|/brandProductDetail/${bp.id}|}">
 												<div th:text="${bp.subject}">Brand Product</div>
@@ -365,61 +365,89 @@
 		</script>
 		
 		<script>
-		(() => {
-		  const mqDesktop = window.matchMedia('(min-width: 991px)');
-		  const mqCoarse  = window.matchMedia('(hover: none), (pointer: coarse)');
-		  const isTouchDesktop = () => mqDesktop.matches && mqCoarse.matches;
+(() => {
+  const mqCoarse  = window.matchMedia('(hover: none) and (pointer: coarse)');
+  const mqDesktop = window.matchMedia('(min-width: 991px)');
+  const isTouchMode = () => mqCoarse.matches || !mqDesktop.matches;
 
-		  // 패널과 컬럼 체인 정의 (네 마크업 id에 맞춤)
-		  const panels = [
-		    { panelId: 'product-items', chain: ['col-big','col-middle','col-small','col-product'] },
-		    { panelId: 'brands-items',  chain: ['brand-col-1','brand-col-2','brand-col-3','brand-col-4','brand-col-5'] },
-		  ];
+  const nav = document.querySelector('nav.primary-menu');
+  if (!nav) return;
 
-		  const hasChild = (li, chain) => {
-		    const colId = li.parentElement?.id;
-		    const idx   = chain.indexOf(colId);
-		    if (idx < 0 || idx === chain.length - 1) return false;
-		    const next  = document.getElementById(chain[idx + 1]);
-		    return !!next?.querySelector(`li[data-parent="${li.dataset.id}"]`);
-		  };
+  // 현재 li 바로 아래의 서브 UL (깊이에 상관없이 공통)
+  const getSubmenu = (li) =>
+    li?.querySelector(':scope > .mega-menu-content, :scope > .sub-menu-container');
 
-		  panels.forEach(({ panelId, chain }) => {
-		    const panel = document.getElementById(panelId);
-		    if (!panel) return;
+  // 같은 레벨 형제 닫기
+  const closeSiblings = (li) => {
+    const parent = li?.parentElement;
+    if (!parent) return;
+    [...parent.children].forEach(sib => {
+      if (sib !== li) closeTree(sib);
+    });
+  };
 
-		    // 캡처 단계에서 선점: 첫 탭은 이동 막고 펼치기만
-		    panel.addEventListener('click', (e) => {
-		      if (!isTouchDesktop()) return;
+  // li 및 그 자손의 열린 상태 정리
+  const closeTree = (li) => {
+    li.classList.remove('is-open', 'tapped-once');
+    li.querySelectorAll('.menu-item.is-open').forEach(d => d.classList.remove('is-open', 'tapped-once'));
+    const link = li.querySelector(':scope > .menu-link');
+    link?.setAttribute('aria-expanded', 'false');
+  };
 
-		      const a = e.target.closest('.menu-item > .menu-link');
-		      if (!a || !panel.contains(a)) return;
+  const openOnce = (li) => {
+    li.classList.add('is-open');
+    li.classList.remove('tapped-once'); // 첫 오픈 상태
+    const link = li.querySelector(':scope > .menu-link');
+    link?.setAttribute('aria-expanded', 'true');
+  };
 
-		      const li = a.closest('.menu-item');
-		      // 자식 없으면(리프) 그대로 이동
-		      if (!hasChild(li, chain)) return;
+  // 터치: 첫 탭=펼치기, 두 번째 탭=이동
+  function onTouchClick(e) {
+    if (!isTouchMode()) return;
 
-		      if (li.dataset.armed !== '1') {
-		        e.preventDefault();
-		        // 같은 컬럼 형제의 armed 해제
-		        [...li.parentElement.children].forEach(sib => { if (sib !== li) delete sib.dataset.armed; });
-		        li.dataset.armed = '1'; // 두 번째 탭부터 이동 허용
-		        // (기존 initDepth()의 클릭 위임이 실행되어 다음 depth가 보이게 됨)
-		      } else {
-		        delete li.dataset.armed; // 두 번째 탭 → 이동
-		      }
-		    }, { capture: true }); // 중요!
-		  });
+    const link = e.target.closest('.menu-item > .menu-link');
+    if (!link || !nav.contains(link)) return;
 
-		  // 패널 밖을 탭하면 armed 초기화
-		  document.addEventListener('click', (e) => {
-		    if (!isTouchDesktop()) return;
-		    const inside = panels.some(({panelId}) => document.getElementById(panelId)?.contains(e.target));
-		    if (inside) return;
-		    document.querySelectorAll('.menu-item[data-armed]').forEach(li => delete li.dataset.armed);
-		  }, { capture: true });
-		})();
-		</script>
+    const li = link.closest('.menu-item');
+    const submenu = getSubmenu(li);
+
+    // 서브 없음(=리프) → 항상 이동 허용
+    if (!submenu) return;
+
+    // 서브 있음
+    if (!li.classList.contains('is-open')) {
+      // 아직 안 열린 상태 → 이동 막고 펼치기
+      e.preventDefault();
+      closeSiblings(li);   // 같은 레벨 다른 것들 닫기
+      openOnce(li);
+      return;
+    }
+
+    // 이미 열린 상태
+    // - 같은 링크를 다시 탭하면 이동 허용(기본 동작)
+    // - 하위 아이템을 탭해도 그쪽에서 동일 로직이 적용됨
+  }
+
+  // 바깥 탭 시 전체 닫기(선택)
+  function onDocClick(e) {
+    if (!isTouchMode()) return;
+    if (nav.contains(e.target)) return;
+    nav.querySelectorAll('.menu-item.is-open').forEach(closeTree);
+  }
+
+  // 데스크톱 전환 시 정리
+  const resetIfDesktop = () => {
+    if (isTouchMode()) return;
+    nav.querySelectorAll('.menu-item.is-open').forEach(closeTree);
+  };
+
+  nav.addEventListener('click', onTouchClick);
+  document.addEventListener('click', onDocClick);
+  mqCoarse.addEventListener?.('change', resetIfDesktop);
+  mqDesktop.addEventListener?.('change', resetIfDesktop);
+  window.addEventListener('resize', resetIfDesktop);
+})();
+</script>
 
 
 		
