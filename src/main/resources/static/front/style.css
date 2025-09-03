@@ -19759,29 +19759,19 @@ body:not(.stretched) #wrapper {
   
   
 @media (max-width: 991px) {
-  /* 1) 가장 정확: 해당 li 안에서 menu-link가 열려 있으면 그 li의 .mega-menu-content에만 적용
-     (Chrome/Edge/Safari OK, Firefox는 최신버전에서 점진 도입 중) */
-  nav.primary-menu .nav.is-mobile .mobile-primary-menu.open
-  li:has(> .menu-link[aria-expanded="true"]) .mega-menu-content {
-    max-height: 40vh;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* 2) Fallback: menu-link와 .mega-menu-content가 '같은 li'의 형제일 때,
-        중간에 래퍼가 끼어 있어도(~) 적용 */
-  nav.primary-menu .nav.is-mobile .mobile-primary-menu.open
-  li > .menu-link[aria-expanded="true"] ~ .mega-menu-content {
-    max-height: 150PX;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* 3) 가장 보수적(현재 네 코드와 동일 구조일 때만 매칭)
-  nav.primary-menu .nav.is-mobile .mobile-primary-menu.open
-  li > .menu-link[aria-expanded="true"] + .mega-menu-content { … } */
+	.mobile-primary-menu.open .mega-menu-content{
+	    max-height: 90vh;
+	    overflow-y: auto;
+	    overscroll-behavior: contain;
+	    -webkit-overflow-scrolling: touch;
+	    scrollbar-width: none;
+	    -ms-overflow-style: none;
+   	}   
+   
+   .mobile-primary-menu.open .mega-menu-content::-webkit-scrollbar{
+   		width:0;
+   		height: 0;
+   }
 }
 
 
@@ -19801,13 +19791,14 @@ body:not(.stretched) #wrapper {
 	.sub-menu-container.depth-3 div,
 	.sub-menu-containe.depth-4 div,
 	.sub-menu-container.depth-5 div {padding-left:32px !important; min-height:29px; display: flex; justify-content: space-between; align-items: center;}
-	
-	
 }
+
 
 @media (min-width:991px){
 	.header-misc {padding-left:20px;}
 	 nav {padding-left:20px;}
 	.nav.is-desktop .menu-item > .menu-link div {padding:0 clamp(10px, 1vw, 20px);}
 }
+
+
 
