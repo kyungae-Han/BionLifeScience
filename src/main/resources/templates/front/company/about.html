@@ -642,31 +642,52 @@
      }
 
      /* ========== 4) Drag-to-scroll (가로 드래그) ========== */
-     function initDragScroll(){
-       $$(".bio-history-timeline").forEach(scroller => {
-         let startX=0, startLeft=0, dragging=false;
-         const down = (e) => {
-           dragging = true;
-           scroller.classList.add("is-grabbing");
-           startX = (e.touches ? e.touches[0].pageX : e.pageX);
-           startLeft = scroller.scrollLeft;
-           e.preventDefault();
-         };
-         const move = (e) => {
-           if (!dragging) return;
-           const x = (e.touches ? e.touches[0].pageX : e.pageX);
-           scroller.scrollLeft = startLeft - (x - startX);
-         };
-         const up = () => { dragging = false; scroller.classList.remove("is-grabbing"); };
-         scroller.classList.add("is-grabbable");
-         scroller.addEventListener("mousedown", down);
-         scroller.addEventListener("mousemove", move);
-         document.addEventListener("mouseup", up);
-         scroller.addEventListener("touchstart", down, {passive:false});
-         scroller.addEventListener("touchmove",  move, {passive:false});
-         scroller.addEventListener("touchend",   up);
-       });
-     }
+	 function initDragScroll() {
+	   $$(".bio-history-timeline").forEach(scroller => {
+	     let startX = 0, startLeft = 0, dragging = false;
+
+	     // 스크롤 중에는 preventDefault 안 하도록 상태를 관리
+	     let isScrolling = false, scrollT = null;
+	     window.addEventListener('scroll', () => {
+	       isScrolling = true;
+	       clearTimeout(scrollT);
+	       scrollT = setTimeout(() => (isScrolling = false), 80);
+	     }, { passive: true });
+
+	     const down = (e) => {
+	       dragging = true;
+	       scroller.classList.add("is-grabbing");
+
+	       const x = e.touches ? e.touches[0].pageX : e.pageX;
+	       startX = x;
+	       startLeft = scroller.scrollLeft;
+
+	       // cancelable일 때만 막기 (경고 방지)
+	       if (!isScrolling && e.cancelable) e.preventDefault();
+	     };
+
+	     const move = (e) => {
+	       if (!dragging) return;
+	       const x = e.touches ? e.touches[0].pageX : e.pageX;
+	       scroller.scrollLeft = startLeft - (x - startX);
+	       if (e.cancelable) e.preventDefault(); // 터치 이동 중 브라우저 스크롤 방지
+	     };
+
+	     const up = () => {
+	       dragging = false;
+	       scroller.classList.remove("is-grabbing");
+	     };
+
+	     scroller.classList.add("is-grabbable");
+	     scroller.addEventListener("mousedown",  down, { passive: false });
+	     scroller.addEventListener("mousemove",  move, { passive: false });
+	     document.addEventListener("mouseup",    up,   { passive: true  });
+
+	     scroller.addEventListener("touchstart", down, { passive: false });
+	     scroller.addEventListener("touchmove",  move, { passive: false });
+	     scroller.addEventListener("touchend",   up,   { passive: true  });
+	   });
+	 }
 
      /* ========== 5) 진행바 + 활성카드 이동(점/테두리 싱크) ========== */
      function bindProgressFor(container, root){
@@ -851,7 +872,7 @@
          tabs.forEach(a => {
         	    const isActive = a.getAttribute('href') === '#' + target.id;
         	    a.setAttribute('aria-selected', isActive);
-        	    a.classList.toggle('is-active', isActive);   // ✅ 이 줄은 forEach 안으로
+        	    a.classList.toggle('is-active', isActive);   //
        	  });
          
          container?._recalcProgress?.();   // 진행바/활성카드 리바인드
@@ -910,108 +931,106 @@
    </script>
 
 	<!-- nav top body 스크롤 이벤트 -->
-
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const breadcrumb = document.querySelector(".breadcrumb-wrap");
-  const footer     = document.querySelector("footer");
-  const header     = document.querySelector("#header") || document.querySelector(".header-wrap");
-  if (!breadcrumb) return;
-
-  // 상태값
-  let footerVisible = false;
-  let isHidden      = false;
-  let idleTimer     = null;
-
-  // 파라미터
-  const AT_TOP_EPS = 1;    // 최상단 판정 오차
-  const IDLE_MS    = 1800; // 정지 후 숨김 대기시간(ms)
-
-  // 헬퍼
-  const atTop = () => window.scrollY <= AT_TOP_EPS;
-  const headerH = () => (header ? header.offsetHeight || 0 : 0);
-  const inHeaderZone = () => window.scrollY <= Math.max(0, headerH() - AT_TOP_EPS);
-
-  function setFixedBottom(toBottom) {
-    breadcrumb.classList.toggle("fixed-bottom", !!toBottom);
-  }
-
-  function setHidden(nextHidden) {
-    if (isHidden === nextHidden) return;
-    isHidden = nextHidden;
-    if (!nextHidden) {
-      breadcrumb.classList.remove('gone');
-      requestAnimationFrame(() => breadcrumb.classList.remove("hide"));
-    } else {
-      breadcrumb.classList.add("hide");
-    }
-  }
-
-  // 전환 종료 후 gone 처리
-  breadcrumb.addEventListener('transitionend', (e) => {
-    if (isHidden && (e.propertyName === 'opacity' || e.propertyName === 'transform')) {
-      breadcrumb.classList.add('gone');
-    }
-  });
-
-  // Footer 감지
-  if (footer) {
-    const io = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        footerVisible = entry.isIntersecting;
-        if (footerVisible) {
-          setHidden(true); // footer 보이면 숨김
-        }
-      }
-    }, { threshold: 0 });
-    io.observe(footer);
-  }
-
-  // 스크롤 시 동작
-  function onScroll() {
-    // footer 보이면 숨김 유지
-    if (footerVisible) {
-      setHidden(true);
-      return;
-    }
-
-    // top/헤더 영역이면 top 모드
-    if (atTop() || inHeaderZone()) {
-      setFixedBottom(false);
-      setHidden(false);
-    } else {
-      // 그 외엔 bottom 모드
-      setFixedBottom(true);
-      setHidden(false);
-    }
-
-    // 정지 후 숨김 타이머
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(() => {
-      if (footerVisible) { setHidden(true); return; }
-      if (atTop() || inHeaderZone()) {
-        setHidden(false); // top에서는 숨김 안함
-      } else {
-        setHidden(true);
-      }
-    }, IDLE_MS);
-  }
-  window.addEventListener("scroll", onScroll, { passive: true });
-
-  // 초기/리사이즈 보정
-  function sync() {
-    if (atTop() || inHeaderZone()) {
-      setFixedBottom(false);
-    } else {
-      setFixedBottom(true);
-    }
-    setHidden(false);
-  }
-  window.addEventListener("load", sync);
-  window.addEventListener("resize", sync);
-});
-</script>
+	<script>
+	document.addEventListener("DOMContentLoaded", () => {
+	  const breadcrumb = document.querySelector(".breadcrumb-wrap");
+	  const footer     = document.querySelector("footer");
+	  const header     = document.querySelector("#header") || document.querySelector(".header-wrap");
+	  if (!breadcrumb) return;
+	
+	  // 상태값
+	  let footerVisible = false;
+	  let isHidden      = false;
+	  let idleTimer     = null;
+	
+	  // 파라미터
+	  const AT_TOP_EPS = 1;    // 최상단 판정 오차
+	  const IDLE_MS    = 1800; // 정지 후 숨김 대기시간(ms)
+	
+	  // 헬퍼
+	  const atTop = () => window.scrollY <= AT_TOP_EPS;
+	  const headerH = () => (header ? header.offsetHeight || 0 : 0);
+	  const inHeaderZone = () => window.scrollY <= Math.max(0, headerH() - AT_TOP_EPS);
+	
+	  function setFixedBottom(toBottom) {
+	    breadcrumb.classList.toggle("fixed-bottom", !!toBottom);
+	  }
+	
+	  function setHidden(nextHidden) {
+	    if (isHidden === nextHidden) return;
+	    isHidden = nextHidden;
+	    if (!nextHidden) {
+	      breadcrumb.classList.remove('gone');
+	      requestAnimationFrame(() => breadcrumb.classList.remove("hide"));
+	    } else {
+	      breadcrumb.classList.add("hide");
+	    }
+	  }
+	
+	  // 전환 종료 후 gone 처리
+	  breadcrumb.addEventListener('transitionend', (e) => {
+	    if (isHidden && (e.propertyName === 'opacity' || e.propertyName === 'transform')) {
+	      breadcrumb.classList.add('gone');
+	    }
+	  });
+	
+	  // Footer 감지
+	  if (footer) {
+	    const io = new IntersectionObserver((entries) => {
+	      for (const entry of entries) {
+	        footerVisible = entry.isIntersecting;
+	        if (footerVisible) {
+	          setHidden(true); // footer 보이면 숨김
+	        }
+	      }
+	    }, { threshold: 0 });
+	    io.observe(footer);
+	  }
+	
+	  // 스크롤 시 동작
+	  function onScroll() {
+	    // footer 보이면 숨김 유지
+	    if (footerVisible) {
+	      setHidden(true);
+	      return;
+	    }
+	
+	    // top/헤더 영역이면 top 모드
+	    if (atTop() || inHeaderZone()) {
+	      setFixedBottom(false);
+	      setHidden(false);
+	    } else {
+	      // 그 외엔 bottom 모드
+	      setFixedBottom(true);
+	      setHidden(false);
+	    }
+	
+	    // 정지 후 숨김 타이머
+	    clearTimeout(idleTimer);
+	    idleTimer = setTimeout(() => {
+	      if (footerVisible) { setHidden(true); return; }
+	      if (atTop() || inHeaderZone()) {
+	        setHidden(false); // top에서는 숨김 안함
+	      } else {
+	        setHidden(true);
+	      }
+	    }, IDLE_MS);
+	  }
+	  window.addEventListener("scroll", onScroll, { passive: true });
+	
+	  // 초기/리사이즈 보정
+	  function sync() {
+	    if (atTop() || inHeaderZone()) {
+	      setFixedBottom(false);
+	    } else {
+	      setFixedBottom(true);
+	    }
+	    setHidden(false);
+	  }
+	  window.addEventListener("load", sync);
+	  window.addEventListener("resize", sync);
+	});
+	</script>
 <script>
 document.documentElement.style.setProperty('--header-bottom', header.offsetHeight + 'px');
 </script>
