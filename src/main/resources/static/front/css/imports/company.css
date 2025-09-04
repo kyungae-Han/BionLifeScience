@@ -16,16 +16,13 @@
 	  --mint-mid: #f7e4dc;
 	  --mint-dark: #8cc8be;
 	  --mint-accent: #5fafa3;
-	  --m-header-h: 100px;
-	  --m-logo-h: 100px;
-	  --m-header-h-compact: 75px;	
 }
 
 /*-----------------------------------
 	common
 -------------------------------------*/
 
-
+.p-item:not(.il-tags) {min-height:55px;}
 .p-wrap h2 {font-size: clamp(38px, 4vw, 55px);}
 .p-wrap h2 small {font-size: clamp(50px, 5vw, 70px);}
 
@@ -1309,44 +1306,44 @@ html.is-switching-tab, body.is-switching-tab{ overflow-anchor:none !important; }
 	margin: 10px 0;
 }
 
+#institute .il-info{}
+
 #institute .il-info__list {
-	display: grid;
-	grid-template-columns: repeat(12, 1fr);
-	gap: 10px 16px;
-	margin: 10px 0 0;
-	padding: 0;
-	list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 두 개의 열 */
+  gap: 20px; /* 항목 간 간격 */
+  color: #374151;
+  margin: 20px 0;
 }
 
-#institute .il-info__list li {
-	grid-column: span 12;
-	line-height: 1.7;
-	color: #374151;
+#institute .il-info__list:first-child{
+	padding-top:40px;
 }
 
-@media ( min-width :900px) {
-	#institute .il-info__list li {
-		grid-column: span 6;
-	}
+#institute .icon-caption {
+	display: flex; 
+	align-items: flex-start; 
 }
 
 #institute .il-chip {
 	display: inline-block;
-	background: var(--bs-gray-300);
-	color: black;
-	font-weight: 700;
-	font-size: clamp(12px, 1vw, 14px);
-	letter-spacing: .02em;
-	padding: 5px 20px;
-	border-radius: 5px;
-	margin-right: 8px;
-	min-width:73px;
-	text-align: center;
+  font-weight: bold;
+  background-color: #f1f1f1;
+  padding: 8px;
+  text-align: center;
+  border-radius: 5px;
+  width:135px;
 }
 
-.il-info__list li {
-	font-size: clamp(14px, 1vw, 16px);
+
+.chip-caption {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  padding: 0 8px;
+  word-wrap: break-word; 
 }
+
 
 /* Cards */
 #institute .il-cards {
@@ -1363,7 +1360,7 @@ html.is-switching-tab, body.is-switching-tab{ overflow-anchor:none !important; }
 
 @media ( min-width :640px) {
 	#institute .il-cards.il-cards--portrait>.il-image-card {
-		grid-column: span 6;
+		grid-column: span 12;
 	}
 }
 
@@ -1388,10 +1385,19 @@ html.is-switching-tab, body.is-switching-tab{ overflow-anchor:none !important; }
 	min-height: 420px;
 }
 
-@supports (aspect-ratio:5 /5) { #institute .il-cards--portrait
-	.il-image-card{aspect-ratio:4/ 5;
-	min-height: auto;
-}
+@supports (aspect-ratio:5 /5) { 
+	
+	@media (max-width){
+		#institute .il-cards--portrait .il-image-card{
+			aspect-ratio:4/ 5;
+			min-height: auto;
+		}
+	}
+	
+	@media (min-width: 640px) and (max-width: 991px) {
+	    #institute .il-cards--portrait .il-image-card {
+	      aspect-ratio: 19 / 9;  /* 테블릿에서만 비율을 4:5로 설정 */
+    }
 
 }
 #institute .il-image-card__media {
@@ -1728,10 +1734,12 @@ il-callout.p-item {
 		top: -7;
 		left: 12px;
 	}
+	
+	
 	#institute .il-overview__title {
 		font-weight: 800;
 		color: var(--ink, #0b1320);
-		font-size: clamp(20px, 4vw, 32px);
+		font-size: clamp(20px, 4vw, 28px);
 		margin-bottom: 12px;
 		margin-top: clamp(8px, 1vw, 14px);
 		padding-left: clamp(6px, 1vw, 12px);
@@ -1739,7 +1747,8 @@ il-callout.p-item {
 		line-height: 1.3;
 	}
 	
-	.il-info {padding: 0 20px;}
+	
+	.il-info {padding: 0 45px 30px;}
 	
 	.bio-history-tab-nav .sep { display: none; }
 
@@ -1753,6 +1762,20 @@ il-callout.p-item {
 	    content: '~';
 	    margin-left: 4px;
   	}
+	
+	
+	#institute .il-cards {margin-top: 40px;}
+	
+	.il-image-card__content {
+	    opacity: 0;
+	    transform: translateY(-100px);
+	  }
+	  
+	  .il-image-card__content.visible {
+	    opacity: 1 !important;
+	    transform: translateY(0) !important;
+	  }
+	
 	
 }
 
@@ -1837,6 +1860,16 @@ il-callout.p-item {
 	
 	.il-overview__title {
 		margin-left: 20px;
+	}
+	
+	#institute .il-info__list {
+	  display: flex;
+	  flex-direction: column;  /* 아이템들을 세로로 정렬 */
+	  gap: 20px;  /* 아이템 간 간격 */
+	}
+	#institute .icon-caption {
+		display: flex;
+		flex-direction: column;
 	}
 	
 	#institute .title-container {

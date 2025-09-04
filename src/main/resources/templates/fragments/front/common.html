@@ -35,8 +35,13 @@
 					<div class="container">
 						<div class="header-row">
 							<div id="logo">
-								<a href="/index" class="standard-logo" data-dark-logo="/front/image/logo/logo_one.png"><img src="/front/image/logo/logo_one.png" alt="Logo"></a> <a href="/index" class="retina-logo"
-									data-dark-logo="/front/image/logo/logo_one.png"><img src="/front/image/logo/logo_one.png" alt="Logo"></a>
+								
+								<a href="/index">
+								<picture>
+								  <source media="(min-width: 768px)" srcset="/front/image/logo/logo_two.png 2x, /front/image/logo/logo_two.png 1x">
+								  <img th:src="@{/front/image/logo/logo_one.png}" alt="Logo">
+								</picture>
+								</a> 
 							</div>
 
 							<div class="header-misc primary-menu" id="search-wrap">
