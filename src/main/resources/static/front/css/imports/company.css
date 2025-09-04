@@ -16,13 +16,15 @@
 	  --mint-mid: #f7e4dc;
 	  --mint-dark: #8cc8be;
 	  --mint-accent: #5fafa3;
+	  --m-header-h: 100px;
+	  --m-logo-h: 100px;
+	  --m-header-h-compact: 75px;	
 }
 
 /*-----------------------------------
 	common
 -------------------------------------*/
 
-.clearfix::after { content:""; display: table; clear: both; }
 
 .p-wrap h2 {font-size: clamp(38px, 4vw, 55px);}
 .p-wrap h2 small {font-size: clamp(50px, 5vw, 70px);}
@@ -1723,10 +1725,8 @@ il-callout.p-item {
 	}
 	
 	#institute .title-container {
-		position: absolute;
 		top: -7;
 		left: 12px;
-		text-align: center;
 	}
 	#institute .il-overview__title {
 		font-weight: 800;
@@ -1774,10 +1774,8 @@ il-callout.p-item {
 	}
 
 	#institute .title-container {
-		position: absolute;
 		top: 24px;
-		left: 0;
-		text-align: center;
+		left: 24px;
 	}
 	
 	.il-overview {padding: 0 !important; margin: 0 !important;}
@@ -1839,6 +1837,11 @@ il-callout.p-item {
 	
 	.il-overview__title {
 		margin-left: 20px;
+	}
+	
+	#institute .title-container {
+		top: 24px;
+		left: 0;
 	}
 }
 

@@ -12,11 +12,27 @@ document.addEventListener('DOMContentLoaded', () => {
     const itemBrand    = nav.querySelector('.menu-item.brand');
     const panelProduct = document.getElementById('product-items');
     const panelBrand   = document.getElementById('brands-items');
+	const body = document.get
 
     let hideTimer = null;
     let handlers = [];
 
     document.body.classList.add('js-nav');
+	
+	document.addEventListener('pointerdown', (e) => {
+			  if (!isDesktop()) return; // 데스크탑 전용
+			  const inProduct = itemProduct?.contains(e.target) || panelProduct?.contains(e.target);
+			  const inBrand   = itemBrand?.contains(e.target)   || panelBrand?.contains(e.target);
+
+			  if (!inProduct && !inBrand) {
+			    [panelProduct, panelBrand].forEach(p => {
+			      if (!p) return;
+			      p.style.opacity = '0';
+			      p.style.visibility = 'hidden';
+			      p.style.pointerEvents = 'none';
+			    });
+			  }
+		});
 
     const open = (panel) => {
       clearTimeout(hideTimer);
