@@ -70,24 +70,20 @@
 
   <section id="content">
    <div class="content-wrap p-b-0">
-    <!-- promo promo-light promo-full bottommargin-lg header-stick border-top-0 p-5 -->
-    <th:block th:if="${ev != null}">
-    <div class="promo promo-light header-stick p-5">
-     <div class="container clearfix">
-      <div class="row align-items-center">
-       <div class="col-12 col-lg">
-        <h3 th:text="${ev.subject}">EVENT LINE BANNER SECTION</h3>
-        <span th:text="${ev.content}">이벤트 혹은 뉴스 등 이벤트 배너로 활용할 수 있는 공간입니다.</span>
-       </div>
-       <div class="col-12 col-lg-auto mt-4 mt-lg-0">
-        <a th:href="@{${ev.link}}" class="button button-rounded button-reveal button-large button-dirtygreen"><i
-         class="icon-arrow-right"></i><span>살펴보기</span></a>
-       </div>
-      </div>
-     </div>
-    </th:block>
+	    <div class="promo promo-light header-stick p-5">
+		      <div class="row align-items-center" th:if="${ev != null}">
+			       <div class="col-12 col-lg">
+				        <h3 th:text="${ev.subject}">EVENT LINE BANNER SECTION</h3>
+				        <span th:text="${ev.content}">이벤트 혹은 뉴스 등 이벤트 배너로 활용할 수 있는 공간입니다.</span>
+			       </div>
+			       	<div class="col-12 col-lg-auto mt-4 mt-lg-0">
+				        <a th:href="@{${ev.link}}" class="button button-rounded button-reveal button-large button-dirtygreen"><i
+				         class="icon-arrow-right"></i><span>살펴보기</span></a>
+			       </div>
+		     </div>
+	     </div>
     </div>
-    
+ 
 
 
 
@@ -98,7 +94,7 @@
       <!-- 비디오 -->
       <video autoplay muted loop playsinline
        style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
-       <source src="/front/images/history-content.mp4" type="video/mp4">
+       <source th:src="@{/front/images/history-content.mp4}" type="video/mp4">
       </video>
 
       <!-- 캡션 -->
@@ -127,7 +123,7 @@
 
      </div>
     </div>
-
+  </section>
 
 
 
@@ -253,7 +249,6 @@
 
 
 
-
     <div class="section clearfix m-b-0">
      <div class="border-top-0 m-0">
       <div class="container text-center">
@@ -270,43 +265,37 @@
      <div id="oc-clients" class="owl-carousel carousel-widget" data-margin="30" data-loop="true" data-nav="true" data-autoplay="5000" data-pagi="false"
       data-items-xs="3" data-items-sm="4" data-items-md="5" data-items-lg="6" data-items-xl="8" style="padding: 20px 0;">
       <div class="oc-item">
-       <a href="#"><img src="/front/images/clients/1.png" alt="Clients"></a>
+       <a href="#"><img th:src="@{/front/images/clients/1.png}" alt="Clients"></a>
       </div>
       <div class="oc-item">
-       <a href="#"><img src="/front/images/clients/2.png" alt="Clients"></a>
+       <a href="#"><img th:src="@{/front/images/clients/2.png}" alt="Clients"></a>
       </div>
       <div class="oc-item">
-       <a href="#"><img src="/front/images/clients/3.png" alt="Clients"></a>
+       <a href="#"><img th:src="@{/front/images/clients/3.png}" alt="Clients"></a>
       </div>
       <div class="oc-item">
-       <a href="#"><img src="/front/images/clients/4.png" alt="Clients"></a>
+       <a href="#"><img th:src="@{/front/images/clients/4.png}" alt="Clients"></a>
       </div>
       <div class="oc-item">
-       <a href="#"><img src="/front/images/clients/5.png" alt="Clients"></a>
+       <a href="#"><img th:src="@{/front/images/clients/5.png}" alt="Clients"></a>
       </div>
       <div class="oc-item">
-       <a href="#"><img src="/front/images/clients/6.png" alt="Clients"></a>
+       <a href="#"><img th:src="@{/front/images/clients/6.png}" alt="Clients"></a>
       </div>
       <div class="oc-item">
-       <a href="#"><img src="/front/images/clients/7.png" alt="Clients"></a>
+       <a href="#"><img th:src="@{/front/images/clients/7.png}" alt="Clients"></a>
       </div>
       <div class="oc-item">
-       <a href="#"><img src="/front/images/clients/8.png" alt="Clients"></a>
+       <a href="#"><img th:src="@{/front/images/clients/8.png}" alt="Clients"></a>
       </div>
       <div class="oc-item">
-       <a href="#"><img src="/front/images/clients/9.png" alt="Clients"></a>
+       <a href="#"><img th:src="@{/front/images/clients/9.png}" alt="Clients"></a>
       </div>
       <div class="oc-item">
-       <a href="#"><img src="/front/images/clients/10.png" alt="Clients"></a>
+       <a href="#"><img th:src="@{/front/images/clients/10.png}" alt="Clients"></a>
       </div>
      </div>
     </div>
-    
-    
-    
-
-   </div>
-  </section>
 
   <th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
  </div>
@@ -352,7 +341,7 @@
 		modal.classList.add('fade');
 	}
 	</script>
- <script src="/front/js/countdown-timers/flipclock.js"></script>
+ <script th:src="@{/front/js/countdown-timers/flipclock.js}"></script>
  <script type="text/javascript">
 		var clock;
 
