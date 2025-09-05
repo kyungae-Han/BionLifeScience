@@ -8,57 +8,67 @@
  <div id="wrapper" class="clearfix">
   <th:block th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
 
-<section id="hero-slider" class="hero-slider">
-  <div class="hero-slider__container swiper">
-    <div class="swiper-wrapper">
-      
-      <!-- 슬라이드 -->
+
+	<!--메인배-->
+  <section id="slider" class="slider-element slider-parallax swiper_wrapper vh-75">
+   <div class="slider-inner">
+
+    <div class="swiper-container swiper-parent">
+     <div class="swiper-wrapper" th:if="${ba != null}">
       <div class="swiper-slide" th:each="b:${ba}">
-
-        <!-- 배경 -->
-        <div class="hero-slide__background">
-          <!-- 데스크톱 배경 -->
-          <div class="hero-slide__bg-desktop" th:if="${!#strings.isEmpty(b.webroad)}">
-            <video
-              th:if="${#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4')}"
-              autoplay muted loop playsinline>
-              <source th:src="@{${b.webroad}}" type="video/mp4" />
-            </video>
-            <div
-              class="hero-slide__image"
-              th:if="${!(#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4'))}"
-              th:style="'background-image:url(' + @{${b.webroad}} + ');'"></div>
-          </div>
-
-          <!-- 모바일 배경 -->
-          <div class="hero-slide__bg-mobile" th:if="${!#strings.isEmpty(b.mobileroad)}">
-            <video
-              th:if="${#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4')}"
-              autoplay muted loop playsinline>
-              <source th:src="@{${b.mobileroad}}" type="video/mp4" />
-            </video>
-            <div
-              class="hero-slide__image"
-              th:if="${!(#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4'))}"
-              th:style="'background-image:url(' + @{${b.mobileroad}} + ');'"></div>
-          </div>
+       <div class="container">
+        <div class="slider-caption banner-flex">
+         <div data-animate="fadeInUp" th:utext="${b.subject}"></div>
+         <div data-animate="fadeInUp" data-delay="200" th:utext="${b.content}"></div>
         </div>
+       </div>
 
-        <!-- 콘텐츠 -->
-        <div class="hero-slide__content">
-          <div class="hero-slide__caption" data-animate="fadeInUp" th:utext="${b.subject}"></div>
-          <div class="hero-slide__subcaption" data-animate="fadeInUp" data-delay="200" th:utext="${b.content}"></div>
-        </div>
+
+       <!-- 데스크톱용 -->
+       <div class="swiper-slide-bg is-desktop" th:if="${!#strings.isEmpty(b.webroad)}">
+
+        <!-- 비디오(.mp4) -->
+        <video th:if="${#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4')}" autoplay muted loop playsinline>
+         <source th:src="@{${b.webroad}}" type="video/mp4" />
+        </video>
+
+        <!-- 이미지(그 외) -->
+        <div th:if="${!(#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4'))}"
+         th:style="'background-image:url(' + @{${b.webroad}} + ');'"></div>
+       </div>
+
+       <!-- 모바일용 -->
+       <div class="swiper-slide-bg is-mobile" th:if="${!#strings.isEmpty(b.mobileroad)}">
+
+        <!-- 비디오(.mp4) -->
+        <video th:if="${#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4')}" autoplay muted loop playsinline>
+         <source th:src="@{${b.mobileroad}}" type="video/mp4" />
+        </video>
+
+        <!-- 이미지(그 외) -->
+        <div th:if="${!(#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4'))}"
+         th:style="'background-image:url(' + @{${b.mobileroad}} + ');'"></div>
+       </div>
       </div>
+     </div>
+     <div class="slider-arrow-left">
+      <i class="icon-angle-left"></i>
+     </div>
+     <div class="slider-arrow-right">
+      <i class="icon-angle-right"></i>
+     </div>
+     <div class="slide-number">
+      <div class="slide-number-current"></div>
+      <span></span>
+      <div class="slide-number-total"></div>
+     </div>
+     <div class="swiper-pagination"></div>
     </div>
 
-    <!-- 네비게이션 -->
-    <div class="hero-slider__nav hero-slider__nav--prev"><i class="icon-angle-left"></i></div>
-    <div class="hero-slider__nav hero-slider__nav--next"><i class="icon-angle-right"></i></div>
-    <div class="hero-slider__pagination swiper-pagination"></div>
-  </div>
-</section>
-
+   </div>
+  </section>
+  
+  
 
   <section id="content">
    <div class="content-wrap p-b-0">
@@ -75,6 +85,7 @@
 		     </div>
 	     </div>
     </div>
+  </section>
  
 
 
@@ -115,7 +126,6 @@
 
      </div>
     </div>
-  </section>
 
 
 
