@@ -2545,12 +2545,19 @@ body:not(.top-search-open) .top-search-parent #hamburger-menu-trigger {
   vertical-align: center;
 }
 
-/*
+
 nav .menu-item:hover > .menu-link,
 .menu-item.current > .menu-link {
   color: #fe5000;
 }
-*/
+
+@media (max-width:1024){
+	nav .menu-item:hover > .menu-link,
+	.menu-item.current > .menu-link {
+	  color: #292929;
+	}
+}
+
 
 .sub-menu-container,
 .mega-menu-content {
@@ -19779,7 +19786,7 @@ body:not(.stretched) #wrapper {
   
 @media (max-width: 991px) {
 	.mobile-primary-menu.open .mega-menu-content{
-	    max-height: 90vh;
+	    max-height: 38vh;
 	    overflow-y: auto;
 	    overscroll-behavior: contain;
 	    -webkit-overflow-scrolling: touch;
