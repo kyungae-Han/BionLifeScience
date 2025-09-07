@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 기업소개')">
+</head>
+<style>
+/* ===== Research Lab (연구소 소개) ===== */
+
+ul, li {list-style:none;}
+
+.rc { --gap: 28px; --card: #fff; --ink: #0b1320; --muted:#667185; --ring: rgba(30,127,124,.18); }
+@media (min-width: 992px){ .rc{ --gap: 36px; } }
+
+.rc-hero { text-align:center; padding: 36px 16px 12px; }
+.rc-title { font-size: clamp(24px, 2.6vw, 36px); font-weight: 800; letter-spacing: -.02em; }
+.rc-sub { color: var(--muted); margin-top: 8px; }
+
+.rc-toc { max-width: 1080px; margin: 0 auto 10px; }
+.rc-toc-list { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.rc-toc-list a{ display:block; padding:10px 14px; border-radius:999px; border:1px solid #e6ebf1; }
+.rc-toc-list a:focus-visible{ outline:2px solid var(--ring); outline-offset:2px; }
+
+.rc-list{ max-width:1080px; margin:0 auto; display:grid; gap: var(--gap); padding: 16px; }
+.rc-item{ background:var(--card); border:1px solid #eef1f5; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(3,10,27,.05); }
+
+.rc-head{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:18px 18px; background:#f8fafc; border:none; cursor:pointer; }
+.rc-name{ font-size:18px; font-weight:700; }
+.rc-chevron{ width:20px; height:20px; position:relative; }
+.rc-chevron::before, .rc-chevron::after{
+  content:""; position:absolute; inset:0; margin:auto; width:12px; height:2px; background:#222; transition:transform .25s ease;
+}
+.rc-chevron::after{ transform: rotate(90deg); }
+.rc-head[aria-expanded="true"] .rc-chevron::after{ transform: rotate(0deg); }
+
+.rc-body{ display:grid; gap:18px; padding:18px; }
+.rc-media img{ width:100%; height:auto; display:block; border-radius:12px; }
+.rc-desc{ display:grid; gap:12px; }
+.rc-text{ color:var(--ink); line-height:1.6; }
+.rc-meta{ display:grid; gap:8px; }
+.rc-meta dt{ font-weight:700; color:#394150; }
+.rc-meta dd{ margin:0; color:#4b5563; }
+
+.rc-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
+.rc-btn{ display:inline-flex; align-items:center; justify-content:center; padding:10px 14px; border-radius:10px; background:#111827; color:#fff; }
+.rc-btn.rc-outline{ background:#fff; color:#111827; border:1px solid #e6ebf1; }
+.rc-link{ text-decoration:underline; text-underline-offset:2px; }
+
+/* 데스크탑: 2단(이미지/설명) */
+@media (min-width: 992px){
+  .rc-item{ padding:8px 8px 8px; }
+  .rc-head{ display:none; }
+  .rc-body{ display:grid; grid-template-columns: 480fr 600fr; gap:24px; padding:24px; }
+  .rc-body[hidden]{ display:grid !important; }
+}
+
+.rc-head:focus-visible, .rc-btn:focus-visible, .rc-link:focus-visible{
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+}
+</style>
+
+
+<body class="stretched about">
+  <div id="wrapper" class="clearfix">
+    <th:block th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+
+    <section id="related-company" class="rc">
+      <header class="rc-hero">
+        <h1 class="rc-title">연구소 소개</h1>
+        <p class="rc-sub">바이온라이프사이언스 연구소를 소개합니다.</p>
+      </header>
+
+      <!-- 목차 -->
+      <nav class="rc-toc is-desktop" aria-label="연구소 섹션 바로가기">
+        <ul class="rc-toc-list">
+          <li><a href="#rc-lab1">연구개발 1팀</a></li>
+          <li><a href="#rc-lab2">연구개발 2팀</a></li>
+          <li><a href="#rc-lab3">제품혁신센터</a></li>
+          <li><a href="#rc-lab4">품질관리실</a></li>
+        </ul>
+      </nav>
+
+      <div class="rc-list">
+
+        <!-- 연구소1 -->
+        <article id="rc-lab1" class="rc-item" aria-labelledby="rc-lab1-title">
+          <button class="rc-head" type="button" aria-expanded="false">
+            <h2 id="rc-lab1-title" class="rc-name">연구개발 1팀</h2>
+            <span class="rc-chevron" aria-hidden="true"></span>
+          </button>
+          <div class="rc-body" hidden>
+            <figure class="rc-media">
+              <img src="/front/about/1.jpg" alt="연구개발 1팀" loading="lazy">
+            </figure>
+            <div class="rc-desc">
+              <p class="rc-text">신규 원료 탐색과 신제품 기획·개발을 담당하며, 혁신적인 소재 연구에 집중합니다.</p>
+              <dl class="rc-meta">
+                <div><dt>주요분야</dt><dd>원료 개발, 신기술 연구</dd></div>
+                <div><dt>위치</dt><dd>본사 R&D 센터 5층</dd></div>
+              </dl>
+            </div>
+          </div>
+        </article>
+
+        <!-- 연구소2 -->
+        <article id="rc-lab2" class="rc-item" aria-labelledby="rc-lab2-title">
+          <button class="rc-head" type="button" aria-expanded="false">
+            <h2 id="rc-lab2-title" class="rc-name">연구개발 2팀</h2>
+            <span class="rc-chevron" aria-hidden="true"></span>
+          </button>
+          <div class="rc-body" hidden>
+            <figure class="rc-media">
+              <img src="/front/about/1.jpg" alt="연구개발 2팀" loading="lazy">
+            </figure>
+            <div class="rc-desc">
+              <p class="rc-text">기존 제품 개선, 안전성 평가, 안정성 테스트를 수행하는 팀입니다.</p>
+              <dl class="rc-meta">
+                <div><dt>주요분야</dt><dd>제품 개선, 안정성 연구</dd></div>
+                <div><dt>위치</dt><dd>본사 R&D 센터 6층</dd></div>
+              </dl>
+            </div>
+          </div>
+        </article>
+
+        <!-- 연구소3 -->
+        <article id="rc-lab3" class="rc-item" aria-labelledby="rc-lab3-title">
+          <button class="rc-head" type="button" aria-expanded="false">
+            <h2 id="rc-lab3-title" class="rc-name">제품혁신센터</h2>
+            <span class="rc-chevron" aria-hidden="true"></span>
+          </button>
+          <div class="rc-body" hidden>
+            <figure class="rc-media">
+              <img src="/front/about/1.jpg" alt="제품혁신센터" loading="lazy">
+            </figure>
+            <div class="rc-desc">
+              <p class="rc-text">고객 니즈 분석, 맞춤형 제품 설계, 프로토타입 제작을 담당합니다.</p>
+              <dl class="rc-meta">
+                <div><dt>주요분야</dt><dd>시장 분석, 제품 기획</dd></div>
+                <div><dt>위치</dt><dd>서울 본사 별관 3층</dd></div>
+              </dl>
+            </div>
+          </div>
+        </article>
+
+        <!-- 연구소4 -->
+        <article id="rc-lab4" class="rc-item" aria-labelledby="rc-lab4-title">
+          <button class="rc-head" type="button" aria-expanded="false">
+            <h2 id="rc-lab4-title" class="rc-name">품질관리</h2>
+            <span class="rc-chevron" aria-hidden="true"></span>
+          </button>
+          <div class="rc-body" hidden>
+            <figure class="rc-media">
+              <img src="/front/about/1.jpg" alt="품질관리실" loading="lazy">
+            </figure>
+            <div class="rc-desc">
+              <p class="rc-text">국내외 규격 기준에 따른 품질 테스트 및 인증 업무를 수행합니다.</p>
+              <dl class="rc-meta">
+                <div><dt>주요분야</dt><dd>품질 인증, 규격 시험</dd></div>
+                <div><dt>위치</dt><dd>본사 R&D 센터 2층</dd></div>
+              </dl>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+  </div>
+
+  <script>
+  (function(){
+    const MOBILE_MAX = 991;
+    const isMobile = () => window.innerWidth <= MOBILE_MAX;
+
+    function setOpen(item, open){
+      const head = item.querySelector('.rc-head');
+      const body = item.querySelector('.rc-body');
+      head?.setAttribute('aria-expanded', String(!!open));
+      if (open) body.removeAttribute('hidden'); else body.setAttribute('hidden', '');
+    }
+
+    function closeSiblings(item){
+      const parent = item.parentElement;
+      [...parent.children].forEach(sib => { if (sib !== item) setOpen(sib, false); });
+    }
+
+    function init(){
+      const items = document.querySelectorAll('#related-company .rc-item');
+      items.forEach(item => {
+        const head = item.querySelector('.rc-head');
+        const body = item.querySelector('.rc-body');
+
+        if (isMobile()){ setOpen(item, false); }
+        else { body?.removeAttribute('hidden'); }
+
+        head?.addEventListener('click', () => {
+          if (!isMobile()) return;
+          const open = head.getAttribute('aria-expanded') === 'true';
+          closeSiblings(item);
+          setOpen(item, !open);
+        });
+      });
+
+      const openByHash = () => {
+        if (!isMobile()) return;
+        const id = location.hash && location.hash.slice(1);
+        if (!id) return;
+        const target = document.getElementById(id);
+        if (!target) return;
+        closeSiblings(target);
+        setOpen(target, true);
+        target.scrollIntoView({behavior:'smooth', block:'start'});
+      };
+      window.addEventListener('hashchange', openByHash);
+      openByHash();
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+    window.addEventListener('resize', () => {
+      const items = document.querySelectorAll('#related-company .rc-item');
+      items.forEach(item => {
+        const body = item.querySelector('.rc-body');
+        if (window.innerWidth > MOBILE_MAX) { body?.removeAttribute('hidden'); }
+        else { setOpen(item, false); }
+      });
+    });
+  })();
+  </script>
+</body>
+
+</html>

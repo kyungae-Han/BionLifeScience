@@ -36,6 +36,9 @@
 .p-wrap {padding:24px;}
 .glance-slider {padding: 24px;}
 
+.section{margin: 0 !important;}
+.section-last {margin-bottom:30px;}
+
 
 /*---------------------------------
 	page nav
@@ -47,6 +50,8 @@
 	    padding: 50px;
 	    z-index: 2;
    }
+   
+   #page-title {border-bottom: 0 !important;}
    
 
   .breadcrumb-wrap {
@@ -783,8 +788,12 @@
 
 @media(max-width:768px){
 	.addr {margin-bottom: 40px;}
-	
 }
+
+@media(max-width:465px){
+    .addr {margin-bottom: 110px;}
+}
+
 
 /* 기본 버튼 */
 .btn {
@@ -1853,7 +1862,7 @@ il-callout.p-item {
 		padding: 0;
 	}
 	
-		.hist-progress {
+	.hist-progress {
 		top: auto !important;
 		bottom: 30px;
 	}

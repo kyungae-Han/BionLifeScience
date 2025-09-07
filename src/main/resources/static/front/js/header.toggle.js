@@ -374,7 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!childList) return; // 자식 없으면 기본 이동
 
     // 자식 있으면 아코디언 토글
-    e.preventDefault();
+    //e.preventDefault();
     const willOpen = trigger.getAttribute('aria-expanded') !== 'true';
 
     // 같은 레벨 형제 닫기(원하면 유지해도 됨)
