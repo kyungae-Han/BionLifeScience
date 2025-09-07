@@ -38,8 +38,9 @@
        </div>
 
        <!-- 모바일용 -->
+       <!-- /* -->
        <div class="swiper-slide-bg is-mobile" th:if="${!#strings.isEmpty(b.mobileroad)}">
-
+        <!-- */ -->
         <!-- 비디오(.mp4) -->
         <video th:if="${#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4')}" autoplay muted loop playsinline>
          <source th:src="@{${b.mobileroad}}" type="video/mp4" />
@@ -67,7 +68,6 @@
 
    </div>
   </section>
-  
   
 
   <section id="content">
