@@ -120,12 +120,24 @@
 .breadcrumb-wrap li {list-style: none;}
 
 .breadcrumb-wrap ul {
+	position:relative;
 	display: flex;
 	justify-content: center;
 	gap: 40px;
-	background: black;
+}
+
+.breadcrumb-wrap ul::after{
+	content: '';
+	position:absolute;
+	top:0;
+	left:0;
 	border-radius: 15px;
-	}
+	width: 100%;
+	height:100%;
+	background: var(--bs-gray-900);
+	opacity: 0.9;
+	z-index:-1;
+}
 
 .breadcrumb-wrap ul {
   display: flex;
@@ -274,8 +286,10 @@
 	position: relative;
 	isolation: isolate;
 	overflow: hidden;
+	/*
 	background: rgba(196, 223, 153, .4);
 	padding-bottom: clamp(80px, 8vw, 180px);
+	*/
 	z-index: 1;
 	box-sizing: border-box;
 	display: block;
@@ -285,6 +299,7 @@
 .hero-wrap {padding:0 20px;}
 
 .hero .hero-video {
+	display:none;
 	position: absolute;
 	top: 0;
 	width: 55vw;
@@ -522,11 +537,12 @@
 
 
 .glance-nav .swiper-button-prev, .glance-nav .swiper-button-next {
-	color: var(--brand);
+	color: var(--bs-gray-900);
 	width: 44px;
 	height: 44px;
 	border-radius: 999px;
-	background: rgba(30, 127, 124, .08);
+	background: var(--bs-gray-300);
+	opacity: .8;
 	backdrop-filter: blur(4px);
 	box-shadow: 0 6px 18px rgba(3, 10, 27, .08);
 }
@@ -556,10 +572,10 @@
 }
 
 .gi-dots .dot {
-	width: 8px;
-	height: 8px;
+	width: 12px;
+	height: 12px;
 	border-radius: 50%;
-	background: #111;
+	background: var(--accent);
 	opacity: .3;
 	transition: opacity .3s;
 }
@@ -582,7 +598,7 @@
 	position: absolute;
 	inset: 0 auto 0 0;
 	width: 0%;
-	background: #111;
+	background: var(--bs-gray-700);
 	transition: width .45s ease;
 }
 
@@ -593,30 +609,32 @@
 	border: none;
 	cursor: pointer;
 	padding: 0;
-	background-color: transparent; 
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: contain;
+	background: transparent no-repeat center / contain;
+	display: inline-block;
+	-webkit-tap-highlight-color: transparent; 
 }
 
 .gi-toggle.pause-circle {
-	background-size: 36px 36px;
-	width: 36px;
-	height: 36px;
 	mask: url('/front/images/icons/pause-circle.svg') no-repeat center/contain;
 	-webkit-mask: url('/front/images/icons/pause-circle.svg') no-repeat
 		center/contain;
-	background-color: #313131;
 }
 
 .gi-toggle.play-circle {
-	width: 36px;
-	height: 36px;
-	background-size: 36px 36px;
 	mask: url('/front/images/icons/play-circle.svg') no-repeat center/contain;
 	-webkit-mask: url('/front/images/icons/play-circle.svg') no-repeat
 		center/contain;
-	background-color: #313131;
+}
+
+.gi-toggle.pause-circle,
+.gi-toggle.play-circle {
+	-webkit-mask-repeat: no-repeat;
+	mask-repeat: not-repeat;
+	-webkit-mask-position: 50% 50%;
+	mask-position: 50% 50%;
+	-webkit-mask-size: 100% 100%;
+	mask-size: 100% 100%;
+	background-color: var(--bs-gray-700);	
 }
 
 /* ===== Timeline ===== */
@@ -821,7 +839,7 @@
 }
 
 .btn.alt:hover {
-  background: #111;
+  background: var(--depth-bg);
   color: #fff;
 }
 
@@ -1359,7 +1377,7 @@ html.is-switching-tab, body.is-switching-tab{ overflow-anchor:none !important; }
   font-size: 14px;
   line-height: 1.5;
   color: #333;
-  padding: 0 8px;
+  padding: 0 14px;
   word-wrap: break-word; 
 }
 
@@ -1614,16 +1632,32 @@ il-callout.p-item {
 #certificates .cert img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 10px; }
 #certificates .cert span { margin-top: 8px; font-size: 14px; color: #555; }
 
-
-@media (max-width: 768px) {
-  #certificates .cert {
-    flex: 0 0 100%;
-    scroll-snap-align: center;
-    padding: 16px;
-  }
-}
-
 #certificates .cert:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(3,10,27,.1); }
+
+
+/*
+@media (max-width: 1024.98px){
+	#institute .il-overview__title {
+		font-size: clamp(16px, 2.4vw, 22px);
+	}
+	
+	#institute .il-overview__body {
+	 background: var(--bg-img) left/cover no-repeat;
+  		 aspect-ratio: 256/150; 
+	}
+	
+	.il-image-card__content {
+	    opacity: 0;
+	    transform: translateY(-100px);
+	  }
+	  
+	  .il-image-card__content.visible {
+	    opacity: 1 !important;
+	    transform: translateY(0) !important;
+	  }
+}
+*/
+
 
 
 
@@ -1637,17 +1671,13 @@ il-callout.p-item {
 
 
 
-@media (max-width: 991px) {
+@media (max-width: 991px), (max-width: 1024.98px) {
 	#gotoTop {
 		margin-bottom: 50px;
 	}
 
-	.page-title {
-		top: 0;
-		padding: 50px 0 0;
-	}
 	.hero {
-		top: 130px !important;
+		top: 40px !important;
 	}
 	.breadcrumb-wrap {
 		height: auto;
@@ -1866,6 +1896,12 @@ il-callout.p-item {
 		top: auto !important;
 		bottom: 30px;
 	}
+	
+	#certificates .cert {
+	    flex: 0 0 100%;
+	    scroll-snap-align: center;
+	    padding: 16px;
+  }
 	
 	
 }

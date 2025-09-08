@@ -2299,11 +2299,37 @@ html[xmlns] .slider-wrap {
   height: calc(100px + 1px);
 }
 
+.header-row {background:#fff;}
+
 #header {
   position: relative;
-  background-color: #fff;
-  border-bottom: 1px solid #f5f5f5;
+  /*border-bottom: 1px solid #f5f5f5;*/
   z-index: 800;
+}
+
+#header.full-header{
+  	background-color: #fff;
+	height: var(--m-header-h);
+}
+
+#header.full-header.sticky-header-shrink{
+	height: var(--m-header-h-compact);
+	box-shadow: 0 2px 8px rgba(0,0,0,.06);
+   transition: height .25s ease, box-shadow .2s ease
+}
+
+#header.full-header + .include-header {
+  margin-top: calc(var(--m-header-h-compact) * -1 - 2px) !important;
+}
+
+#header.full-header:not(.transparent-header) {
+  border-bottom-color: #eee;
+}
+
+
+#header.full-header { transition: height .25s ease, box-shadow .2s ease; }
+#header.full-header.sticky-header-shrink {
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
 }
 
 #header-wrap {
@@ -2324,7 +2350,7 @@ html[xmlns] .slider-wrap {
 }
 
 /* sticky 기본 상태 */
-@media (max-width: 991.98px) {
+/*@media (max-width: 991.98px) {*/
   #header.sticky-header {
     position: fixed !important; top:0; left:0; right:0; z-index:9999;
     background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.06);
@@ -2332,48 +2358,45 @@ html[xmlns] .slider-wrap {
     will-change: height, padding, box-shadow, transform;
     -webkit-backface-visibility:hidden; backface-visibility:hidden;
   }
-
-  /* 내부 래퍼가 실제 높이/패딩을 애니메이션 */
   #header-wrap {transition: height .4s ease, padding .4s ease, gap .35s ease; }
   #header-wrap .container {background: #fff; padding: 0 20px; }
 
-  /* 진입 애니메이션 */
   @keyframes sticky-in { from { transform: translateY(-12px); opacity:0; }
                           to   { transform: translateY(0);     opacity:1; } }
   #header.sticky-enter { animation: sticky-in .22s ease-out; }
-
-  /* 스페이서(스크립트에서 높이 자동 관리) */
   .header-spacer { transition: height .35s ease; }
 
 
-  /* 기본(확장) 상태 */
-  #header-wrap{
-    height: var(--m-header-h);
-    transition: height .4s var(--m-ease), padding .4s var(--m-ease), gap .35s var(--m-ease);
-  }
-  
 
-  #logo img{
-    height: var(--m-logo-h);
-    transition: height .35s var(--m-ease), transform .35s var(--m-ease);
-  }
+#header-wrap{
+  height: var(--m-header-h);
+  transition: height .4s var(--m-ease), padding .4s var(--m-ease), gap .35s var(--m-ease);
+}
 
-  /* === 축소 상태(헤더에 붙는 클래스) === */
-  /* 우선순위 높이기 위해 sticky-header와 같이 묶음 */
-  #header.sticky-header.sticky-header-shrink #header-wrap {
-    height: var(--m-header-h-compact) !important;
-  }
-  #header.sticky-header.sticky-header-shrink #logo img{
-    height: var(--m-logo-h-compact) !important;
-    transform: scale(.96);
-    transition: .2s ease;
-  }
 
-  
+#logo img{
+  height: var(--m-logo-h);
+  transition: height .35s var(--m-ease), transform .35s var(--m-ease);
+}
+
+#header.sticky-header.sticky-header-shrink #header-wrap {
+  height: var(--m-header-h-compact) !important;
+}
+
+#header.sticky-header.sticky-header-shrink #logo img{
+  height: var(--m-logo-h-compact) !important;
+  transform: scale(.96);
+  transition: .2s ease;
+}
+
+
   @media(max-width:1024.98){
   	.header-row{justify-content: space-between;}
   }
-}
+/*}*/
+
+
+
 
 /* ----------------------------------------------------------------
 	Logo
@@ -4193,7 +4216,7 @@ body:not(.has-plugin-html5video) .video-wrap video {
 .page-title {
   position: relative;
   background-color: #f5f5f5;
-  top: 100px;
+  /*top: 100px;*/
   overflow:hidden;
 }
 

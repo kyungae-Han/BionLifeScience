@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const itemBrand    = nav.querySelector('.menu-item.brand');
     const panelProduct = document.getElementById('product-items');
     const panelBrand   = document.getElementById('brands-items');
-	const body = document.get
-
+	let body;
+	
     let hideTimer = null;
     let handlers = [];
 
