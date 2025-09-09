@@ -333,6 +333,7 @@ function initGlanceSwiper() {
   
 //버튼 위치 업데이트 함수
   function setNavPosition(swiper) {
+	console.log(swiper)
     // 현재 중앙 슬라이드 찾기
     const activeSlide = swiper.slides[swiper.activeIndex];
     if (!activeSlide) return;

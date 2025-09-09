@@ -4,6 +4,12 @@
 <head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 홈')">
 </head>
 
+<style>
+
+
+
+</style>
+
 <body class="stretched">
  <div id="wrapper" class="clearfix">
   <th:block th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
@@ -17,13 +23,15 @@
      <div class="swiper-wrapper" th:if="${ba != null}">
       <div class="swiper-slide" th:each="b:${ba}">
        <div class="container">
-        <div class="slider-caption banner-flex">
-         <div data-animate="fadeInUp" th:utext="${b.subject}"></div>
-         <div data-animate="fadeInUp" data-delay="200" th:utext="${b.content}"></div>
+        <div class="slider-caption dark">
+         <div data-animate="fadeInUp" data-delay="200">
+         	<h1 th:utext="${b.subject}"></h1>
+         	<p th:utext="${b.content}"></p>
+         </div>
         </div>
        </div>
-
-
+       
+       
        <!-- 데스크톱용 -->
        <div class="swiper-slide-bg is-desktop" th:if="${!#strings.isEmpty(b.webroad)}">
 

@@ -3,169 +3,156 @@
 <head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 기업소개')">
 </head>
 
+<link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
 
 <style>
-/* ===== Research Lab (연구소 소개) ===== */
-
 ul, li {list-style:none;}
+h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !important;}
 
-.rc { --gap: 28px; --card: #fff; --ink: #0b1320; --muted:#667185; --ring: rgba(30,127,124,.18); }
-@media (min-width: 992px){ .rc{ --gap: 36px; } }
+h2{font-size:3rem !important;}
 
-.rc-hero { text-align:center; padding: 36px 16px 12px; }
-.rc-title { font-size: clamp(24px, 2.6vw, 36px); font-weight: 800; letter-spacing: -.02em; }
-.rc-sub { color: var(--muted); margin-top: 8px; }
 
-.rc-toc { max-width: 1080px; margin: 0 auto 10px; }
-.rc-toc-list { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-.rc-toc-list a{ display:block; padding:10px 14px; border-radius:999px; border:1px solid #e6ebf1; }
-.rc-toc-list a:focus-visible{ outline:2px solid var(--ring); outline-offset:2px; }
-
-.rc-list{ max-width:1080px; margin:0 auto; display:grid; gap: var(--gap); padding: 16px; }
-.rc-item{ background:var(--card); border:1px solid #eef1f5; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(3,10,27,.05); }
-
-.rc-head{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:16px;
-  padding:18px 18px; background:#f8fafc; border:none; cursor:pointer; }
-.rc-name{ font-size:18px; font-weight:700; }
-.rc-chevron{ width:20px; height:20px; position:relative; }
-.rc-chevron::before, .rc-chevron::after{
-  content:""; position:absolute; inset:0; margin:auto; width:12px; height:2px; background:#222; transition:transform .25s ease;
-}
-.rc-chevron::after{ transform: rotate(90deg); }
-.rc-head[aria-expanded="true"] .rc-chevron::after{ transform: rotate(0deg); }
-
-.rc-body{ display:grid; gap:18px; padding:18px; }
-.rc-media img{ width:100%; height:auto; display:block; border-radius:12px; }
-.rc-desc{ display:grid; gap:12px; }
-.rc-text{ color:var(--ink); line-height:1.6; }
-.rc-meta{ display:grid; gap:8px; }
-.rc-meta dt{ font-weight:700; color:#394150; }
-.rc-meta dd{ margin:0; color:#4b5563; }
-
-.rc-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
-.rc-btn{ display:inline-flex; align-items:center; justify-content:center; padding:10px 14px; border-radius:10px; background:#111827; color:#fff; }
-.rc-btn.rc-outline{ background:#fff; color:#111827; border:1px solid #e6ebf1; }
-.rc-link{ text-decoration:underline; text-underline-offset:2px; }
-
-/* 데스크탑: 2단(이미지/설명) */
-@media (min-width: 992px){
-  .rc-item{ padding:8px 8px 8px; }
-  .rc-head{ display:none; }
-  .rc-body{ display:grid; grid-template-columns: 480fr 600fr; gap:24px; padding:24px; }
-  .rc-body[hidden]{ display:grid !important; }
+.bouncy{
+	--kspace: 0.06em;
+	--kspace-space: 0.25em;
+	--kspace-punct: 0em;
 }
 
-.rc-head:focus-visible, .rc-btn:focus-visible, .rc-link:focus-visible{
-  outline: 3px solid var(--ring);
-  outline-offset: 2px;
+.bouncy .char{
+  display:inline-block;
+  transform: translateY(14px) scale(.92);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: pop-bounce .68s cubic-bezier(.2,.8,.2,1) both;
+  animation-delay: calc(var(--i, 0) * var(--stagger, 45ms));
+  margin-right:var(--kspace);
 }
+
+.bouncy .char{ margin-right: var(--kspace); }
+.bouncy .char.sp{ margin-right: var(--kspace-space); }
+.bouncy .char.punct{ margin-right: var(--kspace-punct); }
+.bouncy .char:last-child{ margin-right: 0; }
+
+.bouncy:not(.inview) .char{ animation-play-state: paused; }
+
+.bouncy:hover .char{
+  animation-name: pop-bounce;
+  animation-duration: .58s;
+  animation-delay: calc(var(--i, 0) * 30ms);
+  animation-play-state: running;
+}
+
+@keyframes pop-bounce{
+  0%   { transform: translateY(14px) scale(.92); opacity: 0; }
+  60%  { transform: translateY(-6px) scale(1.06); opacity: 1; }
+  80%  { transform: translateY(2px)  scale(.98);  opacity: 1; }
+  100% { transform: translateY(0)    scale(1);    opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .bouncy .char{ animation:none !important; transform:none !important; opacity:1 !important; }
+}
+
 </style>
 
 
 <body class="stretched">
   <div id="wrapper" class="clearfix">
     <th:block th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
-
     <section id="related-company" class="rc">
-      <header class="rc-hero">
-        <h1 class="rc-title">연구소 소개</h1>
-        <p class="rc-sub">바이온라이프사이언스 연구소를 소개합니다.</p>
-      </header>
-
-      <!-- 목차 -->
-      <nav class="rc-toc is-desktop" aria-label="연구소 섹션 바로가기">
-        <ul class="rc-toc-list">
-          <li><a href="#rc-lab1">연구개발 1팀</a></li>
-          <li><a href="#rc-lab2">연구개발 2팀</a></li>
-          <li><a href="#rc-lab3">제품혁신센터</a></li>
-          <li><a href="#rc-lab4">품질관리실</a></li>
-        </ul>
-      </nav>
-
-      <div class="rc-list">
-
-        <!-- 연구소1 -->
-        <article id="rc-lab1" class="rc-item" aria-labelledby="rc-lab1-title">
-          <button class="rc-head" type="button" aria-expanded="false">
-            <h2 id="rc-lab1-title" class="rc-name">연구개발 1팀</h2>
-            <span class="rc-chevron" aria-hidden="true"></span>
-          </button>
-          <div class="rc-body" hidden>
-            <figure class="rc-media">
-              <img src="/front/images/about/2.jpg" alt="연구개발 1팀" loading="lazy">
-            </figure>
-            <div class="rc-desc">
-              <p class="rc-text">신규 원료 탐색과 신제품 기획·개발을 담당하며, 혁신적인 소재 연구에 집중합니다.</p>
-              <dl class="rc-meta">
-                <div><dt>주요분야</dt><dd>원료 개발, 신기술 연구</dd></div>
-                <div><dt>위치</dt><dd>본사 R&D 센터 5층</dd></div>
-              </dl>
-            </div>
-          </div>
-        </article>
-
-        <!-- 연구소2 -->
-        <article id="rc-lab2" class="rc-item" aria-labelledby="rc-lab2-title">
-          <button class="rc-head" type="button" aria-expanded="false">
-            <h2 id="rc-lab2-title" class="rc-name">연구개발 2팀</h2>
-            <span class="rc-chevron" aria-hidden="true"></span>
-          </button>
-          <div class="rc-body" hidden>
-            <figure class="rc-media">
-              <img src="/front/images/about/2.jpg" alt="연구개발 2팀" loading="lazy">
-            </figure>
-            <div class="rc-desc">
-              <p class="rc-text">기존 제품 개선, 안전성 평가, 안정성 테스트를 수행하는 팀입니다.</p>
-              <dl class="rc-meta">
-                <div><dt>주요분야</dt><dd>제품 개선, 안정성 연구</dd></div>
-                <div><dt>위치</dt><dd>본사 R&D 센터 6층</dd></div>
-              </dl>
-            </div>
-          </div>
-        </article>
-
-        <!-- 연구소3 -->
-        <article id="rc-lab3" class="rc-item" aria-labelledby="rc-lab3-title">
-          <button class="rc-head" type="button" aria-expanded="false">
-            <h2 id="rc-lab3-title" class="rc-name">제품혁신센터</h2>
-            <span class="rc-chevron" aria-hidden="true"></span>
-          </button>
-          <div class="rc-body" hidden>
-            <figure class="rc-media">
-              <img src="/front/images/about/2.jpg" alt="제품혁신센터" loading="lazy">
-            </figure>
-            <div class="rc-desc">
-              <p class="rc-text">고객 니즈 분석, 맞춤형 제품 설계, 프로토타입 제작을 담당합니다.</p>
-              <dl class="rc-meta">
-                <div><dt>주요분야</dt><dd>시장 분석, 제품 기획</dd></div>
-                <div><dt>위치</dt><dd>서울 본사 별관 3층</dd></div>
-              </dl>
-            </div>
-          </div>
-        </article>
-
-        <!-- 연구소4 -->
-        <article id="rc-lab4" class="rc-item" aria-labelledby="rc-lab4-title">
-          <button class="rc-head" type="button" aria-expanded="false">
-            <h2 id="rc-lab4-title" class="rc-name">품질관리</h2>
-            <span class="rc-chevron" aria-hidden="true"></span>
-          </button>
-          <div class="rc-body" hidden>
-            <figure class="rc-media">
-              <img src="/front/images/about/2.jpg" alt="품질관리실" loading="lazy">
-            </figure>
-            <div class="rc-desc">
-              <p class="rc-text">국내외 규격 기준에 따른 품질 테스트 및 인증 업무를 수행합니다.</p>
-              <dl class="rc-meta">
-                <div><dt>주요분야</dt><dd>품질 인증, 규격 시험</dd></div>
-                <div><dt>위치</dt><dd>본사 R&D 센터 2층</dd></div>
-              </dl>
-            </div>
-          </div>
-        </article>
-
-      </div>
+    	<div class="fixed-icon">
+			<a class="scroll-indicator scroll-v" href="#rc-lab1" aria-label="아래로 스크롤">
+			  <span class="t">Scroll</span>
+			  <svg class="chev" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+			    <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"
+			          stroke-linecap="round" stroke-linejoin="round"/>
+			  </svg>
+			</a>
+    	</div>
+    
+    	<article>
+		    <div class="section-1"
+		    	style="--bg-img:url('/front/images/about/overview-bg-1.jpg');">
+			    <div class="caption p-item">
+			    	<div class="inner p-item">
+						<h1><b>(주)바이온라이프사이언스<br>기업 부설 연구소</b></h1>    
+						<p>생명과학, 질병 진단, 의료기기 관련 소모품, 부자재, Plasticware, 진단 Kit등에 대한 연구 개발 업무를 수행</p>
+					</div>
+			    </div>
+		    </div>
+		    
+	    </article>
+	    
+	    
+	    
+	    
+	    <article class="fp">
+		  <h2 class="fp-heading">Quality Enhancement</h2>
+		  <p class="fp-sub">혁신적인 제품의 개발과 생산, 첨단기술력의 발전과 끊임없는 도전으로 가치를 만들어 갑니다.</p>
+		
+		  <div class="fp-wrap" role="list">
+		    <!-- 카드 1 -->
+		    <a class="fp-card" role="listitem" href="#"
+		       style="--bg:url('/front/images/about/section-bg-1.jpg')">
+		      <div class="fp-bg"></div>
+		      <div class="fp-dim"></div>
+		      <div class="fp-content dark">
+		        <h3 class="fp-title"><b>3D Printing 설계</b></h3>
+		        <p class="fp-desc">3D 모델링·프린팅을 도입하여 보다 진보된 연구용 기자재 R&amp;D 추진</p>
+		        <span class="fp-more none" aria-hidden="true">자세히</span>
+		      </div>
+		    </a>
+		
+		    <!-- 카드 2 -->
+		    <a class="fp-card" role="listitem" href="#"
+		       style="--bg:url('/front/images/about/section-bg-4.jpg')">
+		      <div class="fp-bg"></div>
+		      <div class="fp-dim"></div>
+		      <div class="fp-content">
+		        <h3 class="fp-title"><b>Localization R&amp;D</b></h3>
+		        <p class="fp-desc">국내 생명과학 시장을 다소 점유하고 있는 외산 제품에 대응한 국산화를 지속 추진</p>
+		        <span class="fp-more none" aria-hidden="true">자세히</span>
+		      </div>
+		    </a>
+		
+		    <!-- 카드 3 (초기 강조) -->
+		    <a class="fp-card is-active" role="listitem" href="#"
+		       style="--bg:url('/front/images/about/section-bg-2.jpg')">
+		      <div class="fp-bg"></div>
+		      <div class="fp-dim"></div>
+		      <div class="fp-content dark">
+		        <h3 class="fp-title"><b>Quality</b></h3>
+		        <p class="fp-desc">연구 현장에서 발생하는 제품의 문제점을 신속히 해결</p>
+		        <span class="fp-more none" aria-hidden="true">자세히</span>
+		      </div>
+		    </a>
+		
+		    <!-- 카드 4 -->
+		    <a class="fp-card" role="listitem" href="#"
+		       style="--bg:url('/front/images/about/section-bg-5.jpg')">
+		      <div class="fp-bg"></div>
+		      <div class="fp-dim"></div>
+		      <div class="fp-content dark">
+		        <h3 class="fp-title"><b>True Lab</b></h3>
+		        <p class="fp-desc">개선 요구를 반영한 향상된 제품 공급</p>
+		        <span class="fp-more none" aria-hidden="true">자세히</span>
+		      </div>
+		    </a>
+		  </div>
+		</article>
+	    
+	    
+	    <article class="section-1"
+	    	style="--bg-img:url('/front/images/about/overview-bg-2.jpg');">
+	    	<div class="inner p-item .char">
+				<h2 class="black bouncy"><b>새로운 성장 동력 발굴</b></h2>    
+				<p class="black bouncy">천연물 자원 기반 기능성 화장품·건강식품 소재 개발를 수행</p>
+			</div>
+	    </article>
+	    
+    	
     </section>
+
 
     <th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
   </div>
@@ -178,67 +165,160 @@ ul, li {list-style:none;}
 		<script src="/front/js/menu.tree.js"></script>
 		<script src="/front/js/header.toggle.js"></script>
 	</th:block>
+	
+<script>
+(function(){
+  const heroes = document.querySelectorAll('.section-1');
+  if (!heroes.length) return;
 
-  <script>
-  (function(){
-    const MOBILE_MAX = 991;
-    const isMobile = () => window.innerWidth <= MOBILE_MAX;
-
-    function setOpen(item, open){
-      const head = item.querySelector('.rc-head');
-      const body = item.querySelector('.rc-body');
-      head?.setAttribute('aria-expanded', String(!!open));
-      if (open) body.removeAttribute('hidden'); else body.setAttribute('hidden', '');
-    }
-
-    function closeSiblings(item){
-      const parent = item.parentElement;
-      [...parent.children].forEach(sib => { if (sib !== item) setOpen(sib, false); });
-    }
-
-    function init(){
-      const items = document.querySelectorAll('#related-company .rc-item');
-      items.forEach(item => {
-        const head = item.querySelector('.rc-head');
-        const body = item.querySelector('.rc-body');
-
-        if (isMobile()){ setOpen(item, false); }
-        else { body?.removeAttribute('hidden'); }
-
-        head?.addEventListener('click', () => {
-          if (!isMobile()) return;
-          const open = head.getAttribute('aria-expanded') === 'true';
-          closeSiblings(item);
-          setOpen(item, !open);
-        });
-      });
-
-      const openByHash = () => {
-        if (!isMobile()) return;
-        const id = location.hash && location.hash.slice(1);
-        if (!id) return;
-        const target = document.getElementById(id);
-        if (!target) return;
-        closeSiblings(target);
-        setOpen(target, true);
-        target.scrollIntoView({behavior:'smooth', block:'start'});
-      };
-      window.addEventListener('hashchange', openByHash);
-      openByHash();
-    }
-
-    window.addEventListener('DOMContentLoaded', init);
-    window.addEventListener('resize', () => {
-      const items = document.querySelectorAll('#related-company .rc-item');
-      items.forEach(item => {
-        const body = item.querySelector('.rc-body');
-        if (window.innerWidth > MOBILE_MAX) { body?.removeAttribute('hidden'); }
-        else { setOpen(item, false); }
-      });
+  // 등장하면 .show 부여 → Ken Burns 시작 + 텍스트 슬라이드업은 기존 CSS로
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('show');
+        // io.unobserve(e.target); // 1회만이면 주석 해제
+      }
     });
-  })();
-  </script>
-  
-  
+  }, { threshold: 0.2 });
+  heroes.forEach(h => io.observe(h));
+
+  // 스크롤: 패럴랙스 + scale(줌아웃)
+  const clamp = (n,min,max)=>Math.max(min,Math.min(max,n));
+
+  // 취향에 맞게 조절 (데스크톱/모바일 분기 예시)
+  const isMobile = () => window.innerWidth < 992;
+  function getParams(){
+    return {
+      MAX_SHIFT: isMobile() ? 120 : 90,     // 배경 위로 이동(px)
+      MIN_SCALE: isMobile() ? 0.10 : 0.14   // 1 → 이 값까지 축소
+    };
+  }
+
+  function updateOne(h){
+    const rect = h.getBoundingClientRect();
+    const H = rect.height || innerHeight;
+    const p = clamp((-rect.top)/H, 0, 1);         // 0~1 진행도
+    const { MAX_SHIFT, MIN_SCALE } = getParams();
+
+    const parallaxY = -MAX_SHIFT * p;
+    const scale = 1 - (1 - MIN_SCALE) * p;
+
+    h.style.setProperty('--parallax', parallaxY + 'px');
+    h.style.setProperty('--scale', String(scale));
+  }
+
+  let ticking = false;
+  function onScroll(){
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      heroes.forEach(updateOne);
+      ticking = false;
+    });
+  }
+  addEventListener('scroll', onScroll, { passive:true });
+  addEventListener('resize', onScroll);
+  onScroll(); // 초기 1회
+})();
+</script>
+<script>
+(() => {
+  const wrap = document.querySelector('.fp-wrap');
+  if (!wrap) return;
+  const cards = [...wrap.querySelectorAll('.fp-card')];
+  const mq = matchMedia('(min-width: 992px)');
+  const activate = (el) => cards.forEach(c => c.classList.toggle('is-active', c === el));
+
+  // 초기 강조(없으면 1번째)
+  if (!cards.some(c => c.classList.contains('is-active'))) activate(cards[0]);
+
+  // 데스크톱: 포인터 올리면 강조, 모바일: 탭하면 강조 유지
+  cards.forEach(c => {
+    c.addEventListener('pointerenter', () => { if (mq.matches) activate(c); });
+    c.addEventListener('focus', () => activate(c));
+    c.addEventListener('click', (e) => { if (!mq.matches) { activate(c); e.preventDefault(); } });
+  });
+})();
+</script>
+
+<script>
+(function(){
+  // 대상: .bouncy 전부 (중첩 태그(<b> 등) 안의 텍스트도 처리)
+  const targets = document.querySelectorAll('.bouncy');
+  if (!targets.length) return;
+
+  function splitTextNode(node){
+    const txt = node.nodeValue;
+    if(!txt || !txt.trim()) return null;
+    const frag = document.createDocumentFragment();
+    let i = 0;
+    for(const ch of txt){
+      const span = document.createElement('span');
+      span.className = 'char';
+      span.style.setProperty('--i', i++);
+      span.textContent = ch;
+      frag.appendChild(span);
+    }
+    return frag;
+  }
+
+  function walkAndSplit(el){
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
+      acceptNode(n){ return n.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT; }
+    });
+    const toReplace = [];
+    while(walker.nextNode()){ toReplace.push(walker.currentNode); }
+    toReplace.forEach(textNode => {
+      const frag = splitTextNode(textNode);
+      if (frag) textNode.parentNode.replaceChild(frag, textNode);
+    });
+  }
+
+  targets.forEach(el => {
+    // 이미 처리했는지 가드
+    if (el.dataset.bouncyDone) return;
+    walkAndSplit(el);
+    el.dataset.bouncyDone = '1';
+    el.style.setProperty('--stagger','35ms');
+  });
+
+  // viewport에 들어오면 .inview 붙여서 재생 시작
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('inview');
+        //io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  targets.forEach(el => io.observe(el));
+})();
+</script>
+
+<script>
+function splitTextNode(node){
+	  const txt = node.nodeValue;
+	  if (!txt || !txt.trim()) return null;
+	  const frag = document.createDocumentFragment();
+	  let i = 0;
+	  for (const ch of txt){
+	    const span = document.createElement('span');
+	    span.className = 'char';
+	    span.style.setProperty('--i', i++);
+	    span.textContent = ch;
+
+	    if (/\s/.test(ch)) {                // 공백
+	      span.classList.add('sp');
+	    } else if (/[.,!?~:;)\]\}…]/.test(ch)) { // 문장부호(필요시 추가)
+	      span.classList.add('punct');
+	    }
+	    frag.appendChild(span);
+	  }
+	  return frag;
+	}
+
+</script>
+	
 </body>
 </html>
