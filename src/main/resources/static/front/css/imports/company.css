@@ -1999,8 +1999,9 @@ article.section-1 {
   transform: translateY(var(--parallax)) scale(var(--scale));
   transform-origin: center;
   background-size: 102%;
-  will-change: transform, opacity, background-size;
+  will-change: transform, opacity, background-size, border-radius;
   z-index:0;
+  border-radius: var(--rb, 0px);
 }
 
 /* 섹션이 보이면 배경 확대 애니메이션을 계속 반복 */
@@ -2010,8 +2011,8 @@ article.section-1 {
 
 
 @keyframes hero-kenburns{
-	from {background-size:102%; background-position: center 52%;}
-	to   {background-size:110%; background-position: center 48%;}
+	from {background-size:102%; background-position: center 52%; border-radius: 0px;}
+	to   {background-size:110%; background-position: center 48%; border-radius: 125px;}
 }
 
 .section-1::after{
