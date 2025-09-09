@@ -1999,7 +1999,7 @@ article.section-1 {
   transform: translateY(var(--parallax)) scale(var(--scale));
   transform-origin: center;
   background-size: 102%;
-  will-change: transform, opacity, background-size, border-radius;
+  will-change: transform, opacity, background-size;
   z-index:0;
   border-radius: var(--rb, 0px);
 }
@@ -2011,8 +2011,8 @@ article.section-1 {
 
 
 @keyframes hero-kenburns{
-	from {background-size:102%; background-position: center 52%; border-radius: 0px;}
-	to   {background-size:110%; background-position: center 48%; border-radius: 125px;}
+	from {background-size:102%; background-position: center 52%;}
+	to   {background-size:110%; background-position: center 48%;}
 }
 
 .section-1::after{
