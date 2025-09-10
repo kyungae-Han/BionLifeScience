@@ -43,15 +43,7 @@
 /*---------------------------------
 	page nav
 ----------------------------------*/
-
-   .page-title{
-	    background-color: #fff !important;
-	    min-width: 200px;
-	    padding: 50px;
-	    z-index: 2;
-   }
-   
-   #page-title {border-bottom: 0 !important;}
+   #page-title {border-bottom: 0 !important; background-color:#fff !important; text-align:center;}
    
 
   .breadcrumb-wrap {
@@ -340,7 +332,7 @@
 
 
 .sec-head {
-	font-size: clamp(55px, 1.5vw, 80px);
+	font-size: clamp(32px, 1.5vw, 60px);
 	margin: 0;
 	letter-spacing: -0.2px;
 }
@@ -1978,9 +1970,8 @@ article.section-1 {
 }
 
 .section-1 {
-  width: 100%;
   position: relative;
-  min-height: 680px;
+  min-height: 100vh;
   overflow: clip;
   --parallax: 0px;
   --fade: 1;
@@ -2025,7 +2016,7 @@ article.section-1 {
 .section-1 > * {position: relative; z-index:1;}
 
 .section-1 .inner{
-  max-width:1080px; margin:0 auto; padding:0 16px 0;
+  width:auto; min-height:100vh; margin:0 auto; padding:0 16px 0;
   color:#fff; text-align:center;
   transform: translateY(24px);
   opacity:0;
@@ -2300,6 +2291,4 @@ article.section-1 {
   outline:3px solid rgba(255,255,255,.95);
   outline-offset:4px;
 }
-
-
 

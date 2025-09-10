@@ -152,8 +152,6 @@ h2{font-size:3rem !important;}
 	    
     	
     </section>
-
-
     <th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
   </div>
   
@@ -165,8 +163,7 @@ h2{font-size:3rem !important;}
 		<script src="/front/js/menu.tree.js"></script>
 		<script src="/front/js/header.toggle.js"></script>
 	</th:block>
-	
-<script>
+	<script>
 (function(){
   const heroes = document.querySelectorAll('.section-1');
   if (!heroes.length) return;
@@ -221,80 +218,6 @@ h2{font-size:3rem !important;}
   onScroll(); // 초기 1회
 })();
 </script>
-<script>
-(() => {
-  const wrap = document.querySelector('.fp-wrap');
-  if (!wrap) return;
-  const cards = [...wrap.querySelectorAll('.fp-card')];
-  const mq = matchMedia('(min-width: 992px)');
-  const activate = (el) => cards.forEach(c => c.classList.toggle('is-active', c === el));
-
-  // 초기 강조(없으면 1번째)
-  if (!cards.some(c => c.classList.contains('is-active'))) activate(cards[0]);
-
-  // 데스크톱: 포인터 올리면 강조, 모바일: 탭하면 강조 유지
-  cards.forEach(c => {
-    c.addEventListener('pointerenter', () => { if (mq.matches) activate(c); });
-    c.addEventListener('focus', () => activate(c));
-    c.addEventListener('click', (e) => { if (!mq.matches) { activate(c); e.preventDefault(); } });
-  });
-})();
-</script>
-
-<script>
-(function(){
-  // 대상: .bouncy 전부 (중첩 태그(<b> 등) 안의 텍스트도 처리)
-  const targets = document.querySelectorAll('.bouncy');
-  if (!targets.length) return;
-
-  function splitTextNode(node){
-    const txt = node.nodeValue;
-    if(!txt || !txt.trim()) return null;
-    const frag = document.createDocumentFragment();
-    let i = 0;
-    for(const ch of txt){
-      const span = document.createElement('span');
-      span.className = 'char';
-      span.style.setProperty('--i', i++);
-      span.textContent = ch;
-      frag.appendChild(span);
-    }
-    return frag;
-  }
-
-  function walkAndSplit(el){
-    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, {
-      acceptNode(n){ return n.nodeValue.trim() ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT; }
-    });
-    const toReplace = [];
-    while(walker.nextNode()){ toReplace.push(walker.currentNode); }
-    toReplace.forEach(textNode => {
-      const frag = splitTextNode(textNode);
-      if (frag) textNode.parentNode.replaceChild(frag, textNode);
-    });
-  }
-
-  targets.forEach(el => {
-    // 이미 처리했는지 가드
-    if (el.dataset.bouncyDone) return;
-    walkAndSplit(el);
-    el.dataset.bouncyDone = '1';
-    el.style.setProperty('--stagger','35ms');
-  });
-
-  // viewport에 들어오면 .inview 붙여서 재생 시작
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('inview');
-        //io.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.2 });
-
-  targets.forEach(el => io.observe(el));
-})();
-</script>
 
 <script>
 function splitTextNode(node){
@@ -319,6 +242,7 @@ function splitTextNode(node){
 	}
 
 </script>
+
 	
 </body>
 </html>

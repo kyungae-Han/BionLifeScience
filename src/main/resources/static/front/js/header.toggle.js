@@ -1,55 +1,35 @@
+/* =======================================================
+ * Desktop only: Mega menu open/close + depth hover
+ * ======================================================= */
 document.addEventListener('DOMContentLoaded', () => {
-	
-  const mqDesktopWidth = window.matchMedia('(min-width: 991px)');  
-  const isDesktop = () => mqDesktopWidth.matches;                  
+  const mqDesktop = window.matchMedia('(min-width: 991px)');
+  const isDesktop = () => mqDesktop.matches;
 
+  /* 1) 상단 GNB에서 제품/브랜드 패널 열고 닫기 */
   (function initNav(){
     const nav = document.querySelector('nav.primary-menu');
     if (!nav) return;
-	
 
     const itemProduct  = nav.querySelector('.menu-item.product');
     const itemBrand    = nav.querySelector('.menu-item.brand');
     const panelProduct = document.getElementById('product-items');
     const panelBrand   = document.getElementById('brands-items');
-	let body;
-	
+
     let hideTimer = null;
     let handlers = [];
-
-    document.body.classList.add('js-nav');
-	
-	document.addEventListener('pointerdown', (e) => {
-			  if (!isDesktop()) return; // 데스크탑 전용
-			  const inProduct = itemProduct?.contains(e.target) || panelProduct?.contains(e.target);
-			  const inBrand   = itemBrand?.contains(e.target)   || panelBrand?.contains(e.target);
-
-			  if (!inProduct && !inBrand) {
-			    [panelProduct, panelBrand].forEach(p => {
-			      if (!p) return;
-			      p.style.opacity = '0';
-			      p.style.visibility = 'hidden';
-			      p.style.pointerEvents = 'none';
-			    });
-			  }
-		});
 
     const open = (panel) => {
       clearTimeout(hideTimer);
       [panelProduct, panelBrand].forEach(p=>{
         if(!p) return;
-        if(p === panel){
-          p.style.opacity = '1';
-          p.style.visibility = 'visible';
-          p.style.pointerEvents = 'auto';
-          p.style.transform = 'translateX(-50%)';
-        }else{
-          p.style.opacity = '0';
-          p.style.visibility = 'hidden';
-          p.style.pointerEvents = 'none';
-        }
+        const on = p === panel;
+        p.style.opacity        = on ? '1'   : '0';
+        p.style.visibility     = on ? 'visible' : 'hidden';
+        p.style.pointerEvents  = on ? 'auto': 'none';
+        if (on) p.style.transform = 'translateX(-50%)';
       });
     };
+
     const delayedClose = (delay=180) => {
       clearTimeout(hideTimer);
       hideTimer = setTimeout(()=>{
@@ -62,322 +42,181 @@ document.addEventListener('DOMContentLoaded', () => {
       }, delay);
     };
 
-    const add = (el, type, fn) => {
-      el.addEventListener(type, fn);
-      handlers.push({el, type, fn});
-    };
-    const detach = () => {
-      handlers.forEach(({el, type, fn}) => el.removeEventListener(type, fn));
-      handlers = [];
-    };
+    const add = (el, type, fn) => { el.addEventListener(type, fn); handlers.push({el, type, fn}); };
+    const detach = () => { handlers.forEach(({el, type, fn}) => el.removeEventListener(type, fn)); handlers = []; };
+
     const attach = () => {
       if (!isDesktop()) return;
-		 
+
       if (itemProduct && panelProduct){
         add(itemProduct,  'pointerenter', ()=>open(panelProduct));
         add(panelProduct, 'pointerenter', ()=>clearTimeout(hideTimer));
         add(panelProduct, 'pointerleave', ()=>delayedClose());
         add(itemProduct,  'click', (e)=>{ e.preventDefault(); open(panelProduct); });
       }
+
       if (itemBrand && panelBrand){
         add(itemBrand,    'pointerenter', ()=>open(panelBrand));
         add(panelBrand,   'pointerenter', ()=>clearTimeout(hideTimer));
         add(panelBrand,   'pointerleave', ()=>delayedClose());
         add(itemBrand,    'click', (e)=>{ e.preventDefault(); open(panelBrand); });
       }
-	  
-	  const nonTriggers = nav.querySelectorAll(
-	     '.is-desktop .menu-container > .menu-item:not(.product):not(.brand)'
-	   );
-	   nonTriggers.forEach(li => {
-	     add(li, 'pointerenter', () => delayedClose(0));
-	     add(li, 'focusin',     () => delayedClose(0)); // 키보드 접근 시도
-	   });
 
-	   const topBar = nav.querySelector('.is-desktop .menu-container');
-	   if (topBar) add(topBar, 'pointerleave', () => delayedClose(0));
-	  
+      // 다른 GNB 항목으로 가면 즉시 닫기
+      const nonTriggers = nav.querySelectorAll('.is-desktop .menu-container > .menu-item:not(.product):not(.brand)');
+      nonTriggers.forEach(li => {
+        add(li, 'pointerenter', () => delayedClose(0));
+        add(li, 'focusin',     () => delayedClose(0));
+      });
+
+      const topBar = nav.querySelector('.is-desktop .menu-container');
+      if (topBar) add(topBar, 'pointerleave', () => delayedClose(0));
+
+      // 바깥 클릭 시 닫기
+      add(document, 'pointerdown', (e) => {
+        if (!isDesktop()) return;
+        const inProduct = itemProduct?.contains(e.target) || panelProduct?.contains(e.target);
+        const inBrand   = itemBrand?.contains(e.target)   || panelBrand?.contains(e.target);
+        if (!inProduct && !inBrand) delayedClose(0);
+      });
+
+      // nav 영역을 벗어나면 닫기
       add(nav, 'pointerleave', ()=>delayedClose());
     };
-    const update = () => { detach(); if (isDesktop()) attach(); };
 
+    const update = () => { detach(); if (isDesktop()) attach(); };
     update();
     window.addEventListener('resize', update);
-    mqDesktopWidth.addEventListener?.('change', update);
+    mqDesktop.addEventListener?.('change', update);
   })();
 
-  
+  /* 2) Mega menu 내부 다단(depthed) 호버 연동 */
   (function initDepth(){
-	const PANEL_IDS = ['product-items', 'brands-items']; // 루트 패널 id만 유지
+    const PANEL_IDS = ['product-items', 'brands-items'];
 
-	 // root 패널 하나를 바인딩
-	 function initDepthPanel(root){
-	   if (!root) return;
+    function initDepthPanel(root){
+      if (!root) return;
+      const cols = [];
+      for (let d = 1; d <= 5; d++){
+        const ul = root.querySelector(`.col.depth-${d}`);
+        if (ul) cols.push(ul);
+      }
+      if (cols.length < 2) return;
 
-	   // 존재하는 depth만 순서대로 수집 (1~5)
-	   const cols = [];
-	   for (let d = 1; d <= 5; d++){
-	     const ul = root.querySelector(`.col.depth-${d}`);
-	     if (ul) cols.push(ul);
-	   }
-	   if (cols.length < 2) return; // 최소 2열 이상일 때만
+      const setActive = (ul, id) => {
+        if (!ul) return;
+        [...ul.children].forEach(li => li.querySelector('.menu-link')?.classList.remove('is-active'));
+        ul.querySelector(`li[data-id="${id}"] .menu-link`)?.classList.add('is-active');
+      };
 
-	   const setActive = (ul, id) => {
-	     if (!ul) return;
-	     [...ul.children].forEach(li => li.querySelector('.menu-link')?.classList.remove('is-active'));
-	     ul.querySelector(`li[data-id="${id}"] .menu-link`)?.classList.add('is-active');
-	   };
+      const clearFrom = (startIdx) => {
+        for (let i = startIdx; i < cols.length; i++)
+          [...cols[i].children].forEach(li => li.classList.remove('is-visible'));
+      };
 
-	   const clearFrom = (startIdx) => {
-	     for (let i = startIdx; i < cols.length; i++) {
-	       [...cols[i].children].forEach(li => li.classList.remove('is-visible'));
-	     }
-	   };
+      const showNext = (nextIdx, parentId) => {
+        if (!cols[nextIdx]) return;
+        [...cols[nextIdx].children].forEach(li => {
+          li.classList.toggle('is-visible', li.dataset.parent === String(parentId));
+        });
+        setActive(cols[nextIdx - 1], parentId);
+        clearFrom(nextIdx + 1);
 
-	   // 현재 depth(k)의 항목을 선택하면 다음 depth(k+1)를 필터링해 보여줌
-	   const showNext = (nextIdx, parentId) => {
-	     if (!cols[nextIdx]) return;
-	     [...cols[nextIdx].children].forEach(li => {
-	       li.classList.toggle('is-visible', li.dataset.parent === String(parentId));
-	     });
-	     // active 표시 (현재 depth는 nextIdx-1)
-	     setActive(cols[nextIdx - 1], parentId);
+        const first = cols[nextIdx].querySelector('li.is-visible');
+        if (first && cols[nextIdx + 1]) showNext(nextIdx + 1, first.dataset.id);
+      };
 
-	     // 그 아래 depth들은 일단 숨김
-	     clearFrom(nextIdx + 1);
+      const disposers = [];
+      const delegate = (ul, nextIdx) => (e) => {
+        if (!isDesktop()) return;
+        const li = e.target.closest('li');
+        if (!li || !ul.contains(li)) return;
+        showNext(nextIdx, li.dataset.id);
+      };
 
-	     // 다음 depth에 보이는 첫 항목이 있으면 자동 진행
-	     const first = cols[nextIdx].querySelector('li.is-visible');
-	     if (first && cols[nextIdx + 1]) {
-	       showNext(nextIdx + 1, first.dataset.id);
-	     }
-	   };
+      const attach = () => {
+        if (!isDesktop()) return;
+        for (let i = 0; i < cols.length - 1; i++){
+          const ul = cols[i];
+          const fn = delegate(ul, i + 1);
+          ul.addEventListener('mouseover', fn);
+          ul.addEventListener('focusin',  fn);
+          ul.addEventListener('click',    fn);
+          disposers.push(()=>{ ul.removeEventListener('mouseover', fn); ul.removeEventListener('focusin', fn); ul.removeEventListener('click', fn); });
+        }
+        const first = cols[0].querySelector('li');
+        if (first) showNext(1, first.dataset.id);
+      };
 
-	   // 위임 핸들러: 특정 depth의 UL에서 li를 선택하면 다음 depth를 표시
-	   const delegate = (ul, nextIdx) => (e) => {
-	     if (!isDesktop()) return;
-	     const li = e.target.closest('li');
-	     if (!li || !ul.contains(li)) return;
-	     showNext(nextIdx, li.dataset.id);
-	   };
+      const detach = () => { disposers.splice(0).forEach(fn => fn()); };
+      const update = () => { detach(); if (isDesktop()) attach(); };
 
-	   // 이벤트 바인딩: depth-1 → depth-2, depth-2 → depth-3, …
-	   const disposers = [];
-	   const attach = () => {
-	     if (!isDesktop()) return;
-	     for (let i = 0; i < cols.length - 1; i++){
-	       const ul = cols[i];
-	       const fn = delegate(ul, i + 1);
-	       ul.addEventListener('mouseover', fn);
-	       ul.addEventListener('focusin',  fn);
-	       ul.addEventListener('click',    fn);
-	       disposers.push(()=>{ ul.removeEventListener('mouseover', fn); ul.removeEventListener('focusin', fn); ul.removeEventListener('click', fn); });
-	     }
-	     // 초기 표시: depth-1의 첫 항목 기준
-	     const first = cols[0].querySelector('li');
-	     if (first) showNext(1, first.dataset.id);
-	   };
+      update();
+      window.addEventListener('resize', update);
+      mqDesktop.addEventListener?.('change', update);
+    }
 
-	   const detach = () => { disposers.splice(0).forEach(fn => fn()); };
-	   const update = () => { detach(); if (isDesktop()) attach(); };
-
-	   update();
-	   window.addEventListener('resize', update);
-	   mqDesktopWidth.addEventListener?.('change', update);
-
-	   // 데이터 변경 대응 (필요 시)
-	   const mo = new MutationObserver(() => { /* 데이터가 바뀌면 다시 초기화하고 싶으면 여기에서 update(); */ });
-	   cols.forEach(col => mo.observe(col, { childList: true, subtree: true }));
-	 }
-
-	 // 두 패널 모두 적용
-	 PANEL_IDS.forEach(id => initDepthPanel(document.getElementById(id)));
+    PANEL_IDS.forEach(id => initDepthPanel(document.getElementById(id)));
   })();
 });
 
 
-(function () {
-  const MOBILE_MAX = 991;
-  const THRESHOLD  = 0;
-  const header     = document.getElementById('header');
-  const headerWrap = document.getElementById('header-wrap');
-  if (!header || !headerWrap) return;
+// ==== Mobile-only: Hamburger toggle + Accordion ====
+document.addEventListener('DOMContentLoaded', () => {
+  const mqDesktop = window.matchMedia('(min-width: 991px)');
+  const isDesktop = () => mqDesktop.matches;
 
-  let spacer = document.querySelector('.header-wrap-clone');
-  if (!spacer) {
-    spacer = document.createElement('div');
-    spacer.className = 'header-spacer';
-    header.after(spacer);
-  }
-
-  let sentinel = document.getElementById('shrink-sentinel');
-  if (!sentinel) {
-    sentinel = document.createElement('div');
-    sentinel.id = 'shrink-sentinel';
-    sentinel.style.position = 'absolute';
-    sentinel.style.top = '1px';
-    sentinel.style.height = '1px';
-    sentinel.style.width = '1px';
-    header.after(sentinel);
-  }
-
-  const isMobile = () => window.innerWidth <= MOBILE_MAX;
-
-  function syncSpacer() {
-    const h = header.classList.contains('sticky-header') ? headerWrap.offsetHeight : 0;
-    spacer.style.height = h + 'px';
-  }
-
-  function enterSticky(withShrink){
-    if (!header.classList.contains('sticky-header')) {
-      header.classList.add('sticky-header');
-      header.classList.add('sticky-enter');
-      header.offsetHeight;
-      header.classList.remove('sticky-enter');
-    }
-    const on = !!withShrink;
-    header.classList.toggle('sticky-header-shrink', on);
-    document.body.classList.toggle('header-shrink', on);
-    syncSpacer();
-  }
-
-  function leaveSticky(){
-    header.classList.remove('sticky-header', 'sticky-header-shrink');
-    document.body.classList.remove('header-shrink');
-    syncSpacer();
-  }
-
-  function apply() {
-    if (!isMobile()) { leaveSticky(); return; }
-    const y = window.scrollY || document.documentElement.scrollTop || 0;
-    const on = y > THRESHOLD;
-    if (on) enterSticky(true); else leaveSticky();
-  }
-
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(([e]) => {
-      if (header.classList.contains('sticky-header')) {
-        const on = !e.isIntersecting;
-        header.classList.toggle('sticky-header-shrink', on);
-        document.body.classList.toggle('header-shrink', on);
-        syncSpacer();
-      }
-    }, { rootMargin: "-1px 0px 0px 0px", threshold: 0 });
-    io.observe(sentinel);
-  }
-
-  let ticking = false;
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => { apply(); ticking = false; });
-  }
-
-  document.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', apply);
-  document.addEventListener('DOMContentLoaded', apply);
-  apply();
-})();
-
-
-
-/*
-document.addEventListener('DOMContentLoaded', () => {                  
-  const hamburger  = document.getElementById('hamburger-menu-trigger');
-  const primaryMenu = document.querySelector('nav.primary-menu .nav.is-mobile .mobile-primary-menu');
-  const mqDesktop  = window.matchMedia('(min-width: 991px)');        
-
-  if (!hamburger || !primaryMenu) return;
- 
-  
-
-  function resetForDesktop() {
-    if (!mqDesktop.matches) return;
-    hamburger.classList.remove('active');
-    hamburger.setAttribute('aria-expanded', 'false');
-    primaryMenu.classList.remove('open');
-    primaryMenu.style.removeProperty('display');   
-    primaryMenu.style.removeProperty('visibility');
-    primaryMenu.style.removeProperty('pointer-events');
-  }
-
-  hamburger.addEventListener('click', () => {
-    if (mqDesktop.matches) return;
-    const expanded = hamburger.getAttribute('aria-expanded') === 'true';
-    hamburger.classList.toggle('active');
-    hamburger.setAttribute('aria-expanded', String(!expanded));
-
-    const willOpen = !primaryMenu.classList.contains('open');
-    primaryMenu.classList.toggle('open', willOpen);
-    if (willOpen) primaryMenu.style.display = 'block';
-    else          primaryMenu.style.removeProperty('display');
-  });
-
-  resetForDesktop();
-  mqDesktop.addEventListener?.('change', resetForDesktop);
-  window.addEventListener('resize', resetForDesktop);
-});
-
-*/
-
-
-document.addEventListener('DOMContentLoaded', () => {                  
-  const hamburger   = document.getElementById('hamburger-menu-trigger');
-  // 구조에 따라 fallback 하나 더 둠
-  const primaryMenu = document.querySelector('nav.primary-menu .nav.is-mobile .mobile-primary-menu')
-                    || document.querySelector('nav.primary-menu .nav.is-mobile .menu-container');
-  const mqDesktop   = window.matchMedia('(min-width: 991px)');
+  const hamburger = document.getElementById('hamburger-menu-trigger');
+  const primaryMenu =
+    document.querySelector('nav.primary-menu .nav.is-mobile .mobile-primary-menu') ||
+    document.querySelector('nav.primary-menu .nav.is-mobile .menu-container');
 
   if (!hamburger || !primaryMenu) return;
 
-  // 데스크톱으로 돌아오면 초기 상태로
+  // 데스크톱 복귀 시 초기화
   function resetForDesktop() {
-    if (!mqDesktop.matches) return;
+    if (!isDesktop()) return;
     hamburger.classList.remove('active');
     hamburger.setAttribute('aria-expanded', 'false');
     primaryMenu.classList.remove('open');
     primaryMenu.style.removeProperty('display');
     primaryMenu.style.removeProperty('visibility');
     primaryMenu.style.removeProperty('pointer-events');
-    // 펼친 표시도 정리(선택)
     primaryMenu.querySelectorAll('.menu-link[aria-expanded="true"]')
-               .forEach(a => a.setAttribute('aria-expanded','false'));
+      .forEach(a => a.setAttribute('aria-expanded', 'false'));
   }
 
-  // 햄버거 토글 (기존 로직 유지)
+  // 햄버거 버튼 토글 (모바일 전용)
   hamburger.addEventListener('click', () => {
-    if (mqDesktop.matches) return;
-    const expanded = hamburger.getAttribute('aria-expanded') === 'true';
-    const willOpen = !expanded;
-
+    if (isDesktop()) return;
+    const willOpen = hamburger.getAttribute('aria-expanded') !== 'true';
     hamburger.classList.toggle('active', willOpen);
     hamburger.setAttribute('aria-expanded', String(willOpen));
-
     primaryMenu.classList.toggle('open', willOpen);
     if (willOpen) primaryMenu.style.display = 'block';
     else          primaryMenu.style.removeProperty('display');
   });
 
-  // 아코디언: 하위 UL이 있는 항목만 링크 이동을 막고 펼침/접힘
+  // 아코디언: 자식 UL/패널이 있는 항목만 펼침/접힘 (모바일 전용)
   primaryMenu.addEventListener('click', (e) => {
-    if (mqDesktop.matches) return;
+    if (isDesktop()) return;
 
-    // 토글 트리거: 링크/아이콘/버튼 등
+    // 트리거: 링크/아이콘/버튼 등
     const trigger = e.target.closest('.menu-link, .sub-menu-trigger, .toggle, .chevron, button');
     if (!trigger || !primaryMenu.contains(trigger)) return;
 
     const li = trigger.closest('li');
     if (!li) return;
 
-    // 직계 하위 리스트(테마에 따라 클래스가 다를 수 있음)
+    // 직계 하위 컨테이너(테마별 클래스 대응)
     const childList = li.querySelector(':scope > ul, :scope > .mega-menu-content, :scope > .sub-menu-container');
-    if (!childList) return; // 자식 없으면 기본 이동
+    if (!childList) return; // 자식 없으면 기본 링크 이동
 
     // 자식 있으면 아코디언 토글
-    //e.preventDefault();
+    e.preventDefault();
     const willOpen = trigger.getAttribute('aria-expanded') !== 'true';
 
-    // 같은 레벨 형제 닫기(원하면 유지해도 됨)
+    // 같은 레벨 형제 닫기(원치 않으면 이 블록을 주석 처리)
     [...li.parentElement.children].forEach(sib => {
       const a = sib.querySelector(':scope > .menu-link[aria-expanded="true"]');
       a && a.setAttribute('aria-expanded', 'false');
@@ -386,7 +225,60 @@ document.addEventListener('DOMContentLoaded', () => {
     trigger.setAttribute('aria-expanded', String(willOpen));
   });
 
+  // 바깥 클릭 시 닫기(모바일 전용, 선택사항)
+  document.addEventListener('pointerdown', (e) => {
+    if (isDesktop()) return;
+    if (!primaryMenu.contains(e.target) && e.target !== hamburger && !hamburger.contains(e.target)) {
+      hamburger.classList.remove('active');
+      hamburger.setAttribute('aria-expanded', 'false');
+      primaryMenu.classList.remove('open');
+      primaryMenu.style.removeProperty('display');
+    }
+  });
+
+  // 브레이크포인트 전환 시 초기화
   resetForDesktop();
   mqDesktop.addEventListener?.('change', resetForDesktop);
   window.addEventListener('resize', resetForDesktop);
 });
+
+// ==== Mobile-only sticky class toggles (no spacer touches) ====
+document.addEventListener('DOMContentLoaded', () => {
+  const MOBILE_MAX = 991;              // 모바일 기준 폭
+  const SHRINK_AT  = 1;                // 몇 px 이상 스크롤 시 shrink 적용
+  const header = document.getElementById('header');
+  if (!header) return;
+
+  const isMobile = () => window.innerWidth <= MOBILE_MAX;
+  const getY = () => (document.scrollingElement || document.documentElement).scrollTop || 0;
+
+  let ticking = false;
+  function apply() {
+    if (!isMobile()) {
+      // 데스크톱: 항상 해제
+      header.classList.remove('sticky-header', 'sticky-header-shrink');
+      document.body.classList.remove('header-shrink');
+      return;
+    }
+
+    const y = getY();
+    const onSticky = y > 0; 
+    const onShrink = y > SHRINK_AT; 
+
+    header.classList.toggle('sticky-header', onSticky);
+    header.classList.toggle('sticky-header-shrink', onShrink && onSticky);
+    document.body.classList.toggle('header-shrink', onShrink && onSticky);
+  }
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { apply(); ticking = false; });
+  }
+
+  // 초기 상태 확정 + 리스너
+  apply();
+  document.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', apply);
+});
+
