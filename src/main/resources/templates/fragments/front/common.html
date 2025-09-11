@@ -144,22 +144,22 @@
 								<div class="nav is-desktop">
        								
 									<ul class="menu-container">
-										<li class="menu-item"><a class="menu-link" href="/about">
+										<li class="menu-item gnb-li"><a class="menu-link" href="/about">
 												<div>회사 소개</div>
 										</a></li>
-										<li class="menu-item product"><a class="menu-link" href="#">
+										<li class="menu-item gnb-li product"><a class="menu-link" href="#">
 												<div>제품소개</div>
 										</a></li>
-										<li class="menu-item brand"><a class="menu-link" href="#">
+										<li class="menu-item gnb-li brand"><a class="menu-link" href="#">
 												<div>브랜드소개</div>
 										</a></li>
-										<li class="menu-item"><a class="menu-link" href="/notice">
+										<li class="menu-item gnb-li"><a class="menu-link" href="/notice">
 												<div>공지사항</div>
 										</a></li>
-										<li class="menu-item"><a class="menu-link" href="/references">
+										<li class="menu-item gnb-li"><a class="menu-link" href="/references">
 												<div>자료실</div>
 										</a></li>
-										<li class="menu-item"><a class="menu-link" href="/contact">
+										<li class="menu-item gnb-li"><a class="menu-link" href="/contact">
 												<div>고객지원</div>
 										</a></li>
 									</ul>
@@ -281,72 +281,26 @@
 		<th:block th:fragment="footerSrc">
 			<footer id="footer" class="dark">
 				<div class="container">
-					<div class="footer-widgets-wrap">
-
-						<div class="row col-mb-50 justify-content-between">
-							<div class="col-lg-4">
-
-								<div class="widget clearfix">
-									<div class="logo-wrap">
-										<h3>(주)바이온라이프사이언스</h3>
-									</div>
-
-									<div class="py-2">
-										<div class="row col-mb-30">
-											<div class="col-12">
-												<address class="mb-0">
-													<p>
-														<strong>본사 &nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;</strong>경기도 남양주시 순화궁로 282,
-													</p>
-													<p>에이스하이엔드타워 10층</p>
-													<p>TEL : 031-572-2272</p>
-													<p>FAX : 031-572-2273</p>
-													<p>E-MAIL : bionlifescience@hanmail.net></p>
-												</address>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="col-lg-4 footer-client-center">
-
-								<div class="widget clearfix">
-									<h2>고객상담</h2>
-
-									<div class="posts-sm row col-mb-30" id="post-list-footer">
-										<div class="entry col-12">
-											<div class="grid-inner row">
-												<div class="col">
-													<div class="entry-title">
-														<h4>
-															<a href="#">TEL : 031-572-2272</a>
-														</h4>
-													</div>
-													<div class="entry-meta">
-														<ul>
-															<li>평일 : 09:00 ~ 18:00</li>
-														</ul>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
+					<div class="f-left">
+						<div class="logo-wrap">
+							<picture>
+							  <source media="(min-width: 768px)" srcset="/front/image/logo/bion-logo-white.png 2x, /front/image/logo/bion-logo-white.png 1x">
+							  <img th:src="@{/front/image/logo/bion-logo-white.png}" alt="Logo">
+							</picture>
+							<h3>(주)바이온라이프사이언스</h3>
+							<div>
+								<p><b>경기도 남양주시 순화궁로 282</b><span>에이스하이엔드타워 10층</span></p>
+								<p><i class="phone-i"></i>031-572-2272</p>
+								<p><i class="fax-i"></i>031-572-2273</p>
+								<p><i class="mail-i">admin@bionlifescience.com</i></p>
 							</div>
 						</div>
 					</div>
-				</div>
-
-				<div id="copyrights">
-					<div class="container">
-
-						<div class="w-100 text-center">
-							<div class="copyrights-menu copyright-links clearfix">
-								<a href="#">기업소개</a>/<a href="#">제품소개</a>/<a href="#">공지사항</a>/<a href="#">자료실</a>/<a href="#">고객지원</a>/<a href="#">오시는길</a>
-							</div>
-							Copyrights &copy; 2023 All Rights Reserved by (주)바이온라이프사이언스
+					<div class="f-right">
+						<div class="copyrights-menu copyright-links">
+							<a href="#">기업소개</a>/<a href="#">제품소개</a>/<a href="#">공지사항</a>/<a href="#">자료실</a>/<a href="#">고객지원</a>/<a href="#">오시는길</a>
 						</div>
-
+						<p>Copyrights &copy; 2023 All Rights Reserved by (주)바이온라이프사이언스</p>
 					</div>
 				</div>
 			</footer>

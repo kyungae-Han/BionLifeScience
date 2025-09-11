@@ -14,6 +14,16 @@ body{min-width:338px;}
   margin-bottom: 1rem;
 }
 
+@media(max-width:998px){
+	.nav.is-desktop .menu-item.gnb-li > a.menu-link {
+	  padding-top: 0 !important;
+	  padding-bottom: 0 !important;
+	}
+}
+
+
+.history-caption button{background:none; border:0; color:#fff; text-align: center;}
+
 
 /*-------------------------------
     page tilte
@@ -2687,7 +2697,7 @@ body:not(.top-search-open) .top-search-parent #hamburger-menu-trigger {
 
 .menu-item {
   position: relative;
-  /*padding-left:20px;*/
+  padding-left:1.4rem;
 }
 
 .menu-item:not(:first-child) {
@@ -2697,10 +2707,10 @@ body:not(.top-search-open) .top-search-parent #hamburger-menu-trigger {
 .menu-link {
   display: block;
   line-height: 22px;
-  padding: 14px 5px;
+  padding: 14px 15px;
   color: #444;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 1.2em;
   letter-spacing: 1px;
   text-transform: uppercase;
   font-family: "Noto Sans KR", sans-serif;
@@ -2882,6 +2892,7 @@ nav .menu-item:hover > .menu-link,
   height: auto;
   box-sizing: border-box;
   border-left: 1px solid #eee;
+  padding-left:20px;
 }
 
 .header-misc-element,
@@ -12523,7 +12534,7 @@ body:not(.device-touch) #gotoTop {
 
 #footer .footer-widgets-wrap {
   position: relative;
-  padding: 80px 0;
+ /* padding: 80px 0;*/
 }
 
 #copyrights {
@@ -15744,11 +15755,6 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
 { position: relative;
 	display:block;
 }
-
-.nav a {
-	font-size: 1rem;
-}
-
 
 .menu-link.is-active{
   /*background: rgba(255,255,255,.06);*/
@@ -19585,7 +19591,7 @@ body:not(.stretched) #wrapper {
 }  
   
   @media (min-width: 991px) {
-    nav.primary-menu .nav.is-desktop { display: block !important; }
+    nav.primary-menu .nav.is-desktop { display: block !important;}
     nav.primary-menu .nav.is-mobile  { display: none  !important; }
     #hamburger-menu-trigger           { display: none  !important; }
   }

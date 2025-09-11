@@ -115,80 +115,81 @@
          <h3>
           새로운 도전과<br>변화의 시작
          </h3> <i class="history-arrow"></i></li>
-        <li><i class="history-graphic"></i> <span>오늘의 성과</span>
+        <li role="button" tabindex="0" onclick="window.location.href='/about'">
+        <i class="history-graphic"></i> 
+        <span>오늘의 성과</span>
          <h3>
           지속적인 성장과<br>끊임없는 노력
-         </h3> <i class="history-arrow"></i></li>
-        <li><i class="history-graphic"></i> <span>혁신의 내일</span>
-         <h3>
-          더 나은 미래를<br>향한 한 걸음
-         </h3> <i class="history-arrow"></i></li>
+         </h3> <i class="history-arrow"></i>
+         </li>
+        <li role="button" tabindex="0" onclick="window.location.href='/overview'"><i class="history-graphic"></i>
+		        <span>혁신의 내일</span>
+	    	     <h3>더 나은 미래를<br>향한 한 걸음</h3>
+	    	     <i class="history-arrow"></i>
+         </li>
 
-
-        <li><i class="history-graphic"></i> <span>타임캡슐</span>
-         <h3>
-          함께 만들어가는<br>바이온의 역사
-         </h3> <i class="history-arrow"></i></li>
+        <li role="button" tabindex="0" onclick="window.location.href='/history'">
+        <i class="history-graphic"></i> <span>타임캡슐</span>
+	         <h3>
+	          함께 만들어가는<br>바이온의 역사
+	         </h3> <i class="history-arrow"></i>
+         </li>
        </ul>
       </div>
 
      </div>
     </div>
+       
+<section class="section clearfix bg-white section-line" id="productsItems">
+	 <div class="pro-container">
+	  <header class="pro-head">
+	   <p class="eyebrow">PRODUCTS</p>
+	   <h2>BIOTREAT 라인업</h2>
+	   <p class="sub">핵심 공정의 안정성과 효율을 높여 주는 솔루션을 한눈에.</p>
+	  </header>
+	
+	  <!-- 가로 스크롤 트랙 -->
+	<div class="pro-slider" id="proSlider">
+	 <div class="pro-track">
+	  <!-- 카드: 기존 portfolio-item 반복 그대로 사용 -->
+	 <div class="portfolio-item" th:each="product:${product}">
+	  <div class="portfolio-image">
+	   <a th:href="@{|/productDetail/${product.id}|}"> <img th:src="${product.firstImageRoad}" alt="PRODUCT">
+	   </a>
+	   <div class="bg-overlay">
+	    <div class="bg-overlay-content dark" data-hover-animate="fadeIn" data-hover-speed="350">
+	     <a th:href="@{${product.firstImageRoad}}" class="overlay-trigger-icon bg-light text-dark"
+	      data-lightbox="image"><i class="icon-line-plus"></i></a> <a th:href="@{|/productDetail/${product.id}|}"
+	      class="overlay-trigger-icon bg-light text-dark"> <i class="icon-line-ellipsis"></i>
+	     </a>
+	    </div>
+	    <div class="bg-overlay-bg dark" data-hover-animate="fadeIn" data-hover-speed="350"></div>
+	   </div>
+	  </div>
+	  <div class="portfolio-desc">
+	   <h3>
+	    <a href="javascript:void(0);" th:text="${product.smallSort.name}">Sorts of Product</a>
+	   </h3>
+	  </div>
+	 </div>
+	</div>
+	
+	<!-- 네비게이션 + 프로그레스 -->
+	   <div class="pro-controls">
+	    <button type="button" class="pro-arrow pro-prev" aria-label="이전">
+	     <span>‹</span>
+	    </button>
+	    <div class="pro-progress">
+	     <span class="pro-bar"></span>
+	    </div>
+	    <button type="button" class="pro-arrow pro-next" aria-label="다음">
+	     <span>›</span>
+	    </button>
+	   </div>
+	  </div>
+	 </div>
+</section>
 
-
-
-       
-       
-           <section class="section clearfix bg-white section-line" id="productsItems">
-            <div class="pro-container">
-             <header class="pro-head">
-              <p class="eyebrow">PRODUCTS</p>
-              <h2>BIOTEAT 라인업</h2>
-              <p class="sub">핵심 공정의 안정성과 효율을 높여 주는 솔루션을 한눈에.</p>
-             </header>
-       
-             <!-- 가로 스크롤 트랙 -->
-             <div class="pro-slider" id="proSlider">
-              <div class="pro-track">
-               <!-- 카드: 기존 portfolio-item 반복 그대로 사용 -->
-               <div class="portfolio-item" th:each="product:${product}">
-                <div class="portfolio-image">
-                 <a th:href="@{|/productDetail/${product.id}|}"> <img th:src="${product.firstImageRoad}" alt="PRODUCT">
-                 </a>
-                 <div class="bg-overlay">
-                  <div class="bg-overlay-content dark" data-hover-animate="fadeIn" data-hover-speed="350">
-                   <a th:href="@{${product.firstImageRoad}}" class="overlay-trigger-icon bg-light text-dark"
-                    data-lightbox="image"><i class="icon-line-plus"></i></a> <a th:href="@{|/productDetail/${product.id}|}"
-                    class="overlay-trigger-icon bg-light text-dark"> <i class="icon-line-ellipsis"></i>
-                   </a>
-                  </div>
-                  <div class="bg-overlay-bg dark" data-hover-animate="fadeIn" data-hover-speed="350"></div>
-                 </div>
-                </div>
-                <div class="portfolio-desc">
-                 <h3>
-                  <a href="javascript:void(0);" th:text="${product.smallSort.name}">Sorts of Product</a>
-                 </h3>
-                </div>
-               </div>
-              </div>
-       
-              <!-- 네비게이션 + 프로그레스 -->
-              <div class="pro-controls">
-               <button type="button" class="pro-arrow pro-prev" aria-label="이전">
-                <span>‹</span>
-               </button>
-               <div class="pro-progress">
-                <span class="pro-bar"></span>
-               </div>
-               <button type="button" class="pro-arrow pro-next" aria-label="다음">
-                <span>›</span>
-               </button>
-              </div>
-             </div>
-            </div>
-           </section>
-       
 
 
 
