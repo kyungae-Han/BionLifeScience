@@ -349,11 +349,11 @@
 	    e.target.classList.contains("modal-body")
 	  ) {
 	    modal.hidden = true;
+		closeModal();
 	  }
  });
   
-  modal.addEventListener('click', (e) => { if (e.target.matches('[data-close]')) modal.hidden = true; });
-  closeModal();
+  modal.addEventListener('click', (e) => { if (e.target.matches('[data-close]')) modal.hidden = true; closeModal(); });
 
   function openContactModal(){
     modal.hidden = false;
@@ -385,7 +385,7 @@
 
 	function closeModal() {
 	  modal.hidden = true;
-	  document.body.style.overflowY = "scroll;";
+	  document.body.style.overflow = "";
 	}
 
 })();
