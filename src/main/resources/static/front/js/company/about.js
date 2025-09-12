@@ -832,8 +832,8 @@ document.addEventListener('DOMContentLoaded', () => {
           if (!btn) return;
           const setUI = (running) => {
             btn.setAttribute('aria-pressed', running ? 'false' : 'true');
-            btn.classList.toggle("pause-circle", running);
-            btn.classList.toggle("play-circle", !running);
+            btn.classList.toggle("bi-stop-circle", running);
+            btn.classList.toggle("bi-play-circle", !running);
           };
           setUI(this.autoplay && this.autoplay.running === true);
           btn.addEventListener('click', () => {

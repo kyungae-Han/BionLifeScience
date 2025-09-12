@@ -21,6 +21,10 @@ body{min-width:338px;}
 	}
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 
 .history-caption button{background:none; border:0; color:#fff; text-align: center;}
 
@@ -44,8 +48,9 @@ body{min-width:338px;}
 }
 
 
-#page-title .containe{
-	margin-top:100px;
+#page-title .container{
+	position:relative;
+	max-width:1280px;
 }
 
 
@@ -12532,61 +12537,75 @@ body:not(.device-touch) #gotoTop {
   background-color: #eee;
 }
 
-#footer .footer-widgets-wrap {
-  position: relative;
- /* padding: 80px 0;*/
+#footer .logo-wrap {
+	width:19.333%;
+	max-width: 250px;
+	max-height: 250px;
 }
 
-#copyrights {
-  padding: 40px 0;
-  background-color: #ddd;
-  font-size: 0.875rem;
-  line-height: 1.8;
+#footer > * {box-shadow: none; text-shadow: none;}
+#footer h4 {font-weight: 400;}
+
+#footer .container{
+	display: flex;
+	justify-content: space-around;
+	align-items: flex-start;
+	flex-direction: row;
+	max-width: 1280px;
+	padding: 45px 0;
+	gap:40px;
 }
 
-#copyrights i.footer-icon {
-  position: relative;
-  top: 1px;
-  font-size: 0.875rem;
-  width: 14px;
-  text-align: center;
-  margin-right: 3px;
+#footer .container div > * {
+	font-weight:400;
+	font-family: "Pretendard","Noto Sans KR","Noto_Sans_KR",sans-serif
 }
 
-.copyright-links a {
-  display: inline-block;
-  margin: 0 3px;
-  color: #333;
-  border-bottom: 1px dotted #444;
+#footer .container .logo-wrap{
+	margin-top:0;
 }
 
-.copyright-links a:hover {
-  color: #555;
-  border-bottom: 1px solid #666;
+#footer .container .f-left {width:100%;}
+#footer .container .f-right{
+	width: 33.333%;
 }
 
-.copyrights-menu {
-  margin-bottom: 10px;
+
+#footer .container .f-left > * {
+	line-height: 2rem;
+	letter-spacing: 1px;
 }
 
-.copyrights-menu a {
-  font-size: 0.875rem;
-  margin: 0 10px;
-  border-bottom: 0 !important;
+#footer .container .f-right{
+	margin-top:0;
 }
 
-#copyrights a:first-child {
-  margin-left: 0;
+#footer .container .f-left h3 {margin-bottom:22px;}
+#footer .container .f-left .adress {font-size:1.1rem !important;}
+#footer .container .f-left .f-mail {font-size:1.1rem !important;}
+
+
+#footer .container .f-right .copyrights-call > *{
+	font-size: clamp(20px, 2rem, 32px);
 }
 
-#copyrights.text-end a:last-child {
-  margin-right: 0;
+#footer .copyrights-menu {
+	width:100%;
+	display: flex;
+	flex-direction: row;	
+	justify-content: center;
+	letter-spacing: 1px;
+	padding:25px 0;
+	text-align: center;
+	margin:0 auto;
+	background-color: rgba(0,52.16,79.22,1);
 }
 
-.footer-logo {
-  display: block;
-  margin-bottom: 30px;
-}
+#footer .sub-head {letter-spacing: -0.5px;}
+
+
+.copyrights-call .bi {padding-right:7px;}
+
 
 /* ----------------------------------------------------------------
 	Widgets
@@ -19621,5 +19640,150 @@ body:not(.stretched) #wrapper {
       z-index: 1100;
     }
   }
+  
+  
+  
+  
+/* ===== Map / Location ===== */
+.loc-wrap {
+	max-width: 1280px;
+	display: grid;
+	grid-template-columns: 1.2fr 1fr;
+	gap: 24px;
+	align-items: start;
+	margin: 40px auto 0 !important;
+	padding: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .loc-wrap {
+    grid-template-columns: 1fr;
+  }
+}
+
+#location {background: var(--bs-gray-100); padding: 40px 0 120px;}
+
+#location .sec-head,
+#location .sec-sub {text-align:center;}
+
+.map-box{
+  width: 100%;
+  height: 420px;                     
+  border: 0;
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.08);
+}
+
+/* 주소 카드가 그 높이에 맞춰 채우도록 */
+.addr{
+  position: relative;
+  height: 100%;          
+  display: flex;                      
+  flex-direction: column;
+  border-radius: 14px;
+  padding: 18px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+}
+
+.addr dt {
+	font-weight: 700;
+	margin-top: 8px;
+}
+
+.addr dd {
+	margin: 4px 0 12px;
+	color: #444;
+}
+
+.btn-row {
+	position: absolute;
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	bottom: 12px;
+}
+
+@media(max-width:768px){
+	.addr {margin-bottom: 40px;}
+}
+
+@media(max-width:465px){
+    .addr {margin-bottom: 110px;}
+}
+
+
+/* 기본 버튼 */
+.btn {
+  appearance: none;
+  border: 1px solid #111;
+  background: #111;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+/* 흰색 배경 버튼 */
+.btn.alt {
+  background: #fff;
+  color: #111;
+}
+
+/* hover 시 반전 */
+.btn:hover {
+  background: #fff;
+  color: #111;
+}
+
+.btn.alt:hover {
+  background: var(--depth-bg);
+  color: #fff;
+}
+
+.address_link {
+	border:1px solid #fff; 
+	background: var(--bs-gray-300); 
+	border-radius: 5px; 
+	margin-left:15px; 
+	transition: background 0.2s ease;
+	padding: 4px 12px;
+}
+.address_link:hover,
+.address_link:focus {background-color: #00344f; color:#fff !important; outline: none;}
+
+.address_link.dark a{
+	font-weight: 500 !important;
+}
+
+
+
+/*모달*/
+.modal[hidden] { display: none; }
+.modal {
+  position: fixed; inset: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+}
+.modal-backdrop {
+  position: absolute; inset: 0; background: rgba(0,0,0,.5);
+  z-index:0;
+}
+
+
+.modal-content {
+  position: relative; z-index: 1;
+  width: 90%; max-width: 800px;
+  background: #fff; border-radius: 12px; padding: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+  max-height: 90vh; overflow: auto;
+  z-index:999;
+}
+.modal-close {
+  position: absolute; top: 10px; right: 10px;
+  border: none; background: transparent; font-size: 24px; cursor: pointer;
+  z-index:2;
+}
   
   

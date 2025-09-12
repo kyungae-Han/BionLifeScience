@@ -18,6 +18,7 @@
 	  --mint-accent: #5fafa3;
 }
 
+
 /*-----------------------------------
 	common
 -------------------------------------*/
@@ -592,38 +593,21 @@
 
 /* (옵션) 토글 버튼 */
 .gi-toggle {
-	width: 36px;
-	height: 36px;
-	border: none;
+	background: none;
+	border:0;
+	padding:0;
 	cursor: pointer;
-	padding: 0;
-	background: transparent no-repeat center / contain;
-	display: inline-block;
-	-webkit-tap-highlight-color: transparent; 
+	line-height: 1; display: inline-grid; place-items:center;
+	font-size: 2rem;
+	color: var(--bs-gray-900);
 }
 
-.gi-toggle.pause-circle {
-	mask: url('/front/images/icons/pause-circle.svg') no-repeat center/contain;
-	-webkit-mask: url('/front/images/icons/pause-circle.svg') no-repeat
-		center/contain;
-}
+.gi-toggle .bi { display: none;}
 
-.gi-toggle.play-circle {
-	mask: url('/front/images/icons/play-circle.svg') no-repeat center/contain;
-	-webkit-mask: url('/front/images/icons/play-circle.svg') no-repeat
-		center/contain;
-}
+.gi-toggle.play-circle  .bi-play-circle  { display: inline-block; }
+.gi-toggle.pause-circle .bi-pause-circle { display: inline-block; }
 
-.gi-toggle.pause-circle,
-.gi-toggle.play-circle {
-	-webkit-mask-repeat: no-repeat;
-	mask-repeat: not-repeat;
-	-webkit-mask-position: 50% 50%;
-	mask-position: 50% 50%;
-	-webkit-mask-size: 100% 100%;
-	mask-size: 100% 100%;
-	background-color: var(--bs-gray-700);	
-}
+
 
 /* ===== Timeline ===== */
 .timeline {
@@ -732,105 +716,6 @@
 
 .cert-nav .cert-btn {
 	margin: -20px 8px 0;
-}
-
-/* ===== Map / Location ===== */
-.loc-wrap {
-	max-width: 1280px;
-	display: grid;
-	grid-template-columns: 1.2fr 1fr;
-	gap: 24px;
-	align-items: start;
-	margin: 40px auto 0 !important;
-	padding: 0 !important;
-}
-
-@media (max-width: 768px) {
-  .loc-wrap {
-    grid-template-columns: 1fr;
-  }
-}
-
-#location {background: var(--bs-gray-100); padding: 40px 0 120px;}
-
-#location .sec-head,
-#location .sec-sub {text-align:center;}
-
-.map-box{
-  width: 100%;
-  height: 420px;                     
-  border: 0;
-  border-radius: 16px;
-  box-shadow: 0 10px 28px rgba(0,0,0,.08);
-}
-
-/* 주소 카드가 그 높이에 맞춰 채우도록 */
-.addr{
-  position: relative;
-  height: 100%;          
-  display: flex;                      
-  flex-direction: column;
-  border-radius: 14px;
-  padding: 18px;
-  background: #fff;
-  box-shadow: 0 8px 24px rgba(0,0,0,.06);
-}
-
-.addr dt {
-	font-weight: 700;
-	margin-top: 8px;
-}
-
-.addr dd {
-	margin: 4px 0 12px;
-	color: #444;
-}
-
-.btn-row {
-	position: absolute;
-	display: flex;
-	gap: 10px;
-	flex-wrap: wrap;
-	bottom: 12px;
-}
-
-@media(max-width:768px){
-	.addr {margin-bottom: 40px;}
-}
-
-@media(max-width:465px){
-    .addr {margin-bottom: 110px;}
-}
-
-
-/* 기본 버튼 */
-.btn {
-  appearance: none;
-  border: 1px solid #111;
-  background: #111;
-  color: #fff;
-  padding: 10px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.25s ease;
-}
-
-/* 흰색 배경 버튼 */
-.btn.alt {
-  background: #fff;
-  color: #111;
-}
-
-/* hover 시 반전 */
-.btn:hover {
-  background: #fff;
-  color: #111;
-}
-
-.btn.alt:hover {
-  background: var(--depth-bg);
-  color: #fff;
 }
 
 
@@ -1600,7 +1485,7 @@ il-callout.p-item {
 
 
 
-#certificates .p-wrap { max-width: 1280px; width: 100%; margin-inline: auto; }
+#certificates .p-wrap { max-width: 1280px; width: 100%; margin-inline: auto; text-align:center;}
 
 
 #certificates .cert-wrap { position: relative; overflow: hidden;}
@@ -2263,45 +2148,12 @@ il-callout.p-item {
   z-index: 0;
 }
 
-.overview-contact-us .top-bn {
-	position: relative;
-	width: 100%;
-	height: 450px;
-}
-
-
-.overview-contact-us .top-bn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--bg-img) center/cover no-repeat;
-  transform: translateY(var(--parallax)) scale(var(--scale));
-  transform-origin: center;
-  will-change: transform, opacity;
-  z-index: 0;
-}
-
-.overview-contact-us .top-bn::after{
-	content: '';
-	position: absolute;
-	left: 0;
-	right: 0;
-	bottom:0;
-	height: 40%;
-	background: inherit;
-	filter: blur(20px);
-	transform: translateY(50%);
-	z-index: 1;
-	pointer-events:none;
-}
-
 
 .overview-contact-us .container {
 	display:flex;
 	justify-content: center;
 	max-width:1280px;
-	padding:20px;
-	margin-top:80px;
+	padding: 180px 20px 20px;
 	display:flex;
 	justify-content: center;
 	overflow: hidden;

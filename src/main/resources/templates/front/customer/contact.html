@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head
-	th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 찾아오시는 길')">
-
+<head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 찾아오시는 길')">
 </head>
 
 <body class="stretched">
@@ -12,22 +10,10 @@
 
 		<th:block
 			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
-		<section id="page-title">
-
-			<div class="container clearfix">
-				<h1>고객 문의</h1>
-				<span>Customer Inquiry</span>
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="/index">메인</a></li>
-					<li class="breadcrumb-item active" aria-current="page">고객문의</li>
-				</ol>
-			</div>
-
-		</section>
-		<section id="content">
+		<section id="openContact">
 			<div class="content-wrap">
 				<div class="container">
-					<div class="border-top-0 m-0">
+					<div class="border-top-0">
 						<div class="container text-center">
 
 							<div class="heading-block center">
@@ -36,47 +22,44 @@
 							</div>
 						</div>
 					</div>
-					<div class="row gutter-40 col-mb-80">
-						<div class="postcontent col-lg-12">
+					<div class="row gutter-40">
+						<div class="postcontent">
 
 
-							<form class="mb-0" action="/clientInsert" method="post"
+							<form action="/clientInsert" method="post"
 								enctype="multipart/form-data">
 
 								<div class="row">
-									<div class="col-md-6 form-group">
-										<label for="template-contactform-name">성함 (Name) <small>*</small></label>
+									<div class="form-group">
+										<label for="template-contactform-name">성함<small>*</small></label>
 										<input type="text" id="name" name="name"
 											class="sm-form-control" required="required" />
 									</div>
 
-									<div class="col-md-6 form-group">
-										<label for="template-contactform-company">회사명
-											(Company)</label> <input type="text" id="company" name="company"
+									<div class="form-group">
+										<label for="template-contactform-company">회사명</label> <input type="text" id="company" name="company"
 											class="sm-form-control" />
 									</div>
 
-									<div class="col-md-6 form-group">
-										<label for="template-contactform-email">이메일 (E-Mail)<small>*</small></label>
+									<div class="form-group">
+										<label for="template-contactform-email">이메일<small>*</small></label>
 										<input type="text" id="email" name="email" required="required"
 											class="sm-form-control" />
 									</div>
 
-									<div class="col-md-6 form-group">
-										<label for="template-contactform-phone">연락처
-											(Telephone)<small>*</small>
+									<div class="form-group">
+										<label for="template-contactform-phone">연락처<small>*</small>
 										</label> <input type="text" id="phone" name="phone"
 											required="required" class="sm-form-control" />
 									</div>
 
-									<div class="col-md-6 form-group">
-										<label for="template-contactform-country">국가명
-											(Country)</label> <input type="text" id="country" name="country"
+									<div class="form-group">
+										<label for="template-contactform-country">국가명</label> <input type="text" id="country" name="country"
 											class="sm-form-control" />
 									</div>
 
-									<div class="col-md-6 form-group">
-										<label for="template-contactform-topic">문의 주제 (Topic)</label>
+									<div class="form-group">
+										<label for="template-contactform-topic">문의 주제</label>
 										<select id="topic" name="topic" class="sm-form-control">
 											<option value="none">-- 선택 --</option>
 											<option value="제품정보관련">제품정보관련</option>
@@ -86,21 +69,19 @@
 										</select>
 									</div>
 
-									<div class="w-100"></div>
+									<div></div>
 
-									<div class="col-md-12 form-group">
-										<label for="template-contactform-title">문의 제목
-											(Subject) <small>*</small>
+									<div class="form-group">
+										<label for="template-contactform-title">문의 제목<small>*</small>
 										</label> <input type="text" id="subject" name="subject"
 											required="required" class="sm-form-control" />
 									</div>
 
 
-									<div class="w-100"></div>
+									<div></div>
 
-									<div class="col-12 form-group">
-										<label for="template-contactform-message">내용 (Enquiry
-											& Comments) <small>*</small>
+									<div class="form-group">
+										<label for="template-contactform-message">내용 <small>*</small>
 										</label>
 										<textarea class="required sm-form-control" id="comment"
 											name="comment" required="required" rows="6" cols="30"></textarea>
@@ -108,8 +89,7 @@
 											보내주시면 빠른 응답이 가능합니다.</span>
 									</div>
 									<div class="col-12 form-group">
-										<label for="template-contactform-file">파일 업로드 (Upload
-											Files)</label> <input type="file" id="file" name="file"
+										<label for="template-contactform-file">파일 업로드</label> <input type="file" id="file" name="file"
 											class="sm-form-control" /> <span class="alert-text">*
 											1회 업로드 가능 용량은 20MB입니다. 초과하는 경우 bionlifescience@hanmail.net
 											메일로 보내주시기 바랍니다.</span><br> <span class="alert-text">*
@@ -117,8 +97,7 @@
 									</div>
 
 									<div class="col-12 form-group">
-										<label for="template-contactform-private">개인정보 취급방침
-											(Private Policy) </label>
+										<label for="template-contactform-private">개인정보 취급방침</label>
 										<textarea class="sm-form-control" rows="6" cols="30" readonly
 											style="overflow-y: scroll">
 											1. 수집하는 개인정보 항목 및 수집방법
@@ -192,8 +171,8 @@
 											id="policyCheck"> <label class="form-check-label"
 											for="policyCheck">개인정보의 수집 및 이용에 동의합니다.</label>
 									</div>
-									<div class="col-12 form-group">
-										<button class="button button-3d m-0" type="submit"
+									<div class="form-group">
+										<button class="button button-3d" type="submit"
 											id="contactBtn">메시지 보내기</button>
 									</div>
 								</div>
@@ -208,5 +187,6 @@
 	</div>
 	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
 	<script src="/front/js/contact.js"></script>
+	
 </body>
 </html>

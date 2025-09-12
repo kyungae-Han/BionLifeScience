@@ -144,8 +144,9 @@
 									<span class="gi-fill"></span>
 								</div>
 								<!-- (옵션) 재생/일시정지 버튼 -->
-								<button class="gi-toggle pause-circle" type="button"
-									aria-pressed="false"></button>
+								<button class="gi-toggle" type="button" aria-pressed="true" aria-label="재생/일시정지">
+									<i class="bi bi-play-circle" aria-hidden="true"></i>
+								</button>
 							</div>
 							<div class="container-btn">
 								<div class="swiper-button-prev" aria-label="이전"></div>
@@ -402,45 +403,9 @@
 			</div>
 		</section>
 
-		<!-- Location (Map) -->
-		<section id="location" class="about-body section-last">
-			<div class="p-wrap">
-				<h2 class="sec-head p-item" data-speed="0.2">찾아오시는 길</h2>
-				<div class="loc-wrap">
-					<iframe class="map-box p-item" data-speed="0.14"
-						src="https://www.google.com/maps?q=경기도+남양주시+순화궁로+282&output=embed"
-						width="400%" height="220" style="border: 0;" allowfullscreen loading="lazy"> </iframe>
-
-					<div class="addr p-item" data-speed="0.22">
-						<dl>
-							<dt>주소</dt>
-							<dd>경기도 남양주시 순화궁로 282, 에이스하이엔드타워 10층</dd>
-							<dt>대표번호</dt>
-							<dd>031-572-2273</dd>
-							<dt>대중교통</dt>
-							<dd>지하철 8호선, 경춘선 별내역</dd>
-						</dl>
-						<div class="btn-row">
-							<button class="btn alt"
-								onclick="window.open('https://map.naver.com/v5/search/경기도%20남양주시%20순화궁로%20282', '_blank')">네이버
-								지도</button>
-							<button class="btn alt"
-								onclick="window.open('https://map.kakao.com/?q=경기도 남양주시 순화궁로 282', '_blank')">카카오
-								지도</button>
-							<button class="btn alt"
-								onclick="window.open('https://www.google.com/maps/search/?api=1&query=경기도+남양주시+순화궁로+282', '_blank')">Google
-								Maps</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		
 		<section>
 			<div class="overview-contact-us">
-				<div class="top-bn"
-					style="--bg-img:url('/front/images/about/overview-bg-3.jpg')"></div>
-				<div class="container">
+					<div class="container">
 					<div class="section-left">
 						<h3 class="sub-head"><b>끊임없는 탐구,<br>안정된 기술,<br>성장하는 가치</b></h3>
 						<p>미래를 설계하는 파트너십,<br>바이온에서 시작됩니다.</p>
@@ -459,38 +424,38 @@
 									enctype="multipart/form-data">
 									<div class="from-row">
 										<div class="form-group">
-											<label for="template-contactform-name">성함<small>*</small></label>
+											<label for="name">성함<small>*</small></label>
 											<input type="text" id="name" name="name"
 												class="sm-form-control" required="required" />
 										</div>
 	
 										<div class="form-group">
-											<label for="template-contactform-company">회사명
+											<label for="company">회사명
 												</label> <input type="text" id="company" name="company"
 												class="sm-form-control" />
 										</div>
 	
 										<div class="form-group">
-											<label for="template-contactform-email">이메일<small>*</small></label>
+											<label for="email">이메일<small>*</small></label>
 											<input type="text" id="email" name="email" required="required"
 												class="sm-form-control" />
 										</div>
 	
 										<div class="form-group">
-											<label for="template-contactform-phone">연락처
+											<label for="phone">연락처
 												<small>*</small>
 											</label> <input type="text" id="phone" name="phone"
 												required="required" class="sm-form-control" />
 										</div>
 	
 										<div class="form-group">
-											<label for="template-contactform-country">국가명
+											<label for="country">국가명
 												</label> <input type="text" id="country" name="country"
 												class="sm-form-control" />
 										</div>
 	
 										<div class="form-group">
-											<label for="template-contactform-topic">문의 주제</label>
+											<label for="topic">문의 주제</label>
 											<select id="topic" name="topic" class="sm-form-control">
 												<option value="none">-- 선택 --</option>
 												<option value="제품정보관련">제품정보관련</option>
@@ -501,7 +466,7 @@
 										</div>
 	
 										<div class="form-group">
-											<label for="template-contactform-title">문의 제목<small>*</small>
+											<label for="subject">문의 제목<small>*</small>
 											</label> <input type="text" id="subject" name="subject"
 												required="required" class="sm-form-control" />
 										</div>
@@ -510,13 +475,13 @@
 										<div class="w-100"></div>
 	
 										<div class="form-group">
-											<label for="template-contactform-message">문의 내용<small>*</small>
+											<label for="comment">문의 내용<small>*</small>
 											</label>
 											<textarea class="required sm-form-control" id="comment"
 												name="comment" required="required" rows="6" cols="30"></textarea>
 										</div>
 										<div class="form-group">
-											<label for="template-contactform-file">파일 업로드</label> <input type="file" id="file" name="file"
+											<label for="file">파일 업로드</label> <input type="file" id="file" name="file"
 												class="sm-form-control" /> <span class="alert-text">
 												1회 업로드 가능 용량은 20MB입니다.<small>[&nbsp;jpg | jpeg | pdf | png | zip&nbsp;]등록가능</small></span>
 										</div>
@@ -545,28 +510,32 @@
 	<script th:src="@{/front/js/company/about.js}" defer></script>
 	
 	<script>
-document.getElementById("contactForm").addEventListener("submit", async function(e) {
-  e.preventDefault(); 
+		document.getElementById("contactForm").addEventListener("submit", async function(e) {
+	 	e.preventDefault(); 
+			   const form = e.target;
+			   const formData = new FormData(form);
+			
+				  try {
+				    const response = await fetch(form.action, {
+				      method: form.method,
+				      body: formData
+				    });
+				
+				    if (response.ok) {
+				      alert("문의가 성공적으로 전송되었습니다!");
+				    } else {
+				      alert("서버 오류가 발생했습니다.");
+				    }
+				  } catch (err) {
+				    console.error(err);
+				    alert("전송 중 문제가 발생했습니다.");
+				  }
+			});
+		</script>
 
-  const form = e.target;
-  const formData = new FormData(form);
-
-  try {
-    const response = await fetch(form.action, {
-      method: form.method,
-      body: formData
-    });
-
-    if (response.ok) {
-      alert("문의가 성공적으로 전송되었습니다!");
-    } else {
-      alert("서버 오류가 발생했습니다.");
-    }
-  } catch (err) {
-    console.error(err);
-    alert("전송 중 문제가 발생했습니다.");
-  }
-});
-</script>
+		<script>
+			document.querySelectorAll('.mobile-primary-menu,.sub-menu-container,.mega-menu-content,#product-items,#brands-items')
+			.forEach(el => el.removeAttribute('style'));
+			</script>
 </body>
 </html>
