@@ -12618,10 +12618,12 @@ body:not(.device-touch) #gotoTop {
 }
 
 
-#footer .copyrights-menu a:not(:first-child)::before{
-	content:'/';
-	margin-right: 8px;
-	color: #fff;
+@media (min-width:1024.98px){
+	#footer .copyrights-menu a:not(:first-child)::before{
+		content:'/';
+		margin-right: 8px;
+		color: #fff;
+	}
 }
 
 
@@ -12682,10 +12684,6 @@ body:not(.device-touch) #gotoTop {
 		flex: 0 0 calc(33.333% - 10px) !important;
 		text-align: center;
 		padding: 0 8px;
-	}
-	
-	#footer .copyrights-menu a::before{
-		content:'';
 	}
 	
 	p.copyrights_block span{display:block;}
