@@ -40,6 +40,8 @@
 
 #history, #institute {margin-top:140px;}
 
+.sec-head:not(.left) {text-align:center;}
+
 
 
 /*---------------------------------
@@ -2187,7 +2189,7 @@ il-callout.p-item {
 	width:67%;
 	padding: 0 58px 0 0;
 }
-.overview-contact-us div.section-right .from-row {height:580px; overflow-y: scroll;}
+.overview-contact-us div.section-right .from-row {height:885px; overflow-y: scroll;}
 
 .overview-contact-us div.section-right .form-group + .form-group {
   margin-top: 45px;

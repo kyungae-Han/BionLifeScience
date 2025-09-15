@@ -37,7 +37,7 @@
 				</video>
 	
 				<div class="p-wrap" id="about">
-					<h2 class="sec-head p-item" data-speed="0.2">
+					<h2 class="sec-head p-item left" data-speed="0.2">
 						 About<br>
 						<small>Bion Life Science</small>
 					</h2>
@@ -69,7 +69,7 @@
 	
 				<div class="glance-slider">
 					<div class="glance__head">
-						<h2 class="sec-head p-item" data-speed="0.28">At a Glance</h2>
+						<h2 class="sec-head p-item left" data-speed="0.28">At a Glance</h2>
 					</div>
 	
 					<div class="glance-nav">
@@ -172,7 +172,7 @@
 				</div>
 			</div>
 			<div class="about-history-wrap">
-				<h2 class="history-title sec-head center p-item" data-speed="0.22">TimeLine</h2>
+				<h2 class="history-title sec-head p-item" data-speed="0.22"><b>TimeLine</b></h2>
 
 				<section class="bio-history-wrap">
 					<div class="bio-history-tabs tabs-alt tabs-tb" id="tab-8">
@@ -407,6 +407,7 @@
 			<div class="overview-contact-us">
 					<div class="container">
 					<div class="section-left">
+						<h4>Contact US</h4>
 						<h3 class="sub-head"><b>끊임없는 탐구,<br>안정된 기술,<br>성장하는 가치</b></h3>
 						<p>미래를 설계하는 파트너십,<br>바이온에서 시작됩니다.</p>
 					</div>
@@ -423,6 +424,18 @@
 							<form id="contactForm" action="/clientInsert" method="post"
 									enctype="multipart/form-data">
 									<div class="from-row">
+									
+										<div class="form-group">
+											<label for="topic">문의 주제</label>
+											<select id="topic" name="topic" class="sm-form-control">
+												<option value="none">-- 선택 --</option>
+												<option value="제품정보관련">제품정보관련</option>
+												<option value="제휴관련">제휴관련</option>
+												<option value="기업제휴관련">기업제휴관련</option>
+												<option value="기타문의">기타문의</option>
+											</select>
+										</div>
+										
 										<div class="form-group">
 											<label for="name">성함<small>*</small></label>
 											<input type="text" id="name" name="name"
@@ -454,16 +467,6 @@
 												class="sm-form-control" />
 										</div>
 	
-										<div class="form-group">
-											<label for="topic">문의 주제</label>
-											<select id="topic" name="topic" class="sm-form-control">
-												<option value="none">-- 선택 --</option>
-												<option value="제품정보관련">제품정보관련</option>
-												<option value="제휴관련">제휴관련</option>
-												<option value="기업제휴관련">기업제휴관련</option>
-												<option value="기타문의">기타문의</option>
-											</select>
-										</div>
 	
 										<div class="form-group">
 											<label for="subject">문의 제목<small>*</small>
