@@ -137,10 +137,10 @@ public class HomeController {
         return "front/company/about";
     }
 	
-	@GetMapping("/overview")
+	@GetMapping("/rnd")
     public String overview(Model model) {
 
-        return "front/business/overview";
+        return "front/business/rnd";
     }
 	
 	@GetMapping("/history")

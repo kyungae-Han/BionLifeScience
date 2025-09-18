@@ -10310,6 +10310,10 @@ textarea.form-control-lg {
 	.mb-lg-5 {
 		margin-bottom: 3rem !important;
 	}
+	
+	.mb-lg-6 {
+		margin-bottom: 4rem !important;
+	}
 
 	.mb-lg-auto {
 		margin-bottom: auto !important;

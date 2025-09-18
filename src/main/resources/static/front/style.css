@@ -17629,6 +17629,25 @@ h4 {
 .transparent-header.full-header .primary-menu .menu-container {
     border-right-color: rgba(0, 0, 0, 0.1);
   }
+  
+.full-header .primary-menu .menu-container{
+    position: relative;
+}  
+  
+  
+.full-header .primary-menu .menu-container::before{
+	content:'';
+	position:absolute;
+	width:100vw;
+	height:1px;
+	top:0;
+	left:-30px;
+	background: #e1e1e1;
+	opacity:0.6;
+	padding:0 !important;
+	margin:0 !important;
+}
+
 
 .mega-menu {
     position: inherit;

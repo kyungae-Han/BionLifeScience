@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 기업소개')">
+</head>
+
+<link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+
+<style>
+ul, li {list-style:none;}
+h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !important;}
+
+</style>
+
+
+<body class="stretched">
+  <div id="wrapper" class="clearfix">
+    <th:block th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+    
+    
+    	<div id="page-title">
+				<h1 class="sec-head">기업부설 연구소</h1>
+				<p>생명과학, 질병 진단, 의료기기 관련 소모품, 부자재, Plasticware, 진단 kit 등에 대한 연구 개발 업무를 수행</p>
+		</div>
+    
+		<!-- Corporate Lab -->
+		<section id="institute" class="section about-body">
+			<div class="p-wrap">
+				<!-- 개요 -->
+				<article class="il-overview p-item" data-speed="0.22">
+					<div class="il-overview__body p-item"
+						style="--bg-img: url('/front/images/about/1.jpg')">
+						<div class="il-overview__caption">
+						</div>
+					</div>
+					
+					
+					<div class="il-cards il-cards--image il-cards--portrait">
+					<!-- 1) 진단·의료기기 -->
+					<article class="il-image-card"
+						style="--img: url('/front/images/about/institute-bg4.jpg'); --pos: 50% 45%;">
+						<div class="il-image-card__media" aria-hidden="true"></div>
+						<div class="il-image-card__scrim"></div>
+						<div class="il-image-card__content">
+							<h4 class="il-image-card__title">진단·의료기기</h4>
+							<p class="il-image-card__subtitle">진단용 기자재·진단 Kit·소모품 R&amp;D</p>
+							<ul class="il-image-card__list">
+								<li>Elastomer 재질의 부드러운 소재로 검체 재취용 <strong>Swab</strong> 개발
+								</li>
+								<li><strong>OAB</strong> 채취 Kit 및 <strong>NIPT</strong> 채취
+									Kit 개발</li>
+								<li>급성설사진단용 <strong>검체수송배지</strong> 개발
+								</li>
+								<li>국내외 다수의 <strong>특허출원</strong> 및 <strong>디자인 등록</strong></li>
+							</ul>
+						</div>
+					</article>
+
+					<!-- 2) 연구 기자재 -->
+					<article class="il-image-card"
+						style="--img: url('/front/images/about/institute-bg2.jpg'); --pos: 48% 40%;">
+						<div class="il-image-card__media" aria-hidden="true"></div>
+						<div class="il-image-card__scrim"></div>
+						<div class="il-image-card__content">
+							<h4 class="il-image-card__title">연구 기자재</h4>
+							<p class="il-image-card__subtitle">생명과학 연구용
+								기자재·소모품·Plasticware</p>
+							<ul class="il-image-card__list">
+								<li><strong>수직형 단백질 전기영동 장치</strong> 개발</li>
+								<li><strong>Filter Tip</strong>, <strong>Internal
+										Screw &amp; Tube</strong> 개발</li>
+								<li>현장 아이디어 → <strong>3D 모델링 설계</strong> → <strong>3D
+										프린팅<br>시제품
+								</strong></li>
+								<li>대량 생산을 위한 <strong>사출 금형 아이디어</strong> 제공
+								</li>
+							</ul>
+						</div>
+					</article>
+
+					<!-- 3) 천연물·향장 -->
+					<article class="il-image-card"
+						style="--img: url('/front/images/about/institute-bg1.jpg'); --pos: 55% 42%;">
+						<div class="il-image-card__media" aria-hidden="true"></div>
+						<div class="il-image-card__scrim"></div>
+						<div class="il-image-card__content">
+							<h4 class="il-image-card__title">천연물소재 연구개발</h4>
+							<p class="il-image-card__subtitle">기능성 화장품·건강식품 소재</p>
+							<ul class="il-image-card__list">
+								<li><strong>마가목</strong>·<strong>배롱나무</strong> 성분 분석 및 지표성분
+									특정·정량분석</li>
+								<li>2차 대사산물 스크리닝 → 유효물질 특정 → <strong>동정/함량 분석</strong>
+									(HPLC, LC-MS, LC-MS/MS, NMR)
+								</li>
+								<li>활성성분 <strong>추출</strong> 및 <strong>column
+										chromatography</strong>로 유효물질 분리·정제
+								</li>
+								<li>향장 소재 유효 성분 분석 및 문헌/데이터 기반 <strong>활용 기술컨설팅</strong></li>
+							</ul>
+						</div>
+					</article>
+				</div>
+
+				<!-- 3D 모델링/프린팅 콜아웃 -->
+				<aside class="il-callout p-item" data-speed="0.28" role="note">
+					<strong>3D 모델링 &amp; 프린팅</strong> 설계 검증 → 기능 개선 → 대량 생산(사출 금형)으로
+					이어지는 R&amp;D 파이프라인을 운영합니다.<br>(주)바이온라이프사이언스는 현장 요구를 신속히 반영하는
+					시제품 제작 체계를 갖추고 있습니다.
+				</aside>
+
+				<!-- 분석 장비/방법 태그 -->
+				<div class="il-tags p-item" data-speed="0.26"
+					aria-label="주요 분석 장비/방법">
+					<span class="il-tag">HPLC</span> <span class="il-tag">LC-MS</span>
+					<span class="il-tag">LC-MS/MS</span> <span class="il-tag">NMR</span>
+					<span class="il-tag">Chromatography</span> <span class="il-tag">3D
+						Modeling</span> <span class="il-tag">3D Printing</span>
+				</div>
+					
+						
+					<div class="copylight__p p-item">
+						<div class="mt-lg-4">
+							<h5>3D 모델링을 통한 제품 개발 연구</h5>
+							<p>㈜바이온라이프사이언스 기업부설연구소는 생명과학 시장을 다수 점유하고 있는 외산 제품에 대응한 국산화를 지속적으로 추진하고 있습니다.</p>
+						</div>
+						
+						<div class="product-development">
+						    <div class="grid">
+						      <div class="step-card">
+						        <div class="icon">
+						          <i class="bi bi-gear"></i>
+						        </div>
+						        <h6>아이디어 도출</h6>
+						        <div class="hover-content">
+						          창의적인 아이디어를 수집하고 문제 해결 방향을 설정합니다.
+						        </div>
+						      </div>
+						      <div class="step-card">
+						        <div class="icon">
+						          <i class="bi bi-pencil-square"></i>
+						        </div>
+						        <h6>설계 및 스케치</h6>
+						        <div class="hover-content">
+						          제품 구조와 기능에 대한 초안을 확정합니다.
+						        </div>
+						      </div>
+						      <div class="step-card">
+						        <div class="icon">
+						        	<i class="bi bi-bounding-box-circles"></i>
+						        </div>
+						        <h6>3D 모델링</h6>
+						        <div class="hover-content">
+						          3D 모델링을 통해 시제품의 구조를 구현 및 설계 합니다.
+						        </div>
+						      </div>
+						      <div class="step-card">
+						        <div class="icon">
+						        	<i class="bi bi-cpu"></i>
+						        </div>
+						        <h6>3D 프린팅</h6>
+						        <div class="hover-content">
+						          연구제품을 3D 프린팅하여 본 연구소에서 다각도로 테스트합니다.
+						        </div>
+						      </div>
+						      <div class="step-card last">
+						        <div class="icon">
+						        	<i class="fa-solid fa-truck-fast"></i>
+						        </div>
+						        <h6>향상된 제품공급</h6>
+						        <div class="hover-content">
+						         	개선점을 보완해 최적의 결과를 도출 향상된 제품을 공급하기 위해 지속적으로 연구 개발합니다.
+						        </div>
+						    </div>
+						  </div>
+						</div>
+						
+	        		</div>
+	        		
+        		<div class="irregular-image-grid">
+				    <div class="grid-layout">
+				      <div class="card small p-item">
+				        <img th:src="@{/front/images/about/card-grid-1.png}" alt="rack">
+				      </div>
+				      <div class="card small fp-dim p-item">
+				        <img th:src="@{/front/images/about/card-grid-2.png}" alt="swap">
+				      </div>
+				      <div class="card small p-item">
+				        <img th:src="@{/front/images/about/card-grid-3.png}" alt="ring stand">
+				      </div>
+				      <div class="card medium p-item">
+				        <video autoplay muted loop playsinline>
+			      			<source th:src="@{/front/images/about/movie-1-1.mp4}" type="video/mp4"></video>
+				      </div>
+				      <div class="card medium p-item">
+				        <img th:src="@{/front/images/about/card-grid-5.png}" alt="rack">
+				      </div>
+				    </div>
+				</div>
+					
+					<div class="il-info">
+						
+						<div class="il-info__list p-item">
+						  <div class="icon-caption">
+						    <span class="il-chip">설립</span>
+						    <span class="chip-caption">2023 연구전담부서 시작 → 2025 기업부설연구소 전환·운영</span>
+						  </div>
+						  <div class="icon-caption">
+						    <span class="il-chip">영역</span>
+						    <span class="chip-caption">생명과학, 질병 진단, 의료기기 소모품·부자재·Plasticware, 진단 Kit R&D</span>
+						  </div>
+						</div>
+						<div class="il-info__list p-item">
+						  <div class="icon-caption">
+						    <span class="il-chip">국산화</span>
+						    <span class="chip-caption">외산 제품 대응 국산화 지속추진, 현장 문제 신속 해결 및 제품 개선 반영</span>
+						  </div>
+						  <div class="icon-caption">
+						    <span class="il-chip">확장</span>
+						    <span class="chip-caption">천연물 기반 기능성 화장품·건강식품 소재 연구(2025~), 3D 모델링·프린팅 도입</span>
+						  </div>
+						  </div>
+					</div>
+	   
+				</article>
+				
+				
+				 <article class="fp">
+				  <h4 class="fp-heading">Quality Enhancement</h4>
+				  <p class="fp-sub">혁신적인 제품의 개발과 생산, 첨단기술력의 발전과 끊임없는 도전으로 가치를 만들어 갑니다.</p>
+				
+				  <div class="fp-wrap" role="list">
+				    <!-- 카드 1 -->
+				    <div class="fp-card" role="listitem"
+				       style="--bg:url('/front/images/about/section-bg-1.jpg')">
+				      <div class="fp-bg"></div>
+				      <div class="fp-dim"></div>
+				      <div class="fp-content">
+				        <h3 class="fp-title"><b>3D Printing&nbsp;&nbsp;&nbsp;설계</b></h3>
+				        <p class="fp-desc">3D 모델링·프린팅을 도입하여 보다 진보된 연구용 기자재 R&amp;D 추진</p>
+				        <span class="fp-more none" aria-hidden="true">자세히</span>
+				      </div>
+				    </div>
+				
+				    <!-- 카드 2 -->
+				    <div class="fp-card" role="listitem"
+				       style="--bg:url('/front/images/about/section-bg-4.jpg')">
+				      <div class="fp-bg"></div>
+				      <div class="fp-dim"></div>
+				      <div class="fp-content">
+				        <h3 class="fp-title"><b>Localization R&amp;D</b></h3>
+				        <p class="fp-desc">국내 생명과학 시장을 다소 점유하고 있는 외산 제품에 대응한 국산화를 지속 추진</p>
+				        <span class="fp-more none" aria-hidden="true">자세히</span>
+				      </div>
+				    </div>
+				
+				    <!-- 카드 3 (초기 강조) -->
+				    <div class="fp-card is-active" role="listitem"
+				       style="--bg:url('/front/images/about/section-bg-2.jpg')">
+				      <div class="fp-bg"></div>
+				      <div class="fp-dim"></div>
+				      <div class="fp-content">
+				        <h3 class="fp-title"><b>Quality</b></h3>
+				        <p class="fp-desc">연구 현장에서 발생하는 제품의 문제점을 신속히 해결</p>
+				        <span class="fp-more none" aria-hidden="true">자세히</span>
+				      </div>
+				    </div>
+				
+				    <!-- 카드 4 -->
+				    <div class="fp-card" role="listitem"
+				       style="--bg:url('/front/images/about/section-bg-5.jpg')">
+				      <div class="fp-bg"></div>
+				      <div class="fp-dim"></div>
+				      <div class="fp-content">
+				        <h3 class="fp-title"><b>True Lab</b></h3>
+				        <p class="fp-desc">개선 요구를 반영한 향상된 제품 공급</p>
+				        <span class="fp-more none" aria-hidden="true">자세히</span>
+				      </div>
+				    </div>
+				  </div>
+				</article>
+			</div>
+		</section>
+    
+    
+    <section class="organic">
+	    <div class="biz-overlay p-item">
+	      <h4 class="fp-heading">천연물연구</h4>
+	      <p>바이온 부설 연구소에서는 지금까지의 연구 개발 노하우를 바탕으로 사업 역량을 강화하고 새로운 미래 성장 동력을 발굴하기 위하여 천연물 자원 연구를 수행하고 있습니다.</p>
+	    </div>
+	    <div class="biz-section">
+	    	<div class="container">
+			  <div class="biz-left">
+			    <video autoplay muted loop playsinline>
+			      <source th:src="@{/front/images/about/movie-1.mp4}" type="video/mp4"></video>
+			  </div>
+			
+			  <div class="biz-right">
+			    <div class="card">
+			    	<img th:src="@{/front/images/about/movie-img-1.jpg}" alt="크로마토그래피">
+			    </div>
+			
+			     <div class="card">
+			    	<img th:src="@{/front/images/about/movie-img-2.jpg}" alt="크로마토그래피">
+			    </div>
+			
+			    <div class="card">
+			    	<img th:src="@{/front/images/about/movie-img-3.jpg}" alt="크로마토그래피">
+			    </div>
+			
+			     <div class="card">
+			    	<img th:src="@{/front/images/about/movie-img-4.jpg}" alt="크로마토그래피">
+			    </div>
+			  </div>
+		  </div>
+		</div>
+    </section>
+    
+    
+    
+    
+    
+    <th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+  </div>
+  
+  	<th:block th:fragment="scriptSrc">
+		<div id="gotoTop" class="icon-angle-up"></div>
+		<script src="/front/js/jquery.js"></script>
+		<script src="/front/js/plugins.min.js"></script>
+		<script src="/front/js/functions.js"></script>
+		<script src="/front/js/menu.tree.js"></script>
+		<script src="/front/js/header.toggle.js"></script>
+		<script src="/front/js/company/about.js"></script>
+	</th:block>
+	<script>
+(function(){
+  const heroes = document.querySelectorAll('.section-1');
+  if (!heroes.length) return;
+
+  // 등장하면 .show 부여 → Ken Burns 시작 + 텍스트 슬라이드업은 기존 CSS로
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('show');
+      }
+    });
+  }, { threshold: 0.2 });
+  heroes.forEach(h => io.observe(h));
+
+  const clamp = (n,min,max)=>Math.max(min,Math.min(max,n));
+  const isMobile = () => window.innerWidth < 992;
+  
+  function getParams(){
+    return {
+      MAX_SHIFT: isMobile() ? 120 : 90, 
+      MIN_SCALE: isMobile() ? 0.10 : 0.14 
+    };
+  }
+
+  function updateOne(h){
+    const rect = h.getBoundingClientRect();
+    const H = rect.height || innerHeight;
+    const p = clamp((-rect.top)/H, 0, 1);
+    const { MAX_SHIFT, MIN_SCALE } = getParams();
+
+    const parallaxY = -MAX_SHIFT * p;
+    const scale = 1 - (1 - MIN_SCALE) * p;
+
+    h.style.setProperty('--parallax', parallaxY + 'px');
+    h.style.setProperty('--scale', String(scale));
+  }
+
+  let ticking = false;
+  function onScroll(){
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      heroes.forEach(updateOne);
+      ticking = false;
+    });
+  }
+  addEventListener('scroll', onScroll, { passive:true });
+  addEventListener('resize', onScroll);
+  onScroll();
+})();
+</script>
+
+<script>
+function splitTextNode(node){
+	  const txt = node.nodeValue;
+	  if (!txt || !txt.trim()) return null;
+	  const frag = document.createDocumentFragment();
+	  let i = 0;
+	  for (const ch of txt){
+	    const span = document.createElement('span');
+	    span.className = 'char';
+	    span.style.setProperty('--i', i++);
+	    span.textContent = ch;
+
+	    if (/\s/.test(ch)) {              
+	      span.classList.add('sp');
+	    } else if (/[.,!?~:;)\]\}…]/.test(ch)) {
+	      span.classList.add('punct');
+	    }
+	    frag.appendChild(span);
+	  }
+	  return frag;
+	}
+</script>
+	
+</body>
+</html>
