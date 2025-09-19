@@ -26,31 +26,35 @@
 			<div class="hero-wrap">
 	
 				<div class="p-wrap" id="about">
-					<h2 class="sec-head p-item left" data-speed="0.2">
-						 About<br>
-						<small>Bion Life Science</small>
-					<span class="sec-sub">
-						창의적 아이디어와 혁신적인 기술 개발을 통해 Life Science 분야에서 Global 시장을
-						선점하는 기업이 되기 위해 노력합니다.
-					</span>
-					</h2>
 					<div class="hero-grid">
 						<img class="hero-img p-item" data-speed="0.28"
 							th:src="@{/front/images/about/about-bion.jpg}" alt="About hero" loading="lazy" decoding="async" />
 					</div>
 					
-					<div data-speed="0.28">
-						<div class="cpation-items">
-							<h1>Mission</h1>
-							<span>질병 진단에 도움을 주는 제품으로 더 나은 삶에 기여</span>
+					<div class="copylights" data-speed="0.28">
+						<div class="cpation-items p-item">
+							<h3 class="sec-head left"><b>MISSION</b></h3>
+							<div class="copy-body left">
+								<p>주식회사 바이온라이프사이언스는 질병 진단과 연구 현장에서 요구되는 Plasticware 실험기자재 및 소모품을 개발·공급하며,
+								사용자의 편의성과 연구 효율성을 높이는 것을 핵심 목표로 삼고 있습니다.
+								또한 기업 간 신뢰를 기반으로 정확하고 신속하게 고품질 제품을 제공하기 위해 끊임없이 노력합니다.</p>
+							</div>
 						</div>
-						<div class="cpation-items">
-							<h1>Vision</h1>
-							<span>혁신을 통한 Life Science 산업의 지속적인 성장 견인</span>
+						<div class="cpation-items p-item">
+							<h3 class="sec-head left"><b>VISION</b></h3>
+							<div class="copy-body left">
+								<p>바이온은 생명과학 분야의 새로운 가능성과 가치를 창출하고, 글로벌 산업의 성장을 선도하며,
+								끊임없는 도전과 책임 있는<br>연구 활동을 통해 미래 사회가 요구하는 Life Science 분야의 해답을 제시하고자 합니다.</p>
+							</div>
 						</div>
-						<div class="cpation-items">
-							<h1>Strategy</h1>
-							<span>창의적 아이디어 · 지속적인 기술개발 · 지적재산 보호</span>
+						<div class="cpation-items p-item">
+							<h3 class="sec-head left"><b>STRATEGY</b></h3>
+							<div class="copy-body left">
+								<p>바이온은 창의적인 발상을 기반으로 새로운 아이디어를 실현하고,
+								지속적인 연구개발을 통해 차별화된 기술을 확보합니다.
+								<br>또한 지식재산권을 적극적으로 보호하여 독창적인 경쟁력을 강화하며,
+								파트너십과 협력을 통해 시장에서 지속적인 우위를<br>확보합니다.</p>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -133,45 +137,15 @@
 		
 		
 		<section class="glance-slider">
-					<div id="certificates" class="alt about-body">
-						<div class="p-wrap">
-			                <div  class="p-item" data-speed="0.2">
-							    <h2 id="certificates-head" class="sec-head" data-speed="0.2">인증서</h2>
-							    <p>바이온 국내, 해외 특허증 및 의료기기 품질 인증서</p>
-			                </div>
-							<!-- 필터 -->
-							<div class="grid-filter-wrap">
-								<ul class="grid-filter" data-container="#certTrack">
-									<li class="activeFilter"><a href="#" data-filter="*">모두보기</a></li>
-									<li><a href="#" data-filter=".pf-기업인증">기업인증</a></li>
-									<li><a href="#" data-filter=".pf-특허인증">특허인증</a></li>
-									<li><a href="#" data-filter=".pf-기타인증">기타인증</a></li>
-								</ul>
-							</div>
-			
-							<div class="cert-wrap">
-								<div class="cert-nav" aria-hidden="false">
-									<button class="cert-btn bi bi-arrow-left-circle-fill" id="certPrev" aria-label="이전" disabled></button>
-									<button class="cert-btn bi bi-arrow-left-circle-fill" id="certNext" aria-label="다음" disabled></button>
-								</div>
-								<div tabindex="0" class="cert-viewport swiper-wrapper"
-									id="certViewport">
-									<div class="cert-track swiper-slide" id="certTrack">
-										<div class="cert" th:each="c : ${certification}"
-											th:classappend="${' pf-' + c.sort}">
-											<img th:src="${c.road}" alt="CERTIFICATION"> <span
-												th:text="${c.content}">혁신성장유형 벤처기업확인서</span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+					<div class="p-item">
+						<h2 class="sec-head">인증서</h2>
+						<p class="pb-lg-5">2012년 설립 이후, 바이온은 생명과학 실험기자재 연구와 독자 기술 특허를 이어가고 있습니다.</p>
 					</div>
-	
+					
 					<div class="glance-nav">
 						<!-- Swiper -->
 						<div class="swiper glance-swiper">
-							<div class="swiper-wrapper">
+							<div class="swiper-wrapper left">
 								<!-- Slide 1 -->
 								<div class="swiper-slide">
 									<article class="stat-card text-dark"
@@ -251,6 +225,40 @@
 						</div>
 					</div>
 				</section>
+				
+				<section id="certificates">
+					<div class="container">
+						<!-- 필터 -->
+						<div class="grid-filter-container">
+							<div class="grid-filter-wrap">
+								<ul class="grid-filter" data-container="#certTrack">
+									<li class="activeFilter"><a href="#" data-filter="*">모두보기</a></li>
+									<li><a href="#" data-filter=".pf-기업인증">기업인증</a></li>
+									<li><a href="#" data-filter=".pf-특허인증">특허인증</a></li>
+									<li><a href="#" data-filter=".pf-기타인증">기타인증</a></li>
+								</ul>
+							</div>
+			
+							<div class="cert-wrap">
+								<div class="cert-nav" aria-hidden="false">
+									<button class="cert-btn bi bi-arrow-left-circle-fill" id="certPrev" aria-label="이전" disabled></button>
+									<button class="cert-btn bi bi-arrow-left-circle-fill" id="certNext" aria-label="다음" disabled></button>
+								</div>
+								<div tabindex="0" class="cert-viewport swiper-wrapper"
+									id="certViewport">
+									<div class="cert-track swiper-slide" id="certTrack">
+										<div class="cert" th:each="c : ${certification}"
+											th:classappend="${' pf-' + c.sort}">
+											<img th:src="${c.road}" alt="CERTIFICATION"> <span
+												th:text="${c.content}">혁신성장유형 벤처기업확인서</span>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
 	
 		<section>
 			<div class="overview-contact-us">
@@ -259,6 +267,9 @@
 						<h4>Contact US</h4>
 						<h3 class="sub-head"><b>끊임없는 탐구,<br>안정된 기술,<br>성장하는 가치</b></h3>
 						<p>미래를 설계하는 파트너십,<br>바이온에서 시작됩니다.</p>
+						<br>
+						<p>견적문의 :</p>
+						<h3 class="pb-lg-3"><b>031-572-2272</b></h3>
 					</div>
 					<div class="section-right">
 							<div class="fixed-icon">
@@ -386,8 +397,37 @@
 </script>
 
 <script>
-	document.querySelectorAll('.mobile-primary-menu,.sub-menu-container,.mega-menu-content,#product-items,#brands-items')
-	.forEach(el => el.removeAttribute('style'));
+document.addEventListener('DOMContentLoaded', () => {
+  const target = document.querySelector('.copylights');
+
+  if (target) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.2 }); // 20% 보이면 발동
+
+    observer.observe(target);
+  }
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const root   = document.documentElement;
+  const header = document.getElementById('header-wrap') || document.getElementById('header');
+
+  function setStickyTop(){
+    const h = header ? header.getBoundingClientRect().height : 80;
+    root.style.setProperty('--headerH', `${Math.round(h)}px`);
+  }
+
+  setStickyTop();
+  addEventListener('resize', setStickyTop, {passive:true});
+  addEventListener('scroll', setStickyTop, {passive:true});
+});
 </script>
 </body>
 </html>

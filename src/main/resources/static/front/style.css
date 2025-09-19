@@ -13835,7 +13835,7 @@ label.checkbox {
 
 .stretched #wrapper {
   width: 100%;
-  margin: 0;
+  margin: 0 auto;
   box-shadow: none;
 }
 

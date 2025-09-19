@@ -1,121 +1,220 @@
 /* =========================================================
    Certificates Slider (axis-lock + 가로 드래그/휠/키보드)
    ========================================================= */
-(function(){
-  const sec = document.getElementById('certificates');
-  if (!sec || sec.dataset.sliderInit) return; // guard: run once
-  sec.dataset.sliderInit = '1';
+   (function () {
+     const sec = document.getElementById('certificates');
+     if (!sec || sec.dataset.sliderInit) return; // guard: run once
+     sec.dataset.sliderInit = '1';
 
-  const viewport = sec.querySelector('#certViewport');
-  const track    = sec.querySelector('#certTrack');
-  const prevBtn  = sec.querySelector('#certPrev');
-  const nextBtn  = sec.querySelector('#certNext');
+     const viewport = sec.querySelector('#certViewport');
+     const track = sec.querySelector('#certTrack');
+     const prevBtn = sec.querySelector('#certPrev');
+     const nextBtn = sec.querySelector('#certNext');
 
-  const getStep = () => {
-    const first = track.querySelector('.cert');
-    if (!first) return viewport.clientWidth * 0.8;
+     const getStep = () => {
+       const first = track.querySelector('.cert');
+       const rect = first ? first.getBoundingClientRect() : { width: viewport.clientWidth * 0.8 };
+       const cs = getComputedStyle(track);
+       const gap = parseFloat(cs.columnGap || cs.gap || '16');
+       return rect.width + gap; // 카드 1장 + 간격
+     };
 
-    const rect = first.getBoundingClientRect();
-    const cs   = getComputedStyle(track);
-    const gap  = parseFloat(cs.columnGap || cs.gap || '16');
-    return rect.width + gap; // 카드 1장 + 간격
-  };
+     const scrollByStep = (dir) => {
+       viewport.scrollBy({ left: dir * getStep(), behavior: 'smooth' });
+     };
 
-  function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
-  function maxScrollX(el){ return Math.max(0, el.scrollWidth - el.clientWidth); }
+     const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+     const maxScrollX = (el) => Math.max(0, el.scrollWidth - el.clientWidth);
 
-  function updateButtons(){
-    const max = viewport.scrollWidth - viewport.clientWidth - 1;
-    prevBtn.disabled = viewport.scrollLeft <= 1;
-    nextBtn.disabled = viewport.scrollLeft >= max;
-  }
+     const updateButtons = () => {
+       const max = viewport.scrollWidth - viewport.clientWidth - 1;
+       prevBtn.disabled = viewport.scrollLeft <= 1;
+       nextBtn.disabled = viewport.scrollLeft >= max;
+     };
 
-  function scrollByStep(dir){
-    viewport.scrollBy({ left: dir * getStep(), behavior: 'smooth' });
-  }
+     prevBtn.addEventListener('click', () => scrollByStep(-1));
+     nextBtn.addEventListener('click', () => scrollByStep(1));
 
-  // click nav
-  prevBtn.addEventListener('click', () => scrollByStep(-1));
-  nextBtn.addEventListener('click', () => scrollByStep(1));
+     const initDragScroll = () => {
+       let dragging = false;
+       let startX = 0, startLeft = 0;
+       let pointerId = null;
+       const THRESH = 8;
 
-  // pointer drag (axis lock)
-  {
-    let dragging = false;
-    let startX = 0, startY = 0, startLeft = 0;
-    let lock = null; // 'x' | 'y' | null
-    const THRESH = 8;
-    let pointerId = null;
+       viewport.addEventListener('pointerdown', (e) => {
+         if (e.isPrimary === false || e.button === 2) return;
+         dragging = true;
+         pointerId = e.pointerId;
+         startX = e.clientX;
+         startLeft = viewport.scrollLeft;
+       });
 
-    viewport.addEventListener('pointerdown', (e) => {
-      if (e.isPrimary === false || e.button === 2) return;
-      dragging   = true;
-      pointerId  = e.pointerId;
-      startX     = e.clientX;
-      startY     = e.clientY;
-      startLeft  = viewport.scrollLeft;
-      lock       = null;
-    }, { passive: true });
+       viewport.addEventListener('pointermove', (e) => {
+         if (!dragging || e.pointerId !== pointerId) return;
+         const dx = e.clientX - startX;
+         const max = maxScrollX(viewport);
+         viewport.scrollLeft = clamp(startLeft - dx, 0, max);
+       });
 
-    viewport.addEventListener('pointermove', (e) => {
-      if (!dragging || e.pointerId !== pointerId) return;
+       const endDrag = () => {
+         dragging = false;
+         pointerId = null;
+       };
 
-      const dx  = e.clientX - startX;
-      const dy  = e.clientY - startY;
-      const adx = Math.abs(dx);
-      const ady = Math.abs(dy);
+       viewport.addEventListener('pointerup', endDrag);
+       viewport.addEventListener('pointercancel', endDrag);
+       viewport.addEventListener('pointerleave', endDrag);
+     };
 
-      if (lock == null) {
-        if (adx < THRESH && ady < THRESH) return; // 미세 이동은 보류
-        lock = adx > ady ? 'x' : 'y';
-        if (lock === 'x') viewport.setPointerCapture?.(e.pointerId);
-      }
+     const initWheelScroll = () => {
+       viewport.addEventListener('wheel', (e) => {
+         if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+         const max = maxScrollX(viewport);
+         viewport.scrollLeft = clamp(viewport.scrollLeft + e.deltaY, 0, max);
+         e.preventDefault();
+       }, { passive: false });
+     };
 
-      if (lock === 'x') {
-        e.preventDefault(); // 세로 스크롤 차단, 가로만 처리
-        const max = maxScrollX(viewport);
-        const target = clamp(startLeft - dx, 0, max);
-        viewport.scrollLeft = target;
-      } else {
-        viewport.releasePointerCapture?.(e.pointerId); // 세로는 브라우저에게
-      }
-    }, { passive: false });
+     // Initialize Drag Scroll and Wheel Scroll
+     initDragScroll();
+     initWheelScroll();
 
-    const endDrag = (e) => {
-      if (!dragging || (pointerId && e.pointerId !== pointerId)) return;
-      dragging  = false;
-      lock      = null;
-      pointerId = null;
-      try { viewport.releasePointerCapture?.(e.pointerId); } catch {}
-    };
+     viewport.addEventListener('scroll', updateButtons, { passive: true });
+     window.addEventListener('resize', updateButtons, { passive: true });
+     updateButtons();
+   })();
 
-    viewport.addEventListener('pointerup',      endDrag, { passive: true });
-    viewport.addEventListener('pointercancel',  endDrag, { passive: true });
-    viewport.addEventListener('pointerleave',   endDrag, { passive: true });
-  }
+   (function () {
+     const Tabs = () => {
+       let root, container, contents, tabs, idSet;
 
-  // mouse wheel → horizontal scroll
-  // 세로 우선 입력만 가로로 전환 (트랙패드 수평 스크롤은 브라우저 기본에 맡김)
-  viewport.addEventListener('wheel', (e) => {
-    if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return; // 수평 우선이면 패스
-    const max = maxScrollX(viewport);
-    const nextLeft = clamp(viewport.scrollLeft + e.deltaY, 0, max); // ✅ deltaY 오타 수정
-    if (nextLeft !== viewport.scrollLeft) {
-      viewport.scrollLeft = nextLeft;
-      e.preventDefault();
-    }
-  }, { passive: false });
+       const cache = () => {
+         root = document.querySelector('.bio-history-tabs');
+         if (!root) return false;
 
-  // keyboard
-  viewport.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowRight') { e.preventDefault(); scrollByStep(1); }
-    if (e.key === 'ArrowLeft')  { e.preventDefault(); scrollByStep(-1); }
-  });
+         container = root.querySelector('.bio-history-tab-container');
+         contents = Array.from(root.querySelectorAll('.bio-history-tab-content'));
+         tabs = Array.from(root.querySelectorAll('.bio-history-tab-nav a'));
+         idSet = new Set(contents.map(c => c.id));
 
-  // observe & init
-  viewport.addEventListener('scroll', updateButtons, { passive: true });
-  window.addEventListener('resize',  updateButtons,  { passive: true });
-  updateButtons();
-})();
+         return container && contents.length && tabs.length;
+       };
+
+       const lockContainerHeight = () => {
+         if (!container) return;
+         const prev = contents.map(c => c.classList.contains("is-active"));
+         contents.forEach(c => { c.style.visibility = 'hidden'; c.style.opacity = '1'; c.style.pointerEvents = 'none'; c.style.transform = 'none'; });
+         let maxH = 0;
+         contents.forEach(c => { maxH = Math.max(maxH, c.scrollHeight); });
+         contents.forEach((c, i) => {
+           c.style.visibility = ''; c.style.opacity = ''; c.style.pointerEvents = ''; c.style.transform = '';
+           c.classList.toggle('is-active', prev[i]);
+         });
+         container.style.height = maxH + "px";
+       };
+
+       const activeContent = () => {
+         const hashEl = location.hash && document.querySelector(location.hash);
+         return hashEl ? hashEl : contents[0];
+       };
+
+       const activateById = (id) => {
+         const target = (id && idSet.has(id)) ? root.querySelector(`#${id}`) : activeContent();
+         if (!target) return;
+
+         contents.forEach(c => c.classList.toggle("is-active", c === target));
+         tabs.forEach(a => {
+           const isActive = a.getAttribute('href') === `#${target.id}`;
+           a.setAttribute('aria-selected', isActive);
+           a.classList.toggle('is-active', isActive);
+         });
+
+         container?._recalcProgress?.();
+       };
+
+       const init = () => {
+         if (!cache()) return;
+
+         const initial = location.hash.slice(1);
+         activateById(initial || contents[0].id);
+
+         const relock = () => requestAnimationFrame(lockContainerHeight);
+         window.addEventListener("load", relock, { passive: true });
+         window.addEventListener("resize", relock, { passive: true });
+         setTimeout(relock, 0);
+
+         tabs.forEach(a => a.addEventListener("click", (e) => {
+           e.preventDefault();
+           const id = a.getAttribute("href").slice(1);
+           activateById(id);
+           history.replaceState(null, '', a.hash);
+         }));
+
+         window.addEventListener("hashchange", () => {
+           const id = location.hash.slice(1);
+           activateById(id);
+         });
+       };
+
+       return { init };
+     };
+
+     document.addEventListener("DOMContentLoaded", () => {
+       Tabs().init();
+     });
+   })();
+
+   (function () {
+     const observeElements = (selector, callback, options = { threshold: 0.5 }) => {
+       const observer = new IntersectionObserver(callback, options);
+       document.querySelectorAll(selector).forEach(element => observer.observe(element));
+     };
+
+     document.addEventListener('DOMContentLoaded', () => {
+       // 카드 리빌
+       observeElements('.il-image-card__content', (entries, observer) => {
+         entries.forEach(entry => {
+           if (entry.isIntersecting) {
+             setTimeout(() => entry.target.classList.add('visible'), 150);
+           } else {
+             entry.target.classList.remove('visible');
+           }
+         });
+       });
+
+       // Hero Video Effect
+       const hero = document.getElementById('hero');
+       const bg = document.getElementById('heroVideo');
+       let tickingHero = false;
+
+       const getProgress = () => {
+         if (!hero) return 0;
+         const rect = hero.getBoundingClientRect();
+         const h = rect.height || 1;
+         const p = 1 - Math.max(0, Math.min(1, rect.bottom / h));
+         return Math.max(0, Math.min(1, p * 1.7));
+       };
+
+       const updateHero = () => {
+         tickingHero = false;
+         const p = getProgress();
+         const scale = 0.85 + 1.75 * p;
+         const translateX = 700 * p;
+         const ty = 1000 * p;
+         const blur = 2 * (1 - p);
+         if (bg) {
+           bg.style.transform = `translate3d(${translateX}px, ${ty}px, 0)`;
+           bg.style.transform += ` scale(${scale})`;
+           bg.style.filter = `blur(${blur}px)`;
+         }
+       };
+
+       window.addEventListener('scroll', () => {
+         if (!tickingHero) { requestAnimationFrame(updateHero); tickingHero = true; }
+       });
+       window.addEventListener('resize', updateHero);
+     });
+   })();
 
 /* ===============================
    Bion History UI (single module)
