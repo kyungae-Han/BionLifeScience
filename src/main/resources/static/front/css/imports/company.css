@@ -59,6 +59,7 @@ html, body { max-width: 100%; overflow-x: clip; }
 }
 
 
+button {background: none; border:0; }
 
 /*---------------------------------
 	page nav
@@ -2420,8 +2421,7 @@ il-callout.p-item {
 
 .overview-contact-us div.section-right{
 	position:relative;
-	width:67%;
-	padding: 0 58px 0 0;
+	width:100%;
 }
 
 .overview-contact-us div.section-right .form-group + .form-group {
