@@ -2,81 +2,75 @@
 <html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 공지사항')">
-
 </head>
+<link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
 
 <body class="stretched">
 
 	<div id="wrapper" class="clearfix">
 
-		<th:block
-			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
-		<section id="page-title">
+		<th:block th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
 
-			<div class="container clearfix">
-				<h1>공지사항</h1>
-				<span>Bion Life Science Notice</span>
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="/index">메인</a></li>
-					<li class="breadcrumb-item active" aria-current="page">공지사항</li>
-				</ol>
-			</div>
 
-		</section>
+		<div id="page-title">
+			<h1 class="sec-head">공지 사항</h1>
+		</div>
+
 		<section id="content">
-
-			<div class="content-wrap p-t-0" style="margin-top:50px;">
-				<div class="container clearfix">
-				<div class="border-top-0 m-0">
-						<div class="container text-center">
-
-							<div class="heading-block center">
-								<h2>Notice</h2>
-								<span>바이온라이프사이언스 공지사항</span>
-							</div>
-						</div>
-					</div>
-					<div class="row gutter-40 col-mb-80">
-						<div class="postcontent col-lg-12">
-
-							<div id="faqs" class="faqs">
-
-								<div id="faqs-list" class="fancy-title title-bottom-border">
-									<h3></h3>
-								</div>
-
-								<ul class="iconlist faqlist">
-									<li th:each="im:${notice}"><i class="icon-caret-right"></i><strong><a 
-									th:style="${im.sign == true ? 'color : red;' : 'color : black;'}"
-											href="#" th:data-scrollto="@{|#faq-${im.id}|}" th:text="${im.subject}">공지사항 제목 01</a></strong></li>
-									
-								</ul>
-
-								<div class="divider">
-									<i class="icon-circle"></i>
-								</div>
-								
-								<div th:each="i:${notice}">
-									<h3 th:id="@{|faq-${i.id}|}">
-										<strong th:style="${i.sign == true ? 'color : red;' : 'color : black;'}">Q.</strong> [[${i.subject}]]
-									</h3>
-									<p class="notice-wrap" th:text="${i.content}">공지사항 내용 01</p>
-									<p th:text="${i.subjectText}">공지사항 내용 01</p>
-									<div class="divider divider-right">
-										<a href="#" data-scrollto="#faqs-list"><i
-											class="icon-chevron-up"></i></a>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+			<div class="search-container">
+				<div class="search_module">
+					<form th:action="@{notice}" method="get" class="search-container">
+						<input class="search_bar__input" id="q" th:value="${q}" type="text" placeholder="검색어를 입력하세요.">
+						<button class="search__btn" type="submit">
+							<i class="bi bi-search"></i>
+						</button>
+					</form>
 				</div>
 			</div>
+			<div class="notice_body">
+				<table>
+					<colgroup>
+						<col width="75px">
+						<col width="auto">
+						<col width="175px">		
+					</colgroup>
+					<thead>
+						<tr>
+							<th>번호</th>
+							<th>제목</th>
+							<th>날짜</th>
+						</tr>
+					</thead>	
+					<tbody th:each="i:${notice}">
+						<tr th:id="@{|faq-${i.id}|}">
+							<td th:text="${i.id}"></td>	
+							<td class="table__subject"><a th:href="@{'/noticeDetail/' + ${i.id}}" th:text="${i.subject}"></a></td>
+							<td th:text="${i.date} != null ? ${#dates.format(i.date,'yyyy-MM-dd')} : '-'"></td>						
+						</tr>
+						<tr th:if="${#lists.isEmpty(notice)}">
+					      <td colspan="3">검색 결과가 없습니다.</td>
+					    </tr>
+					</tbody>			
+				
+				</table>
+			</div>	
 		</section>
+		
 
 		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
 	</div>
 	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+	
+	
+	<script>
+	  const q = document.querySelector('.search_bar__input');
+	  q.addEventListener('focus', () => {
+	    if (!q.dataset.cleared) {         // 처음 포커스일 때만
+	      q.value = '';
+	      q.dataset.cleared = '1';
+	    }
+	  });
+	</script>
 
 </body>
 </html>

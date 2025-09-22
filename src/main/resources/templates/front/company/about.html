@@ -367,20 +367,20 @@
 					</div>
 				</div>
 		</section>
-		
+	<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
 
+
+<!-- 모달창-개인정보처리방침 -->
 <div id="policyModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:9999;">
   <div style="width:90%; max-width:900px; margin:40px auto; background:#fff; border-radius:10px; overflow:hidden;">
     <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid #eee;">
       <strong>개인정보 처리방침</strong>
-      <button type="button" onclick="document.getElementById('policyModal').style.display='none'"><i class="bi bi-x-lg"></i></button>
+      <button type="button" id="policyCloseBtn"><i class="bi bi-x-lg"></i></button>
     </div>
     <iframe id="policyFrame" src="" style="width:100%; height:75vh; border:0; display:block;"></iframe>
   </div>
 </div>
-			
 
-	<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
 </div>
 <th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
 <script th:src="@{/front/js/timeline.js}" defer></script>
@@ -392,11 +392,54 @@ document.addEventListener('DOMContentLoaded', () => {
   const btn   = document.getElementById('openPolicy');
   const modal = document.getElementById('policyModal');
   const frame = document.getElementById('policyFrame');
-
-  btn.addEventListener('click', () => {
-    frame.src = '/front/company/privacy-policy/iframe'; // ← 프레임 허용 엔드포인트
-    modal.style.display = 'block';
-  });
+  const closeBtn = document.getElementById('policyCloseBtn');
+  const STORAGE_KEY = 'policyModalOpen';
+  
+  function lockScroll() {
+	    document.body.style.setProperty('overflow', 'hidden', 'important');
+	    document.documentElement.style.setProperty('overflow', 'hidden', 'important');
+  }
+  function unlockScroll() {
+    document.body.style.removeProperty('overflow');
+    document.documentElement.style.removeProperty('overflow');
+  }
+  
+  function openModal(){
+	if(!frame.dataset.loaded){
+		frame.src='/front/company/privacy-policy/iframe';
+		frame.dataset.loaded='1';
+	}
+	
+	modal.style.display='block';
+	lockScroll();
+	sessionStorage.setItem(STORAGE_KEY, 'true');
+  }
+  
+  
+  function closeModal() {
+    modal.style.display = 'none';
+    unlockScroll();
+    sessionStorage.setItem(STORAGE_KEY, 'false');
+  }
+  
+  
+  if (btn) {
+    btn.addEventListener('click', openModal);
+  }
+  
+  if (closeBtn) {
+	    closeBtn.addEventListener('click', () => {
+	      closeModal();
+	    });
+	  }
+  
+ 
+  if (sessionStorage.getItem(STORAGE_KEY) === 'true') {
+    openModal();
+  } else if (!sessionStorage.getItem(STORAGE_KEY)) {
+    // 초깃값 보정
+    sessionStorage.setItem(STORAGE_KEY, 'false');
+  }
 });
 </script>
 

@@ -129,10 +129,7 @@
 										<li class="menu-item"><a class="menu-link" href="/references">
 												<div>자료실</div>
 										</a></li>
-										<li class="menu-item"><a class="menu-link" href="/notice">
-												<div>공지사항</div>
-										</a></li>
-										<li class="menu-item"><a class="menu-link js-open-contact" href="/contact">
+										<li class="menu-item"><a class="menu-link" id="js-open-contact">
 												<div>고객지원</div>
 										</a></li>
 										<li class="menu-item"><a class="menu-link" href="/about">
@@ -155,10 +152,7 @@
 										<li class="menu-item gnb-li"><a class="menu-link" href="/references">
 												<div>자료실</div>
 										</a></li>
-										<li class="menu-item gnb-li"><a class="menu-link" href="/notice">
-												<div>공지사항</div>
-										</a></li>
-										<li class="menu-item gnb-li"><a class="menu-link js-open-contact" href="/contact">
+										<li class="menu-item gnb-li"><a class="menu-link" id="js-open-contact">
 												<div>고객지원</div>
 										</a></li>
 										<li class="menu-item gnb-li"><a class="menu-link" href="/about">
@@ -289,7 +283,7 @@
 					<div class="f-left">
 							<h3><b>(주)바이온라이프사이언스</b></h3>
 							<p class="address">경기도 남양주시 순화궁로 282<span class="building">에이스하이엔드타워 10층<button class="address_link" type="button" onclick="window.location.href='/address'">
-  								더보기 &gt;
+  								<i class="bi bi-geo-alt"></i>
 							</button></span>
 							</p>
 							<p class="f-mail">admin@bionlifescience.com</p>
@@ -303,7 +297,7 @@
 					</div>
 				</div>
 				<div class="copyrights-menu copyright-links">
-						<a href="/about">기업소개</a><a href="#">제품소개</a><a href="/notice">공지사항</a>
+						<a href="#" id="mainOpenPolicy" data-url="/front/company/privacy-policy.html">개인정보처리방침</a><a href="/notice">공지사항</a>
 						<a href="/references">자료실</a><a href="/contact">고객지원</a><a href="/address">오시는길</a>
 				</div>
 			</footer>
@@ -321,78 +315,191 @@
 		<script src="/front/js/header.toggle.js"></script>
 		
 
-	 <div id="contactModal" hidden class="modal">
-	  <div class="modal-backdrop" data-close></div>
-	  <div class="modal-content">
-	    <button type="button" class="modal-close bi bi-x-lg" data-close aria-label="닫기"></button>
-	    <div class="modal-body"><p>Loading...</p></div>
-	  </div>
-	</div>
-		
+
+<!-- 고객지원센터 모달 -->
+<div id="contactModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:9999;">
+  <!-- 패널: flex + 최대높이 -->
+  <div style="
+    width:90%; max-width:900px; margin:40px auto; background:#fff;
+    border-radius:10px; overflow:hidden;
+    display:flex; flex-direction:column;
+    max-height:calc(100dvh - 80px); /* 뷰포트 - 상하 마진(40*2) */
+  ">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid #eee; flex:0 0 auto; position:relative;">
+      <strong>고객문의</strong>
+      <button type="button" class="modal-close"><i class="bi bi-x-lg"></i></button>
+    </div>
+
+    <!-- 모달 바디: 실제 스크롤 영역 -->
+    <div class="modal-body" style="
+      flex:1 1 auto; min-height:0;
+      overflow:auto; overscroll-behavior:contain;
+      -webkit-overflow-scrolling:touch;
+      padding:16px;
+    ">
+      <p>Loading...</p>
+    </div>
+  </div>
+</div>
+
+<!-- 모달창-개인정보처리방침 -->
+<div id="mainPolicyModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:9999;">
+  <div style="width:90%; max-width:900px; margin:40px auto; background:#fff; border-radius:10px; overflow:hidden;">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid #eee;">
+      <strong>개인정보 처리방침</strong>
+      <button type="button" id="mainPolicyCloseBtn"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <iframe id="mainPolicyFrame" src="" style="width:100%; height:75vh; border:0; display:block;"></iframe>
+  </div>
+</div>
+
 <script>
-(function(){
-  const modal = document.getElementById('contactModal');
-  const body  = modal.querySelector('.modal-body');
+/* 스크롤 고정: 위치 보존(Fixed Body) + 중첩 모달 안전 */
+(() => {
+  let locks = 0;
+  let savedScrollY = 0;
 
-  // 1) 링크 클릭 가로채기
-  document.addEventListener('click', (e) => {
-    const a = e.target.closest('a.js-open-contact, a[href="/contact"]');
-    if (!a) return;
+  window.lockPageScroll = () => {
+    if (locks++ === 0) {
+      savedScrollY = window.pageYOffset || document.documentElement.scrollTop || 0;
 
-    // 새창/중클릭/수정키는 그대로 두기
-    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const b = document.body, d = document.documentElement;
+      // iOS/모바일 점프 방지: body를 fixed로 고정하며 현재 위치를 top에 보관
+      b.style.position = 'fixed';
+      b.style.top = `-${savedScrollY}px`;
+      b.style.left = '0';
+      b.style.right = '0';
+      b.style.width = '100%';
+      b.style.overflow = 'hidden';     // iOS 반동 스크롤 방지
+      d.style.overflow = 'hidden';
+    }
+  };
 
-    e.preventDefault();
-    openContactModal();
-  });
+  window.unlockPageScroll = () => {
+    if (locks > 0 && --locks === 0) {
+      const b = document.body, d = document.documentElement;
+      const y = -parseInt(b.style.top || '0', 10) || 0;
 
-  // 2) 닫기
-  modal.addEventListener("click", (e) => {
-	  if (
-	    e.target.classList.contains("modal-close") || 
-	    e.target.classList.contains("modal-body")
-	  ) {
-	    modal.hidden = true;
-		closeModal();
-	  }
- });
-  
-  modal.addEventListener('click', (e) => { if (e.target.matches('[data-close]')) modal.hidden = true; closeModal(); });
+      // 고정 해제
+      b.style.position = '';
+      b.style.top = '';
+      b.style.left = '';
+      b.style.right = '';
+      b.style.width = '';
+      b.style.overflow = '';
+      d.style.overflow = '';
 
-  function openContactModal(){
-    modal.hidden = false;
-	document.body.style.overflow = 'hidden';
-    body.innerHTML = '<p>Loading...</p>';
+      // 원래 위치로 복원
+      window.scrollTo(0, y);
+    }
+  };
+})();
+</script>
 
-    fetch('/contact', {credentials:'same-origin'})
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const btn      = document.querySelector('#js-open-contact');
+  const modal    = document.querySelector('#contactModal');
+  const bodyBox  = modal.querySelector('.modal-body');
+  const closeBtn = modal.querySelector('.modal-close');
+  const STORAGE_KEY = 'contactModalOpen';
+
+  // 콘텐츠 1회 로드
+  function loadContactOnce() {
+    if (bodyBox.dataset.loaded === '1') return;
+    bodyBox.innerHTML = '<p>Loading...</p>';
+    fetch('/contact', { credentials: 'same-origin' })
       .then(r => r.text())
       .then(html => {
         const temp = document.createElement('div');
         temp.innerHTML = html;
-
-        // ★ contact 페이지에서 이 컨테이너만 추출 (네가 올린 코드의 루트 id)
         const section = temp.querySelector('#openContact');
-        if (!section) {
-          body.innerHTML = '<p>콘텐츠를 찾지 못했습니다(#openContact).</p>';
-          return;
-        }
-
-        body.innerHTML = section.outerHTML; // 또는 section.innerHTML
-
-        // 필요시: 모달 안 폼의 제출/유효성, 파일업로드 핸들러 등 여기서 재바인딩
-        // const form = body.querySelector('form');
+        bodyBox.innerHTML = section
+          ? section.outerHTML
+          : '<p>콘텐츠를 찾지 못했습니다(#openContact).</p>';
+        bodyBox.dataset.loaded = '1';
       })
-      .catch(() => {
-        body.innerHTML = '<p>불러오기에 실패했습니다.</p>';
-      });
+      .catch(() => { bodyBox.innerHTML = '<p>불러오기에 실패했습니다.</p>'; });
   }
 
-	function closeModal() {
-	  modal.hidden = true;
-	  document.body.style.overflow = "";
+  function openModal() {
+    modal.style.display = 'block';
+    sessionStorage.setItem(STORAGE_KEY, 'true');
+    loadContactOnce();
+  }
+  function closeModal() {
+    modal.style.display = 'none';
+    sessionStorage.setItem(STORAGE_KEY, 'false');
+  }
+
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('#js-open-contact');
+    if (!a) return; 
+
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+    e.preventDefault();
+    openModal();
+  });
+
+  // 닫기(버튼/배경/ESC)
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
+  });
+
+  // 새로고침 시 상태 복원
+  if (sessionStorage.getItem(STORAGE_KEY) === 'true') openModal();
+  else if (!sessionStorage.getItem(STORAGE_KEY)) sessionStorage.setItem(STORAGE_KEY, 'false');
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const btn   = document.getElementById('mainOpenPolicy');
+  const modal = document.getElementById('mainPolicyModal');
+  const frame = document.getElementById('mainPolicyFrame');
+  const closeBtn = document.getElementById('mainPolicyCloseBtn');
+  const STORAGE_KEY = 'policyModalOpen';
+  
+  
+  function openModal(){
+	  if(!frame.dataset.loaded){
+	    frame.src = '/front/company/privacy-policy/iframe';
+	    frame.dataset.loaded = '1';
+	  }
+	  modal.style.display = 'block';
+	  lockPageScroll();                    
+	  sessionStorage.setItem(STORAGE_KEY, 'true');
 	}
 
-})();
+	function closeModal() {
+	  modal.style.display = 'none';
+	  unlockPageScroll();                     
+	  sessionStorage.setItem(STORAGE_KEY, 'false');
+	}
+  
+  if (btn) {
+    btn.addEventListener('click', openModal);
+  }
+  
+  if (closeBtn) {
+	    closeBtn.addEventListener('click', () => {
+	      closeModal();
+	    });
+	  }
+  
+ 
+  if (sessionStorage.getItem(STORAGE_KEY) === 'true') {
+    openModal();
+  } else if (!sessionStorage.getItem(STORAGE_KEY)) {
+    // 초깃값 보정
+    sessionStorage.setItem(STORAGE_KEY, 'false');
+  }
+});
 </script>
 		
 </th:block>

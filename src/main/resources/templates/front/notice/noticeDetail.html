@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 공지사항')">
+</head>
+<link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
+
+<style>
+ .notice-detail {display:block; max-width: 1280px; margin:0 auto; border-top:3px solid var(--bs-orange); margin-top:45px;}
+ .sec-head {height: 75px; line-height: 2;}
+ .sec-head h3 {padding-top:15px;}
+</style>
+
+<body class="stretched">
+
+	<div id="wrapper" class="clearfix">
+
+		<th:block th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+
+		<section id="content">
+		  <div class="notice-detail">
+		
+		    <!-- 단일 객체 사용: th:each 쓰지 말기 -->
+		    
+		    <div class="sec-head left">
+			    <h3 th:text="${notice.subject}">제목</h3>
+			    <span th:if="${notice != null and notice.date != null}"
+			            th:text="${#dates.format(notice.date, 'yyyy-MM-dd')}">2023-06-27</span>
+			</div>
+		    <hr>
+		
+		    <!-- 내용: HTML 포함이면 utext, 순수 텍스트면 text + CSS white-space -->
+		    <div th:utext="${notice.content}">내용</div>
+		  </div>
+		</section>
+				
+
+		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+	</div>
+	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+
+</body>
+</html>

@@ -20,4 +20,5 @@ public class CompanyController {
         res.setHeader("Content-Security-Policy", "frame-ancestors 'self'");
         return "front/company/privacy-policy";
     }
+    
 }

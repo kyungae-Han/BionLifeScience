@@ -26,6 +26,11 @@ body.modal-open {
 }
 
 
+button[type=button]{
+	background: none;
+	border:0;
+}
+
 .history-caption button{background:none; border:0; color:#fff; text-align: center;}
 
 
@@ -2523,6 +2528,10 @@ html[xmlns] .slider-wrap {
 #header.full-header { transition: height .25s ease, box-shadow .2s ease; }
 #header.full-header.sticky-header-shrink {
   box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+
+#header-wrap {
+	border-bottom:1px solid #eee;
 }
 
 #header-wrap:not(.sticky-header) {
@@ -11582,15 +11591,15 @@ blockquote.float-end {
 .sm-form-control {
   display: block;
   width: 100%;
-  height: 38px;
-  padding: 8px 14px;
+  height: 43px;
+  padding: 10px 14px;
   font-size: 15px;
   line-height: 1.42857143;
   color: #555555;
   background-color: #ffffff;
   background-image: none;
   border: 2px solid #ddd;
-  border-radius: 0 !important;
+  border-radius: 5px !important;
   -webkit-transition: border-color ease-in-out 0.15s;
   -o-transition: border-color ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s;
@@ -11601,6 +11610,12 @@ blockquote.float-end {
   outline: 0;
   -webkit-box-shadow: none;
   box-shadow: none;
+}
+
+
+input.sm-form-control:focus{
+  background:#f1f1f1;
+  border-color: var(--depth-bg);
 }
 
 .sm-form-control::-moz-placeholder {
@@ -11640,7 +11655,7 @@ fieldset[disabled] .sm-form-control {
 
 label {
   display: inline-block;
-  font-size: 13px;
+  font-size: 1em;
   font-weight: 700;
   font-family: "Noto Sans KR", sans-serif;
   text-transform: uppercase;
@@ -11655,6 +11670,28 @@ label.label-muted {
   font-weight: normal;
   margin-right: 5px;
 }
+
+
+.postcontent .form-check {padding:0; margin-left:0.5rem;}
+.postcontent .form-check .form-check-label {font-size:1rem; font-weight: 400; padding:7px 0 0 7px;}
+.postcontent .form-check input {width:30px; height: 30px;}
+.postcontent .form-check input:checked {
+	background-color: var(--depth-bg);
+	border-color: var(--depth-bg);
+}
+
+.postcontent .form-group .button {
+	width: 100%;
+	height: 65px;
+	border-radius: 15px;
+	background-color: rgba(0,52.16,79.22,1);
+	box-shadow: none !important;
+	font-size: 1.2rem;
+}
+
+#openPolicy {border:0 !important; background: none;}
+
+
 
 /* ----------------------------------------------------------------
 	Contact Form
@@ -12582,7 +12619,6 @@ body:not(.device-touch) #gotoTop {
 	margin-top:0;
 }
 
-#footer .container .f-left h3 {margin-bottom:22px;}
 #footer .container .f-left .adress {font-size:1.1rem !important;}
 #footer .container .f-left .f-mail {font-size:1.1rem !important;}
 
@@ -12641,8 +12677,10 @@ body:not(.device-touch) #gotoTop {
 #footer .sub-head {letter-spacing: -0.5px;}
 
 
-.copyrights-call .bi {padding-right:7px;}
-
+.copyrights-call .bi {
+	padding-right: 7px;
+	font-size:0.7em;
+}
 
 @media (max-width:1024.98px){
 	#footer .container{
@@ -17483,7 +17521,6 @@ h4 {
     width: 100%;
     max-width: none;
     padding: 0 30px;
-	border: 1px solid #eee;
   }
 
 #header.transparent-header.full-header #header-wrap {
@@ -17607,7 +17644,7 @@ h4 {
 }
 
 /* === Desktop 복귀 시 명시적으로 원복 === */
-@media (min-width: 991.99px) {
+@media (min-width: 1024.98px) {
   .menu-container:not(.mobile-primary-menu) {
     display: grid !important;
     visibility: visible !important;
@@ -17634,20 +17671,6 @@ h4 {
     position: relative;
 }  
   
-  
-.full-header .primary-menu .menu-container::before{
-	content:'';
-	position:absolute;
-	width:100vw;
-	height:1px;
-	top:0;
-	left:-30px;
-	background: #e1e1e1;
-	opacity:0.6;
-	padding:0 !important;
-	margin:0 !important;
-}
-
 
 .mega-menu {
     position: inherit;
@@ -19858,15 +19881,17 @@ body:not(.stretched) #wrapper {
 }
 
 .address_link {
-	border:1px solid #fff; 
-	background: var(--bs-gray-300); 
+	border:0; 
+	background: none; 
 	border-radius: 5px; 
-	margin-left:15px; 
 	transition: background 0.2s ease;
 	padding: 4px 12px;
+	font-size: 1.5rem;
+	color: #fff !important;
 }
+
 .address_link:hover,
-.address_link:focus {background-color: #00344f; color:#fff !important; outline: none;}
+.address_link:focus {color:var(--bs-orange) !important; outline: none;}
 
 .address_link.dark a{
 	font-weight: 500 !important;
@@ -19899,5 +19924,25 @@ body:not(.stretched) #wrapper {
   border: none; background: transparent; font-size: 24px; cursor: pointer;
   z-index:2;
 }
-  
-  
+
+
+
+
+/*contact us*/
+.call_center_num {
+	width: 100%;
+	margin: 0 auto;
+	padding: 0 0 2rem;
+	margin:0 auto 2rem;
+	border-bottom: 1px solid #eee;
+	text-align:center;
+}
+
+.call_center_num .num a {color: #292929;}
+
+.call_center_num .btn {
+	width: 33.333%;
+	color: var(--bs-gray-100);
+	background: var(--bs-orange);
+	border: 1px solid var(--bs-orange);
+}
