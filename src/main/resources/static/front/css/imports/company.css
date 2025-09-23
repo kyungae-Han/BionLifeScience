@@ -2602,7 +2602,7 @@ il-callout.p-item {
 
 .biz-section {
   min-height: 100%;
-  background: #92c1e9;
+  background: var(--bs-gray-300);
   margin:0 auto;
   width: 100%;
 }
@@ -2618,8 +2618,14 @@ il-callout.p-item {
 .biz-left {
   position: relative;
   overflow: hidden;
+  width: 540px;
+  height: 540px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 25px;
+  box-shadow: 4px 7px 25px rgba(125,125,125,.55);
 }
-
 .biz-left video {
   position:absolute;
   width: 100%;
@@ -2638,7 +2644,7 @@ il-callout.p-item {
   background: rgb(199,223,255);
   border-radius: 12px;
   padding: 0 !important;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.6);
+  box-shadow: 0 6px 15px rgba(125,125,125,0.6);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -2849,4 +2855,6 @@ tbody td:not(.table__subject){
 
 
 .notice__important td {font-weight: 600;}
+
+
 

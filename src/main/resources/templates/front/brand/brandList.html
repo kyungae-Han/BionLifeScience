@@ -2,7 +2,6 @@
 <html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 기업소개')">
-
 </head>
 
 <body class="stretched">
@@ -17,7 +16,7 @@
 			data-bottom-top="background-position:0px 400px;"
 			data-top-bottom="background-position:0px -500px;">
 			<div class="container clearfix">
-				<h1 th:text="${brandInfo.name}">기업소개</h1>
+				<h1 class="brand__title" th:text="${brandInfo.name}">기업소개</h1>
 				<span th:text="${brandInfo.content}">Bion Life Science Introduction</span>
 				<ol class="breadcrumb">
 				</ol>
