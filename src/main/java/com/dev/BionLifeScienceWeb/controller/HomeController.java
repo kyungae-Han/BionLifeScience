@@ -283,7 +283,7 @@ public class HomeController {
 			) {
 		
 		model.addAttribute("file",referenceFileRepository.findAll());
-		return "front/references";
+		return "front/customer/references";
 	}
 	
 	@GetMapping("/productSorted/{sort}/{id}")
