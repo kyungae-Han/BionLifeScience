@@ -36,6 +36,9 @@ public class Notice {
 	@Column(name="NOTICE_SIGN")
 	private Boolean sign;
 	
+	@Column(name="NOTICE_IMAGE_URL", length=500)
+	private String imageUrl;
+	
 	@Transient
 	private Long subjectId;
 	

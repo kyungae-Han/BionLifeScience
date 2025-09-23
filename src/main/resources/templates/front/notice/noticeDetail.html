@@ -6,7 +6,6 @@
 <link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
 
 <style>
- .notice-detail {display:block; max-width: 1280px; margin:0 auto; border-top:3px solid var(--bs-orange); margin-top:45px;}
  .sec-head {height: 75px; line-height: 2;}
  .sec-head h3 {padding-top:15px;}
 </style>
@@ -23,21 +22,51 @@
 		    <!-- 단일 객체 사용: th:each 쓰지 말기 -->
 		    
 		    <div class="sec-head left">
-			    <h3 th:text="${notice.subject}">제목</h3>
+			    <h3 th:text="'제목 : ' +${notice.subject}">제목</h3>
 			    <span th:if="${notice != null and notice.date != null}"
-			            th:text="${#dates.format(notice.date, 'yyyy-MM-dd')}">2023-06-27</span>
+			            th:text="'날짜 : '+${#dates.format(notice.date, 'yyyy-MM-dd')}">2023-06-27</span>
 			</div>
 		    <hr>
 		
 		    <!-- 내용: HTML 포함이면 utext, 순수 텍스트면 text + CSS white-space -->
 		    <div th:utext="${notice.content}">내용</div>
+		    
+		    
 		  </div>
+		  
+		  
+		<!-- 상세 본문 아래에 배치 -->
+		<div class="notice_list_page">
+		  <!-- 이전 -->
+		  <a class="nav-btn prev"
+		     th:if="${prevNotice != null}"
+		     th:href="@{/noticeDetail/{id}(id=${prevNotice.id})}">이전</a>
+		  <span class="nav-btn prev disabled" th:if="${prevNotice == null}">이전</span>
+		  
+		  
+		  <!-- 목록 -->
+		  <a class="nav-btn list"
+		     th:href="@{/notice(
+		               page=${param.page} ?: 1,
+		               searchText=${param.searchText} ?: ''
+		             )}">목록</a>
+		
+		  <!-- 다음 -->
+		  <a class="nav-btn next"
+		     th:if="${nextNotice != null}"
+		     th:href="@{/noticeDetail/{id}(id=${nextNotice.id})}">다음</a>
+		  <span class="nav-btn next disabled" th:if="${nextNotice == null}">다음</span>
+		</div>
 		</section>
-				
+	
+
+
 
 		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
 	</div>
 	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+	
+	
 
 </body>
 </html>

@@ -30,4 +30,20 @@ public interface NoticeRepository extends JpaRepository<Notice, Long>{
 	Optional<Notice> findOneWithSubject(@Param("id") Long id);
 	Optional<Notice> findTop1ByIdLessThanOrderByIdDesc(Long id);
 	Optional<Notice> findTop1ByIdGreaterThanOrderByIdAsc(Long id);
+	
+	
+	// 같은 분류 내에서 이전글(현재보다 작은 ID 중 가장 가까운 것 = 더 오래된 글)
+    Optional<Notice> findTopByNoticeSubject_IdAndIdLessThanOrderByIdDesc(Long subjectId, Long id);
+    
+ // 같은 분류 내에서 다음글(현재보다 큰 ID 중 가장 가까운 것 = 더 최신 글)
+    Optional<Notice> findTopByNoticeSubject_IdAndIdGreaterThanOrderByIdAsc(Long subjectId, Long id);
+    
+    List<Notice> findTop5BySignOrderByDateDesc(boolean sign);
+    
+    Page<Notice> findBySignFalse(Pageable pageable);
+    
+    Page<Notice> findAllByOrderByIdDesc(String q, Pageable pageable);
+    
+	 Page<Notice> findBySubjectContainingIgnoreCaseOrContentContainingIgnoreCase(
+	     String q1, String q2, Pageable pageable);
 }

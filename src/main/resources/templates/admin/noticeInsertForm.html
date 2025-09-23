@@ -1,97 +1,145 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-
-<head th:replace="fragments/admin/common :: headMenu">
-
-</head>
-
+<head th:replace="fragments/admin/common :: headMenu"></head>
 
 <body>
-    <section id="container">
+<section id="container">
+  <th:block th:replace="fragments/admin/common :: headMenu"></th:block>
+  <th:block th:replace="fragments/admin/common :: sideMenu('notice')"></th:block>
 
-         <th:block th:replace="fragments/admin/common :: headMenu"></th:block>
+  <section id="main-content">
+    <section class="wrapper">
+      <div class="row mt">
+        <div class="col-md-8">
+          <div class="content-panel">
+            <h4><i class="fa fa-angle-right"></i> 공지사항 등록</h4>
+            <p class="mb-none"># 하단의 버튼을 통해 공지사항을 등록할 수 있습니다.</p>
+            <hr>
 
-         <th:block th:replace="fragments/admin/common :: sideMenu('notice')"></th:block>
-
-        <section id="main-content">
-            <section class="wrapper">
-                <div class="row mt">
-                    <div class="col-md-8">
-                        <div class="content-panel">
-                            <h4>
-                                <i class="fa fa-angle-right"></i> 공지사항 입력 페이지
-                            </h4>
-                            <p class="mb-none"># 하단의 버튼을 통해 공지사항 내용을 등록할 수 있습니다.</p>
-                            <hr>
-                            <div class="row mt">
-                                <div class="col-lg-12">
-                                    <div class="form">
-                                        <form class="cmxform form-horizontal style-form" method="post" action="/admin/noticeInsert">
-                                            <div class="form-group ">
-                                                <label for="subject" class="control-label col-lg-2"># 공지사항 제목</label>
-                                                <div class="col-lg-10">
-                                                    <input 
-                                                    class="form-control" 
-                                                    type="text"
-                                                    name="subject"
-                                                    required="required"/>
-                                                </div>
-                                            </div>
-                                            <div class="form-group ">
-                                                <label for="curl" class="control-label col-lg-2"># 공지사항주제</label>
-                                                
-                                                <div class="col-lg-10">
-                                                    <select class="form-control" name="subjectId">
-                                                    	<option th:each="s:${subject}" th:text="|# ${s.text}|" th:value="${s.id}"></option>
-                                                    </select>
-                                                	<span class="alsert-message">* 공지사항의 분류를 작성할 수 있습니다.</span><br>
-                                                	<span class="alsert-message">* 해당 공지사항의 분류로 사이트 접속자가 공지사항을 조회할 수 있습니다.</span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group ">
-                                                <label for="curl" class="control-label col-lg-2"># 중요공지여부</label>
-                                                
-                                                <div class="col-lg-10">
-                                                    <select class="form-control" name="sign">
-                                                    	<option value= false>== 선택 ==</option>
-                                                    	<option value= true>중요공지</option>
-                                                    	<option value= false>일반공지</option>
-                                                    </select>
-                                                	<span class="alsert-message">* 공지사항은 최근 공지사항이 먼저 출력 됩니다.</span><br>
-                                                	<span class="alsert-message">* 중요공지는 공지일과 무관하게 가장 상단에 출력 됩니다.</span><br>
-                                                	<span class="alsert-message">* 선택하지 않는 경우 일반공지로 등록 됩니다.</span>
-                                                </div>
-                                            </div>
-                                             <div class="form-group ">
-                                                <label for="curl" class="control-label col-lg-2"># 공지사항</label>
-                                                <div class="col-lg-10">
-                                                    <textarea 
-                                                    required="required" 
-                                                    name="content" 
-                                                    class="form-control"
-                                                    ></textarea>
-                                                    <span class="alsert-message">* 엔터키와 띄어쓰기 형태 모두 동일하게 출력 됩니다.</span><br>
-                                                    <span class="alsert-message">* 공지사항 네모칸의 우측 아래를 드래그 하여 크기를 조절할 수 있습니다.</span>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="col-lg-offset-2 col-lg-10">
-                                                    <button class="btn btn-theme" type="submit">등록</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                        </div>
+            <div class="row mt">
+              <div class="col-lg-12">
+                <div class="form">
+                  <form id="noticeForm" class="cmxform form-horizontal style-form" method="post" action="/admin/noticeInsert">
+                    <!-- 제목 -->
+                    <div class="form-group">
+                      <label class="control-label col-lg-2"># 공지사항 제목</label>
+                      <div class="col-lg-10">
+                        <input class="form-control" type="text" name="subject" required />
+                      </div>
                     </div>
-                </div>
-            </section>
-        </section>
+
+                    <!-- 분류 -->
+                    <div class="form-group">
+                      <label class="control-label col-lg-2"># 공지사항분류</label>
+                      <div class="col-lg-10">
+                        <select class="form-control" name="subjectId" required>
+                          <option th:each="s:${subject}" th:value="${s.id}" th:text="${s.text}"></option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- 중요여부 -->
+                    <div class="form-group">
+                      <label class="control-label col-lg-2"># 중요공지여부</label>
+                      <div class="col-lg-10">
+                        <select class="form-control" name="sign">
+                          <option value="true">중요공지</option>
+                          <option value="false" selected>일반공지</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <!-- 본문(에디터) -->
+                    <div class="form-group">
+                      <label class="control-label col-lg-2"># 공지사항</label>
+                      <div class="col-lg-10">
+                        <!-- 전송용 textarea(숨김) -->
+                        <input type="hidden" id="content" name="content">
+                        <!-- 에디터 표시 영역 -->
+                        <div id="editor"></div>
+                        <span class="alsert-message">* 이미지 업로드 가능, 저장 시 본문 첫 이미지가 대표로 저장됩니다.</span>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <div class="col-lg-offset-2 col-lg-10">
+                        <button class="btn btn-theme" type="button" onclick="location.href='/admin/noticeManager'">목록</button>
+                        <button class="btn btn-warning" type="submit">등록</button>
+                      </div>
+                    </div>
+                  </form>
+                </div><!-- /.form -->
+              </div>
+            </div>
+
+            <hr>
+          </div>
+        </div>
+      </div>
     </section>
-    <th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
+  </section>
+</section>
+
+<!-- 공통 스크립트 -->
+<th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
+
+<!-- Toast UI Editor CDN -->
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+<script>
+  (function () {
+    var CSRF = (document.querySelector('meta[name="_csrf"]')||{}).content;
+    var CSRF_HEADER = (document.querySelector('meta[name="_csrf_header"]')||{}).content;
+
+    var editor = new toastui.Editor({
+      el: document.querySelector('#editor'),
+      height: '420px',
+      initialEditType: 'wysiwyg',
+      previewStyle: 'vertical',
+      initialValue: '',
+      hooks: {
+        addImageBlobHook: async function (blob, callback) {
+          try {
+            const fd = new FormData();
+            fd.append('file', blob);
+            const res = await fetch('/admin/notice/image', {
+              method: 'POST',
+              headers: CSRF_HEADER ? { [CSRF_HEADER]: CSRF } : {},
+              body: fd
+            });
+            if (!res.ok) throw new Error();
+            const data = await res.json();
+            callback(data.url, blob.name);
+          } catch (e) {
+            alert('이미지 업로드에 실패했습니다.');
+          }
+        }
+      }
+    });
+
+    const form = document.getElementById('noticeForm');
+    const content = document.getElementById('content');
+
+    // 에디터 변경될 때마다 hidden에 반영(선택)
+    editor.on('change', function () {
+      content.value = editor.getHTML();
+    });
+    
+    // 제출 직전 검증 + 값 세팅
+    form.addEventListener('submit', function (e) {
+      const html = editor.getHTML().trim();
+      const plain = editor.getMarkdown().replace(/\s+/g, '').trim(); // 텍스트 비었는지 확인
+
+      if (!plain) {
+        e.preventDefault();
+        alert('공지사항 내용을 입력해 주세요.');
+        return;
+      }
+      content.value = html; // 최종 반영
+    });
+  })();
+</script>
 
 </body>
-
 </html>

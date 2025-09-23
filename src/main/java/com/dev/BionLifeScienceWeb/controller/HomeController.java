@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.dev.BionLifeScienceWeb.model.Banner;
@@ -44,6 +46,7 @@ import com.dev.BionLifeScienceWeb.repository.product.MiddleSortRepository;
 import com.dev.BionLifeScienceWeb.repository.product.ProductRepository;
 import com.dev.BionLifeScienceWeb.repository.product.SmallSortRepository;
 import com.dev.BionLifeScienceWeb.model.Certification;
+import org.springframework.data.domain.Sort;
 
 import lombok.RequiredArgsConstructor;
 
@@ -237,14 +240,42 @@ public class HomeController {
 	}
 
 	@GetMapping("/notice")
-	public String notice(
-			Model model
-			) {
-		
-		List<Notice> notice = noticeRepository.findTop5ByOrderBySignDescDateDesc();
-		model.addAttribute("notice", notice);
-		return "front/notice/notice";
+	public String notice(@RequestParam(defaultValue = "1") int page,
+	                     @RequestParam(required = false) String searchText,
+	                     Model model) {
+
+	    int size = 10; // 한 페이지 10개
+	    Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "id"));
+
+	    Page<Notice> p;
+
+	    if (searchText != null && !searchText.isBlank()) {
+	    	
+	    	
+	        p = noticeRepository
+	                .findBySubjectContainingIgnoreCaseOrContentContainingIgnoreCase(
+	                        searchText, searchText, pageable);
+	        model.addAttribute("pinned", List.of()); 
+	    } else {
+	        // 📌 중요공지(고정) 따로 뽑기
+	        List<Notice> pinned = noticeRepository.findTop5BySignOrderByDateDesc(true);
+	        model.addAttribute("pinned", pinned);
+
+	        // 일반 목록(고정 제외)만 페이징
+	        p = noticeRepository.findBySignFalse(pageable);
+	    }
+	    
+
+	    model.addAttribute("page", p);             
+	    model.addAttribute("notices", p.getContent()); 
+	    model.addAttribute("nowPage", page);         
+	    model.addAttribute("size", size);
+	    model.addAttribute("searchText", searchText);
+
+	    return "front/notice/notice";
 	}
+
+
 
 	@GetMapping("/references")
 	public String reference(

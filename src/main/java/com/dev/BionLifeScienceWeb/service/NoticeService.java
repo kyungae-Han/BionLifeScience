@@ -24,6 +24,9 @@ public class NoticeService {
 			no.setContent(notice.getContent());
 			no.setSign(notice.getSign());
 			no.setSubject(notice.getSubject());
+			
+			no.setImageUrl(notice.getImageUrl());
+			
 			no.setNoticeSubject(noticeSubjectRepository.findById(notice.getSubjectId()).get());
 			
 			noticeRepository.save(no);

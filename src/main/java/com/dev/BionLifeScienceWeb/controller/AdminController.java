@@ -1,5 +1,6 @@
 package com.dev.BionLifeScienceWeb.controller;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
@@ -9,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dev.BionLifeScienceWeb.model.Client;
 import com.dev.BionLifeScienceWeb.model.CompanyEmail;
@@ -46,6 +49,9 @@ import com.dev.BionLifeScienceWeb.repository.NoticeSubjectRepository;
 import com.dev.BionLifeScienceWeb.service.ClientService;
 import com.dev.BionLifeScienceWeb.service.CompanyInfoService;
 import com.dev.BionLifeScienceWeb.service.NoticeService;
+
+import org.jsoup.Jsoup;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import lombok.RequiredArgsConstructor;
 
@@ -290,6 +296,22 @@ public class AdminController {
 		return "admin/noticeManager";
 	}
 	
+	@PostMapping("/notice/image")
+	@ResponseBody
+	public Map<String, String> uploadNoticeImage(@RequestParam("file") MultipartFile file) throws IOException {
+	    String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+
+	    Path saveDir  = Paths.get(System.getProperty("user.dir"), "upload", "front", "images", "notice");
+	    Files.createDirectories(saveDir);
+
+	    Path savePath = saveDir.resolve(fileName);
+	    file.transferTo(savePath.toFile());
+	    
+	    String url = "/front/images/notice/" + fileName;
+
+	    return Map.of("url", url);
+	}
+	
 	@PostMapping("/noticeUpdate")
 	public String noticeUpdate(
 			Notice notice,
@@ -328,8 +350,13 @@ public class AdminController {
 	)
 	@ResponseBody
 	public String noticeInsert(
-			Notice notice
+			Notice notice, Model model
 			) {
+		
+		
+		String html = notice.getContent();
+		String firstImg = extractFirstImageUrl(html);
+		notice.setImageUrl(firstImg);
 		
 		notice.setDate(new Date());
 		notice.setNoticeSubject(noticeSubjectRepository.findById(notice.getSubjectId()).get());
@@ -346,9 +373,16 @@ public class AdminController {
 		
 	}
 	
+	private String extractFirstImageUrl(String html) {
+	    var doc = Jsoup.parse(html == null ? "" : html);
+	    var img = doc.selectFirst("img[src]");
+	    return (img != null) ? img.attr("src") : null;
+	}
+	
 	@RequestMapping(value = "/noticeDelete/{id}",
 		    method = {RequestMethod.GET, RequestMethod.POST}
 	)
+	
 	@ResponseBody
 	public String noticeDelete(
 			@PathVariable Long id
@@ -442,3 +476,5 @@ public class AdminController {
 		return "admin/siteManager :: #companyEmailCheck";
 	}
 }
+
+
