@@ -29,6 +29,18 @@
 							method="POST" 
 							enctype="multipart/form-data"
 							action="/admin/brandInsert">
+							  <div class="form-group has-success">
+							    <label class="col-lg-2 control-label" for="type">브랜드 타입</label>
+							     <div class="col-lg-10">
+							      <select class="form-control gsc-selected-option-container" id="type" name="type" required>
+								    <option value="" disabled selected>선택</option>
+								    <option th:each="t : ${T(com.dev.BionLifeScienceWeb.model.brand.Brand.BrandType).values()}"
+								            th:value="${t}"
+								            th:text="${t.name() == 'OWN' ? '자사브랜드' : '타사브랜드'}">
+								    </option>
+								  </select>
+								  </div>
+							  </div>
 								<div class="form-group has-success">
 									<label class="col-lg-2 control-label">브랜드명</label>
 									<div class="col-lg-10">

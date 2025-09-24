@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="/front/css/magnific-popup.css" type="text/css" />
 <link rel="stylesheet" href="/front/css/custom.css" type="text/css" />
 <link rel="stylesheet" href="/front/detail.css">
-<script src="https://kit.fontawesome.com/e5334cc6a1.js" crossorigin="anonymous"></script>
+<!-- <script src="https://kit.fontawesome.com/e5334cc6a1.js" crossorigin="anonymous"></script> -->
 <link rel="stylesheet" href="/front/timeline.css">
 <link rel="shortcut icon" href="/front/image/logo/favicon.ico">
 <link rel="stylesheet" href="/front/js/countdown-timers/flipclock.css">
@@ -93,36 +93,81 @@
 
 													</ul></li>
 											</ul></li>
-										<li class="menu-item"><a class="menu-link" href="#">
-												<div>브랜드소개</div>
-										</a>
-											<ul class="mega-menu-content">
-												<li class="menu-item" th:each="b:${menuList.brandList}"><a class="menu-link" th:href="@{|/brandProductSorted/brand/${b.id}|}">
-														<div>
-															<i class="icon-stack"></i> [[${b.name}]]
-														</div>
-												</a>
-													<ul class="sub-menu-container">
-														<li class="menu-item" th:if="${b.id == bb.brand.id}" th:each="bb : ${menuList.brandBigSortList}"><a class="menu-link" th:href="@{|/brandProductSorted/main/${bb.id}|}">
-																<div th:text="${bb.name}">Screw Caps and Tubes</div>
-														</a>
-															<ul class="sub-menu-container">
-																<li class="menu-item" th:if="${bb.id == bm.bigSort.id}" th:each="bm:${menuList.brandMiddleSortList}"><a class="menu-link" th:href="@{|/brandProductSorted/middle/${bm.id}|}">
-																		<div th:text="${bm.name}">Product 01</div>
-																</a>
-																	<ul class="sub-menu-container left-container">
-																		<li class="menu-item" th:if="${bs.id == bs.middleSort.id}" th:each="bs:${menuList.brandSmallSortList}"><a class="menu-link" th:href="@{|/brandProductSorted/sub/${bs.id}|}">
-																				<div th:text="${bs.name}">Product 01</div>
-																		</a>
-																			<ul class="sub-menu-container">
-																				<li class="menu-item" th:if="${bs.id == bp.smallSort.id}" th:each="bp:${menuList.brandProductList}"><a class="menu-link" th:href="@{|/brandProductDetail/${bp.id}|}">
-																						<div th:text="${bp.subject}">Product 01</div>
-																				</a></li>
-																			</ul></li>
-																	</ul></li>
-															</ul></li>
-													</ul></li>
-											</ul></li>
+										<li class="menu-item">
+										  <a class="menu-link" href="#">
+										    <div>브랜드소개</div>
+										  </a>
+										  <ul class="mega-menu-content">
+										
+										    <!-- OWN 브랜드 루프 -->
+										    <li class="menu-item" th:each="b:${ownBrands}" th:attr="data-id=${'brand-' + b.id}">
+										      <a class="menu-link" th:href="@{|/brandProductSorted/brand/${b.id}|}">
+										        <div><i class="icon-stack"></i> [[${b.name}]]</div>
+										      </a>
+										    </li>
+										    <!-- /OWN -->
+										
+										    <!-- PARTNER 그룹 (취급브랜드) -->
+										    <li class="menu-item">
+										      <a class="menu-link" href="#">
+										        <div><i class="icon-stack"></i> 취급브랜드</div>
+										      </a>
+										
+										      <ul class="sub-menu-container sub-menu-items">
+										        <li class="menu-item" th:each="b:${partnerBrands}" th:attr="data-id=${'brand-' + b.id}">
+										          <a class="menu-link" th:href="@{|/brandProductSorted/brand/${b.id}|}">
+										            <div th:text="${b.name}">Brand Name</div>
+										          </a>
+										
+										          <ul class="sub-menu-container">
+										            <li class="menu-item"
+										                th:each="bb : ${menuList.brandBigSortList}"
+										                th:if="${bb.brand.id == b.id}">
+										              <a class="menu-link" th:href="@{|/brandProductSorted/main/${bb.id}|}">
+										                <div th:text="${bb.name}">BigSort</div>
+										              </a>
+										
+										              <ul class="sub-menu-container">
+										                <li class="menu-item"
+										                    th:each="bm:${menuList.brandMiddleSortList}"
+										                    th:if="${bm.bigSort.id == bb.id}">
+										                  <a class="menu-link" th:href="@{|/brandProductSorted/middle/${bm.id}|}">
+										                    <div th:text="${bm.name}">MiddleSort</div>
+										                  </a>
+										
+										                  <ul class="sub-menu-container left-container">
+										                    <li class="menu-item"
+										                        th:each="bs:${menuList.brandSmallSortList}"
+										                        th:if="${bs.middleSort.id == bm.id}">
+										                      <a class="menu-link" th:href="@{|/brandProductSorted/sub/${bs.id}|}">
+										                        <div th:text="${bs.name}">SmallSort</div>
+										                      </a>
+										
+										                      <ul class="sub-menu-container">
+										                        <li class="menu-item"
+										                            th:each="bp:${menuList.brandProductList}"
+										                            th:if="${bp.smallSort.id == bs.id}">
+										                          <a class="menu-link" th:href="@{|/brandProductDetail/${bp.id}|}">
+										                            <div th:text="${bp.subject}">Product</div>
+										                          </a>
+										                        </li>
+										                      </ul>
+										                    </li>
+										                  </ul>
+										                </li>
+										              </ul>
+										            </li>
+										          </ul>
+										        </li>
+										      </ul>
+										    </li>
+										    <!-- /PARTNER -->
+										
+										  </ul>
+										</li>
+
+											
+											
 										<li class="menu-item"><a class="menu-link" href="/rnd">
 											<div>R&D</div>
 										</a></li>
@@ -222,47 +267,82 @@
 								<div class="mega-grid">
 									<!-- 1depth: Brand -->
 									<ul class="col depth-1">
-										<li class="menu-item" th:each="b : ${menuList.brandList}" th:attr="data-id=${b.id}">
-											<a class="menu-link" th:href="@{|/brandProductSorted/brand/${b.id}|}">
-												<div>
-													<i class="icon-stack"></i> [[${b.name}]]
-												</div>
-										</a></li>
+									  <!-- OWN 브랜드들: 1depth에 바로 노출 -->
+									  <li class="menu-item"
+									      th:each="b : ${ownBrands}"
+									      th:attr="data-id=${'brand-' + b.id}">
+									    <a class="menu-link" th:href="@{|/brand/own/${b.id}|}">
+									      <div><i class="icon-stack"></i>[[${b.name}]]</div>
+									    </a>
+									  </li>
+									
+									  <!-- PARTNER 그룹(취급브랜드) 고정 노드 -->
+									  <li class="menu-item" data-id="partner">
+									    <a class="menu-link" href="#">
+									      <div><i class="icon-stack"></i> 취급브랜드</div>
+									    </a>
+									  </li>
 									</ul>
-
-									<!-- 2depth: Brand Big (parent = brand id) -->
+									
+									 <!--  2depth -->
 									<ul class="col depth-2">
-										<li class="menu-item" th:each="bb : ${menuList.brandBigSortList}" th:attr="data-id=${bb.id}, data-parent=${bb.brand.id}">
-											<a class="menu-link"
-											th:href="@{|/brandProductSorted/main/${bb.id}|}">
-												<div th:text="${bb.name}">Brand Big</div>
-										</a></li>
+									  <!-- 취급브랜드 선택 시: 파트너 브랜드 목록 -->
+									  <li class="menu-item"
+									      th:each="pb : ${partnerBrands}"
+									      th:attr="data-id=${'brand-' + pb.id}, data-parent='partner'">
+									    <a class="menu-link" th:href="@{|/brandProductSorted/brand/${pb.id}|}">
+									      <div th:text="${pb.name}">Partner Brand</div>
+									    </a>
+									  </li>
 									</ul>
-
-									<!-- 3depth: Brand Middle (parent = big id) -->
+									
 									<ul class="col depth-3">
-										<li class="menu-item" th:each="bm : ${menuList.brandMiddleSortList}" th:attr="data-id=${bm.id}, data-parent=${bm.bigSort.id}">
-											<a class="menu-link"
-											th:href="@{|/brandProductSorted/middle/${bm.id}|}">
-												<div th:text="${bm.name}">Brand Middle</div>
-										</a></li>
+									  <!-- PARTNER 흐름: BigSort (부모 = brand-*) -->
+									  <li class="menu-item"
+									      th:each="bb : ${brandBigSortList}"
+									      th:attr="data-id=${'big-' + bb.id},
+									               data-parent=${'brand-' + bb.brand.id}">
+									    <a class="menu-link" th:href="@{|/brandProductSorted/main/${bb.id}|}">
+									      <div th:text="${bb.name}">BigSort</div>
+									    </a>
+									  </li>
 									</ul>
-
-									<!-- 4depth: Brand Small (parent = middle id) -->
+									
+									
 									<ul class="col depth-4">
-										<li class="menu-item" th:each="bs : ${menuList.brandSmallSortList}" th:attr="data-id=${bs.id}, data-parent=${bs.middleSort.id}">
-											<a class="menu-link"
-											th:href="@{|/brandProductSorted/sub/${bs.id}|}">
-												<div th:text="${bs.name}">Brand Small</div>
-										</a></li>
+									  <!-- PARTNER 흐름: MiddleSort (부모 = big-*) -->
+									  <li class="menu-item"
+									      th:each="bm : ${brandMiddleSortList}"
+									      th:attr="data-id=${'mid-' + bm.id},
+									               data-parent=${'big-' + bm.bigSort.id}">
+									    <a class="menu-link" th:href="@{|/brandProductSorted/middle/${bm.id}|}">
+									      <div th:text="${bm.name}">Middle</div>
+									    </a>
+									  </li>
 									</ul>
-
-									<!-- 5depth: Brand Product (parent = small id) -->
+									
 									<ul class="col depth-5">
-										<li class="menu-item" th:each="bp : ${menuList.brandProductList}" th:attr="data-id=${bp.id}, data-parent=${bp.smallSort.id}">
-											<a class="menu-link" th:href="@{|/brandProductDetail/${bp.id}|}">
-												<div th:text="${bp.subject}">Brand Product</div>
-										</a></li>
+									  <!-- PARTNER 흐름: SmallSort (부모 = mid-*) -->
+									  <li class="menu-item"
+									      th:each="bs : ${brandSmallSortList}"
+									      th:attr="data-id=${'small-' + bs.id},
+									               data-parent=${'mid-' + bs.middleSort.id}">
+									    <a class="menu-link" th:href="@{|/brandProductSorted/sub/${bs.id}|}">
+									      <div th:text="${bs.name}">Small</div>
+									    </a>
+									  </li>
+									</ul>
+									
+									<!-- 6depth : Product (PARTNER 전용, parent = small-{bs.id}) -->
+									<ul class="col depth-6">
+									  <li class="menu-item"
+									      th:each="bp : ${menuList.brandProductList}"
+									      th:attr="data-id=${'prod-' + bp.id},
+									               data-parent=${'small-' + bp.smallSort.id}">
+									    <a class="menu-link" th:href="@{|/brandProductDetail/${bp.id}|}">
+									      <div th:text="${bp.subject}">Product</div>
+									    </a>
+									  </li>
 									</ul>
 								</div>
 							</div>
@@ -500,6 +580,15 @@ document.addEventListener('DOMContentLoaded', () => {
     sessionStorage.setItem(STORAGE_KEY, 'false');
   }
 });
+</script>
+
+
+<script>
+  const all = document.querySelectorAll('#brands-items > li');
+  const sub = document.getElementById('partner-sub');
+  all.forEach(li => {
+    if (li.dataset.type === 'PARTNER') sub.appendChild(li.cloneNode(true));
+  });
 </script>
 		
 </th:block>

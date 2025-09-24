@@ -10,7 +10,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -238,6 +240,54 @@ public class HomeController {
 			throw new UrlNotFoundException();
 		}
 	}
+	
+	
+	@GetMapping("/brandProductSorted/brand/{id}")
+	public String brandEntry(@PathVariable Long id) {
+	    Brand brand = brandRepository.findById(id)
+	            .orElseThrow(UrlNotFoundException::new);
+
+	    if (brand.getType() == Brand.BrandType.OWN) {
+	        return "redirect:/brand/own/" + id;
+	    }
+	    
+	    // PARTNER: 해당 브랜드의 첫 상품으로 이동 (없으면 카테고리로)
+	    Page<BrandProduct> firstPage =
+	            brandProductRepository
+	                .findAllByBrand(PageRequest.of(0, 1), brand);
+
+	    if (!firstPage.isEmpty()) {
+	        Long productId = firstPage.getContent().get(0).getId();
+	        return "redirect:/brandProductDetail/" + productId;
+	    }
+
+	    return "redirect:/brandProductSorted/list/" + id;
+	}
+	
+	
+	@GetMapping("/brandProductSorted/list/{id}")
+	public String partnerBrandList(
+	        @PathVariable Long id,
+	        @PageableDefault(size = 12) Pageable pageable,
+	        Model model) {
+
+	    // 이미 있는 범용 핸들러로 위임: sort="brand"
+	    return brandProductSorted(model, "brand", id, pageable);
+	}
+
+	
+	
+	@GetMapping("/brand/own/{id}")
+	public String ownBrandDetail(@PathVariable Long id, Model model) {
+	    Brand brand = brandRepository.findById(id)
+	            .orElseThrow(UrlNotFoundException::new);
+
+	    model.addAttribute("brand", brand);
+
+	    return "front/brand/ownBrandDetail";
+	}
+	
+
 
 	@GetMapping("/notice")
 	public String notice(@RequestParam(defaultValue = "1") int page,
@@ -467,6 +517,46 @@ public class HomeController {
 		model.addAttribute("id",id);
 		
 		return "front/brand/brandProductSorted";
+	}
+	
+	@ControllerAdvice
+	@RequiredArgsConstructor
+	public class NavAdvice {
+	    private final BrandRepository brandRepository;
+	    private final BrandBigSortRepository bigSortRepository;
+	    private final BrandMiddleSortRepository middleSortRepository;
+	    private final BrandSmallSortRepository smallSortRepository;
+
+	    @ModelAttribute("partnerBrands")
+	    public List<Brand> partnerBrands() {
+	        return brandRepository
+	            .findAllByTypeOrderByNameAsc(Brand.BrandType.PARTNER);
+	    }
+
+	    @ModelAttribute("ownBrands")
+	    public List<Brand> ownBrands() {
+	        return brandRepository
+	            .findAllByTypeOrderByNameAsc(Brand.BrandType.OWN);
+	    }
+	    
+	    
+	    // 3depth → BigSort (브랜드별)
+	    @ModelAttribute("brandBigSortList")
+	    public List<BrandBigSort> brandBigSortList() {
+	        return bigSortRepository.findAllByOrderByBrandBigSortIndexAsc();
+	    }
+
+	    // 4depth → MiddleSort (BigSort별)
+	    @ModelAttribute("brandMiddleSortList")
+	    public List<BrandMiddleSort> brandMiddleSortList() {
+	        return middleSortRepository.findAllByOrderByBrandMiddleSortIndexAsc();
+	    }
+
+	    // 5depth → SmallSort (MiddleSort별)
+	    @ModelAttribute("brandSmallSortList")
+	    public List<BrandSmallSort> brandSmallSortList() {
+	        return smallSortRepository.findAllByOrderByBrandSmallSortIndexAsc();
+	    }
 	}
 }
 

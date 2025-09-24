@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 import lombok.Data;
 
 @Data
@@ -35,5 +37,13 @@ public class Brand {
 	
 	@Column(name="BRAND_INDEX")
 	private int brandIndex;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name="BRAND_TYPE", nullable=false, length=16)
+	private BrandType type;
+	
+	public enum BrandType {
+		OWN, PARTNER
+	}
 
 }

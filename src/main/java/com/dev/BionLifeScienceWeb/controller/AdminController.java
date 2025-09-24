@@ -51,7 +51,6 @@ import com.dev.BionLifeScienceWeb.service.CompanyInfoService;
 import com.dev.BionLifeScienceWeb.service.NoticeService;
 
 import org.jsoup.Jsoup;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import lombok.RequiredArgsConstructor;
 

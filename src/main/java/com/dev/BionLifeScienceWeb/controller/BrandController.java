@@ -9,6 +9,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -93,10 +94,15 @@ public class BrandController {
 	@PostMapping("/brandInsert")
 	@ResponseBody
 	public String brandInsert(
-			Brand brand,
-			MultipartFile image
+			@ModelAttribute Brand brand,
+			@RequestParam(value = "image", required = false) MultipartFile image
 			) throws IllegalStateException, IOException {
 		
+		
+		if (brand.getType() == null) {
+	        return "<script>alert('브랜드 타입을 선택하세요.');history.back();</script>";
+	    }
+
 		brandService.brandInsert(image, brand);
 		
 		StringBuffer sb = new StringBuffer();
@@ -113,6 +119,7 @@ public class BrandController {
 	@RequestMapping(value = "/brandDelete",
 		    method = {RequestMethod.GET, RequestMethod.POST}
 	)
+	
 	@ResponseBody
 	public String brandDelete(
 			Long text,

@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
 import com.dev.BionLifeScienceWeb.model.brand.Brand;
 
 @Repository
@@ -24,4 +23,7 @@ public interface BrandRepository extends JpaRepository<Brand, Long>{
 	
 	@Query("SELECT MAX(brandIndex) FROM Brand")
 	Optional<Integer> findFirstIndex();
+	
+	List<Brand> findAllByTypeOrderByNameAsc(Brand.BrandType type);
+	
 }
