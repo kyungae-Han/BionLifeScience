@@ -1,8 +1,13 @@
 package com.dev.BionLifeScienceWeb.controller;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -615,21 +620,63 @@ public class BrandController {
 	)
 	@ResponseBody
 	public String brandUpdate(
-			Brand brand,
-			MultipartFile files
-			) throws IllegalStateException, IOException {
+			@ModelAttribute Brand brand, 
+	        @RequestParam(value = "files", required = false) MultipartFile logo,
+	        @RequestParam(value = "visualImage", required = false) MultipartFile visualImage
+			) throws IOException {
 		
-		brandService.brandUpdate(files, brand);
-		StringBuffer sb = new StringBuffer();
-		String msg = "수정이 완료 되었습니다.";
+		Brand saved = brandRepository.findById(brand.getId()).orElse(null);
+		if (saved == null) {
+			
+		    // 원하는 처리: 리다이렉트/메시지/로그 등
+		    return "redirect:/admin/brandForm"; // 컨트롤러라면
+		}
+		
+		
+		saved.setType(brand.getType());
+	    saved.setName(brand.getName());
+	    saved.setContent(brand.getContent());
+	    saved.setDesc(brand.getDesc());
+	    
+	    brandService.applyLogo(saved, logo);
+	    brandService.applyVisual(saved, visualImage);
+		
+	    brandRepository.save(saved);
 
-		sb.append("alert('" + msg + "');");
-		sb.append("location.href='/admin/brandManager'");
-		sb.append("</script>");
-		sb.insert(0, "<script>");
-
-		return sb.toString();
+	    StringBuffer sb = new StringBuffer();
+	    sb.append("<script>")
+	      .append("alert('수정이 완료 되었습니다.');")
+	      .append("location.href='/admin/brandManager'")
+	      .append("</script>");
+	    return sb.toString();
 	}
+	
+	@Value("${spring.upload.path}")
+	private String commonPath;
+
+	@Value("${spring.upload.env}")
+	private String env;
+	
+	@PostMapping("/admin/uploadEditorImage")
+	@ResponseBody
+	public String uploadEditorImage(@RequestParam("file") MultipartFile file) throws IOException {
+	    // 저장 경로 (예: /upload/editor/yyyy-MM-dd)
+	    String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+	    String dirPath = commonPath + "/brand/editor/" + today;
+	    String webPath = "/administration/brand/editor/" + today;
+
+	    File dir = new File(dirPath);
+	    if (!dir.exists()) dir.mkdirs();
+
+	    String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+	    File dest = new File(dir, fileName);
+	    file.transferTo(dest);
+
+	    // Summernote에서 삽입할 이미지 URL 반환
+	    return webPath + "/" + fileName;
+	}
+
+	
 }
 
 

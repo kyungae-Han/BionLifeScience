@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
@@ -26,13 +27,13 @@ public class Brand {
 	@Column(name="BRAND_CONTENT")
 	private String content;
 	
-	@Column(name="BRAND_IMAGE_PATH")
+	@Column(name="BRAND_IMAGE_PATH", nullable=false, length=255)
 	private String imagePath;
 	
-	@Column(name="BRAND_IMAGE_ROAD")
+	@Column(name="BRAND_IMAGE_ROAD", nullable=false, length=255)
 	private String imageRoad;
 	
-	@Column(name="BRAND_IMAGE_NAME")
+	@Column(name="BRAND_IMAGE_NAME", nullable=false, length=255)
 	private String imageName;
 	
 	@Column(name="BRAND_INDEX")
@@ -45,5 +46,19 @@ public class Brand {
 	public enum BrandType {
 		OWN, PARTNER
 	}
+	
+	
+	@Column(name = "BRAND_VISUAL_PATH", length = 255)
+	private String visualPath;
+
+	@Column(name = "BRAND_VISUAL_ROAD", length = 255)
+	private String visualRoad;
+
+	@Column(name = "BRAND_VISUAL_NAME", length = 255)
+	private String visualName;
+
+	@Lob
+	@Column(name = "BRAND_DESC")
+	private String desc;
 
 }

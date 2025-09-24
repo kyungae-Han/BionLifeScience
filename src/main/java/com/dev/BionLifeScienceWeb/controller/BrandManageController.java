@@ -6,17 +6,21 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dev.BionLifeScienceWeb.model.brand.Brand;
 import com.dev.BionLifeScienceWeb.model.brand.BrandBigSort;
@@ -33,6 +37,7 @@ import com.dev.BionLifeScienceWeb.repository.brand.BrandSmallSortRepository;
 import com.dev.BionLifeScienceWeb.service.brand.BrandProductFileService;
 import com.dev.BionLifeScienceWeb.service.brand.BrandProductImageService;
 import com.dev.BionLifeScienceWeb.service.brand.BrandProductService;
+import com.dev.BionLifeScienceWeb.service.brand.BrandService;
 import com.dev.BionLifeScienceWeb.service.program.brand.BrandCheckService;
 import com.dev.BionLifeScienceWeb.service.program.brand.BrandExcelDownloadService;
 import com.dev.BionLifeScienceWeb.service.program.brand.BrandExcelUploadService;
@@ -60,6 +65,8 @@ public class BrandManageController {
 	private final BrandZipService brandZipService;
 	private final BrandCheckService brandExcelCheckService;
 	private final BrandProductImageService brandProductImageService;
+	
+	private final BrandService brandService;
 	
 	@GetMapping("/addExcelDownload")
 	@ResponseBody
@@ -415,5 +422,33 @@ public class BrandManageController {
 			
 		}
 		return "redirect:/admin/brandCenter/productOverall";
+	}
+	
+	
+    @GetMapping("/admin/brandForm")
+    public String brandForm(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
+
+        Page<Brand> brands = brandRepository.findAll(PageRequest.of(page, size, Sort.by("id").descending()));
+        model.addAttribute("brands", brands);
+        model.addAttribute("editBrand", null);   // 신규
+        return "admin/brandForm";
+    }
+
+	@GetMapping("/admin/brandForm/{id}")
+	public String brandEdit(@PathVariable Long id, Model model, RedirectAttributes ra) {
+
+	    return brandRepository.findById(id)
+	        .map(brand -> {
+	            model.addAttribute("brands", brandRepository.findAll());
+	            model.addAttribute("editBrand", brand);                
+	            return "admin/brandForm";
+	        })
+	        .orElseGet(() -> {
+	            ra.addFlashAttribute("error", "해당 브랜드가 존재하지 않습니다: " + id);
+	            return "redirect:/admin/brandForm";
+	        });
 	}
 }

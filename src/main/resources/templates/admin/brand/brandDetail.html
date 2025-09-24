@@ -29,6 +29,21 @@
 							method="POST" 
 							enctype="multipart/form-data"
 							action="/admin/brandUpdate">
+								<input type="hidden" th:value="${brand.id}" name="id">
+								<div class="form-group has-success">
+							    <label class="col-lg-2 control-label" for="type">브랜드 타입</label>
+							     <div class="col-lg-10">
+							      <select class="form-control gsc-selected-option-container" id="type" name="type" required>
+								    <option value="" disabled selected>선택</option>
+								    <option th:each="t : ${T(com.dev.BionLifeScienceWeb.model.brand.Brand.BrandType).values()}"
+								            th:value="${t}"
+								            th:text="${t.name() == 'OWN' ? '자사브랜드' : '타사브랜드'}">
+								    </option>
+								  </select>
+								  </div>
+							  </div>
+							
+							
 								<div class="form-group has-success">
 									<label class="col-lg-2 control-label">브랜드명</label>
 									<div class="col-lg-10">
@@ -39,22 +54,65 @@
 										name="name"
 										required="required"
 										th:value="${brand.name}">
-										<input type="hidden" th:value="${brand.id}" name="id">
 										<p class="help-block">* 브랜드명을 입력해 주세요</p>
 									</div>
 								</div>
 								<div class="form-group has-success">
-									<label class="col-lg-2 control-label">브랜드 이미지</label>
-									<div class="col-lg-10">
-										<input 
-										type="file" 
-										class="form-control" 
-										name="files">
-										<p class="help-block">* 1920px * 460px의 사이즈에 최적화 되어 있습니다.</p>
-										<p class="help-block">* jpg / jpeg / png 확장자를 지원 합니다.</p>
-										<p class="help-block">* 변경없이 수정시 기존의 이미지를 사용합니다.</p>
-									</div>
+								  <label class="col-lg-2 control-label">브랜드 로고</label>
+								  <div class="col-lg-10">
+									  <!-- 기존 값 보존 -->
+									  <input type="hidden" name="imagePath" th:value="${brand.imagePath}">
+									  <input type="hidden" name="imageRoad" th:value="${brand.imageRoad}">
+									  <input type="hidden" name="imageName" th:value="${brand.imageName}">
+									
+									  <!-- 파일 업로드 -->
+									  <input type="file" name="logo" accept=".png,.jpg,.jpeg,.svg">
+									
+
+								    <p class="help-block">* 512×384 권장 / png, jpg, jpeg, svg</p>
+								
+								    <!-- brand.imageRoad 가 있을 경우 -->
+								    <div th:if="${brand.imageRoad}">
+								      <small>현재 로고 미리보기</small><br>
+								      <img th:src="${brand.imageRoad}"
+								           style="max-width:180px;border:1px solid #ddd;padding:4px;">
+								    </div>
+								  </div>
 								</div>
+								
+								
+								<!-- 비주얼 이미지 (선택) -->
+								<div class="form-group has-success">
+								  <label class="col-lg-2 control-label">비주얼 이미지 (선택)</label>
+								  <div class="col-lg-10">
+								    <input type="file" id="visualImage" name="visualImage" accept="image/*" class="form-control">
+								
+								    <!-- brand.visualRoad 가 있을 경우 -->
+								    <div th:if="${brand.visualRoad}">
+								      <small>현재 비주얼 미리보기</small><br>
+								      <img th:src="${brand.visualRoad}"
+								           style="max-width:420px;border:1px solid #ddd;padding:6px;background:#fff;">
+								    </div>
+								    
+							    	<p class="help-block">* 1920px * 460px의 사이즈에 최적화 되어 있습니다.</p>
+									<p class="help-block">* jpg / jpeg / png 확장자를 지원 합니다.</p>
+									<p class="help-block">* 변경없이 수정시 기존의 이미지를 사용합니다.</p>
+								  </div>
+								</div>
+								
+								
+								<!-- 본문(에디터) -->
+			                    <div class="form-group">
+			                      <label class="col-lg-2 control-label">상세 설명 (선택)</label>
+			                      <div class="col-lg-10">
+			                        <!-- 전송용: hidden에 최종 HTML을 담아 보냄 -->
+			                        <input type="hidden" id="desc" name="desc" th:value="${brand?.desc}">
+			                        <!-- 에디터 표시 영역 -->
+			                        <div id="editor"></div>
+			                        <span class="alsert-message">* 이미지 업로드 가능, 저장 시 본문 첫 이미지가 대표로 저장됩니다.</span>
+			                      </div>
+			                    </div>
+																								
 								<div class="form-group has-success">
 									<label class="col-lg-2 control-label">브랜드 소개</label>
 									<div class="col-lg-10">
@@ -79,6 +137,80 @@
 	</section>
 	<th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
 	<script src="/administration/lib/brandManager.js"></script>
-</body>
+	
+	
+	<!-- Summernote 라이브러리 -->
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
 
+
+	<script>
+	  document.addEventListener('DOMContentLoaded', function () {
+	    $('#desc').summernote({
+	      height: 220,
+	      placeholder: '브랜드 상세 설명(선택)',
+	      toolbar: [
+	        ['style', ['bold','italic','underline','clear']],
+	        ['para',  ['ul','ol','paragraph']],
+	        ['insert',['link']],
+	        ['view',  ['codeview']]
+	      ]
+	    });
+	  });
+	</script>
+	
+	<script>
+		(function () {
+		
+		  const input      = document.getElementById('visualImage');
+		  const wrap       = document.getElementById('visualPreviewWrap');
+		  const img        = document.getElementById('visualPreview');
+		  const removeBtn  = document.getElementById('visualRemoveBtn');
+		  const existing   = document.getElementById('visualExisting')?.value || '';
+		
+		  // 수정 화면에서 기존 비주얼 이미지가 있을 경우 초기 표시
+		  if (existing) {
+		    img.src = existing.startsWith('http') ? existing : existing; // 필요시 prefix
+		    wrap.style.display = 'block';
+		  }
+		
+		  // 파일 선택 → 미리보기
+		  input.addEventListener('change', function () {
+		    if (!this.files || !this.files[0]) {
+		      clearPreview();
+		      return;
+		    }
+		
+		    const file = this.files[0];
+		
+		    // 간단한 타입/용량 체크(선택)
+		    if (!file.type.startsWith('image/')) {
+		      alert('이미지 파일만 업로드할 수 있습니다.');
+		      this.value = '';
+		      clearPreview();
+		      return;
+		    }
+		    // if (file.size > 5 * 1024 * 1024) { ... } // 5MB 제한 예시
+		
+		    const reader = new FileReader();
+		    reader.onload = e => {
+		      img.src = e.target.result;
+		      wrap.style.display = 'block';
+		    };
+		    reader.readAsDataURL(file);
+		  });
+		
+		  removeBtn.addEventListener('click', function () {
+		    input.value = '';
+		    clearPreview();
+		  });
+		
+		  function clearPreview() {
+		    img.src = '';
+		    wrap.style.display = 'none';
+		  }
+		
+		})();
+	</script>
+</body>
 </html>
