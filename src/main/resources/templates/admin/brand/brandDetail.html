@@ -34,11 +34,12 @@
 							    <label class="col-lg-2 control-label" for="type">브랜드 타입</label>
 							     <div class="col-lg-10">
 							      <select class="form-control gsc-selected-option-container" id="type" name="type" required>
-								    <option value="" disabled selected>선택</option>
+								    <option value="" disabled>선택</option>
 								    <option th:each="t : ${T(com.dev.BionLifeScienceWeb.model.brand.Brand.BrandType).values()}"
-								            th:value="${t}"
-								            th:text="${t.name() == 'OWN' ? '자사브랜드' : '타사브랜드'}">
-								    </option>
+									        th:value="${t}"
+									        th:text="${t.name() == 'OWN' ? '자사브랜드' : '타사브랜드'}"
+									        th:selected="${t.name() == brand.type?.name()}">
+									</option>
 								  </select>
 								  </div>
 							  </div>
@@ -66,7 +67,7 @@
 									  <input type="hidden" name="imageName" th:value="${brand.imageName}">
 									
 									  <!-- 파일 업로드 -->
-									  <input type="file" name="logo" accept=".png,.jpg,.jpeg,.svg">
+									  <input type="file" name="brandImage" accept=".png,.jpg,.jpeg,.svg">
 									
 
 								    <p class="help-block">* 512×384 권장 / png, jpg, jpeg, svg</p>
@@ -102,16 +103,12 @@
 								
 								
 								<!-- 본문(에디터) -->
-			                    <div class="form-group">
-			                      <label class="col-lg-2 control-label">상세 설명 (선택)</label>
-			                      <div class="col-lg-10">
-			                        <!-- 전송용: hidden에 최종 HTML을 담아 보냄 -->
-			                        <input type="hidden" id="desc" name="desc" th:value="${brand?.desc}">
-			                        <!-- 에디터 표시 영역 -->
-			                        <div id="editor"></div>
-			                        <span class="alsert-message">* 이미지 업로드 가능, 저장 시 본문 첫 이미지가 대표로 저장됩니다.</span>
-			                      </div>
-			                    </div>
+			                    <div class="form-group has-success">
+								  <label class="col-lg-2 control-label">상세 설명 (선택)</label>
+								  	<div class="col-lg-10">
+								  		 <textarea id="desc" name="desc" th:utext="${brand.desc}"></textarea>
+								 	</div>
+								</div>
 																								
 								<div class="form-group has-success">
 									<label class="col-lg-2 control-label">브랜드 소개</label>
@@ -140,22 +137,52 @@
 	
 	
 	<!-- Summernote 라이브러리 -->
-	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
-	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js"></script>
+
 
 
 	<script>
-	  document.addEventListener('DOMContentLoaded', function () {
-	    $('#desc').summernote({
-	      height: 220,
-	      placeholder: '브랜드 상세 설명(선택)',
-	      toolbar: [
-	        ['style', ['bold','italic','underline','clear']],
-	        ['para',  ['ul','ol','paragraph']],
-	        ['insert',['link']],
-	        ['view',  ['codeview']]
-	      ]
-	    });
+	$('#desc').summernote({
+	    height: 220,
+	    placeholder: '브랜드 상세 설명(선택)',
+	    toolbar: [
+	      ['style', ['bold', 'italic', 'underline', 'clear']],
+	      ['font', ['fontsize', 'fontname', 'color']],
+	      ['para', ['ul', 'ol', 'paragraph']],
+	      ['insert', ['table', 'link', 'picture', 'video']],
+	      ['view', ['fullscreen', 'codeview', 'help']]
+	    ],
+	    fontSizes: Array.from({ length: 65 }, (_, i) => (i + 8).toString()), // 8px ~ 72px까지 1px 단위
+	    fontNames: ['Arial', 'Verdana', 'Times New Roman', 'Noto Sans KR', 'IBM Plex Sans KR'], // 필요시 확장
+	    styleTags: [
+	      'p',
+	      { title: 'Blockquote', tag: 'blockquote', className: 'blockquote', value: 'blockquote' },
+	      'pre', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+	    ],
+	    lineHeights: ['0.8', '1.0', '1.2', '1.4', '1.5', '2.0', '3.0'],
+	    callbacks: {
+	      onInit: function () {
+	        $(this).summernote('focus');
+	      },
+	      onChange: function (contents, $editable) {
+	        // 필요 시 내용 변경 감지 (ex: 글자 수, 미리보기 반영)
+	        console.log('내용 변경:', contents);
+	      },
+	      onPaste: function (e) {
+	        // 붙여넣기 시 불필요한 스타일 제거 → 순수 텍스트만 삽입
+	        let clipboardData = (e.originalEvent || e).clipboardData;
+	        if (clipboardData && clipboardData.getData) {
+	          e.preventDefault();
+	          let text = clipboardData.getData('text/plain');
+	          document.execCommand('insertText', false, text);
+	        }
+	      },
+	      onBeforeCommand: function () {
+	        // 테이블 삽입 시 커서 위치 유지 보정
+	        $(this).summernote('focus');
+	      }
+	    }
 	  });
 	</script>
 	

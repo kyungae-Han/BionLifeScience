@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -25,12 +24,18 @@ public class BrandService {
 	@Value("${spring.upload.env}")
 	private String env;
 
+	
 	@Value("${spring.upload.path}")
 	private String commonPath;
 	
+	private static final String DATE_FMT = "yyyy-MM-dd";
+	private String today() {
+	    return new SimpleDateFormat(DATE_FMT).format(new Date());
+	}
 	
 	public String uploadEditorImage(MultipartFile file) throws IOException {
-        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        
+		String today = today();
         String dirPath = commonPath + "/brand/editor/" + today;
         String webPath = "/administration/brand/editor/" + today;
 
@@ -44,24 +49,27 @@ public class BrandService {
         return webPath + "/" + fileName;
     }
 	
-	public void applyLogo(Brand brand, MultipartFile logo) throws IOException {
-		if (logo == null || logo.isEmpty()) return;
+	public void applyLogo(Brand brand, MultipartFile brandImage) throws IOException {
+		if (brandImage == null || brandImage.isEmpty()) return;
 		
-		FileMeta m = storeFile("brand", logo);
+		FileMeta m = storeFile("brand", brandImage);
 		brand.setImagePath(m.path);
         brand.setImageRoad(m.road);
         brand.setImageName(m.name);
 		
 	}
 	
-	 public void applyVisual(Brand brand, MultipartFile visualImage) throws IOException {
-        if (visualImage == null || visualImage.isEmpty()) return;
-
-        FileMeta m = storeFile("brand", visualImage);
-        brand.setVisualPath(m.path);
-        brand.setVisualRoad(m.road);
-        brand.setVisualName(m.name);
-    }
+	public void applyVisual(Brand brand, MultipartFile visualImage) throws IOException {
+	    if (visualImage == null || visualImage.isEmpty()) return;
+	    
+	    
+	    System.out.println("업데이트 visualPath = " + brand.getVisualPath());
+	    
+	    FileMeta m = storeFileVisual(visualImage);
+	    brand.setVisualPath(m.path);
+	    brand.setVisualRoad(m.road);
+	    brand.setVisualName(m.name);
+	}
 	 
  	@lombok.AllArgsConstructor
     @lombok.Getter
@@ -71,10 +79,31 @@ public class BrandService {
         private String name;  // 파일명
     }
 
+ 	
+ 	
     private FileMeta storeFile(String subdir, MultipartFile file) throws IOException {
-        String today = new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
+        String today = today();
         String dirPath = commonPath + "/" + subdir + "/" + today;       // 물리
-        String webRoad = "/administration/" + subdir + "/" + today;     // 웹
+        String webRoad = "/upload/" + subdir + "/" + today;     // 웹
+
+        String fileName = randomKey(10) + file.getOriginalFilename();
+
+        java.io.File dir = env.equals("local")
+                ? new java.io.File(new java.io.File("").getAbsolutePath() + java.io.File.separator + dirPath)
+                : new java.io.File(dirPath);
+        if (!dir.exists()) dir.mkdirs();
+
+        java.io.File dest = new java.io.File(dir, fileName);
+        file.transferTo(dest);
+
+        return new FileMeta(dirPath + "/" + fileName, webRoad + "/" + fileName, fileName);
+    }
+    
+    
+    private FileMeta storeFileVisual(MultipartFile file) throws IOException {
+        String today = today();
+        String dirPath = commonPath + "/brand/" + today + "/visual";   // 물리
+        String webRoad = "/upload/brand/" + today + "/visual"; // 웹
 
         String fileName = randomKey(10) + file.getOriginalFilename();
 
@@ -99,104 +128,60 @@ public class BrandService {
         return sb.toString();
     }
 	
-	public void brandInsert(
-			MultipartFile image,
-			Brand brand
-			) throws IllegalStateException, IOException {
-		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String current_date = simpleDateFormat.format(new Date());
-		String absolutePath = new File("").getAbsolutePath() + "\\";
-        String brandPath = commonPath + "/brand/" + current_date;
-        String brandRoad = "/administration/brand/"+current_date;
-        File brandFileFolder = new File(brandPath);
-        
+    public void brandInsert(
+            MultipartFile brandImage,
+            MultipartFile visualImage,
+            Brand brand
+    ) throws IOException {
+
+        // brandIndex 세팅 (필요 없으면 제거 가능)
         int index = 1;
-        if(brandRepository.findFirstIndex().isPresent()) {
-        	index = brandRepository.findFirstIndex().get() + 1;
+        if (brandRepository.findFirstIndex().isPresent()) {
+            index = brandRepository.findFirstIndex().get() + 1;
         }
         brand.setBrandIndex(index);
-        int leftLimit = 48; 
- 		int rightLimit = 122;
- 		int targetStringLength = 10;
- 		Random random = new Random();
- 		
- 		String generatedString = random.ints(leftLimit,rightLimit + 1)
-			  .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-			  .limit(targetStringLength)
-			  .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-			  .toString();
- 		
- 		if(!brandFileFolder.exists()) {
- 			brandFileFolder.mkdirs();
- 		}
- 		
- 		String brandFileName = generatedString + image.getOriginalFilename();
- 		
- 		if(env.equals("local")) {
- 			brandFileFolder = new File(absolutePath + brandPath + "/" + brandFileName);
-		}else if(env.equals("prod")) {
-			brandFileFolder = new File(brandPath + "/" + brandFileName);
-		}
- 		image.transferTo(brandFileFolder);
- 		brand.setImagePath(brandPath + "/" + brandFileName);
- 		brand.setImageRoad(brandRoad + "/" + brandFileName);
- 		brand.setImageName(brandFileName);
- 		
- 		brandRepository.save(brand);
- 		
-	}
+
+        // 로고 파일 처리
+        applyLogo(brand, brandImage);
+
+        // 비주얼 파일 처리
+        applyVisual(brand, visualImage);
+
+        // 최종 저장
+        brandRepository.save(brand);
+    }
 	
+    
 	public void brandUpdate(
-			MultipartFile image,
-			Brand brand
+			  MultipartFile brandImage,
+	          MultipartFile visualImage,
+	          Brand brand
 			) throws IllegalStateException, IOException {
 		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String current_date = simpleDateFormat.format(new Date());
-		String absolutePath = new File("").getAbsolutePath() + "\\";
-      
-        String brandPath = commonPath + "/brand/" + current_date;
-        String brandRoad = "/administration/brand/"+current_date;
-        File brandFileFolder = new File(brandPath);
-        
-        int leftLimit = 48; // numeral '0'
- 		int rightLimit = 122; // letter 'z'
- 		int targetStringLength = 10;
- 		Random random = new Random();
- 		
- 		if(image!=null && !image.isEmpty()) {
- 			String generatedString = random.ints(leftLimit,rightLimit + 1)
-				  .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-				  .limit(targetStringLength)
-				  .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-				  .toString();
-	 		
-	 		if(!brandFileFolder.exists()) {
-	 			brandFileFolder.mkdirs();
-	 		}
-	 		
-	 		String brandFileName = generatedString + image.getOriginalFilename();
-	 		
-	 		if(env.equals("local")) {
-	 			brandFileFolder = new File(absolutePath + brandPath + "/" + brandFileName);
-			}else if(env.equals("prod")) {
-				brandFileFolder = new File(brandPath + "/" + brandFileName);
-			}
-	 		image.transferTo(brandFileFolder);
-	 		brandRepository.findById(brand.getId()).ifPresent(b->{
-	 			b.setImagePath(brandPath + "/" + brandFileName);
-		 		b.setImageRoad(brandRoad + "/" + brandFileName);
-		 		b.setImageName(brandFileName);
-		 		brandRepository.save(b);
-	 		});
-	 		
- 		}
- 		brandRepository.findById(brand.getId()).ifPresent(b->{
- 			b.setName(brand.getName());
-	 		b.setContent(brand.getContent());
-	 		brandRepository.save(b);
- 		});
+		
+		brandRepository.findById(brand.getId()).ifPresent(b -> {
+	        b.setName(brand.getName());
+	        b.setContent(brand.getContent());
+	        b.setDesc(brand.getDesc());
+	        b.setType(brand.getType());
+
+	        try {
+	            // 로고 파일 있으면 교체
+	            if (brandImage != null && !brandImage.isEmpty()) {
+	                applyLogo(b, brandImage);
+	            }
+
+	            // 비주얼 파일 있으면 교체
+	            if (visualImage != null && !visualImage.isEmpty()) {
+	                applyVisual(b, visualImage);
+	            }
+	        } catch (IOException e) {
+	            throw new RuntimeException(e);
+	        }
+
+	        brandRepository.save(b);
+	    });
+		
 	}
 }
 

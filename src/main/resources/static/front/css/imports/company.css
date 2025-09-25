@@ -1,4 +1,3 @@
-/* hero 영역 기본 */
 @charset "UTF-8";
 
 :root {
@@ -2855,6 +2854,7 @@ tbody td:not(.table__subject){
 
 
 .notice__important td {font-weight: 600;}
+
 
 
 

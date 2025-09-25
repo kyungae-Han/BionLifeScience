@@ -485,12 +485,12 @@ body {
 
 a {
   text-decoration: none !important;
-  color: #fe5000;
+  color: #333;
 }
 
-/* a:hover {
-  color: #222;
-} */
+a:hover {
+  color: var(--bs-orange);
+}
 
 a img {
   border: none;
@@ -2516,9 +2516,6 @@ html[xmlns] .slider-wrap {
   height: calc(100px+1);
 }
 
-#header.full-header{
-  	background-color: #fff;
-}
 
 #header.full-header:not(.transparent-header) {
   border-bottom-color: #eee;
@@ -2531,12 +2528,12 @@ html[xmlns] .slider-wrap {
 }
 
 #header-wrap {
+	background: #fff;
 	border-bottom:1px solid #eee;
 }
 
 #header-wrap:not(.sticky-header) {
   position: fixed;
-  background-color: #fff;
   width: 100%;
    box-shadow: 0 0 0 rgba(0, 0, 0, 0.1);
    transition: height 0.2s ease 0s, background-color 0.3s ease 0s;
@@ -2565,7 +2562,6 @@ html[xmlns] .slider-wrap {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   max-width: 100% !important;
-  background:#fff;
 }
 
 
@@ -2726,7 +2722,6 @@ body:not(.top-search-open) .top-search-parent #hamburger-menu-trigger {
   display: block;
   line-height: 22px;
   padding: 14px 15px;
-  color: #444;
   font-weight: 700;
   font-size: 1.2em;
   letter-spacing: 1px;
@@ -2927,7 +2922,6 @@ nav .menu-item:hover > .menu-link,
   font-weight:600;
   line-height: 20px;
   text-align: center;
-  color: #333;
   -webkit-transition: color 0.3s ease-in-out;
   -o-transition: color 0.3s ease-in-out;
   transition: color 0.3s ease-in-out;
@@ -18691,7 +18685,6 @@ nav .menu-link {
 
 #top-cart span a{
 	font-size:1.125rem;
-	color:black;
 	transition:all 0.3s ease-in-out;
   }
 

@@ -58,7 +58,7 @@ public class Brand {
 	private String visualName;
 
 	@Lob
-	@Column(name = "BRAND_DESC")
+	@Column(name = "BRAND_DESC", columnDefinition="LONGTEXT")
 	private String desc;
 
 }

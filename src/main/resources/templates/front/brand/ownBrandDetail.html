@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org" class="brand-page">
+
+<head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 기업소개')">
+</head>
+<link rel="stylesheet" th:href="@{/front/css/imports/brand.css}">
+
+
+<body class="stretched">
+
+	<div id="wrapper" class="clearfix">
+
+		<th:block
+			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+
+		<section id="brand-visual" class="brand-visual"
+         th:style="'background-image: url(' + ${brand.visualRoad} + ');'">
+		  <div class="brand-visual-overlay">
+		  	<div class="inner">
+			    <div class="brand-visual-text dark">
+				      <h1 th:text="${brand.name}">Brand Title</h1>
+				      <p class="sec-sub" th:text="${brand.content}">Brand Description</p>
+				      <ol class="brand_breadcrumb">
+				        <li><a href="/index">Home</a></li>
+				        <li>Brand</li>
+				        <li th:text="${brand.name}">Brand Name</li>
+				      </ol>
+			    </div>
+		    </div>
+		  </div>
+		</section>
+		
+		<section class="brand-body-container">
+			<div th:utext="${brand.desc}"></div>
+		</section>
+
+
+
+
+		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+	</div>
+	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+	<script src="/front/js/timeline.js"></script>
+	
+	<script>
+	  document.addEventListener("DOMContentLoaded", function () {
+		const logoImg = document.querySelector('#logo img');
+		
+		  if (logoImg) {
+		    logoImg.removeAttribute("style");  // height:100px 제거
+		  }
+		
+		
+	    const header = document.querySelector(".brand-page #header.full-header");
+	    if (!header) return;
+	
+	    function checkScroll() {
+	      if (window.scrollY > 366) {
+	        header.classList.add("scrolled");
+	        header.classList.remove("bg-active");
+	      } else if (window.scrollY > 5) {
+	        header.classList.add("bg-active");
+	        header.classList.remove("scrolled");
+	      } else {
+	        header.classList.remove("bg-active", "scrolled");
+	      }
+	    }
+	
+	    // 스크롤 이벤트마다 실행
+	    window.addEventListener("scroll", checkScroll);
+	
+	    // 페이지 로딩 직후 한 번 실행 → 새로고침 시 현재 스크롤 위치 반영
+	    checkScroll();
+	  });
+	</script>
+
+</body>
+</html>

@@ -37,7 +37,6 @@ import com.dev.BionLifeScienceWeb.repository.brand.BrandSmallSortRepository;
 import com.dev.BionLifeScienceWeb.service.brand.BrandProductFileService;
 import com.dev.BionLifeScienceWeb.service.brand.BrandProductImageService;
 import com.dev.BionLifeScienceWeb.service.brand.BrandProductService;
-import com.dev.BionLifeScienceWeb.service.brand.BrandService;
 import com.dev.BionLifeScienceWeb.service.program.brand.BrandCheckService;
 import com.dev.BionLifeScienceWeb.service.program.brand.BrandExcelDownloadService;
 import com.dev.BionLifeScienceWeb.service.program.brand.BrandExcelUploadService;
@@ -66,7 +65,6 @@ public class BrandManageController {
 	private final BrandCheckService brandExcelCheckService;
 	private final BrandProductImageService brandProductImageService;
 	
-	private final BrandService brandService;
 	
 	@GetMapping("/addExcelDownload")
 	@ResponseBody

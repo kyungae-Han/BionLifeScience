@@ -45,6 +45,7 @@ import com.dev.BionLifeScienceWeb.service.brand.BrandProductImageService;
 import com.dev.BionLifeScienceWeb.service.brand.BrandProductService;
 import com.dev.BionLifeScienceWeb.service.brand.BrandService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -99,27 +100,26 @@ public class BrandController {
 	@PostMapping("/brandInsert")
 	@ResponseBody
 	public String brandInsert(
-			@ModelAttribute Brand brand,
-			@RequestParam(value = "image", required = false) MultipartFile image
-			) throws IllegalStateException, IOException {
-		
-		
-		if (brand.getType() == null) {
+	        @ModelAttribute Brand brand,
+	        @RequestParam(value = "brandImage", required = false) MultipartFile brandImage,
+	        @RequestParam(value = "visualImage", required = false) MultipartFile visualImage
+	) throws IOException {
+
+	    if (brand.getType() == null) {
 	        return "<script>alert('브랜드 타입을 선택하세요.');history.back();</script>";
 	    }
+	    
+	    if (brandImage == null || brandImage.isEmpty()) {
+	        return "<script>alert('로고 파일은 필수입니다.');history.back();</script>";
+	    }
 
-		brandService.brandInsert(image, brand);
-		
-		StringBuffer sb = new StringBuffer();
-		String msg = "브랜드가 등록 되었습니다.";
+	    brandService.brandInsert(brandImage, visualImage, brand); // ✅ 세 개 넘김
 
-		sb.append("alert('" + msg + "');");
-		sb.append("location.href='/admin/brandManager'");
-		sb.append("</script>");
-		sb.insert(0, "<script>");
-
-		return sb.toString();
+	    return "<script>alert('브랜드가 등록 되었습니다.');"
+	         + "location.href='/admin/brandManager';</script>";
 	}
+	
+	
 	
 	@RequestMapping(value = "/brandDelete",
 		    method = {RequestMethod.GET, RequestMethod.POST}
@@ -618,10 +618,12 @@ public class BrandController {
 	@RequestMapping(value = "/brandUpdate",
 		    method = {RequestMethod.GET, RequestMethod.POST}
 	)
+	
+	
 	@ResponseBody
 	public String brandUpdate(
-			@ModelAttribute Brand brand, 
-	        @RequestParam(value = "files", required = false) MultipartFile logo,
+			@ModelAttribute Brand brand,
+	        @RequestParam(value = "brandImage", required = false) MultipartFile brandImage,
 	        @RequestParam(value = "visualImage", required = false) MultipartFile visualImage
 			) throws IOException {
 		
@@ -638,7 +640,7 @@ public class BrandController {
 	    saved.setContent(brand.getContent());
 	    saved.setDesc(brand.getDesc());
 	    
-	    brandService.applyLogo(saved, logo);
+	    brandService.applyLogo(saved, brandImage);
 	    brandService.applyVisual(saved, visualImage);
 		
 	    brandRepository.save(saved);
@@ -672,7 +674,6 @@ public class BrandController {
 	    File dest = new File(dir, fileName);
 	    file.transferTo(dest);
 
-	    // Summernote에서 삽입할 이미지 URL 반환
 	    return webPath + "/" + fileName;
 	}
 
