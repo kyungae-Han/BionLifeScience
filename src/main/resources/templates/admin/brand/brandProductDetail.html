@@ -26,48 +26,54 @@
 						<div class="form-panel">
 
 							<form role="form" action="/admin/brandProductUpdate" class="form-horizontal style-form" method="POST" enctype="multipart/form-data">
+							<input type="hidden" name="id" th:value="${product.id}">
+								<!-- 제품 PK -->
 								<div class="form-group has-success">
 									<label class="col-lg-2 control-label"># 제품 분류 선택</label>
 									<div class="col-lg-10">
 										<div class="row">
 											<div class="col-lg-3">
-												<select class="form-control" id="brandProductBrandId" name="brandId" required="required">
+												<select class="form-control" id="brandProductBrandId" name="brandId" required>
 													<option value="">=== 브랜드 선택 ===</option>
 													<option
-													th:each="b:${brand}" 
-													th:text="${b.name}" 
-													th:value="${b.id}"
-													th:selected="${product.smallSort.middleSort.bigSort.brand.id == b.id}"></option>
+													  th:each="b:${brand}" 
+													  th:text="${b.name}" 
+													  th:value="${b.id}"
+													  th:selected="${product.brand != null and product.brand.id == b.id}">
+													</option>
 												</select>
 											</div>
 											<div class="col-lg-3">
-												<select class="form-control" id="brandProductBigSortId" name="brandBigSortId" required="required">
+												<select class="form-control" id="brandProductBigSortId" name="brandBigSortId" required>
 													<option value="">=== 대분류 선택 ===</option>
 													<option
-													th:each="i:${bigsorts}" 
-													th:text="${i.name}" 
-													th:value="${i.id}"
-													th:selected="${product.smallSort.middleSort.bigSort.id == i.id}"></option>
+													  th:each="i:${bigsorts}" 
+													  th:text="${i.name}" 
+													  th:value="${i.id}"
+													  th:selected="${product.bigSort != null and product.bigSort.id == i.id}">
+													</option>
 												</select>
 											</div>
 											<div class="col-lg-3">
-												<select class="form-control" id="brandProductMiddleSortId" name="brandMiddleSortId"  required="required">
+												<select class="form-control" id="brandProductMiddleSortId" name="brandMiddleSortId">
 													<option value="">=== 중분류 선택 ===</option>
 													<option
-														th:each="m:${middlesorts}" 
-														th:text="${m.name}" 
-														th:value="${m.id}"
-														th:selected="${product.smallSort.middleSort.id == m.id}"></option>
+													  th:each="m:${middlesorts}" 
+													  th:text="${m.name}" 
+													  th:value="${m.id}"
+													  th:selected="${product.middleSort != null and product.middleSort.id == m.id}">
+													</option>
 												</select>
 											</div>
 											<div class="col-lg-3">
-												<select class="form-control" id="brandProductSmallSortId" name="brandSmallSortId" required="required">
+												<select class="form-control" id="brandProductSmallSortId" name="brandSmallSortId">
 													<option value="">=== 소분류 선택 ===</option>
 													<option
-													th:each="s:${smallsorts}" 
-													th:text="${s.name}" 
-													th:value="${s.id}"
-													th:selected="${product.smallSort.id == s.id}"></option>
+														  th:each="s:${smallsorts}" 
+														  th:text="${s.name}" 
+														  th:value="${s.id}"
+														  th:selected="${product.smallSort != null and product.smallSort.id == s.id}">
+														</option>
 												</select>
 											</div>
 										</div>
@@ -84,7 +90,6 @@
 										name="subject"
 										th:value="${product.subject}"
 										required="required">
-										<input type="hidden" name="id" th:value="${product.id}">
 									</div>
 								</div>
 								<div class="form-group has-success">

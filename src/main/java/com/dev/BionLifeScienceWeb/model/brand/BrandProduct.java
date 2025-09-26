@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -117,27 +118,36 @@ public class BrandProduct {
 			)
 	private List<BrandProductSpec> specs;
 	
-	@OneToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(
-			name="BRAND_PRODUCT_REFER_ID", referencedColumnName="BRAND_SMALLSORT_ID"
-			)
+	    name="BRAND_PRODUCT_REFER_ID", 
+	    referencedColumnName="BRAND_SMALLSORT_ID", 
+	    nullable = true
+	)
 	private BrandSmallSort smallSort;
+
 	
-	@OneToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(
-			name="BRAND_PRODUCT_MIDDLE_REFER_ID", referencedColumnName="BRAND_MIDDLESORT_ID"
-			)
+	    name="BRAND_PRODUCT_MIDDLE_REFER_ID", 
+	    referencedColumnName="BRAND_MIDDLESORT_ID", 
+	    nullable = true
+	)
 	private BrandMiddleSort middleSort;
 	
-	@OneToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(
-			name="BRAND_PRODUCT_BIG_REFER_ID", referencedColumnName="BRAND_BIGSORT_ID"
-			)
+	    name="BRAND_PRODUCT_BIG_REFER_ID", 
+	    referencedColumnName="BRAND_BIGSORT_ID", 
+	    nullable = false
+	)
 	private BrandBigSort bigSort;
 	
-	@OneToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(
-			name="BRAND_PRODUCT_BRAND_REFER_ID", referencedColumnName="BRAND_ID"
-			)
+	    name="BRAND_PRODUCT_BRAND_REFER_ID", 
+	    referencedColumnName="BRAND_ID", 
+	    nullable = false
+	)
 	private Brand brand;
 }

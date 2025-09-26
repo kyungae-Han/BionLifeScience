@@ -340,6 +340,11 @@ public class BrandProductService {
 			MultipartFile productOverviewImage, 
 			MultipartFile productSpecImage,
 			BrandProduct product) throws IllegalStateException, IOException {
+		
+		 if (product.getBrand() == null || product.getBigSort() == null) {
+	        throw new IllegalArgumentException("브랜드와 대분류는 반드시 선택해야 합니다.");
+	    }
+
 
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String current_date = simpleDateFormat.format(new Date());

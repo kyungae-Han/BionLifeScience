@@ -335,10 +335,9 @@
 									
 									<!-- 6depth : Product (PARTNER 전용, parent = small-{bs.id}) -->
 									<ul class="col depth-6">
-									  <li class="menu-item"
-									      th:each="bp : ${menuList.brandProductList}"
-									      th:attr="data-id=${'prod-' + bp.id},
-									               data-parent=${'small-' + bp.smallSort.id}">
+									  <li th:each="bp : ${menuList.brandProductList}"
+										    th:unless="${bp.smallSort == null}"
+										    th:class="'small-' + ${bp.smallSort.id}">
 									    <a class="menu-link" th:href="@{|/brandProductDetail/${bp.id}|}">
 									      <div th:text="${bp.subject}">Product</div>
 									    </a>

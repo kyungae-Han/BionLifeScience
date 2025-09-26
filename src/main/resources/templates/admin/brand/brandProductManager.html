@@ -47,14 +47,14 @@
 												</select>
 											</div>
 											<div class="col-lg-3">
-												<select class="form-control" name="brandMiddleSortId" id="brandProductMiddleSortId" required="required">
+												<select class="form-control" name="brandMiddleSortId" id="brandProductMiddleSortId">
 													<option selected value="">== 중분류 선택 ==</option>
 													<option th:each="m:${middlesorts}" th:text="${m.name}"
 														th:value="${m.id}" th:selected="${middleId == m.id}"></option>
 												</select>
 											</div>
 											<div class="col-lg-3">
-												<select class="form-control" name="brandSmallSortId" id="brandProductSmallSortId" required="required">
+												<select class="form-control" name="brandSmallSortId" id="brandProductSmallSortId">
 													<option selected value="">== 소분류 선택 ==</option>
 													<option th:each="s:${smallsorts}" th:text="${s.name}"
 														th:value="${s.id}" th:selected="${smallId == s.id}"></option>
@@ -113,8 +113,13 @@
                                             
                                         </td>
                                         <td><a th:text="${p.subject}" th:href="@{|/admin/brandProductDetail/${p.id}|}">고객이름</a></td>
-										<td><span class="label label-success label-mini">[[${p.smallSort.name}]] / [[${p.smallSort.middleSort.name}]] / [[${p.smallSort.middleSort.bigSort.name}]] / [[${p.smallSort.middleSort.bigSort.brand.name}]]</span></td>
-										
+										<td th:if="${p.smallSort != null}">
+										  <span class="label label-success label-mini">
+										    [[${p.smallSort.name}]] / [[${p.smallSort.middleSort != null ? p.smallSort.middleSort.name : ''}]] /
+										    [[${p.smallSort.middleSort != null and p.smallSort.middleSort.bigSort != null ? p.smallSort.middleSort.bigSort.name : ''}]] /
+										    [[${p.smallSort.middleSort != null and p.smallSort.middleSort.bigSort != null and p.smallSort.middleSort.bigSort.brand != null ? p.smallSort.middleSort.bigSort.brand.name : ''}]]
+										  </span>
+										</td>
 										<td class="hidden-phone">
                                             <button class="btn btn-primary btn-xs" th:onclick="|location.href='@{/admin/brandProductDetail/{id}(id=${p.id})}'|"><i class="fa fa-pencil"></i></button>
                                             <button class="btn btn-danger btn-xs" th:onclick="|brandProductDelete('${p.id}')|"><i class="fa fa-trash-o"></i></button>

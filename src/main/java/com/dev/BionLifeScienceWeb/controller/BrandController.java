@@ -45,7 +45,6 @@ import com.dev.BionLifeScienceWeb.service.brand.BrandProductImageService;
 import com.dev.BionLifeScienceWeb.service.brand.BrandProductService;
 import com.dev.BionLifeScienceWeb.service.brand.BrandService;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -414,10 +413,43 @@ public class BrandController {
 
 	) throws IllegalStateException, IOException {
 		
-		product.setSmallSort(brandSmallSortRepository.findById(product.getBrandSmallSortId()).get());
-		product.setMiddleSort(brandMiddleSortRepository.findById(product.getBrandMiddleSortId()).get());
-		product.setBigSort(brandBigSortRepository.findById(product.getBrandBigSortId()).get());
-		product.setBrand(brandRepository.findById(product.getBrandId()).get());
+		if (product.getBrandId() == null || product.getBrandBigSortId() == null) {
+	        throw new IllegalArgumentException("브랜드와 대분류는 반드시 선택해야 합니다.");
+	    }
+
+		
+	   if (product.getBrandSmallSortId() != null) {
+	        product.setSmallSort(
+	            brandSmallSortRepository.findById(product.getBrandSmallSortId())
+	                .orElse(null)
+	        );
+	    } else {
+	        product.setSmallSort(null);
+	    }
+
+	    // ✅ 중분류도 선택일 경우만 세팅
+	    if (product.getBrandMiddleSortId() != null) {
+	        product.setMiddleSort(
+	            brandMiddleSortRepository.findById(product.getBrandMiddleSortId())
+	                .orElse(null)
+	        );
+	    } else {
+	        product.setMiddleSort(null);
+	    }
+   
+	   
+	   product.setBigSort(
+		        brandBigSortRepository.findById(product.getBrandBigSortId())
+		            .orElseThrow(() -> new IllegalArgumentException("대분류는 필수입니다."))
+		    );
+	   
+	   
+	   product.setBrand(
+		        brandRepository.findById(product.getBrandId())
+		            .orElseThrow(() -> new IllegalArgumentException("브랜드는 필수입니다."))
+		    );
+	   
+	   
 		BrandProduct p = brandProductService.productInsert(productOverviewImage, productSpecImage, product);
 
 		if(spec.length > 0 ) {
@@ -450,21 +482,15 @@ public class BrandController {
 			sp.setProductId(p.getId());
 			brandProductSpecRepository.save(sp);
 		}
-		if(!productFile.isEmpty()) {
-			brandProductFileService.fileUpload(
-				productFile, 
-				p.getId(), 
-				p.getBrandProductCode()
-				);
-		}
-		if(!slides.isEmpty()) {
-			brandProductImageService.fileUpload(
-				slides, 
-				p.getId(), 
-				p.getBrandProductCode()
-				);
+		if (productFile != null && !productFile.isEmpty() && productFile.stream().anyMatch(f -> !f.isEmpty())) {
+		    brandProductFileRepository.deleteAllByProductId(product.getId());
+		    brandProductFileService.fileUpload(productFile, product.getId(), product.getBrandProductCode());
 		}
 
+		if (slides != null && !slides.isEmpty() && slides.stream().anyMatch(f -> !f.isEmpty())) {
+		    brandProductImageRepository.deleteAllByProductId(product.getId());
+		    brandProductImageService.fileUpload(slides, product.getId(), product.getBrandProductCode());
+		}
 		StringBuffer sb = new StringBuffer();
 		String msg = "제품이 등록 되었습니다.";
 
@@ -483,42 +509,107 @@ public class BrandController {
 			@PathVariable Long id,
 			Model model
 			) {
+		
+		   BrandProduct product = brandProductRepository.findById(id)
+			        .orElseThrow(() -> new IllegalArgumentException("해당 제품이 존재하지 않습니다. id=" + id));
+
 		model.addAttribute("brand",brandRepository.findAll());
-		model.addAttribute("bigsorts", brandBigSortRepository.findAllByBrand(brandProductRepository.findById(id).get().getSmallSort().getMiddleSort().getBigSort().getBrand()));
-		model.addAttribute("middlesorts", brandMiddleSortRepository.findAllByBigSort(brandProductRepository.findById(id).get().getSmallSort().getMiddleSort().getBigSort()));
-		model.addAttribute("smallsorts", brandSmallSortRepository.findAllByMiddleSort(brandProductRepository.findById(id).get().getSmallSort().getMiddleSort()));
-		model.addAttribute("product",brandProductRepository.findById(id).get());
+		
+		// ✅ 브랜드 기준으로 대분류 목록 조회
+	    if (product.getBrand() != null) {
+	        model.addAttribute("bigsorts", brandBigSortRepository.findAllByBrand(product.getBrand()));
+	    }
+
+	    // ✅ 대분류 기준으로 중분류 목록 조회 (있을 때만)
+	    if (product.getBigSort() != null) {
+	        model.addAttribute("middlesorts", brandMiddleSortRepository.findAllByBigSort(product.getBigSort()));
+	    }
+
+	    // ✅ 중분류 기준으로 소분류 목록 조회 (있을 때만)
+	    if (product.getMiddleSort() != null) {
+	        model.addAttribute("smallsorts", brandSmallSortRepository.findAllByMiddleSort(product.getMiddleSort()));
+	    }
+	    
+	    model.addAttribute("product", product);
+	    
 		return "admin/brand/brandProductDetail";
 	}
 
-	@RequestMapping(value = "/brandProductUpdate",
-		    method = {RequestMethod.GET, RequestMethod.POST}
-	)
+	
+	@GetMapping("/brandProductUpdate/{id}")
+	public String brandProductUpdateForm(@PathVariable Long id, Model model) {
+	    BrandProduct product = brandProductRepository.findById(id)
+	            .orElseThrow(() -> new IllegalArgumentException("없는 제품입니다."));
+
+	    model.addAttribute("product", product);
+	    model.addAttribute("brand", brandRepository.findAll());   // 브랜드 리스트 추가
+	    model.addAttribute("bigsorts", brandBigSortRepository.findAll());
+	    model.addAttribute("middlesorts", brandMiddleSortRepository.findAll()); // 필요시
+	    model.addAttribute("smallsorts", brandSmallSortRepository.findAll());   // 필요시
+
+	    return "admin/brand/brandProductDetail"; 
+	}
+	
+	
+	@PostMapping("/brandProductUpdate")
 	public String brandProductUpdate(
-			Model model, 
-			@PageableDefault(size = 10) Pageable pageable,
-			BrandProduct product, 
-			String[] spec, 
-			String[] infoQ, 
-			String[] infoA,
-			MultipartFile productOverviewImage, 
-			MultipartFile productSpecImage, 
-			List<MultipartFile> slides,
-			List<MultipartFile> productFile
+			@ModelAttribute BrandProduct product, 
+	        @RequestParam(required = false) MultipartFile productOverviewImage,
+	        @RequestParam(required = false) MultipartFile productSpecImage,
+	        @RequestParam(required = false) List<MultipartFile> slides,
+	        @RequestParam(required = false) List<MultipartFile> productFile,
+	        @RequestParam(required = false) String[] spec,
+	        @RequestParam(required = false) String[] infoQ,
+	        @RequestParam(required = false) String[] infoA,
+	        Model model,
+	        @PageableDefault(size = 10) Pageable pageable
 			) throws IllegalStateException, IOException {
+		
+		
+		 System.out.println("==== brandProductUpdate 호출됨 ====");
+		    System.out.println("productId = " + product.getId()); 
+		    
+		
 		if(product.getSign() == null) {
 			product.setSign(false);
 		}
-		product.setSmallSort(brandSmallSortRepository.findById(product.getBrandSmallSortId()).get());
-		product.setMiddleSort(brandMiddleSortRepository.findById(product.getBrandMiddleSortId()).get());
-		product.setBigSort(brandBigSortRepository.findById(product.getBrandBigSortId()).get());
-		product.setBrand(brandRepository.findById(product.getBrandId()).get());
+		
+		product.setBrand(
+			    brandRepository.findById(product.getBrandId())
+			        .orElseThrow(() -> new IllegalArgumentException("브랜드는 필수입니다."))
+		);
+		
+		product.setBigSort(
+			    brandBigSortRepository.findById(product.getBrandBigSortId())
+			        .orElseThrow(() -> new IllegalArgumentException("대분류는 필수입니다."))
+		);
+		
+		if (product.getBrandMiddleSortId() != null) {
+		    product.setMiddleSort(
+		        brandMiddleSortRepository.findById(product.getBrandMiddleSortId())
+		            .orElse(null)
+		    );
+		} else {
+		    product.setMiddleSort(null);
+		}
+		
+		
+		if (product.getBrandSmallSortId() != null) {
+		    product.setSmallSort(
+		        brandSmallSortRepository.findById(product.getBrandSmallSortId())
+		            .orElse(null)
+		    );
+		} else {
+		    product.setSmallSort(null);
+		}
+		
+		
 		brandProductService.productUpdate(productOverviewImage, productSpecImage, product);
 		
-		brandProductInfoRepository.deleteAllByProductId(product.getId());
-		brandProductSpecRepository.deleteAllByProductId(product.getId());
+		//brandProductInfoRepository.deleteAllByProductId(product.getId());
+		//brandProductSpecRepository.deleteAllByProductId(product.getId());
 		
-		if(spec.length > 0 && spec != null) {
+		if(spec != null && spec.length > 0) {
 			for (String s : spec) {
 				BrandProductInfo in = new BrandProductInfo();
 				in.setProductId(product.getId());
@@ -574,8 +665,10 @@ public class BrandController {
 		model.addAttribute("endPage", endPage);
 		model.addAttribute("smallId", product.getBrandSmallSortId());
 		model.addAttribute("bigsorts", brandBigSortRepository.findAll());
+		
+		
 
-		return "admin/brand/brandProductManager";
+		return "redirect:/admin/brandProductManager";
 	}
 	
 	@RequestMapping(value = "/brandProductDelete/{id}",

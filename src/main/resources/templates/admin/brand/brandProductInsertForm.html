@@ -6,6 +6,7 @@
 </head>
 
 
+
 <body>
 	<section id="container">
 
@@ -31,22 +32,22 @@
 									<div class="col-lg-10">
 										<div class="row">
 											<div class="col-lg-3">
-												<select class="form-control" id="smallPanelBrandSort" name="brandId" required="required">
+												<select class="form-control" id="smallPanelBrandSort" name="brandId" required>
 													<option value="">=== 브랜드 선택 ===</option>
 													<option th:each="b:${brand}" th:text="${b.name}"
 														th:value="${b.id}"></option>
 												</select>
 											</div>
 											<div class="col-lg-3">
-												<select class="form-control" id="smallPanelBigSort" name="brandBigSortId" required="required">
+												<select class="form-control" id="smallPanelBigSort" name="brandBigSortId" required>
 												</select>
 											</div>
 											<div class="col-lg-3">
-												<select class="form-control" id="smallPanelMiddleSort" name="brandMiddleSortId" required="required">
+												<select class="form-control" id="smallPanelMiddleSort" name="brandMiddleSortId">
 												</select>
 											</div>
 											<div class="col-lg-3">
-												<select class="form-control" id="smallPanelSmallSort" name="brandSmallSortId" required="required">
+												<select class="form-control" id="smallPanelSmallSort" name="brandSmallSortId">
 												</select>
 											</div>
 										</div>

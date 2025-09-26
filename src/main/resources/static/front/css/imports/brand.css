@@ -159,7 +159,7 @@
 }
 
 
-.brand-body-container {width: 100%; margin: 0 auto;}
+.brand-body-container {width: 100%; margin: 0 auto 200px;}
 .brand-body-container div {
   max-width: 1280px;
   margin: 0 auto;   
