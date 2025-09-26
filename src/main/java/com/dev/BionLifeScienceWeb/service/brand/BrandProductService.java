@@ -419,117 +419,107 @@ public class BrandProductService {
 
 	}
 
-	public String productUpdate(MultipartFile productOverviewImage, MultipartFile productSpecImage,
-			BrandProduct product) throws IllegalStateException, IOException {
-		
-		String absolutePath = new File("").getAbsolutePath() + "\\";
+	public String productUpdate(
+	        MultipartFile productOverviewImage,
+	        MultipartFile productSpecImage,
+	        BrandProduct product
+	) throws IllegalStateException, IOException {
 
-		int leftLimit = 48; // numeral '0'
-		int rightLimit = 122; // letter 'z'
-		int targetStringLength = 10;
-		Random random = new Random();
+	    String absolutePath = new File("").getAbsolutePath() + "\\";
 
-		if (!productOverviewImage.isEmpty()) {
-			
-			
-			String generatedString = random.ints(leftLimit, rightLimit + 1)
-					.filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97)).limit(targetStringLength)
-					.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
-			
-			File exOverViewFile = new File(brandProductRepository.findById(product.getId()).get().getTableImagePath());
-			if(exOverViewFile.isDirectory()&&exOverViewFile.exists()) {
-				FileUtils.cleanDirectory(exOverViewFile);
-			}
-			
-			String overviewPath = commonPath + "/brandproduct/" + product.getBrandProductCode() + "/overview";
-			String overviewRoad = "/administration/brandproduct/" + product.getBrandProductCode() + "/overview";
-			File overviewFileFolder = new File(overviewPath);
+	    int leftLimit = 48; // numeral '0'
+	    int rightLimit = 122; // letter 'z'
+	    int targetStringLength = 10;
+	    Random random = new Random();
 
-			if (!overviewFileFolder.exists()) {
-				overviewFileFolder.mkdirs();
-			}
+	    // ✅ 기존 DB 엔티티 가져오기
+	    BrandProduct saved = brandProductRepository.findById(product.getId())
+	            .orElseThrow(() -> new IllegalArgumentException("해당 제품이 존재하지 않습니다. id=" + product.getId()));
 
-			String overviewContentType = productOverviewImage.getContentType();
-			// 확장자 명 NULL 검증
-			if (ObjectUtils.isEmpty(overviewContentType)) {
-				return "NONE";
-			}
+	    /* =========================
+	       Overview 이미지 업데이트
+	       ========================= */
+	    if (productOverviewImage != null && !productOverviewImage.isEmpty()) {
 
-			String overviewFileName = generatedString + "_" + productOverviewImage.getOriginalFilename();
-	      
-			if (env.equals("local")) {
-				overviewFileFolder = new File(absolutePath + overviewPath + "/" + overviewFileName);
-			} else if (env.equals("prod")) {
-				overviewFileFolder = new File(overviewPath + "/" + overviewFileName);
-			}
+	        String generatedString = random.ints(leftLimit, rightLimit + 1)
+	                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+	                .limit(targetStringLength)
+	                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+	                .toString();
 
-			productOverviewImage.transferTo(overviewFileFolder);
+	        String overviewPath = commonPath + "/brandproduct/" + saved.getBrandProductCode() + "/overview";
+	        String overviewRoad = "/administration/brandproduct/" + saved.getBrandProductCode() + "/overview";
 
-			brandProductRepository.findById(product.getId()).ifPresent(s -> {
-				s.setTableImagePath(overviewPath + "/" + overviewFileName);
-				s.setTableImageRoad(overviewRoad + "/" + overviewFileName);
-				s.setTableImageName(overviewFileName);
-				brandProductRepository.save(s);
-			});
-		}
-		
-		if (!productSpecImage.isEmpty()) {
-			
-			File exSpecFile = new File(brandProductRepository.findById(product.getId()).get().getSpecImagePath());
-			if(exSpecFile.isDirectory()&&exSpecFile.exists()) {
-				FileUtils.cleanDirectory(exSpecFile);
-			}
-			
-			String generatedString = random.ints(leftLimit, rightLimit + 1)
-					.filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97)).limit(targetStringLength)
-					.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
+	        File overviewFileFolder = new File(overviewPath);
+	        if (!overviewFileFolder.exists()) {
+	            overviewFileFolder.mkdirs();
+	        }
 
-			String specPath = commonPath + "/brandproduct/" + product.getBrandProductCode() + "/spec";
-			String specRoad = "/administration/brandproduct/" + product.getBrandProductCode() + "/spec";
-			File specFileFolder = new File(specPath);
+	        String overviewFileName = generatedString + "_" + productOverviewImage.getOriginalFilename();
 
-			if (!specFileFolder.exists()) {
-				specFileFolder.mkdirs();
-			}
+	        File dest;
+	        if (env.equals("local")) {
+	            dest = new File(absolutePath + overviewPath + "/" + overviewFileName);
+	        } else {
+	            dest = new File(overviewPath + "/" + overviewFileName);
+	        }
+	        productOverviewImage.transferTo(dest);
 
-			String specContentType = productSpecImage.getContentType();
-			
-			// 확장자 명 NULL 검증
-			if (ObjectUtils.isEmpty(specContentType)) {
-				return "NONE";
-			}
+	        saved.setTableImagePath(overviewPath + "/" + overviewFileName);
+	        saved.setTableImageRoad(overviewRoad + "/" + overviewFileName);
+	        saved.setTableImageName(overviewFileName);
+	    }
 
-			String specFileName = generatedString + "_" + productSpecImage.getOriginalFilename();
+	    /* =========================
+	       Spec 이미지 업데이트
+	       ========================= */
+	    if (productSpecImage != null && !productSpecImage.isEmpty()) {
 
-			if (env.equals("local")) {
-				specFileFolder = new File(absolutePath + specPath + "/" + specFileName);
-			} else if (env.equals("prod")) {
-				specFileFolder = new File(specPath + "/" + specFileName);
-			}
-			productSpecImage.transferTo(specFileFolder);
-			brandProductRepository.findById(product.getId()).ifPresent(s -> {
-				s.setSpecImageName(specFileName);
-				s.setSpecImagePath(specPath + "/" + specFileName);
-				s.setSpecImageRoad(specRoad + "/" + specFileName);
-				brandProductRepository.save(s);
-			});
+	        String generatedString = random.ints(leftLimit, rightLimit + 1)
+	                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+	                .limit(targetStringLength)
+	                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+	                .toString();
 
-		}
-		
-		brandProductRepository.findById(product.getId()).ifPresent(s -> {
-			s.setSmallSort(brandSmallSortRepository.findById(product.getBrandSmallSortId()).get());
-			s.setMiddleSort(brandMiddleSortRepository.findById(product.getBrandMiddleSortId()).get());
-			s.setBigSort(brandBigSortRepository.findById(product.getBrandBigSortId()).get());
-			s.setBrand(brandRepository.findById(product.getBrandId()).get());
-			s.setSubject(product.getSubject());
-			s.setContent(product.getContent());
-			s.setProductSubContent(product.getProductSubContent());
-			s.setSign(product.getSign());
-			brandProductRepository.save(s);
-		});
+	        String specPath = commonPath + "/brandproduct/" + saved.getBrandProductCode() + "/spec";
+	        String specRoad = "/administration/brandproduct/" + saved.getBrandProductCode() + "/spec";
 
-		return "success";
+	        File specFileFolder = new File(specPath);
+	        if (!specFileFolder.exists()) {
+	            specFileFolder.mkdirs();
+	        }
 
+	        String specFileName = generatedString + "_" + productSpecImage.getOriginalFilename();
+
+	        File dest;
+	        if (env.equals("local")) {
+	            dest = new File(absolutePath + specPath + "/" + specFileName);
+	        } else {
+	            dest = new File(specPath + "/" + specFileName);
+	        }
+	        productSpecImage.transferTo(dest);
+
+	        saved.setSpecImagePath(specPath + "/" + specFileName);
+	        saved.setSpecImageRoad(specRoad + "/" + specFileName);
+	        saved.setSpecImageName(specFileName);
+	    }
+
+	    /* =========================
+	       연관관계 & 기타 속성 업데이트
+	       ========================= */
+	    saved.setBrand(product.getBrand());           // Controller에서 세팅됨
+	    saved.setBigSort(product.getBigSort());
+	    saved.setMiddleSort(product.getMiddleSort()); // null 가능
+	    saved.setSmallSort(product.getSmallSort());   // null 가능
+
+	    saved.setSubject(product.getSubject());
+	    saved.setContent(product.getContent());
+	    saved.setProductSubContent(product.getProductSubContent());
+	    saved.setSign(product.getSign());
+
+	    brandProductRepository.save(saved);
+
+	    return "success";
 	}
 	
 	public String productOverview(

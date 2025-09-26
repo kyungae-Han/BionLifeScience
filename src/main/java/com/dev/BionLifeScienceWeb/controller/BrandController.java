@@ -623,22 +623,23 @@ public class BrandController {
 			brandProductInfoRepository.save(in);
 		}
 		
-		if(infoQ.length > 0 && infoQ != null) {
-			
-			for (int a = 0; a < infoQ.length; a++) {
-				BrandProductSpec sp = new BrandProductSpec();
-				sp.setProductSpecSubject(infoQ[a]);
-				sp.setProductSpecContent(infoA[a]);
-				sp.setProductId(product.getId());
-				brandProductSpecRepository.save(sp);
-			}
-		}else {
-			BrandProductSpec sp = new BrandProductSpec();
-			sp.setProductSpecSubject("-");
-			sp.setProductSpecContent("-");
-			sp.setProductId(product.getId());
-			brandProductSpecRepository.save(sp);
+		if (infoQ != null && infoQ.length > 0) {
+		    for (int a = 0; a < infoQ.length; a++) {
+		        BrandProductSpec sp = new BrandProductSpec();
+		        sp.setProductSpecSubject(infoQ[a]);
+		        sp.setProductSpecContent(infoA[a]);
+		        sp.setProductId(product.getId());
+		        brandProductSpecRepository.save(sp);
+		    }
+		} else {
+		    BrandProductSpec sp = new BrandProductSpec();
+		    sp.setProductSpecSubject("-");
+		    sp.setProductSpecContent("-");
+		    sp.setProductId(product.getId());
+		    brandProductSpecRepository.save(sp);
 		}
+		
+		
 		if(productFile.size()>0 && !productFile.get(0).isEmpty()) {
 			brandProductFileRepository.deleteAllByProductId(product.getId());
 			brandProductFileService.fileUpload(
