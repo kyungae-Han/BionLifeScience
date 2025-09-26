@@ -55,7 +55,7 @@
   align-items: center;
   justify-content: space-between;
   transition: height .35s ease;
-  height: 120px;
+  height: 100px;
 }
 .brand-page #header.full-header.scrolled .container {
   height: 70px;
@@ -162,10 +162,29 @@
 .brand-body-container {width: 100%; margin: 0 auto;}
 .brand-body-container div {
   max-width: 1280px;
-  margin: 125px auto;   
-  text-align: center;
+  margin: 0 auto;   
 }
+
+.note-editable img.left {
+  float: left;
+  margin-right: 15px;
+}
+
+.note-editable img.right {
+  float: right;
+  margin-left: 15px;
+}
+
+.note-editable table {
+  max-width: 1280px;   /* 에디터 영역 벗어나지 않도록 */
+  width: auto;       /* 내용에 맞게 늘어나되 100% 이상은 안됨 */
+  table-layout: auto;
+}
+.brand-body-container td {border: 1px solid rgb(99,99,99);}
 
 @media (max-width:991px){
 	.brand-body-container div {max-width:100%};
 }
+
+
+

@@ -31,6 +31,7 @@ button[type=button]{
 	border:0;
 }
 
+
 .history-caption button{background:none; border:0; color:#fff; text-align: center;}
 
 
@@ -2602,7 +2603,7 @@ html[xmlns] .slider-wrap {
 }
 
 .header-size-sm #header-wrap #logo img {
-  height: 60px;
+  height: 70px;
 }
 
 .header-size-md #header-wrap #logo img {
@@ -2610,7 +2611,7 @@ html[xmlns] .slider-wrap {
 }
 
 .header-size-lg #header-wrap #logo img {
-  height: 120px;
+  height: 100px;
 }
 
 /* ----------------------------------------------------------------
@@ -19692,7 +19693,7 @@ body:not(.stretched) #wrapper {
 
 /* SVG 래퍼: 회전은 이 요소 하나만 건드림 */
 #hamburger-menu-trigger .svg-trigger {
-  width: 60px; height: 60px;
+  width: 60px; height: 70px;
   transform-origin: center;
   transform-box: fill-box;
   transition: transform 0.4s ease;
@@ -19947,3 +19948,5 @@ body:not(.stretched) #wrapper {
 	background: var(--bs-orange);
 	border: 1px solid var(--bs-orange);
 }
+
+
