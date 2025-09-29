@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="KO" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/admin/common :: headMenu">
+<head th:replace="~{fragments/admin/common :: headMenu}">
 
 
 </head>
@@ -9,8 +9,8 @@
 
 <body>
 	<section id="container">
-		<th:block th:replace="fragments/admin/common :: headMenu"></th:block>
-		<th:block th:replace="fragments/admin/common :: sideMenu('certification')"></th:block>
+		<th:block th:replace="~{fragments/admin/common :: headMenu}"></th:block>
+		<th:block th:replace="~{fragments/admin/common :: sideMenu('certification')}"></th:block>
 		<section id="main-content">
 			<section class="wrapper">
 				<div class="row mt">
@@ -114,7 +114,7 @@
 			</section>
 		</section>
 	</section>
-	<th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
+	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
 	<script src="/administration/lib/jquery-ui-1.9.2.custom.min.js"></script>
 	<script type="text/javascript"
 		src="/administration/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>

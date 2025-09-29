@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/admin/common :: headMenu">
+<head th:replace="~{fragments/admin/common :: headMenu}">
 
 </head>
 
@@ -9,9 +9,9 @@
 <body>
 	<section id="container">
 
-		<th:block th:replace="fragments/admin/common :: headMenu"></th:block>
+		<th:block th:replace="~{fragments/admin/common :: headMenu}"></th:block>
 
-		<th:block th:replace="fragments/admin/common :: sideMenu('brand')"></th:block>
+		<th:block th:replace="~{fragments/admin/common :: sideMenu('brand')}"></th:block>
 
 		<section id="main-content">
 			<section class="wrapper">
@@ -123,15 +123,10 @@
 										    <button type="button" class="btn btn-success" id="spec-plus-button">+ 추가</button>
 											<button type="button" class="btn btn-danger" id="spec-del-button">- 삭제</button>
 									    </div>
-									    <div class="spec-wrap" th:each="s:${product.infos}">
-											<input
-											type="text" 
-											name="spec" 
-											th:value="${s.productInfoText}"
-											placeholder="제품 스펙을 입력 해 주세요. 예) 80mm*80mm*100mm" 
-											class="form-control" 
-											style="width:80%;">
-									    </div>
+									    <div th:each="s:${product.infos}">
+										    <input type="hidden" name="infoId" th:value="${s.id}">
+										    <input class="form-control wth-100" style="margin-bottom:10px;"  type="text" name="spec" th:value="${s.productInfoText}">
+										</div>
 									</div>
 								</div>
 								<div class="form-group has-success">
@@ -142,21 +137,11 @@
 										    <button type="button" class="btn btn-success" id="info-plus-button">+ 추가</button>
 										    <button type="button" class="btn btn-danger" id="info-del-button">- 삭제</button>
 									    </div>
-									    <div class="spec-wrap" th:each="i:${product.specs}">
-											<input type="text"
-											name="infoQ" 
-											class="form-control" 
-											placeholder="추가할 내용을 입력 해 주세요. 예) 제조자"
-											style="width:40%;"
-											th:value="${i.productSpecSubject}">
-											<input 
-											type="text" 
-											name="infoA" 
-											class="form-control" 
-											placeholder="추가주제의 답변을 입력 해 주세요. 예) 바이온라이프사이언스" 
-											style="width:40%;"
-											th:value="${i.productSpecContent}">
-									    </div>
+									    <div th:each="i:${product.specs}">
+										    <input type="hidden" name="specId" th:value="${i.id}">
+										    <input class="form-control wth-100" style="margin-bottom:10px;" type="text" name="infoQ" th:value="${i.productSpecSubject}">
+										    <input class="form-control wth-100" style="margin-bottom:10px;" type="text" name="infoA" th:value="${i.productSpecContent}">
+										</div>
 									</div>
 								</div>
 								
@@ -238,7 +223,7 @@
 			</section>
 		</section>
 	</section>
-	<th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
+	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
 	<script src="/administration/lib/brandProductDetail.js"></script>
 	<script src="/administration/lib/jquery-ui-1.9.2.custom.min.js"></script>
 	<script type="text/javascript"

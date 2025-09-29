@@ -27,4 +27,6 @@ public interface BrandMiddleSortRepository extends JpaRepository<BrandMiddleSort
 	
 	@Query("SELECT MAX(brandMiddleSortIndex) FROM BrandMiddleSort")
 	Optional<Integer> findFirstIndex();
+	
+	List<BrandMiddleSort> findAllByBigSort_Brand_IdOrderByBrandMiddleSortIndexAsc(Long brandId);
 }

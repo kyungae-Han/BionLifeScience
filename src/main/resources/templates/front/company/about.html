@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 기업소개')">
+<head th:replace="~{/fragments/front/common :: headSrc('바이온라이프사이언스 기업소개')}">
 </head>
 
 <link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
@@ -9,7 +9,7 @@
 <body class="stretched about">
 <div id="wrapper" class="clearfix">
 
-	<th:block th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+	<th:block th:replace="~{/fragments/front/common :: headerSrc(false, ${menuList})}"></th:block>
 		<div id="page-title">
 				<h1 class="sec-head">기업 소개</h1>
 		</div>
@@ -367,7 +367,7 @@
 					</div>
 				</div>
 		</section>
-	<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+	<th:block th:replace="~{/fragments/front/common :: footerSrc}"></th:block>
 
 
 <!-- 모달창-개인정보처리방침 -->
@@ -382,7 +382,7 @@
 </div>
 
 </div>
-<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+<th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
 <script th:src="@{/front/js/timeline.js}" defer></script>
 <script th:src="@{/front/js/company/about.js}" defer></script>
 

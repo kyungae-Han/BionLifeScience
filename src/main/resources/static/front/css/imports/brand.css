@@ -187,4 +187,116 @@
 }
 
 
+.product-container {max-width:1280px; margin:0 auto;}
+
+
+/* 카테고리 탭 전체 */
+.category-tabs {
+  width: 100%;
+  margin: 20px 0;
+  border-bottom: 2px solid #eee;
+}
+
+/* 탭 목록 */
+.category-tabs ul {
+  display: flex;
+  flex-wrap: wrap; /* PC에서는 가로로, 모바일에서는 줄바꿈 */
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* 탭 항목 */
+.category-tabs li {
+  flex: 0 0 auto;
+}
+
+/* 탭 버튼 */
+.category-tabs button {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 4px 4px 0 0;
+  background: #f8f8f8;
+  color: #333;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+/* hover */
+.category-tabs button:hover {
+  background: #eaeaea;
+  color: #111;
+}
+
+/* active 상태 */
+.category-tabs button.active {
+  background: #fff;
+  border: 2px solid #0072ce;
+  border-bottom: 2px solid #fff; /* 아래쪽은 끊어서 연결된 느낌 */
+  color: #0072ce;
+  font-weight: 600;
+}
+
+
+.product-card .entry-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;  /* 정사각형 */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position:relative;
+}
+
+.product-card .entry-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;  /* 이미지 비율 유지, 잘리지 않게 */
+}
+
+.grid-inner {max-width: 295px;}
+
+/* hover 아이콘 (before 사용) */
+.product-card .entry-image::before {
+  content: "\F341";
+  font-family: "bootstrap-icons";
+  font-weight: 900;
+  font-size: 28px;
+  color: white;
+  background: rgba(0,0,0,0.55);
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.6);
+  opacity: 0;
+  transition: all .3s ease;
+  pointer-events: none;
+  z-index:1;
+}
+
+/* hover 시 */
+.product-card .entry-image:hover::before {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+
+
+@media (max-width: 768px) {
+  .category-tabs ul {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .category-tabs a {
+    border-radius: 4px;
+    border: 1px solid #ddd;
+  }
+}
 

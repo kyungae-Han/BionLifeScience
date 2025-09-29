@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/admin/common :: headMenu">
+<head th:replace="~{fragments/admin/common :: headMenu}">
 
 </head>
 
@@ -9,9 +9,9 @@
 <body>
 	<section id="container">
 
-		<th:block th:replace="fragments/admin/common :: headMenu"></th:block>
+		<th:block th:replace="~{fragments/admin/common :: headMenu}"></th:block>
 
-		<th:block th:replace="fragments/admin/common :: sideMenu('product')"></th:block>
+		<th:block th:replace="~{fragments/admin/common :: sideMenu('product')}"></th:block>
 
 		<section id="main-content">
 			<section class="wrapper">
@@ -153,7 +153,7 @@
 			</section>
 		</section>
 	</section>
-	<th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
+	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
 	<script src="/administration/lib/productManager.js"></script>
 </body>
 

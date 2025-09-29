@@ -2859,10 +2859,11 @@ tbody td:not(.table__subject){
 
 
 
-
+/*
 .product-mega-wrap.debug-open {
   opacity: 1 !important;
   visibility: visible !important;
   pointer-events: auto !important;
   transform: translateX(-50%) !important;
 }
+*/

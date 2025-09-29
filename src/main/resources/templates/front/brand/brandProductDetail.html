@@ -2,7 +2,7 @@
 <html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head
-	th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 제품 중 분류 페이지')">
+	th:replace="~{/fragments/front/common :: headSrc('바이온라이프사이언스 제품 중 분류 페이지')}">
 </head>
 <link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
 
@@ -11,7 +11,7 @@
 	<div id="wrapper" class="clearfix">
 
 		<th:block
-			th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+			th:replace="~{/fragments/front/common :: headerSrc(false, ${menuList})}"></th:block>
 		<section id="page-title">
 
 			<div class="container clearfix">
@@ -32,9 +32,8 @@
 						<div class="container text-center">
 
 							<div class="heading-block center">
-								<h2 th:text="${pr.subject}">Screw Caps and Tubes</h2>
-								<span th:text="${pr.content}">Screw Caps and Tubes 제품 상세
-									페이지 입니다</span>
+								<h2 th:text="${product.subject}">Screw Caps and Tubes</h2>
+								<span th:text="${product.content}">Screw Caps and Tubes 제품 상세 페이지 입니다</span>
 							</div>
 						</div>
 					</div>
@@ -51,7 +50,7 @@
 													data-thumbs="true">
 													<div class="flexslider">
 														<div class="slider-wrap" data-lightbox="gallery">
-															<div class="slide" th:each="e:${pr.images}"
+															<div class="slide" th:each="e:${product.images}"
 																th:data-thumb="${e.productImageRoad}">
 																<a th:href="@{${e.productImageRoad}}" title="제품 사진"
 																	data-lightbox="gallery-item"><img
@@ -66,17 +65,17 @@
 
 										<div class="col-md-6 product-desc">
 
-											<p th:text="${pr.productSubContent}">
+											<p th:text="${product.productSubContent}">
 												특허받은 설계로 스왑을 담고 있는 꽉 잠긴 Screw Caps and Tubes을 개봉하면 뚜껑부분에 스왑이
 												꼽혀서 나오며 또한 <strong></strong>작은 힘으로도 뚜껑과 스왑을 쉽게 분리</strong>할 수 있습니다.
 											</p>
 											<ul class="iconlist">
-												<li th:each="i:${pr.infos}"><i class="icon-caret-right"></i>
+												<li th:each="i:${product.infos}"><i class="icon-caret-right"></i>
 													<span th:text="${i.productInfoText}"></span></li>
 											</ul>
 											<div class="card product-meta">
 												<div class="card-body">
-													<th:block th:each="s:${pr.specs}">
+													<th:block th:each="s:${product.specs}">
 														<span class="posted_in">[[${s.productSpecSubject}]]
 															: <a href="javascript:void();" rel="tag"
 															th:text="${s.productSpecContent}">제조자</a>
@@ -105,12 +104,12 @@
 													<div class="tab-content clearfix text-center" id="tabs-1"
 														style="text-align: center;">
 														<img width="1200px" style="margin: 0 auto;"
-															th:src="${pr.tableImageRoad}">
+															th:src="${product.tableImageRoad}">
 													</div>
 													<div class="tab-content clearfix text-center" id="tabs-2"
 														style="text-align: center;">
 														<img width="1200px" style="margin: 0 auto;"
-															th:src="${pr.specImageRoad}">
+															th:src="${product.specImageRoad}">
 
 													</div>
 													<div class="tab-content clearfix" id="tabs-3">
@@ -118,7 +117,7 @@
 														<div id="reviews" class="clearfix">
 															<ol class="commentlist clearfix b-b-n">
 																<li class="comment even thread-even depth-1"
-																	th:each="f:${pr.files}" id="li-comment-1">
+																	th:each="f:${product.files}" id="li-comment-1">
 																	<div id="comment-1" class="comment-wrap clearfix">
 																		<div class="comment-content clearfix">
 																			<div class="comment-author">
@@ -152,7 +151,9 @@
 										<h4># Quick Link</h4>
 									</div>
 								</div>
-								<div class="toggle" th:if="${bs.middleSort.id == pr.smallSort.middleSort.id}" th:each="bs:${bs}">
+								<div class="toggle"
+									     th:if="${smallSort != null and bs.middleSort.id == smallSort.middleSort.id}"
+									     th:each="bs : ${bsList}">
 									<div class="toggle-header">
 										<div class="toggle-icon">
 											<i class="toggle-closed icon-ok-circle"></i> <i
@@ -183,11 +184,9 @@
 								data-items-xs="1" data-items-md="2" data-items-lg="3"
 								data-items-xl="4">
 
-								<div class="portfolio-item" th:each="product:${pr}">
+								<div class="portfolio-item" th:each="p : ${relatedProducts}">
 									<div class="portfolio-image">
-										<a href="#"> <img th:src="${product.firstImageRoad}"
-											alt="PRODUCT">
-										</a>
+										<a href="javascript:void(0);" th:text="${product.smallSort != null ? product.smallSort.name : 'No Sort'}"></a>
 										<div class="bg-overlay">
 											<div class="bg-overlay-content dark"
 												data-hover-animate="fadeIn" data-hover-speed="350">
@@ -209,9 +208,9 @@
 									</div>
 									<div class="portfolio-desc">
 										<h3>
-											<a href="javascript:void(0);" th:text="${product.smallSort.name}">Sorts
-												of Product</a>
-										</h3>
+									        <a href="javascript:void(0);" 
+									           th:text="${smallSort != null ? smallSort.name : 'No Sort'}">Sorts of Product</a>
+									    </h3>
 									</div>
 								</div>
 							</div>
@@ -221,9 +220,9 @@
 			</div>
 		</section>
 
-		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+		<th:block th:replace="~{/fragments/front/common :: footerSrc}"></th:block>
 	</div>
-	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+	<th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
 
 </body>
 </html>

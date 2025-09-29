@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="/fragments/front/common :: headSrc('고객문의')">
+<head th:replace="~{/fragments/front/common :: headSrc('고객문의')}">
 </head>
 <link rel="stylesheet" th:href="@{/front/css/bootstrap.css}">
 
@@ -109,7 +109,7 @@
 </div>
 
 
-<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+<th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
 <script src="/front/js/contact.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {

@@ -142,7 +142,7 @@ public class BrandExcelUploadService {
 						Cell text = row.getCell(1);
 						String codeValue = code + "";
 						String textValue = text + "";
-						info.setProductId(brandProductRepository.findByBrandProductCode(codeValue).get().getId());
+						info.setProduct(brandProductRepository.findByBrandProductCode(codeValue).get());
 						info.setProductInfoText(textValue);
 						brandProductInfoRepository.save(info);
 					}
@@ -168,7 +168,8 @@ public class BrandExcelUploadService {
 						String contentValue = content + "";
 						spec.setProductSpecSubject(subjectValue);
 						spec.setProductSpecContent(contentValue);
-						spec.setProductId(brandProductRepository.findByBrandProductCode(codeValue).get().getId());
+						BrandProduct product = brandProductRepository.findByBrandProductCode(codeValue).get();
+						spec.setProduct(product);
 						brandProductSpecRepository.save(spec);
 
 					}
@@ -183,7 +184,7 @@ public class BrandExcelUploadService {
 				for (String code : productCodes) {
 					if (!infoCodes.contains(code)) {
 						BrandProductInfo info = new BrandProductInfo();
-						info.setProductId(brandProductRepository.findByBrandProductCode(code).get().getId());
+						info.setProduct(brandProductRepository.findByBrandProductCode(code).get());
 						info.setProductInfoText("-");
 						brandProductInfoRepository.save(info);
 					}
@@ -192,7 +193,8 @@ public class BrandExcelUploadService {
 						BrandProductSpec spec = new BrandProductSpec();
 						spec.setProductSpecSubject("-");
 						spec.setProductSpecContent("-");
-						spec.setProductId(brandProductRepository.findByBrandProductCode(code).get().getId());
+						BrandProduct product = brandProductRepository.findByBrandProductCode(code).get();
+						spec.setProduct(product);
 						brandProductSpecRepository.save(spec);
 					}
 				}
@@ -289,7 +291,7 @@ public class BrandExcelUploadService {
 						Cell text = row.getCell(1);
 						String codeValue = code + "";
 						String textValue = text + "";
-						info.setProductId(brandProductRepository.findByBrandProductCode(codeValue).get().getId());
+						info.setProduct(brandProductRepository.findByBrandProductCode(codeValue).get());
 						info.setProductInfoText(textValue);
 						infoCodes.add(codeValue);
 						brandProductInfoRepository.save(info);
@@ -317,7 +319,8 @@ public class BrandExcelUploadService {
 						specCodes.add(codeValue);
 						spec.setProductSpecSubject(subjectValue);
 						spec.setProductSpecContent(contentValue);
-						spec.setProductId(brandProductRepository.findByBrandProductCode(codeValue).get().getId());
+						BrandProduct product = brandProductRepository.findByBrandProductCode(codeValue).get();
+						spec.setProduct(product);
 						brandProductSpecRepository.save(spec);
 
 					}
@@ -332,7 +335,7 @@ public class BrandExcelUploadService {
 				for (String code : productCodes) {
 					if (!infoCodes.contains(code)) {
 						BrandProductInfo info = new BrandProductInfo();
-						info.setProductId(brandProductRepository.findByBrandProductCode(code).get().getId());
+						info.setProduct(brandProductRepository.findByBrandProductCode(code).get());
 						info.setProductInfoText("-");
 						brandProductInfoRepository.save(info);
 					}
@@ -341,7 +344,8 @@ public class BrandExcelUploadService {
 						BrandProductSpec spec = new BrandProductSpec();
 						spec.setProductSpecSubject("-");
 						spec.setProductSpecContent("-");
-						spec.setProductId(brandProductRepository.findByBrandProductCode(code).get().getId());
+						BrandProduct product = brandProductRepository.findByBrandProductCode(code).get();
+						spec.setProduct(product);
 						brandProductSpecRepository.save(spec);
 					}
 				}

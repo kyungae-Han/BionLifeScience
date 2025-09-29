@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="/fragments/front/common :: headSrc('권한 없는 페이지')">
+<head th:replace="~{/fragments/front/common :: headSrc('권한 없는 페이지')}">
 
 </head>
 
 <body class="stretched">
 	<div id="wrapper" class="clearfix">
 		<th:block
-			th:replace="/fragments/front/common :: headerSrc(true, ${menuList})"></th:block>
+			th:replace="~{/fragments/front/common :: headerSrc(true, ${menuList})}"></th:block>
 
 		<section id="slider" class="slider-element min-vh-60 min-vh-md-100 dark error404-wrap include-header" style="background: url(/front/images/landing/static.jpg) center;">
 			<div class="slider-inner">
@@ -28,10 +28,10 @@
 			</div>
 		</section>
 
-		<th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+		<th:block th:replace="~{/fragments/front/common :: footerSrc}"></th:block>
 	</div>
 
-	<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+	<th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
 
 </body>
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 기업소개')">
+<head th:replace="~{/fragments/front/common :: headSrc('바이온라이프사이언스 기업소개')}">
 </head>
 
 <link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
@@ -9,18 +9,7 @@
 <body class="stretched">
 <div id="wrapper" class="clearfix">
 
-    <th:block th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
-
-    <!-- 브랜드 상단 이미지 -->
-    <div class="brand-top-images page-title-dark include-header"
-         th:style="|background-image: url('${brandInfo.imageRoad}');|">
-    </div>
-
-    <section id="page-title" class="container clearfix">
-        <h1 class="brand__title" th:text="${brandInfo.name}">기업소개</h1>
-        <span th:text="${brandInfo.content}">Bion Life Science Introduction</span>
-        <ol class="breadcrumb"></ol>
-    </section>
+    <th:block th:replace="~{/fragments/front/common :: headerSrc(false, ${menuList})}"></th:block>
 
     <!-- 목록 섹션: products가 존재하고 요소가 1개 이상일 때만 렌더링 -->
     <section id="content" th:if="${products != null and products.totalElements > 0}">
@@ -68,10 +57,10 @@
                                         <p th:text="${product.content}">
                                             간단한 제품에 대한 설명이 들어가는 영역입니다.
                                         </p>
-                                        <a th:href="@{|/brandProductDetail/${product.id}|}" class="more-link">
-                                            자세히 보기 <i class="icon-line-arrow-right"></i>
-                                        </a>
                                     </div>
+                                     <a th:href="@{|/brandProductDetail/${product.id}|}" class="more-link">
+                                         자세히 보기 <i class="icon-line-arrow-right"></i>
+                                     </a>
                                 </div>
                             </div>
                         </div>
@@ -154,10 +143,10 @@
         </div>
     </section>
 
-    <th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+    <th:block th:replace="~{/fragments/front/common :: footerSrc}"></th:block>
 </div>
 
-<th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+<th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
 <script src="/front/js/timeline.js"></script>
 </body>
 </html>

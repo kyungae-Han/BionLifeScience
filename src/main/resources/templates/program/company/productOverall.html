@@ -2,15 +2,15 @@
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
 	data-sidebar-image="none" data-preloader="disable" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="program/fragments/common :: headSrc"></head>
+<head th:replace="~{program/fragments/common :: headSrc}"></head>
 
 <body>
 
 	<div id="layout-wrapper">
 
-		<header id="page-topbar" th:replace="program/fragments/common :: headerMenu"></header>
+		<header id="page-topbar" th:replace="~{program/fragments/common :: headerMenu}"></header>
 
-		<div class="app-menu navbar-menu" th:replace="program/fragments/common :: navMenu">
+		<div class="app-menu navbar-menu" th:replace="~{program/fragments/common :: navMenu}">
 			<div class="sidebar-background"></div>
 		</div>
 		<div class="vertical-overlay"></div>
@@ -190,15 +190,15 @@
 					</div>
 				</div>
 			</div>
-			<th:block th:replace="program/fragments/common :: footerSrc"></th:block>
+			<th:block th:replace="~{program/fragments/common :: footerSrc}"></th:block>
 		</div>
 	</div>
-	<th:block th:replace="program/fragments/common :: settingBlock"></th:block>
+	<th:block th:replace="~{program/fragments/common :: settingBlock}"></th:block>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"
 		integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"
 		integrity="sha256-ipiJrswvAR4VAx/th+6zWsdeYmVae0iJuiR+6OqHJHQ=" crossorigin="anonymous"></script>
-	<th:block th:replace="program/fragments/common :: scriptSrc"></th:block>
+	<th:block th:replace="~{program/fragments/common :: scriptSrc}"></th:block>
 	<script th:inline="javascript">
 		var bigId = /*[[${bigId}]]*/ 'default';
 		var middleId = /*[[${middleId}]]*/ 'default';

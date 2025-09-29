@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="/fragments/front/common :: headSrc('바이온라이프사이언스 홈')">
+<head th:replace="~{/fragments/front/common :: headSrc('바이온라이프사이언스 홈')}">
 </head>
 
 <body class="stretched">
  <div id="wrapper" class="clearfix">
-  <th:block th:replace="/fragments/front/common :: headerSrc(false, ${menuList})"></th:block>
+  <th:block th:replace="~{/fragments/front/common :: headerSrc(false, ${menuList})}"></th:block>
   
 	<!--메인배-->
   <section id="slider" class="slider-element slider-parallax swiper_wrapper vh-75">
@@ -310,10 +310,10 @@
      </div>
     </div>
 
-  <th:block th:replace="/fragments/front/common :: footerSrc"></th:block>
+  <th:block th:replace="~{/fragments/front/common :: footerSrc}"></th:block>
  </div>
 
- <th:block th:replace="/fragments/front/common :: scriptSrc"></th:block>
+ <th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
  
  <script th:src="@{/front/js/countdown-timers/flipclock.js}"></script>
  <script type="text/javascript">

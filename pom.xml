@@ -115,7 +115,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
-
+		
 		<!-- 엑셀 -->
 		<dependency>
 			<groupId>org.apache.poi</groupId>

@@ -286,7 +286,7 @@ public class BrandExcelDownloadService {
 			productInfoBodyRow = productInfo.createRow(productInfoRowCount++);
 			for (int i = 0; i < productInfoBodyDatass[x].length; i++) {
 				productInfoBodyCell = productInfoBodyRow.createCell(cellNumbber);
-				productInfoBodyCell.setCellValue(productRepository.findById(productInfos.get(x).getProductId()).get().getBrandProductCode());
+				productSpecBodyCell.setCellValue(productSpecs.get(x).getProduct().getBrandProductCode());
 				productInfoBodyCell.setCellStyle(bodyXssfCellStyle);
 				
 				productInfoBodyCell = productInfoBodyRow.createCell(cellNumbber+1);
@@ -296,21 +296,21 @@ public class BrandExcelDownloadService {
 		}
 		
 		for (int x=0; x<productSpecBodyDatass.length; x++) {
-			productSpecBodyRow = productSpec.createRow(productSpecRowCount++);
+		    productSpecBodyRow = productSpec.createRow(productSpecRowCount++);
 
-			for (int i = 0; i < productSpecBodyDatass[x].length; i++) {
-				productSpecBodyCell = productSpecBodyRow.createCell(cellNumbber);
-				productSpecBodyCell.setCellValue(productRepository.findById(productSpecs.get(x).getProductId()).get().getBrandProductCode());
-				productSpecBodyCell.setCellStyle(bodyXssfCellStyle);
-				
-				productSpecBodyCell = productSpecBodyRow.createCell(cellNumbber+1);
-				productSpecBodyCell.setCellValue(productSpecs.get(x).getProductSpecSubject());
-				productSpecBodyCell.setCellStyle(bodyXssfCellStyle);
-				
-				productSpecBodyCell = productSpecBodyRow.createCell(cellNumbber+2);
-				productSpecBodyCell.setCellValue(productSpecs.get(x).getProductSpecContent());// 데이터 추가
-				productSpecBodyCell.setCellStyle(bodyXssfCellStyle); // 스타일 추가
-			}
+		    for (int i = 0; i < productSpecBodyDatass[x].length; i++) {
+		        productSpecBodyCell = productSpecBodyRow.createCell(cellNumbber);
+		        productSpecBodyCell.setCellValue(productSpecs.get(x).getProduct().getBrandProductCode());
+		        productSpecBodyCell.setCellStyle(bodyXssfCellStyle);
+
+		        productSpecBodyCell = productSpecBodyRow.createCell(cellNumbber+1);
+		        productSpecBodyCell.setCellValue(productSpecs.get(x).getProductSpecSubject());
+		        productSpecBodyCell.setCellStyle(bodyXssfCellStyle);
+
+		        productSpecBodyCell = productSpecBodyRow.createCell(cellNumbber+2);
+		        productSpecBodyCell.setCellValue(productSpecs.get(x).getProductSpecContent());
+		        productSpecBodyCell.setCellStyle(bodyXssfCellStyle);
+		    }
 		}
 
 		/**

@@ -74,7 +74,6 @@ public class HomeController {
 	private final CertificationRepository certificationRepository;
 	
 	
-	
 	@ResponseStatus(value=HttpStatus.NOT_FOUND, reason="잘못된 접근입니다.")
     public class UrlNotFoundException extends RuntimeException {
 		private static final long serialVersionUID = 1L; 
@@ -223,23 +222,38 @@ public class HomeController {
 	
 	@GetMapping("/brandProductDetail/{id}")
 	public String brandProductDetail(
-			Model model,
-			@PathVariable Long id
-			) {
-		Optional<BrandProduct> product = brandProductRepository.findById(id);
-		if(product.isPresent()) {
-			
-			if(product.get().getImages().size() > 0) {
-				product.get().setFirstImageRoad(product.get().getImages().get(0).getProductImageRoad());
-			}else {
-				product.get().setFirstImageRoad("null");
-			}
-			model.addAttribute("pr", product.get());
-			return "front/brand/brandProductDetail";
-		}else {
-			throw new UrlNotFoundException();
-		}
+	        Model model,
+	        @PathVariable Long id
+	) {
+	    BrandProduct product = brandProductRepository.findById(id)
+	            .orElseThrow(UrlNotFoundException::new);
+
+	    // 이미지 첫 번째 세팅
+	    if (product.getImages() != null && !product.getImages().isEmpty()) {
+	        product.setFirstImageRoad(product.getImages().get(0).getProductImageRoad());
+	    } else {
+	        product.setFirstImageRoad("null");
+	    }
+
+	    // ✅ middleSort, smallSort null 체크 후 모델에 담기
+	    if (product.getMiddleSort() != null) {
+	        model.addAttribute("middleSort", product.getMiddleSort());
+	    }
+	    if (product.getSmallSort() != null) {
+	        model.addAttribute("smallSort", product.getSmallSort());
+	    }
+
+	    // ✅ brand 도 같이 내려주면 뷰에서 브랜드명도 활용 가능
+	    if (product.getBrand() != null) {
+	        model.addAttribute("brand", product.getBrand());
+	    }
+
+	    model.addAttribute("product", product);
+
+	    return "front/brand/brandProductDetail";
 	}
+	
+	
 	
 	
 	@GetMapping("/brandProductSorted/brand/{id}")
@@ -281,13 +295,39 @@ public class HomeController {
 	public String ownBrandDetail(@PathVariable Long id, Model model) {
 	    Brand brand = brandRepository.findById(id)
 	            .orElseThrow(UrlNotFoundException::new);
+	    
+	    for (BrandProduct p : brand.getProducts()) {
+	    	if (p.getImages() != null && !p.getImages().isEmpty()) {
+	    	    p.setFirstImageRoad(p.getImages().get(0).getProductImageRoad());
+	    	} else {
+	    	    p.setFirstImageRoad(""); // null 대신 빈 값
+	    	}
+	    }
+	    
+	    List<BrandBigSort> bigSorts = brandBigSortRepository.findAllByBrand_IdOrderByBrandBigSortIndexAsc(id);
+
+		 // MiddleSort: BigSort 기반 필터링 필요
+		 List<BrandMiddleSort> middleSorts = brandMiddleSortRepository.findAllByBigSort_Brand_IdOrderByBrandMiddleSortIndexAsc(id);
+	
+		 // SmallSort: MiddleSort 기반 필터링 필요
+		 List<BrandSmallSort> smallSorts = brandSmallSortRepository.findAllByMiddleSort_BigSort_Brand_IdOrderByBrandSmallSortIndexAsc(id);
+
+
 
 	    model.addAttribute("brand", brand);
+	    model.addAttribute("products", brand.getProducts());
+	    
+	    model.addAttribute("bigSorts", bigSorts);
+	    model.addAttribute("middleSorts", middleSorts);
+	    model.addAttribute("smallSorts", smallSorts);
 
+	    // view에서 탭 표시용
+	    model.addAttribute("sort", "brand");
+	    model.addAttribute("id", id);
+	    
 	    return "front/brand/ownBrandDetail";
 	}
 	
-
 
 	@GetMapping("/notice")
 	public String notice(@RequestParam(defaultValue = "1") int page,

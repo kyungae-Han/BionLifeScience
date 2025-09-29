@@ -11,8 +11,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dev.BionLifeScienceWeb.model.brand.BrandProduct;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProductImage;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductImageRepository;
+import com.dev.BionLifeScienceWeb.repository.brand.BrandProductRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class BrandProductImageService {
 
 	private final BrandProductImageRepository brandProductImageRepository;
+	private final BrandProductRepository brandProductRepository; 
 	
 	@Value("${spring.upload.env}")
 	private String env;
@@ -58,7 +61,13 @@ public class BrandProductImageService {
         				  .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
         				  .toString();
         		BrandProductImage f = new BrandProductImage();
-        		f.setProductId(id);
+        		
+        		BrandProduct product = brandProductRepository.findById(id)
+        		        .orElseThrow(() -> new RuntimeException("상품 없음"));
+        		
+        		 f.setProduct(product);
+        		 
+        		 
             	String contentType = file.getContentType();
                 // 확장자 명 NULL 검증
         		if (ObjectUtils.isEmpty(contentType)) {

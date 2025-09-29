@@ -1,5 +1,6 @@
 package com.dev.BionLifeScienceWeb.model.brand;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.lang.Nullable;
@@ -90,7 +91,7 @@ public class BrandProduct {
 			fetch = FetchType.LAZY, 
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
-			mappedBy = "productId"
+			mappedBy = "product"
 			)
 	private List<BrandProductImage> images;
 	
@@ -98,7 +99,7 @@ public class BrandProduct {
 			fetch = FetchType.LAZY, 
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
-			mappedBy = "productId"
+			mappedBy = "product"
 			)
 	private List<BrandProductInfo> infos;
 	
@@ -106,7 +107,7 @@ public class BrandProduct {
 			fetch = FetchType.LAZY, 
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
-			mappedBy = "productId"
+			mappedBy = "product"
 			)
 	private List<BrandProductFile> files;
 	
@@ -114,7 +115,7 @@ public class BrandProduct {
 			fetch = FetchType.LAZY, 
 			cascade = CascadeType.ALL,
 			orphanRemoval = true,
-			mappedBy = "productId"
+			mappedBy = "product"
 			)
 	private List<BrandProductSpec> specs;
 	
@@ -143,11 +144,8 @@ public class BrandProduct {
 	)
 	private BrandBigSort bigSort;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(
-	    name="BRAND_PRODUCT_BRAND_REFER_ID", 
-	    referencedColumnName="BRAND_ID", 
-	    nullable = false
-	)
+	
+	@ManyToOne
+	@JoinColumn(name="BRAND_PRODUCT_BRAND_REFER_ID")
 	private Brand brand;
 }

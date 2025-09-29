@@ -1,13 +1,19 @@
 package com.dev.BionLifeScienceWeb.model.brand;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.EnumType;
 import lombok.Data;
 
@@ -60,5 +66,18 @@ public class Brand {
 	@Lob
 	@Column(name = "BRAND_DESC", columnDefinition="LONGTEXT")
 	private String desc;
+	
+	@OneToMany(mappedBy = "brand", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@com.fasterxml.jackson.annotation.JsonIgnore
+    private List<BrandProduct> products = new ArrayList<>();
+	
+	public void addProduct(BrandProduct product) {
+	    products.add(product);
+	    product.setBrand(this);
+	}
 
+	public void removeProduct(BrandProduct product) {
+	    products.remove(product);
+	    product.setBrand(null);
+	}
 }

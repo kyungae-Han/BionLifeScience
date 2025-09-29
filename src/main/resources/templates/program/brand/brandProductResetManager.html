@@ -3,17 +3,17 @@
 	data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none"
 	data-preloader="disable" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="program/fragments/common :: headSrc"></head>
+<head th:replace="~{program/fragments/common :: headSrc}"></head>
 
 <body>
 
 	<div id="layout-wrapper">
 
 		<header id="page-topbar"
-			th:replace="program/fragments/common :: headerMenu"></header>
+			th:replace="~{program/fragments/common :: headerMenu}"></header>
 
 		<div class="app-menu navbar-menu"
-			th:replace="program/fragments/common :: navMenu">
+			th:replace="~{program/fragments/common :: navMenu}">
 			<div class="sidebar-background"></div>
 		</div>
 		<div class="vertical-overlay"></div>
@@ -185,14 +185,14 @@
                     </div>
 				</div>
 			</div>
-			<th:block th:replace="program/fragments/common :: footerSrc"></th:block>
+			<th:block th:replace="~{program/fragments/common :: footerSrc}"></th:block>
 		</div>
 	</div>
-	<th:block th:replace="program/fragments/common :: settingBlock"></th:block>
+	<th:block th:replace="~{program/fragments/common :: settingBlock}"></th:block>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js"
 		integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
 		crossorigin="anonymous"></script>
-	<th:block th:replace="program/fragments/common :: scriptSrc"></th:block>
+	<th:block th:replace="~{program/fragments/common :: scriptSrc}"></th:block>
 	<script src="/administration/program/assets/libs/dropzone/dropzone-min.js"></script>
 	
 	<script src="/administration/program/assets/libs/filepond/filepond.min.js"></script>

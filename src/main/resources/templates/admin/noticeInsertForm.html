@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/admin/common :: headMenu"></head>
+<head th:replace="~{fragments/admin/common :: headMenu}"></head>
 
 <body>
 <section id="container">
-  <th:block th:replace="fragments/admin/common :: headMenu"></th:block>
-  <th:block th:replace="fragments/admin/common :: sideMenu('notice')"></th:block>
+  <th:block th:replace="~{fragments/admin/common :: headMenu}"></th:block>
+  <th:block th:replace="~{fragments/admin/common :: sideMenu('notice')}"></th:block>
 
   <section id="main-content">
     <section class="wrapper">
@@ -81,7 +81,7 @@
 </section>
 
 <!-- 공통 스크립트 -->
-<th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
+<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
 
 <!-- Toast UI Editor CDN -->
 <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">

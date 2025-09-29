@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="KO" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragments/admin/common :: headMenu">
+<head th:replace="~{fragments/admin/common :: headMenu}">
    
 
 </head>
@@ -28,7 +28,7 @@
             </form>
         </div>
     </div>
-    <th:block th:replace="fragments/admin/common :: scriptSrc"></th:block>
+    <th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
     <script>
         $.backstretch("/administration/img/login-bg.jpg", {
             speed: 500

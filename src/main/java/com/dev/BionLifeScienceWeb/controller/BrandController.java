@@ -455,13 +455,13 @@ public class BrandController {
 		if(spec.length > 0 ) {
 			for (String s : spec) {
 				BrandProductInfo in = new BrandProductInfo();
-				in.setProductId(p.getId());
+				in.setProduct(product);
 				in.setProductInfoText(s);
 				brandProductInfoRepository.save(in);
 			}
 		}else {
 			BrandProductInfo in = new BrandProductInfo();
-			in.setProductId(p.getId());
+			in.setProduct(product);
 			in.setProductInfoText("-");
 			brandProductInfoRepository.save(in);
 		}
@@ -472,14 +472,14 @@ public class BrandController {
 				BrandProductSpec sp = new BrandProductSpec();
 				sp.setProductSpecSubject(infoQ[a]);
 				sp.setProductSpecContent(infoA[a]);
-				sp.setProductId(p.getId());
+				sp.setProduct(product);
 				brandProductSpecRepository.save(sp);
 			}
 		}else {
 			BrandProductSpec sp = new BrandProductSpec();
 			sp.setProductSpecSubject("-");
 			sp.setProductSpecContent("-");
-			sp.setProductId(p.getId());
+			sp.setProduct(product);
 			brandProductSpecRepository.save(sp);
 		}
 		if (productFile != null && !productFile.isEmpty() && productFile.stream().anyMatch(f -> !f.isEmpty())) {
@@ -612,13 +612,13 @@ public class BrandController {
 		if(spec != null && spec.length > 0) {
 			for (String s : spec) {
 				BrandProductInfo in = new BrandProductInfo();
-				in.setProductId(product.getId());
+				in.setProduct(product);
 				in.setProductInfoText(s);
 				brandProductInfoRepository.save(in);
 			}
 		}else {
 			BrandProductInfo in = new BrandProductInfo();
-			in.setProductId(product.getId());
+			in.setProduct(product);
 			in.setProductInfoText("-");
 			brandProductInfoRepository.save(in);
 		}
@@ -628,14 +628,14 @@ public class BrandController {
 		        BrandProductSpec sp = new BrandProductSpec();
 		        sp.setProductSpecSubject(infoQ[a]);
 		        sp.setProductSpecContent(infoA[a]);
-		        sp.setProductId(product.getId());
+		        sp.setProduct(product);
 		        brandProductSpecRepository.save(sp);
 		    }
 		} else {
 		    BrandProductSpec sp = new BrandProductSpec();
 		    sp.setProductSpecSubject("-");
 		    sp.setProductSpecContent("-");
-		    sp.setProductId(product.getId());
+		    sp.setProduct(product);
 		    brandProductSpecRepository.save(sp);
 		}
 		
