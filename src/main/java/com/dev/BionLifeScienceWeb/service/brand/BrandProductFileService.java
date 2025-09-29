@@ -40,7 +40,7 @@ public class BrandProductFileService {
 		
         String absolutePath = new File("").getAbsolutePath() + "\\";
         String path = commonPath +  "/brandproduct/" + productCode + "/files";
-        String road = "/administration/brandproduct/" + productCode + "/files";
+        String road = "/upload/brandproduct/" + productCode + "/slide";
         File fileFolder = new File(path);
         if(fileFolder.exists() && fileFolder.isDirectory()) {
         	FileUtils.cleanDirectory(fileFolder);

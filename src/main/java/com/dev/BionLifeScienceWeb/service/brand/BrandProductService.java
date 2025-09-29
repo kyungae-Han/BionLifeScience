@@ -117,7 +117,7 @@ public class BrandProductService {
 											}else if(env.equals("prod")) {
 												f.setProductImagePath(commonPath + "/brandproduct/" + productCode + "/slide/" +  fileName);
 											}
-											f.setProductImageRoad("/administration/brandproduct/" + productCode + "/slide/" + fileName );
+											f.setProductImageRoad("/upload/brandproduct/" + productCode + "/slide/" + fileName );
 							                f.setProductImageName(fileName);
 							                brandProductImageRepository.save(f);
 										}
@@ -131,7 +131,7 @@ public class BrandProductService {
 										p.ifPresent(np -> {
 											np.setSpecImageName(fileName);
 											np.setSpecImagePath(commonPath + "/brandproduct/" + productCode + "/spec/" + fileName);
-											np.setSpecImageRoad("/administration/brandproduct/" + productCode + "/spec/" + fileName);
+											np.setSpecImageRoad("/upload/brandproduct/" + productCode + "/spec/" + fileName);
 											brandProductRepository.save(np);
 										});
 									}
@@ -146,7 +146,7 @@ public class BrandProductService {
 										p.ifPresent(np -> {
 											np.setTableImageName(fileName);
 											np.setTableImagePath(commonPath + "/brandproduct/" + productCode + "/overview/" + fileName);
-											np.setTableImageRoad("/administration/brandproduct/" + productCode + "/overview/" + fileName);
+											np.setTableImageRoad("/upload/brandproduct/" + productCode + "/overview/" + fileName);
 											brandProductRepository.save(np);
 										});
 									}
@@ -167,7 +167,7 @@ public class BrandProductService {
 											}else if(env.equals("prod")) {
 												f.setProductFilePath(commonPath + "/brandproduct/" + productCode + "/files/" +  fileName);
 											}
-											f.setProductFileRoad("/administration/brandproduct/" + productCode + "/files/" + fileName);
+											f.setProductFileRoad("/upload/brandproduct/" + productCode + "/files/" + fileName);
 							                f.setProductFileName(fileName);
 							                f.setProductFileDate(new Date());
 							                brandProductFileRepository.save(f);
@@ -227,7 +227,7 @@ public class BrandProductService {
 											}else if(env.equals("prod")) {
 												f.setProductImagePath(commonPath + "/brandproduct/" + productCode + "/slide/" +  fileName);
 											}
-											f.setProductImageRoad("/administration/brandproduct/" + productCode + "/slide/" + fileName );
+											f.setProductImageRoad("/upload/brandproduct/" + productCode + "/slide/" + fileName );
 							                f.setProductImageName(fileName);
 							                brandProductImageRepository.save(f);
 										}
@@ -241,7 +241,7 @@ public class BrandProductService {
 										p.ifPresent(np -> {
 											np.setSpecImageName(fileName);
 											np.setSpecImagePath(commonPath + "/brandproduct/" + productCode + "/spec/" + fileName);
-											np.setSpecImageRoad("/administration/brandproduct/" + productCode + "/spec/" + fileName);
+											np.setSpecImageRoad("/upload/brandproduct/" + productCode + "/spec/" + fileName);
 											brandProductRepository.save(np);
 										});
 									}
@@ -256,7 +256,7 @@ public class BrandProductService {
 										p.ifPresent(np -> {
 											np.setTableImageName(fileName);
 											np.setTableImagePath(commonPath + "/brandproduct/" + productCode + "/overview/" + fileName);
-											np.setTableImageRoad("/administration/brandproduct/" + productCode + "/overview/" + fileName);
+											np.setTableImageRoad("/upload/brandproduct/" + productCode + "/overview/" + fileName);
 											brandProductRepository.save(np);
 										});
 									}
@@ -277,7 +277,7 @@ public class BrandProductService {
 											}else if(env.equals("prod")) {
 												f.setProductFilePath(commonPath + "/brandproduct/" + productCode + "/files/" +  fileName);
 											}
-											f.setProductFileRoad("/administration/brandproduct/" + productCode + "/files/" + fileName);
+											f.setProductFileRoad("/upload/brandproduct/" + productCode + "/files/" + fileName);
 							                f.setProductFileName(fileName);
 							                f.setProductFileDate(new Date());
 							                brandProductFileRepository.save(f);
@@ -377,7 +377,7 @@ public class BrandProductService {
 		
 		
 		String overviewPath = commonPath + "/brandproduct/" + productCode + "/overview";
-		String overviewRoad = "/administration/brandproduct/" + productCode + "/overview";
+		String overviewRoad = "/upload/brandproduct/" + productCode + "/overview";
 		File overviewFileFolder = new File(overviewPath);
 
 		if (!overviewFileFolder.exists()) {
@@ -392,7 +392,7 @@ public class BrandProductService {
 		} 
 		
 		String specPath = commonPath + "/brandproduct/" + productCode +  "/spec"; 
-		String specRoad = "/administration/brandproduct/" + productCode +  "/spec"; 
+		String specRoad = "/upload/brandproduct/" + productCode +  "/spec"; 
 		File specFileFolder = new File(specPath);
 		
 		if (!specFileFolder.exists()) {
@@ -462,7 +462,7 @@ public class BrandProductService {
 	                .toString();
 
 	        String overviewPath = commonPath + "/brandproduct/" + saved.getBrandProductCode() + "/overview";
-	        String overviewRoad = "/administration/brandproduct/" + saved.getBrandProductCode() + "/overview";
+	        String overviewRoad = "/upload/brandproduct/" + saved.getBrandProductCode() + "/overview";
 
 	        File overviewFileFolder = new File(overviewPath);
 	        if (!overviewFileFolder.exists()) {
@@ -493,7 +493,7 @@ public class BrandProductService {
 	                .toString();
 
 	        String specPath = commonPath + "/brandproduct/" + saved.getBrandProductCode() + "/spec";
-	        String specRoad = "/administration/brandproduct/" + saved.getBrandProductCode() + "/spec";
+	        String specRoad = "/upload/brandproduct/" + saved.getBrandProductCode() + "/spec";
 
 	        File specFileFolder = new File(specPath);
 	        if (!specFileFolder.exists()) {
@@ -623,7 +623,7 @@ public class BrandProductService {
 	                .toString();
 
 	        String overviewPath = commonPath + "/brandproduct/" + saved.getBrandProductCode() + "/overview";
-	        String overviewRoad = "/administration/brandproduct/" + saved.getBrandProductCode() + "/overview";
+	        String overviewRoad = "/upload/brandproduct/" + saved.getBrandProductCode() + "/overview";
 
 	        File overviewFileFolder = new File(overviewPath);
 	        if (!overviewFileFolder.exists()) {
@@ -657,7 +657,7 @@ public class BrandProductService {
 	                .toString();
 
 	        String specPath = commonPath + "/brandproduct/" + saved.getBrandProductCode() + "/spec";
-	        String specRoad = "/administration/brandproduct/" + saved.getBrandProductCode() + "/spec";
+	        String specRoad = "/upload/brandproduct/" + saved.getBrandProductCode() + "/spec";
 
 	        File specFileFolder = new File(specPath);
 	        if (!specFileFolder.exists()) {
@@ -716,7 +716,7 @@ public class BrandProductService {
 			exOverViewFile.delete();
 			
 			String overviewPath = commonPath + "/brandproduct/" + product.getBrandProductCode() + "/overview";
-			String overviewRoad = "/administration/brandproduct/" + product.getBrandProductCode() + "/overview";
+			String overviewRoad = "/upload/brandproduct/" + product.getBrandProductCode() + "/overview";
 			
 			File overviewFileFolder = new File(overviewPath);
 
@@ -770,7 +770,7 @@ public class BrandProductService {
 					.collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append).toString();
 			
 			String specPath = commonPath + "/brandproduct/" + product.getBrandProductCode() + "/spec" ;
-			String specRoad = "/administration/brandproduct/" + product.getBrandProductCode()+ "/spec" ;
+			String specRoad = "/upload/brandproduct/" + product.getBrandProductCode()+ "/spec" ;
 			
 			File specFileFolder = new File(specPath);
 

@@ -39,7 +39,7 @@ public class BrandProductImageService {
 		
         String absolutePath = new File("").getAbsolutePath() + "\\";
         String path = commonPath + "/brandproduct/" + productCode + "/slide";
-        String road = "/administration/brandproduct/"  + productCode + "/slide";
+        String road = "/upload/brandproduct/" + productCode + "/slide";
         File fileFolder = new File(path);
         if(fileFolder.exists() && fileFolder.isDirectory()) {
         	FileUtils.cleanDirectory(fileFolder);

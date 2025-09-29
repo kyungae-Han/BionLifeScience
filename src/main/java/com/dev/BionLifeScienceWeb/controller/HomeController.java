@@ -298,9 +298,9 @@ public class HomeController {
 	    
 	    for (BrandProduct p : brand.getProducts()) {
 	    	if (p.getImages() != null && !p.getImages().isEmpty()) {
-	    	    p.setFirstImageRoad(p.getImages().get(0).getProductImageRoad());
+	    	    p.setFirstImageRoad(p.getImages().get(0).getProductImageRoad()); // ✅ ROAD 값만 사용
 	    	} else {
-	    	    p.setFirstImageRoad(""); // null 대신 빈 값
+	    	    p.setFirstImageRoad("/front/images/common/no-image.png"); // 기본 이미지
 	    	}
 	    }
 	    
