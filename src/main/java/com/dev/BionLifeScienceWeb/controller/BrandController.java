@@ -3,6 +3,7 @@ package com.dev.BionLifeScienceWeb.controller;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -393,6 +394,12 @@ public class BrandController {
 	public String brandProductInsertForm(Model model) {
 
 		model.addAttribute("brand",brandRepository.findAll());
+		
+	    BrandProduct product = new BrandProduct();
+	    product.setInfos(new ArrayList<>());
+	    product.setSpecs(new ArrayList<>());
+
+	    model.addAttribute("product", product);
 
 		return "admin/brand/brandProductInsertForm";
 	}
@@ -452,36 +459,31 @@ public class BrandController {
 	   
 		BrandProduct p = brandProductService.productInsert(productOverviewImage, productSpecImage, product);
 
-		if(spec.length > 0 ) {
-			for (String s : spec) {
-				BrandProductInfo in = new BrandProductInfo();
-				in.setProduct(product);
-				in.setProductInfoText(s);
-				brandProductInfoRepository.save(in);
-			}
-		}else {
-			BrandProductInfo in = new BrandProductInfo();
-			in.setProduct(product);
-			in.setProductInfoText("-");
-			brandProductInfoRepository.save(in);
+		if (spec != null && spec.length > 0) {
+		    for (String s : spec) {
+		        if (s != null && !s.trim().isEmpty()) { // 빈 값 필터링
+		            BrandProductInfo in = new BrandProductInfo();
+		            in.setProduct(product);
+		            in.setProductInfoText(s.trim());
+		            brandProductInfoRepository.save(in);
+		        }
+		    }
 		}
 		
-		if(infoQ.length > 0) {
-			
-			for (int a = 0; a < infoQ.length; a++) {
-				BrandProductSpec sp = new BrandProductSpec();
-				sp.setProductSpecSubject(infoQ[a]);
-				sp.setProductSpecContent(infoA[a]);
-				sp.setProduct(product);
-				brandProductSpecRepository.save(sp);
-			}
-		}else {
-			BrandProductSpec sp = new BrandProductSpec();
-			sp.setProductSpecSubject("-");
-			sp.setProductSpecContent("-");
-			sp.setProduct(product);
-			brandProductSpecRepository.save(sp);
+		if (infoQ != null && infoQ.length > 0) {
+		    for (int a = 0; a < infoQ.length; a++) {
+		        if ((infoQ[a] != null && !infoQ[a].trim().isEmpty()) ||
+		            (infoA[a] != null && !infoA[a].trim().isEmpty())) {
+		            BrandProductSpec sp = new BrandProductSpec();
+		            sp.setProductSpecSubject(infoQ[a] != null ? infoQ[a].trim() : "");
+		            sp.setProductSpecContent(infoA[a] != null ? infoA[a].trim() : "");
+		            sp.setProduct(product);
+		            brandProductSpecRepository.save(sp);
+		        }
+		    }
 		}
+		
+		
 		if (productFile != null && !productFile.isEmpty() && productFile.stream().anyMatch(f -> !f.isEmpty())) {
 		    brandProductFileRepository.deleteAllByProductId(product.getId());
 		    brandProductFileService.fileUpload(productFile, product.getId(), product.getBrandProductCode());
@@ -609,34 +611,28 @@ public class BrandController {
 		//brandProductInfoRepository.deleteAllByProductId(product.getId());
 		//brandProductSpecRepository.deleteAllByProductId(product.getId());
 		
-		if(spec != null && spec.length > 0) {
-			for (String s : spec) {
-				BrandProductInfo in = new BrandProductInfo();
-				in.setProduct(product);
-				in.setProductInfoText(s);
-				brandProductInfoRepository.save(in);
-			}
-		}else {
-			BrandProductInfo in = new BrandProductInfo();
-			in.setProduct(product);
-			in.setProductInfoText("-");
-			brandProductInfoRepository.save(in);
+		if (spec != null && spec.length > 0) {
+		    for (String s : spec) {
+		        if (s != null && !s.trim().isEmpty()) { // 빈 값 필터링
+		            BrandProductInfo in = new BrandProductInfo();
+		            in.setProduct(product);
+		            in.setProductInfoText(s.trim());
+		            brandProductInfoRepository.save(in);
+		        }
+		    }
 		}
 		
 		if (infoQ != null && infoQ.length > 0) {
 		    for (int a = 0; a < infoQ.length; a++) {
-		        BrandProductSpec sp = new BrandProductSpec();
-		        sp.setProductSpecSubject(infoQ[a]);
-		        sp.setProductSpecContent(infoA[a]);
-		        sp.setProduct(product);
-		        brandProductSpecRepository.save(sp);
+		        if ((infoQ[a] != null && !infoQ[a].trim().isEmpty()) ||
+		            (infoA[a] != null && !infoA[a].trim().isEmpty())) {
+		            BrandProductSpec sp = new BrandProductSpec();
+		            sp.setProductSpecSubject(infoQ[a] != null ? infoQ[a].trim() : "");
+		            sp.setProductSpecContent(infoA[a] != null ? infoA[a].trim() : "");
+		            sp.setProduct(product);
+		            brandProductSpecRepository.save(sp);
+		        }
 		    }
-		} else {
-		    BrandProductSpec sp = new BrandProductSpec();
-		    sp.setProductSpecSubject("-");
-		    sp.setProductSpecContent("-");
-		    sp.setProduct(product);
-		    brandProductSpecRepository.save(sp);
 		}
 		
 		

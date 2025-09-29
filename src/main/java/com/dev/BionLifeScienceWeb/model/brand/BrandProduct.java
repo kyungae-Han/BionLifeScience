@@ -95,13 +95,8 @@ public class BrandProduct {
 			)
 	private List<BrandProductImage> images;
 	
-	@OneToMany(
-			fetch = FetchType.LAZY, 
-			cascade = CascadeType.ALL,
-			orphanRemoval = true,
-			mappedBy = "product"
-			)
-	private List<BrandProductInfo> infos;
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<BrandProductInfo> infos = new ArrayList<>();
 	
 	@OneToMany(
 			fetch = FetchType.LAZY, 

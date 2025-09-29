@@ -26,6 +26,7 @@ import com.dev.BionLifeScienceWeb.model.brand.BrandProductInfo;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProductSpec;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductFileRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductImageRepository;
+import com.dev.BionLifeScienceWeb.repository.brand.BrandProductInfoRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductSpecRepository;
 
@@ -34,6 +35,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,6 +47,7 @@ public class BrandProductService {
 	private final BrandProductRepository brandProductRepository;
 	private final BrandProductFileRepository brandProductFileRepository;
 	private final BrandProductImageRepository brandProductImageRepository;
+	 private final BrandProductInfoRepository infoRepository;
 	
 	@Value("${spring.upload.env}")
 	private String env;
@@ -449,9 +452,70 @@ public class BrandProductService {
 	    BrandProduct saved = brandProductRepository.findById(product.getId())
 	            .orElseThrow(() -> new IllegalArgumentException("해당 제품이 존재하지 않습니다. id=" + product.getId()));
 	    
-	    /* === (중략) 기존 이미지 업데이트 로직 유지 === */
+	    
+	    if (productOverviewImage != null && !productOverviewImage.isEmpty()) {
 
-	    // ✅ 연관관계 업데이트
+	        String generatedString = random.ints(leftLimit, rightLimit + 1)
+	                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+	                .limit(targetStringLength)
+	                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+	                .toString();
+
+	        String overviewPath = commonPath + "/brandproduct/" + saved.getBrandProductCode() + "/overview";
+	        String overviewRoad = "/administration/brandproduct/" + saved.getBrandProductCode() + "/overview";
+
+	        File overviewFileFolder = new File(overviewPath);
+	        if (!overviewFileFolder.exists()) {
+	            overviewFileFolder.mkdirs();
+	        }
+
+	        String overviewFileName = generatedString + "_" + productOverviewImage.getOriginalFilename();
+
+	        File dest;
+	        if (env.equals("local")) {
+	            dest = new File(absolutePath + overviewPath + "/" + overviewFileName);
+	        } else {
+	            dest = new File(overviewPath + "/" + overviewFileName);
+	        }
+	        productOverviewImage.transferTo(dest);
+
+	        saved.setTableImagePath(overviewPath + "/" + overviewFileName);
+	        saved.setTableImageRoad(overviewRoad + "/" + overviewFileName);
+	        saved.setTableImageName(overviewFileName);
+	    }
+
+	    if (productSpecImage != null && !productSpecImage.isEmpty()) {
+
+	        String generatedString = random.ints(leftLimit, rightLimit + 1)
+	                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+	                .limit(targetStringLength)
+	                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+	                .toString();
+
+	        String specPath = commonPath + "/brandproduct/" + saved.getBrandProductCode() + "/spec";
+	        String specRoad = "/administration/brandproduct/" + saved.getBrandProductCode() + "/spec";
+
+	        File specFileFolder = new File(specPath);
+	        if (!specFileFolder.exists()) {
+	            specFileFolder.mkdirs();
+	        }
+
+	        String specFileName = generatedString + "_" + productSpecImage.getOriginalFilename();
+
+	        File dest;
+	        if (env.equals("local")) {
+	            dest = new File(absolutePath + specPath + "/" + specFileName);
+	        } else {
+	            dest = new File(specPath + "/" + specFileName);
+	        }
+	        productSpecImage.transferTo(dest);
+
+	        saved.setSpecImagePath(specPath + "/" + specFileName);
+	        saved.setSpecImageRoad(specRoad + "/" + specFileName);
+	        saved.setSpecImageName(specFileName);
+	    }
+	    
+
 	    saved.setBrand(product.getBrand());
 	    saved.setBigSort(product.getBigSort());
 	    saved.setMiddleSort(product.getMiddleSort());
@@ -463,6 +527,13 @@ public class BrandProductService {
 	    saved.setSign(product.getSign());
 
 	    if (product.getSpecs() != null) {
+	    	
+	        List<BrandProductSpec> filteredSpecs = product.getSpecs().stream()
+	                .filter(s -> s.getProductSpecSubject() != null && !s.getProductSpecSubject().trim().isEmpty() && !s.getProductSpecSubject().equals("-"))
+	                .filter(s -> s.getProductSpecContent() != null && !s.getProductSpecContent().trim().isEmpty() && !s.getProductSpecContent().equals("-"))
+	                .collect(Collectors.toList());
+	        
+	        
 	        // 1) 현재 DB에 있는 specId 목록
 	        Set<Long> existingIds = saved.getSpecs().stream()
 	                .map(BrandProductSpec::getId)
@@ -474,12 +545,12 @@ public class BrandProductService {
 	                .map(BrandProductSpec::getId)
 	                .collect(Collectors.toSet());
 
-	        // 3) 삭제 대상 찾기 (DB에는 있는데, 폼에는 없는 것)
+	        // 3) 삭제 대상 찾기
 	        Set<Long> toDelete = new HashSet<>(existingIds);
 	        toDelete.removeAll(incomingIds);
 
-	        // 삭제 실행
-	        toDelete.forEach(id -> specRepository.deleteById(id));
+	        // ✅ orphanRemoval 활용 (DB deleteById 대신 removeIf)
+	        saved.getSpecs().removeIf(spec -> toDelete.contains(spec.getId()));
 
 	        // 4) 업데이트/추가 처리
 	        for (BrandProductSpec incoming : product.getSpecs()) {
@@ -493,6 +564,52 @@ public class BrandProductService {
 	            }
 	        }
 	    }
+
+	    
+	    if (product.getInfos() != null) {
+	    	
+	    	// ✅ 빈값/"-" 필터링
+	        List<BrandProductSpec> filteredSpecs = product.getSpecs().stream()
+	                .filter(s -> s.getProductSpecSubject() != null && !s.getProductSpecSubject().trim().isEmpty() && !s.getProductSpecSubject().equals("-"))
+	                .filter(s -> s.getProductSpecContent() != null && !s.getProductSpecContent().trim().isEmpty() && !s.getProductSpecContent().equals("-"))
+	                .collect(Collectors.toList());
+	        
+	        
+	        // 1) 현재 DB에 있는 infoId 목록
+	        Set<Long> existingInfoIds = saved.getInfos().stream()
+	                .map(BrandProductInfo::getId)
+	                .collect(Collectors.toSet());
+
+	        // 2) 새로 넘어온 infoId 목록
+	        Set<Long> incomingInfoIds = product.getInfos().stream()
+	                .filter(i -> i.getId() != null)
+	                .map(BrandProductInfo::getId)
+	                .collect(Collectors.toSet());
+
+	        // 3) 삭제 대상 찾기 (DB에는 있는데 폼에는 없는 것)
+	        Set<Long> toDeleteInfos = new HashSet<>(existingInfoIds);
+	        toDeleteInfos.removeAll(incomingInfoIds);
+
+	        toDeleteInfos.forEach(id -> {
+	            infoRepository.deleteById(id); // ✅ DB에서 삭제
+	            saved.getInfos().removeIf(info -> info.getId().equals(id)); // ✅ 컬렉션에서도 제거
+	        });
+
+	        // 4) 업데이트/추가 처리
+	        for (BrandProductInfo incoming : product.getInfos()) {
+	            if (incoming.getId() != null) {
+	                BrandProductInfo info = infoRepository.findById(incoming.getId())
+	                        .orElseThrow();
+	                info.setProductInfoText(incoming.getProductInfoText());
+	            } else {
+	                incoming.setProduct(saved);
+	                saved.getInfos().add(incoming);
+	            }
+	        }
+	    }
+
+
+	    
 
 	    /* =========================
 	       Overview 이미지 업데이트
