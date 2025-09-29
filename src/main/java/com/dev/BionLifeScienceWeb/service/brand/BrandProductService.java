@@ -24,14 +24,10 @@ import com.dev.BionLifeScienceWeb.model.brand.BrandProductFile;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProductImage;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProductInfo;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProductSpec;
-import com.dev.BionLifeScienceWeb.repository.brand.BrandBigSortRepository;
-import com.dev.BionLifeScienceWeb.repository.brand.BrandMiddleSortRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductFileRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductImageRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductSpecRepository;
-import com.dev.BionLifeScienceWeb.repository.brand.BrandRepository;
-import com.dev.BionLifeScienceWeb.repository.brand.BrandSmallSortRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,10 +43,6 @@ public class BrandProductService {
 	private final BrandProductSpecRepository specRepository;
 
 	private final BrandProductRepository brandProductRepository;
-	private final BrandSmallSortRepository brandSmallSortRepository;
-	private final BrandMiddleSortRepository brandMiddleSortRepository;
-	private final BrandBigSortRepository brandBigSortRepository;
-	private final BrandRepository brandRepository;
 	private final BrandProductFileRepository brandProductFileRepository;
 	private final BrandProductImageRepository brandProductImageRepository;
 	
