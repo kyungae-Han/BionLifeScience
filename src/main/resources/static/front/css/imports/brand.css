@@ -25,7 +25,6 @@
   border: none !important;
 }
 
-
 .brand-page #header.full-header.bg-active {
   background: #fff;
   border-bottom: 1px solid rgba(0,0,0,.08);
@@ -77,6 +76,24 @@
 
 .brand-page #header:hover {
   background: rgba(255, 255, 255, 0.95); /* hover 시 fade-in */
+}
+
+
+@media(max-width:998px){
+	.brand-page #header {background: #fff;}
+	
+	.header-row.top-search-parent {width: 100%;}
+	.mobile-primary-menu {position: relative;}
+	ul.menu-container.mobile-primary-menu.open::before {
+	  content: '';
+	  position: fixed;
+	  top: 0;
+	  left: 0;
+	  width: 100vw;
+	  height: 100vh;
+	  background: #fff;
+	  z-index: -1; /* 메뉴 아이템보다 뒤 */
+	}
 }
 
 
@@ -239,6 +256,18 @@
   font-weight: 600;
 }
 
+.product-grid{
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 40px; /* 카드 사이 간격 */
+	max-width: 1280px;
+	margin: 0 auto;
+	box-sizing: border-box;
+}
+
+.grid-inner {width: 100%; max-width: 100%; box-sizing: border-box;}
+
+.sorted-entry {width: 100%;} 
 
 .product-card .entry-image {
   width: 100%;
@@ -248,24 +277,53 @@
   align-items: center;
   justify-content: center;
   position:relative;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.product-card {
+  transition: hidden;
 }
 
 .product-card .entry-image img {
   width: 100%;
-  height: 100%;
-  object-fit: contain;  /* 이미지 비율 유지, 잘리지 않게 */
+  display: block;
+  height: auto;
+  transition: transform 0.3s ease;
+  border-radius: 25px;
+  object-fit:cover;
 }
 
-.grid-inner {max-width: 295px;}
+.product-card:hover img {
+	transform: scale(1.1);
+}
+
+.product-card:after {
+	
+}
+
+.product-card .entry-image::after{
+	content:'';
+	position:absolute;
+	inset: 0;
+	background: rgba(0,0,0,0.4);
+	opacity: 0;
+	transition: opacity 0.3s ease;
+	z-index:1;
+}
+
+.product-card .entry-image:hover::after{
+	opacity: 1;
+}
 
 /* hover 아이콘 (before 사용) */
 .product-card .entry-image::before {
   content: "\F341";
   font-family: "bootstrap-icons";
-  font-weight: 900;
+  font-weight: 500;
   font-size: 28px;
   color: white;
-  background: rgba(0,0,0,0.55);
+  background: #0a1e4e;
   width: 50px;
   height: 50px;
   display: grid;
@@ -278,7 +336,7 @@
   opacity: 0;
   transition: all .3s ease;
   pointer-events: none;
-  z-index:1;
+  z-index:5;
 }
 
 /* hover 시 */
@@ -287,6 +345,13 @@
   transform: translate(-50%, -50%) scale(1);
 }
 
+
+.product-card .entry-title h2 {text-align: left; font-weight: 800;}
+.product-card .entry-meta {padding: 7px 0;}
+.product-card .entry-meta li {font-size: 85% !important; padding: 0; margin: 0;}
+.entry-meta li::before {
+	content: '' !important;
+} 
 
 
 @media (max-width: 768px) {

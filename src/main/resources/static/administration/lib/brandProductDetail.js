@@ -8,7 +8,7 @@ $(function() {
 				brandId: $('#brandProductBrandId :selected').val()
 			}, success: function(result) {
 				$('#brandProductBigSortId').find('option').remove();
-				$('#brandProductBigSortId').append("<option> === 대분류 선택 === </option>");
+				$('#brandProductBigSortId').append("<option value=''> === 대분류 선택 === </option>");
 				for (var i = 0; i < result.length; i++) {
 					var option = $("<option value=" + result[i].id + ">" + result[i].name + "</option>");
 					$('#brandProductBigSortId').append(option);
@@ -25,7 +25,7 @@ $(function() {
 					brandBigSortId: $('#brandProductBigSortId :selected').val()
 				}, success: function(result) {
 					$('#brandProductMiddleSortId').find('option').remove();
-					$('#brandProductMiddleSortId').append("<option> === 중분류 선택 === </option>");
+					$('#brandProductMiddleSortId').append("<option value=''> === 중분류 선택 === </option>");
 					for (var i = 0; i < result.length; i++) {
 						var option = $("<option value=" + result[i].id + ">" + result[i].name + "</option>");
 						$('#brandProductMiddleSortId').append(option);
@@ -44,7 +44,7 @@ $(function() {
 						brandMiddleSortId: $('#brandProductMiddleSortId :selected').val()
 					}, success: function(result) {
 						$('#brandProductSmallSortId').find('option').remove();
-						$('#brandProductSmallSortId').append("<option> === 소분류 선택 === </option>");
+						$('#brandProductSmallSortId').append("<option value=''> === 소분류 선택 === </option>");
 						for (var i = 0; i < result.length; i++) {
 							var option = $("<option value=" + result[i].id + ">" + result[i].name + "</option>");
 							$('#brandProductSmallSortId').append(option);

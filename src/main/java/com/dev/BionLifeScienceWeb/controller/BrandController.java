@@ -48,6 +48,12 @@ import com.dev.BionLifeScienceWeb.service.brand.BrandService;
 
 import lombok.RequiredArgsConstructor;
 
+
+import java.io.FileOutputStream;
+import java.util.Base64;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
@@ -112,6 +118,14 @@ public class BrandController {
 	    if (brandImage == null || brandImage.isEmpty()) {
 	        return "<script>alert('로고 파일은 필수입니다.');history.back();</script>";
 	    }
+	    
+	    String desc = processDescImages(brand.getDesc(), commonPath);
+		
+		if (desc != null) {
+		    desc = desc.replaceAll("(?i)<p>(\\s|&nbsp;|<br>|)*</p>", "");
+		}
+
+	    brand.setDesc(desc);
 
 	    brandService.brandInsert(brandImage, visualImage, brand); // ✅ 세 개 넘김
 
@@ -360,34 +374,52 @@ public class BrandController {
 			@PageableDefault(size = 10) Pageable pageable
 			) {
 		
-		if (brandSmallSortId != null) {
-			Page<BrandProduct> products = brandProductRepository.findAllBySmallSort(pageable,
-					brandSmallSortRepository.findById(brandSmallSortId).get());
-			int startPage = Math.max(1, products.getPageable().getPageNumber() - 4);
-			int endPage = Math.min(products.getTotalPages(), products.getPageable().getPageNumber() + 4);
-			model.addAttribute("products", products);
-			model.addAttribute("startPage", startPage);
-			model.addAttribute("endPage", endPage);
-			model.addAttribute("brandSmallSortId", brandSmallSortId);
-			model.addAttribute("smallsorts", brandSmallSortRepository.findAll());
-			model.addAttribute("middlesorts", brandMiddleSortRepository.findAll());
-			model.addAttribute("bigsorts", brandBigSortRepository.findAll());
-			model.addAttribute("smallId", brandSmallSortId);
-			model.addAttribute("middleId", brandMiddleSortId);
-			model.addAttribute("bigId", brandBigSortId);
-			model.addAttribute("brandId", brandId);
-		}else {
-			Page<BrandProduct> products = brandProductRepository.findAll(pageable);
-			int startPage = Math.max(1, products.getPageable().getPageNumber() - 4);
-			int endPage = Math.min(products.getTotalPages(), products.getPageable().getPageNumber() + 4);
-			model.addAttribute("products", products);
-			model.addAttribute("startPage", startPage);
-			model.addAttribute("endPage", endPage);
-		}
-		
-		model.addAttribute("brand",brandRepository.findAll());
+		  Page<BrandProduct> products;
 
-		return "admin/brand/brandProductManager";
+		    if (brandSmallSortId != null) {
+		        products = brandProductRepository.findAllBySmallSort(
+		                pageable,
+		                brandSmallSortRepository.findById(brandSmallSortId).orElse(null)
+		        );
+		    } else if (brandMiddleSortId != null) {
+		        products = brandProductRepository.findAllByMiddleSort(
+		                pageable,
+		                brandMiddleSortRepository.findById(brandMiddleSortId).orElse(null)
+		        );
+		    } else if (brandBigSortId != null) {
+		        products = brandProductRepository.findAllByBigSort(
+		                pageable,
+		                brandBigSortRepository.findById(brandBigSortId).orElse(null)
+		        );
+		    } else if (brandId != null) {
+		        products = brandProductRepository.findAllByBrand(
+		                pageable,
+		                brandRepository.findById(brandId).orElse(null)
+		        );
+		    } else {
+		        products = brandProductRepository.findAll(pageable);
+		    }
+
+		    int startPage = Math.max(1, products.getPageable().getPageNumber() - 4);
+		    int endPage = Math.min(products.getTotalPages(), products.getPageable().getPageNumber() + 4);
+
+		    model.addAttribute("products", products);
+		    model.addAttribute("startPage", startPage);
+		    model.addAttribute("endPage", endPage);
+
+		    // 선택값 유지용
+		    model.addAttribute("brandSmallSortId", brandSmallSortId);
+		    model.addAttribute("brandMiddleSortId", brandMiddleSortId);
+		    model.addAttribute("brandBigSortId", brandBigSortId);
+		    model.addAttribute("brandId", brandId);
+
+		    // 분류 셀렉트박스 채우기
+		    model.addAttribute("smallsorts", brandSmallSortRepository.findAll());
+		    model.addAttribute("middlesorts", brandMiddleSortRepository.findAll());
+		    model.addAttribute("bigsorts", brandBigSortRepository.findAll());
+		    model.addAttribute("brand", brandRepository.findAll());
+
+		    return "admin/brand/brandProductManager";
 	}
 	
 	@GetMapping("/brandProductInsertForm")
@@ -717,6 +749,7 @@ public class BrandController {
 	        @RequestParam(value = "visualImage", required = false) MultipartFile visualImage
 			) throws IOException {
 		
+		
 		Brand saved = brandRepository.findById(brand.getId()).orElse(null);
 		if (saved == null) {
 			
@@ -725,10 +758,16 @@ public class BrandController {
 		}
 		
 		
+		String desc = processDescImages(brand.getDesc(), commonPath);
+		
+		if (desc != null) {
+		    desc = desc.replaceAll("(?i)<p>(\\s|&nbsp;|<br>|)*</p>", "");
+		}
+		
 		saved.setType(brand.getType());
 	    saved.setName(brand.getName());
 	    saved.setContent(brand.getContent());
-	    saved.setDesc(brand.getDesc());
+	    saved.setDesc(desc);
 	    
 	    brandService.applyLogo(saved, brandImage);
 	    brandService.applyVisual(saved, visualImage);
@@ -743,30 +782,50 @@ public class BrandController {
 	    return sb.toString();
 	}
 	
+	
+	
 	@Value("${spring.upload.path}")
 	private String commonPath;
 
 	@Value("${spring.upload.env}")
 	private String env;
 	
-	@PostMapping("/admin/uploadEditorImage")
-	@ResponseBody
-	public String uploadEditorImage(@RequestParam("file") MultipartFile file) throws IOException {
-	    // 저장 경로 (예: /upload/editor/yyyy-MM-dd)
-	    String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-	    String dirPath = commonPath + "/brand/editor/" + today;
-	    String webPath = "/administration/brand/editor/" + today;
+	private String processDescImages(String desc, String commonPath) throws IOException {
+	    if (desc == null || !desc.contains("data:image")) return desc;
 
-	    File dir = new File(dirPath);
+	    Pattern pattern = Pattern.compile(
+	        "<img[^>]*src=['\"]data:image/(png|jpg|jpeg);base64,([^'\"]+)['\"][^>]*>"
+	    );
+	    Matcher matcher = pattern.matcher(desc);
+
+	    String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+	    String uploadDir = commonPath + "/brand/editor/" + today;
+	    String webPath   = "/upload/brand/editor/" + today;
+
+	    File dir = new File(uploadDir);
 	    if (!dir.exists()) dir.mkdirs();
 
-	    String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-	    File dest = new File(dir, fileName);
-	    file.transferTo(dest);
+	    while (matcher.find()) {
+	        String ext = matcher.group(1);
+	        String base64 = matcher.group(2);
 
-	    return webPath + "/" + fileName;
+	        byte[] decoded = Base64.getDecoder().decode(base64);
+	        String fileName = UUID.randomUUID() + "." + ext;
+	        File target = new File(dir, fileName);
+	        try (FileOutputStream fos = new FileOutputStream(target)) {
+	            fos.write(decoded);
+	        }
+
+	        String oldTag = matcher.group(0);
+	        String newTag = oldTag.replaceFirst(
+	            "src=['\"][^'\"]+['\"]",
+	            "src='" + webPath + "/" + fileName + "'"
+	        );
+	        desc = desc.replace(oldTag, newTag);
+	    }
+
+	    return desc;
 	}
-
 	
 }
 

@@ -11,7 +11,7 @@ $(function() {
 				brandId: $(this).val()
 			}, success: function(result) {
 				$('#bigPanelBigSort').find('option').remove();
-				$('#bigPanelBigSort').append("<option> === 대분류 선택 === </option>");
+				$('#bigPanelBigSort').append("<option value=''> === 대분류 선택 === </option>");
 				for (var i = 0; i < result.length; i++) {
 					var option = $("<option value=" + result[i].id + ">" + result[i].name + "</option>");
 					$('#bigPanelBigSort').append(option);
@@ -52,7 +52,7 @@ $(function() {
 				brandId: $(this).val()
 			}, success: function(result) {
 				$('#middleSortBigSort').find('option').remove();
-				$('#middleSortBigSort').append("<option> === 대분류 선택 === </option>");
+				$('#middleSortBigSort').append("<option value=''> === 대분류 선택 === </option>");
 				for (var i = 0; i < result.length; i++) {
 					var option = $("<option value=" + result[i].id + ">" + result[i].name + "</option>");
 					$('#middleSortBigSort').append(option);
@@ -72,7 +72,7 @@ $(function() {
 				brandId: $(this).val()
 			}, success: function(result) {
 				$('#middlePanelBigSortId').find('option').remove();
-				$('#middlePanelBigSortId').append("<option> === 대분류 선택 === </option>");
+				$('#middlePanelBigSortId').append("<option value=''> === 대분류 선택 === </option>");
 				for (var i = 0; i < result.length; i++) {
 					var option = $("<option value=" + result[i].id + ">" + result[i].name + "</option>");
 					$('#middlePanelBigSortId').append(option);
@@ -89,7 +89,7 @@ $(function() {
 					brandBigSortId: $('#middlePanelBigSortId :selected').val()
 				}, success: function(result) {
 					$('#middlePanelMiddleId').find('option').remove();
-					$('#middlePanelMiddleId').append("<option> === 중분류 선택 === </option>");
+					$('#middlePanelMiddleId').append("<option value=''> === 중분류 선택 === </option>");
 					for (var i = 0; i < result.length; i++) {
 						var option = $("<option value=" + result[i].id + ">" + result[i].name + "</option>");
 						$('#middlePanelMiddleId').append(option);
@@ -129,7 +129,7 @@ $(function() {
 				brandId: $('#smallPanelBrandId :selected').val()
 			}, success: function(result) {
 				$('#smallPanelBigSortId').find('option').remove();
-				$('#smallPanelBigSortId').append("<option> === 대분류 선택 === </option>");
+				$('#smallPanelBigSortId').append("<option value=''> === 대분류 선택 === </option>");
 				for (var i = 0; i < result.length; i++) {
 					var option = $("<option value=" + result[i].id + ">" + result[i].name + "</option>");
 					$('#smallPanelBigSortId').append(option);
@@ -146,7 +146,7 @@ $(function() {
 					brandBigSortId: $('#smallPanelBigSortId :selected').val()
 				}, success: function(result) {
 					$('#smallPanelMiddleSortId').find('option').remove();
-					$('#smallPanelMiddleSortId').append("<option> === 중분류 선택 === </option>");
+					$('#smallPanelMiddleSortId').append("<option value=''> === 중분류 선택 === </option>");
 					for (var i = 0; i < result.length; i++) {
 						var option = $("<option value=" + result[i].id + ">" + result[i].name + "</option>");
 						$('#smallPanelMiddleSortId').append(option);
@@ -166,7 +166,7 @@ $(function() {
 				brandId: $('#smallPanelBrandSort :selected').val()
 			}, success: function(result) {
 				$('#smallPanelBigSort').find('option').remove();
-				$('#smallPanelBigSort').append("<option> === 대분류 선택 === </option>");
+				$('#smallPanelBigSort').append("<option value=''> === 대분류 선택 === </option>");
 				for (var i = 0; i < result.length; i++) {
 					var option = $("<option value=" + result[i].id + ">" + result[i].name + "</option>");
 					$('#smallPanelBigSort').append(option);
@@ -183,7 +183,7 @@ $(function() {
 					brandBigSortId: $('#smallPanelBigSort :selected').val()
 				}, success: function(result) {
 					$('#smallPanelMiddleSort').find('option').remove();
-					$('#smallPanelMiddleSort').append("<option> === 중분류 선택 === </option>");
+					$('#smallPanelMiddleSort').append("<option value=''> === 중분류 선택 === </option>");
 					for (var i = 0; i < result.length; i++) {
 						var option = $("<option value=" + result[i].id + ">" + result[i].name + "</option>");
 						$('#smallPanelMiddleSort').append(option);
@@ -202,7 +202,7 @@ $(function() {
 						brandMiddleSortId: $('#smallPanelMiddleSort :selected').val()
 					}, success: function(result) {
 						$('#smallPanelSmallSort').find('option').remove();
-						$('#smallPanelSmallSort').append("<option> === 소분류 선택 === </option>");
+						$('#smallPanelSmallSort').append("<option value=''> === 소분류 선택 === </option>");
 						for (var i = 0; i < result.length; i++) {
 							var option = $("<option value=" + result[i].id + ">" + result[i].name + "</option>");
 							$('#smallPanelSmallSort').append(option);

@@ -83,27 +83,6 @@
 								  </div>
 								</div>
 								
-								
-								<!-- 비주얼 이미지 (선택) -->
-								<div class="form-group has-success">
-								  <label class="col-lg-2 control-label">비주얼 이미지 (선택)</label>
-								  <div class="col-lg-10">
-								    <input type="file" id="visualImage" name="visualImage" accept="image/*" class="form-control">
-								
-								    <!-- brand.visualRoad 가 있을 경우 -->
-								    <div class="preview-wrap">
-									    <div th:if="${brand.visualRoad}">
-									      <small>현재 비주얼 미리보기</small><br>
-									      <img th:src="${brand.visualRoad}"
-									           style="max-width:420px;border:1px solid #ddd;padding:6px;background:#fff;">
-									    </div>
-								    </div>
-							    	<p class="help-block">* 1920px * 460px의 사이즈에 최적화 되어 있습니다.</p>
-									<p class="help-block">* jpg / jpeg / png 확장자를 지원 합니다.</p>
-									<p class="help-block">* 변경없이 수정시 기존의 이미지를 사용합니다.</p>
-								  </div>
-								</div>
-								
 								<div class="form-group has-success">
 									<label class="col-lg-2 control-label">브랜드 소개</label>
 									<div class="col-lg-10">
@@ -116,6 +95,23 @@
 									</div>
 								</div>
 								
+								<!-- 비주얼 이미지 (선택) -->
+								<div class="form-group has-success">
+								  <label class="col-lg-2 control-label">비주얼 이미지 (자사브랜드만 넣어주세요.)</label>
+								  <div class="col-lg-10">
+								    <input type="file" id="visualImage" name="visualImage" accept="image/*" class="form-control">
+								
+								    <!-- brand.visualRoad 가 있을 경우 -->
+								    <div class="preview-wrap" th:if="${brand.visualRoad != null and !#strings.isEmpty(brand.visualRoad)}">
+									      <small>현재 비주얼 미리보기</small><br>
+									      <img th:src="${brand.visualRoad}"
+									           style="max-width:420px;border:1px solid #ddd;padding:6px;background:#fff;">
+									    </div>
+							    	<p class="help-block">* 1920px * 460px의 사이즈에 최적화 되어 있습니다.</p>
+									<p class="help-block">* jpg / jpeg / png 확장자를 지원 합니다.</p>
+									<p class="help-block">* 변경없이 수정시 기존의 이미지를 사용합니다.</p>
+								  </div>
+								</div>
 								
 								<!-- 본문(에디터) -->
 			                    <div class="form-group has-success">
@@ -294,7 +290,8 @@
 			    });
 			  }
 			});
-
+	$.summernote.dom.emptyPara = "<br>";
+		
 	let lastRange = null;
 
 	$('#desc').summernote({
@@ -309,7 +306,7 @@
 	      ['font', ['fontsize', 'fontname', 'color']],
 	      ['height',['height']],
 	      ['para', ['ul', 'ol', 'paragraph']],
-	      ['insert', ['link', 'picture', 'video', 'table', 'hr', 'codeview']],
+	      ['insert', ['link', 'picture', 'video', 'table', 'hr']],
 	      ['view', ['fullscreen', 'codeview', 'help']],
 	    ],
 	    popover: {
@@ -336,7 +333,9 @@
 	    callbacks: {
 	    	  onInit: function () {
 	    	    $('.note-editable').css({ 'background-color': '#fff' });
+	    	    $(this).summernote('lineHeight', 1.2);
 	    	  },
+	    	  
 	    	  onChange: function (contents, $editable) {
 	    	    $('.note-editable table td').resizable({
 	    	      handles: "e, s",
@@ -364,11 +363,6 @@
 	    	}
 
 	  });
-	
-	$('#desc').on('summernote.keyup summernote.mouseup summernote.change', function () {
-	  lastRange = $('#desc').summernote('createRange');
-	});
-	
 	</script>
 	
 	<script>
@@ -455,7 +449,6 @@
 		  
 		})();
 		</script>
-
 
 </body>
 </html>

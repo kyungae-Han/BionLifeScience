@@ -96,15 +96,15 @@
 								<a th:href="@{|/brandProductDetail/${product.id}|}" th:text="${product.subject}">Screw Caps and Tubes</a>
 							</h2>
 						</div>
+						<div class="entry-content mt-1">
+							<p th:text="${product.content}">간단한 제품에 대한 설명이 들어가는 영역입니다.</p>
+						</div>
 						<div class="entry-meta" th:if="${product.specs != null and !product.specs.isEmpty()}">
 						    <ul>
 						        <li th:each="spec : ${product.specs}">
 						            # [[${spec.productSpecContent}]]
 						        </li>
 						    </ul>
-						</div>
-						<div class="entry-content mt-1">
-							<p th:text="${product.content}">간단한 제품에 대한 설명이 들어가는 영역입니다.</p>
 						</div>
 					</div>
 				</div>
