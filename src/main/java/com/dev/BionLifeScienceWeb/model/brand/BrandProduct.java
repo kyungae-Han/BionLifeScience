@@ -84,7 +84,9 @@ public class BrandProduct {
 	
 	public String addFirstImage() {
 		
-		return this.images.get(0).getProductImageRoad();
+		return (images != null && !images.isEmpty())
+	            ? images.get(0).getProductImageRoad()
+	            : null;
 	}
 	
 	@OneToMany(
@@ -93,7 +95,7 @@ public class BrandProduct {
 			orphanRemoval = true,
 			mappedBy = "product"
 			)
-	private List<BrandProductImage> images;
+	private List<BrandProductImage> images = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<BrandProductInfo> infos = new ArrayList<>();
@@ -104,7 +106,7 @@ public class BrandProduct {
 			orphanRemoval = true,
 			mappedBy = "product"
 			)
-	private List<BrandProductFile> files;
+	private List<BrandProductFile> files = new ArrayList<>();
 	
 	@OneToMany(
 			fetch = FetchType.LAZY, 
@@ -112,7 +114,7 @@ public class BrandProduct {
 			orphanRemoval = true,
 			mappedBy = "product"
 			)
-	private List<BrandProductSpec> specs;
+	private List<BrandProductSpec> specs = new ArrayList<>();
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(

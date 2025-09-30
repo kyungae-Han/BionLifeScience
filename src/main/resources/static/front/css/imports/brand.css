@@ -258,12 +258,25 @@
 
 .product-grid{
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	grid-template-columns: repeat(4, 1fr);
 	gap: 40px; /* 카드 사이 간격 */
 	max-width: 1280px;
 	margin: 0 auto;
 	box-sizing: border-box;
 }
+
+@media(max-width:998px){
+	.product-grid{
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media(max-width:414px){
+	.product-grid{
+		grid-template-columns: repeat(1, 1fr);
+	}
+}
+
 
 .grid-inner {width: 100%; max-width: 100%; box-sizing: border-box;}
 
@@ -283,6 +296,7 @@
 
 .product-card {
   transition: hidden;
+  max-width: 295px;
 }
 
 .product-card .entry-image img {
@@ -352,6 +366,12 @@
 .entry-meta li::before {
 	content: '' !important;
 } 
+
+
+.entry-image::before,
+.entry-image::after {
+  pointer-events: none;
+}
 
 
 @media (max-width: 768px) {

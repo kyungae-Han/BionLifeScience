@@ -448,13 +448,13 @@ public class BrandProductService {
 	    int targetStringLength = 10;
 	    Random random = new Random();
 
-	    // ✅ 기존 DB 엔티티 가져오기
 	    BrandProduct saved = brandProductRepository.findById(product.getId())
 	            .orElseThrow(() -> new IllegalArgumentException("해당 제품이 존재하지 않습니다. id=" + product.getId()));
-	    
-	    
-	    if (productOverviewImage != null && !productOverviewImage.isEmpty()) {
 
+	    // =========================
+	    // Overview 이미지 업데이트
+	    // =========================
+	    if (productOverviewImage != null && !productOverviewImage.isEmpty()) {
 	        String generatedString = random.ints(leftLimit, rightLimit + 1)
 	                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
 	                .limit(targetStringLength)
@@ -464,19 +464,17 @@ public class BrandProductService {
 	        String overviewPath = commonPath + "/brandproduct/" + saved.getBrandProductCode() + "/overview";
 	        String overviewRoad = "/upload/brandproduct/" + saved.getBrandProductCode() + "/overview";
 
-	        File overviewFileFolder = new File(overviewPath);
-	        if (!overviewFileFolder.exists()) {
-	            overviewFileFolder.mkdirs();
+	        File overviewDir = new File(overviewPath);
+	        if (!overviewDir.exists()) {
+	            overviewDir.mkdirs();
 	        }
 
 	        String overviewFileName = generatedString + "_" + productOverviewImage.getOriginalFilename();
 
-	        File dest;
-	        if (env.equals("local")) {
-	            dest = new File(absolutePath + overviewPath + "/" + overviewFileName);
-	        } else {
-	            dest = new File(overviewPath + "/" + overviewFileName);
-	        }
+	        File dest = env.equals("local")
+	                ? new File(absolutePath + overviewPath + "/" + overviewFileName)
+	                : new File(overviewPath + "/" + overviewFileName);
+
 	        productOverviewImage.transferTo(dest);
 
 	        saved.setTableImagePath(overviewPath + "/" + overviewFileName);
@@ -484,8 +482,10 @@ public class BrandProductService {
 	        saved.setTableImageName(overviewFileName);
 	    }
 
+	    // =========================
+	    // Spec 이미지 업데이트
+	    // =========================
 	    if (productSpecImage != null && !productSpecImage.isEmpty()) {
-
 	        String generatedString = random.ints(leftLimit, rightLimit + 1)
 	                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
 	                .limit(targetStringLength)
@@ -495,197 +495,31 @@ public class BrandProductService {
 	        String specPath = commonPath + "/brandproduct/" + saved.getBrandProductCode() + "/spec";
 	        String specRoad = "/upload/brandproduct/" + saved.getBrandProductCode() + "/spec";
 
-	        File specFileFolder = new File(specPath);
-	        if (!specFileFolder.exists()) {
-	            specFileFolder.mkdirs();
+	        File specDir = new File(specPath);
+	        if (!specDir.exists()) {
+	            specDir.mkdirs();
 	        }
 
 	        String specFileName = generatedString + "_" + productSpecImage.getOriginalFilename();
 
-	        File dest;
-	        if (env.equals("local")) {
-	            dest = new File(absolutePath + specPath + "/" + specFileName);
-	        } else {
-	            dest = new File(specPath + "/" + specFileName);
-	        }
+	        File dest = env.equals("local")
+	                ? new File(absolutePath + specPath + "/" + specFileName)
+	                : new File(specPath + "/" + specFileName);
+
 	        productSpecImage.transferTo(dest);
 
 	        saved.setSpecImagePath(specPath + "/" + specFileName);
 	        saved.setSpecImageRoad(specRoad + "/" + specFileName);
 	        saved.setSpecImageName(specFileName);
 	    }
-	    
 
+	    // =========================
+	    // 나머지 필드 업데이트
+	    // =========================
 	    saved.setBrand(product.getBrand());
 	    saved.setBigSort(product.getBigSort());
 	    saved.setMiddleSort(product.getMiddleSort());
 	    saved.setSmallSort(product.getSmallSort());
-
-	    saved.setSubject(product.getSubject());
-	    saved.setContent(product.getContent());
-	    saved.setProductSubContent(product.getProductSubContent());
-	    saved.setSign(product.getSign());
-
-	    if (product.getSpecs() != null) {
-	    	
-	        List<BrandProductSpec> filteredSpecs = product.getSpecs().stream()
-	                .filter(s -> s.getProductSpecSubject() != null && !s.getProductSpecSubject().trim().isEmpty() && !s.getProductSpecSubject().equals("-"))
-	                .filter(s -> s.getProductSpecContent() != null && !s.getProductSpecContent().trim().isEmpty() && !s.getProductSpecContent().equals("-"))
-	                .collect(Collectors.toList());
-	        
-	        
-	        // 1) 현재 DB에 있는 specId 목록
-	        Set<Long> existingIds = saved.getSpecs().stream()
-	                .map(BrandProductSpec::getId)
-	                .collect(Collectors.toSet());
-
-	        // 2) 새로 넘어온 specId 목록
-	        Set<Long> incomingIds = product.getSpecs().stream()
-	                .filter(s -> s.getId() != null)
-	                .map(BrandProductSpec::getId)
-	                .collect(Collectors.toSet());
-
-	        // 3) 삭제 대상 찾기
-	        Set<Long> toDelete = new HashSet<>(existingIds);
-	        toDelete.removeAll(incomingIds);
-
-	        // ✅ orphanRemoval 활용 (DB deleteById 대신 removeIf)
-	        saved.getSpecs().removeIf(spec -> toDelete.contains(spec.getId()));
-
-	        // 4) 업데이트/추가 처리
-	        for (BrandProductSpec incoming : product.getSpecs()) {
-	            if (incoming.getId() != null) {
-	                BrandProductSpec spec = specRepository.findById(incoming.getId()).orElseThrow();
-	                spec.setProductSpecSubject(incoming.getProductSpecSubject());
-	                spec.setProductSpecContent(incoming.getProductSpecContent());
-	            } else {
-	                incoming.setProduct(saved);
-	                saved.getSpecs().add(incoming);
-	            }
-	        }
-	    }
-
-	    
-	    if (product.getInfos() != null) {
-	    	
-	    	// ✅ 빈값/"-" 필터링
-	        List<BrandProductSpec> filteredSpecs = product.getSpecs().stream()
-	                .filter(s -> s.getProductSpecSubject() != null && !s.getProductSpecSubject().trim().isEmpty() && !s.getProductSpecSubject().equals("-"))
-	                .filter(s -> s.getProductSpecContent() != null && !s.getProductSpecContent().trim().isEmpty() && !s.getProductSpecContent().equals("-"))
-	                .collect(Collectors.toList());
-	        
-	        
-	        // 1) 현재 DB에 있는 infoId 목록
-	        Set<Long> existingInfoIds = saved.getInfos().stream()
-	                .map(BrandProductInfo::getId)
-	                .collect(Collectors.toSet());
-
-	        // 2) 새로 넘어온 infoId 목록
-	        Set<Long> incomingInfoIds = product.getInfos().stream()
-	                .filter(i -> i.getId() != null)
-	                .map(BrandProductInfo::getId)
-	                .collect(Collectors.toSet());
-
-	        // 3) 삭제 대상 찾기 (DB에는 있는데 폼에는 없는 것)
-	        Set<Long> toDeleteInfos = new HashSet<>(existingInfoIds);
-	        toDeleteInfos.removeAll(incomingInfoIds);
-
-	        toDeleteInfos.forEach(id -> {
-	            infoRepository.deleteById(id); // ✅ DB에서 삭제
-	            saved.getInfos().removeIf(info -> info.getId().equals(id)); // ✅ 컬렉션에서도 제거
-	        });
-
-	        // 4) 업데이트/추가 처리
-	        for (BrandProductInfo incoming : product.getInfos()) {
-	            if (incoming.getId() != null) {
-	                BrandProductInfo info = infoRepository.findById(incoming.getId())
-	                        .orElseThrow();
-	                info.setProductInfoText(incoming.getProductInfoText());
-	            } else {
-	                incoming.setProduct(saved);
-	                saved.getInfos().add(incoming);
-	            }
-	        }
-	    }
-
-
-	    
-
-	    /* =========================
-	       Overview 이미지 업데이트
-	       ========================= */
-	    if (productOverviewImage != null && !productOverviewImage.isEmpty()) {
-
-	        String generatedString = random.ints(leftLimit, rightLimit + 1)
-	                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-	                .limit(targetStringLength)
-	                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-	                .toString();
-
-	        String overviewPath = commonPath + "/brandproduct/" + saved.getBrandProductCode() + "/overview";
-	        String overviewRoad = "/upload/brandproduct/" + saved.getBrandProductCode() + "/overview";
-
-	        File overviewFileFolder = new File(overviewPath);
-	        if (!overviewFileFolder.exists()) {
-	            overviewFileFolder.mkdirs();
-	        }
-
-	        String overviewFileName = generatedString + "_" + productOverviewImage.getOriginalFilename();
-
-	        File dest;
-	        if (env.equals("local")) {
-	            dest = new File(absolutePath + overviewPath + "/" + overviewFileName);
-	        } else {
-	            dest = new File(overviewPath + "/" + overviewFileName);
-	        }
-	        productOverviewImage.transferTo(dest);
-
-	        saved.setTableImagePath(overviewPath + "/" + overviewFileName);
-	        saved.setTableImageRoad(overviewRoad + "/" + overviewFileName);
-	        saved.setTableImageName(overviewFileName);
-	    }
-
-	    /* =========================
-	       Spec 이미지 업데이트
-	       ========================= */
-	    if (productSpecImage != null && !productSpecImage.isEmpty()) {
-
-	        String generatedString = random.ints(leftLimit, rightLimit + 1)
-	                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-	                .limit(targetStringLength)
-	                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-	                .toString();
-
-	        String specPath = commonPath + "/brandproduct/" + saved.getBrandProductCode() + "/spec";
-	        String specRoad = "/upload/brandproduct/" + saved.getBrandProductCode() + "/spec";
-
-	        File specFileFolder = new File(specPath);
-	        if (!specFileFolder.exists()) {
-	            specFileFolder.mkdirs();
-	        }
-
-	        String specFileName = generatedString + "_" + productSpecImage.getOriginalFilename();
-
-	        File dest;
-	        if (env.equals("local")) {
-	            dest = new File(absolutePath + specPath + "/" + specFileName);
-	        } else {
-	            dest = new File(specPath + "/" + specFileName);
-	        }
-	        productSpecImage.transferTo(dest);
-
-	        saved.setSpecImagePath(specPath + "/" + specFileName);
-	        saved.setSpecImageRoad(specRoad + "/" + specFileName);
-	        saved.setSpecImageName(specFileName);
-	    }
-
-	    /* =========================
-	       연관관계 & 기타 속성 업데이트
-	       ========================= */
-	    saved.setBrand(product.getBrand());           // Controller에서 세팅됨
-	    saved.setBigSort(product.getBigSort());
-	    saved.setMiddleSort(product.getMiddleSort()); // null 가능
-	    saved.setSmallSort(product.getSmallSort());   // null 가능
 
 	    saved.setSubject(product.getSubject());
 	    saved.setContent(product.getContent());

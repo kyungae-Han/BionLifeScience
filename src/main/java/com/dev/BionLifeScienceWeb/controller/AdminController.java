@@ -58,7 +58,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
-
+	
 	private final HistorySubjectRepository historySubjectRepository;
 	private final HistoryContentRepository historyContentRepository;
 	private final CompanyInfoRepository companyInfoRepository;

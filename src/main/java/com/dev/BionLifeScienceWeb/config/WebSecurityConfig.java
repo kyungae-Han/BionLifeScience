@@ -66,7 +66,9 @@ public class WebSecurityConfig {
             )
             .exceptionHandling(ex -> ex
                 .authenticationEntryPoint(new AjaxAuthenticationEntryPoint("/memberLoginForm"))
-            );
+            ).sessionManagement(session -> session
+                    .invalidSessionUrl("/session-timeout")
+    	    );
 
         return http.build();
     }

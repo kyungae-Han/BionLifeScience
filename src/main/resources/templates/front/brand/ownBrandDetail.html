@@ -47,6 +47,11 @@
 			<div class="category-tabs">
 			  <!-- BigSort 탭 -->
 			  <ul th:if="${sort == 'brand'}">
+			   <li>
+			      <button type="button"
+			              class="tab-btn active"
+			              data-id="all">All</button>
+			    </li>
 			    <li th:each="cat : ${bigSorts}">
 			      <button type="button"
 			              class="tab-btn"
@@ -85,7 +90,11 @@
 			
 			
 			<div class="product-grid">
-				<div class="product-card entry sorted-entry col-lg-4 col-6" th:each="product : ${products}">
+				<div class="product-card entry sorted-entry col-lg-4 col-6" 
+				th:each="product : ${products}"
+				th:attr="data-big-id=${product.bigSort?.id},
+			              data-middle-id=${product.middleSort != null ? product.middleSort.id : ''},
+			              data-small-id=${product.smallSort != null ? product.smallSort.id : ''}">
 					<div class="grid-inner">
 						<div class="entry-image mb-2">
 							<a th:href="@{|/brandProductDetail/${product.id}|}">
@@ -146,7 +155,39 @@
 	
 	    // 페이지 로딩 직후 한 번 실행 → 새로고침 시 현재 스크롤 위치 반영
 	    checkScroll();
+	    
+	    
+	    
+	    /*탭이벤트*/
+	    const tabs = document.querySelectorAll(".category-tabs .tab-btn");
+		const cards = document.querySelectorAll(".product-card");
+	    
+		tabs.forEach(tab => {
+		    tab.addEventListener("click", function () {
+		      const selectedId = this.getAttribute("data-id");
+
+		      // 모든 탭 active 해제 후 현재 탭에 active 추가
+		      tabs.forEach(t => t.classList.remove("active"));
+		      this.classList.add("active");
+
+		      // 카드 필터링
+		      cards.forEach(card => {
+		        const bigId = card.getAttribute("data-big-id");
+		        const middleId = card.getAttribute("data-middle-id");
+		        const smallId = card.getAttribute("data-small-id");
+
+		        if (selectedId === "all") {
+		            card.style.display = ""; // ✅ All 클릭 시 전체 보이기
+		          } else if ([bigId, middleId, smallId].includes(selectedId)) {
+		            card.style.display = ""; // 조건 일치 시 보이기
+		          } else {
+		            card.style.display = "none"; // 조건 불일치 시 숨기기
+		          }
+		      });
+		    });
+		  });
 	  });
+
 	</script>
 
 </body>

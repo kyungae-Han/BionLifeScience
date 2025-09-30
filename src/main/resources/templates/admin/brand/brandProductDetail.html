@@ -171,7 +171,8 @@
 										class="form-control wth-100" 
 										style="margin-bottom:10px;" 
 										name="productOverviewImage" 
-										th:value="same">
+										required="required">
+										
 										<span class="label label-danger">주의</span> <span> image용 확장자(jpg/jpeg/png)만을 지원합니다</span><br>
 										<span class="label label-danger">주의</span> <span> 이미지 이름에 공백 혹은 특수문자를 제거 해 주시기 바랍니다</span><br>
 										<span class="label label-danger">주의</span> <span> 가로사이즈 1,440px 을 기준으로 최적화 되어 있습니다.</span>
@@ -187,8 +188,8 @@
 										style="margin-bottom:10px;" 
 										id="deImage" 
 										name="slides" 
-										multiple="multiple"
-										th:value="same">
+										required="required"
+										multiple="multiple">
 										<span class="label label-danger">주의</span> <span> image용 확장자(jpg/jpeg/png)만을 지원합니다</span><br>
 										<span class="label label-danger">주의</span> <span> 이미지 이름에 공백 혹은 특수문자를 제거 해 주시기 바랍니다</span><br>
 										<span class="label label-success">사용</span> <span> 파일 드래그를 통해 여러장을 한번에 업로드 할 수 있습니다</span><br>
@@ -243,6 +244,8 @@
 			</section>
 		</section>
 	</section>
+	
+
 	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
 	<script src="/administration/lib/brandProductDetail.js"></script>
 	<script src="/administration/lib/jquery-ui-1.9.2.custom.min.js"></script>

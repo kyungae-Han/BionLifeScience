@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dev.BionLifeScienceWeb.exception.DeleteViolationException;
 import com.dev.BionLifeScienceWeb.model.brand.Brand;
@@ -436,9 +437,7 @@ public class BrandController {
 		return "admin/brand/brandProductInsertForm";
 	}
 
-	@RequestMapping(value = "/brandProductInsert",
-		    method = {RequestMethod.GET, RequestMethod.POST}
-	)
+	@PostMapping("/brandProductInsert")
 	@ResponseBody
 	public String brandProductInsert(
 			BrandProduct product, 
@@ -535,6 +534,11 @@ public class BrandController {
 
 		return sb.toString();
 	}
+	
+	@GetMapping("/brandProductInsert")
+	public String redirectInsertToForm() {
+	    return "redirect:/admin/brandProductInsertForm";
+	}
 
 	@RequestMapping(value = "/brandProductDetail/{id}",
 		    method = {RequestMethod.GET, RequestMethod.POST}
@@ -576,18 +580,19 @@ public class BrandController {
 	            .orElseThrow(() -> new IllegalArgumentException("없는 제품입니다."));
 
 	    model.addAttribute("product", product);
-	    model.addAttribute("brand", brandRepository.findAll());   // 브랜드 리스트 추가
+	    model.addAttribute("brand", brandRepository.findAll());
 	    model.addAttribute("bigsorts", brandBigSortRepository.findAll());
-	    model.addAttribute("middlesorts", brandMiddleSortRepository.findAll()); // 필요시
-	    model.addAttribute("smallsorts", brandSmallSortRepository.findAll());   // 필요시
+	    model.addAttribute("middlesorts", brandMiddleSortRepository.findAll());
+	    model.addAttribute("smallsorts", brandSmallSortRepository.findAll()); 
 
 	    return "admin/brand/brandProductDetail"; 
 	}
 	
-	
 	@PostMapping("/brandProductUpdate")
+	@ResponseBody
 	public String brandProductUpdate(
 			@ModelAttribute BrandProduct product, 
+			RedirectAttributes redirectAttributes,
 	        @RequestParam(required = false) MultipartFile productOverviewImage,
 	        @RequestParam(required = false) MultipartFile productSpecImage,
 	        @RequestParam(required = false) List<MultipartFile> slides,
@@ -639,9 +644,6 @@ public class BrandController {
 		
 		
 		brandProductService.productUpdate(productOverviewImage, productSpecImage, product);
-		
-		//brandProductInfoRepository.deleteAllByProductId(product.getId());
-		//brandProductSpecRepository.deleteAllByProductId(product.getId());
 		
 		if (spec != null && spec.length > 0) {
 		    for (String s : spec) {
@@ -695,9 +697,14 @@ public class BrandController {
 		model.addAttribute("smallId", product.getBrandSmallSortId());
 		model.addAttribute("bigsorts", brandBigSortRepository.findAll());
 		
+		 StringBuffer sb = new StringBuffer();
+		    String msg = "제품이 수정 되었습니다.";
+		    sb.append("<script>")
+		      .append("alert('" + msg + "');")
+		      .append("location.href='/admin/brandProductManager';")
+		      .append("</script>");
+		    return sb.toString();
 		
-
-		return "redirect:/admin/brandProductManager";
 	}
 	
 	@RequestMapping(value = "/brandProductDelete/{id}",
@@ -708,16 +715,25 @@ public class BrandController {
 			@PathVariable Long id
 			) {
 		
+		StringBuffer sb = new StringBuffer();
 		try {
-			brandProductService.deleteFiles(id);
-			brandProductRepository.deleteById(id);
+			 if (brandProductRepository.existsById(id)) {
+		            // 관련 파일 삭제 로직
+		            brandProductService.deleteFiles(id);
+
+		            // 제품 삭제
+		            brandProductRepository.deleteById(id);
+
+		            String msg = "제품이 삭제 되었습니다.";
+		            sb.append("alert('" + msg + "');");
+		        } else {
+		            String msg = "이미 삭제되었거나 존재하지 않는 제품입니다.";
+		            sb.append("alert('" + msg + "');");
+		        }
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		StringBuffer sb = new StringBuffer();
-		String msg = "제품이 삭제 되었습니다.";
-
-		sb.append("alert('" + msg + "');");
+		
 		sb.append("location.href='/admin/brandProductManager'");
 		sb.append("</script>");
 		sb.insert(0, "<script>");
