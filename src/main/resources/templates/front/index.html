@@ -147,7 +147,7 @@
 	 <div class="pro-track">
 	   <div class="portfolio-item" th:each="product : ${products}">
 	     <div class="portfolio-image">
-	       <a th:href="@{|/brandProductDetail/${product.id}|}">
+	       <a th:href="@{|/productDetail/${product.id}|}">
 	         <img th:src="${product.firstImageRoad}" alt="PRODUCT">
 	       </a>
 	     </div>

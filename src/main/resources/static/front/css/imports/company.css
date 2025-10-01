@@ -2874,6 +2874,17 @@ tbody td:not(.table__subject){
 .notice__important td {font-weight: 600;}
 
 
+.reference-files {
+  width: 80px;   /* 원하는 썸네일 크기 */
+  height: 80px;  /* 정사각형 */
+  overflow: hidden;
+}
+
+
+.reference-files img {
+	width: 100%;
+	object-fit:cover;
+}
 
 /* .product-mega-wrap.debug-open {
   opacity: 1 !important;
@@ -2882,3 +2893,5 @@ tbody td:not(.table__subject){
   transform: translateX(-50%) !important;
 }
  */
+ 
+ 

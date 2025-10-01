@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dev.BionLifeScienceWeb.model.ReferenceFile;
@@ -33,52 +33,60 @@ public class ReferenceFileService {
 			ReferenceFile f
 			) throws IllegalStateException, IOException {
 		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String current_date = simpleDateFormat.format(new Date());
-        String absolutePath = new File("").getAbsolutePath() + "\\";
-        String path = commonPath + "/reference/" + current_date;
-        String road = "/administration/reference/"+current_date;
-        File fileFolder = new File(path);
-        int leftLimit = 48; // numeral '0'
-		int rightLimit = 122; // letter 'z'
-		int targetStringLength = 10;
-		Random random = new Random();
-        if(!fileFolder.exists()) {
-        	fileFolder.mkdirs();
-        }
-        String generatedString = random.ints(leftLimit,rightLimit + 1)
-				  .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-				  .limit(targetStringLength)
-				  .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-				  .toString();
+		 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		    String currentDate = sdf.format(new Date());
+		    
+		    String absolutePath = new File("").getAbsolutePath() + File.separator;
+
+		    String path = absolutePath + commonPath + "/reference/" + currentDate;
+		    String road = "/upload/reference/" + currentDate;
+
+		    File fileFolder = new File(path);
+		    if (!fileFolder.exists()) {
+		        fileFolder.mkdirs();
+		    }
+		    
+		    String originName = file.getOriginalFilename();
+
+		    // 확장자 추출
+		    String ext = "";
+		    if (originName != null && originName.contains(".")) {
+		        ext = originName.substring(originName.lastIndexOf(".")).toLowerCase();
+		    }
+
+		    // 랜덤 문자열 + 확장자
+		    String newFileName = generateRandomString(10) + ext;
+		    
+		    File dest = new File(fileFolder, newFileName);
+		    file.transferTo(dest);
+
+		    // DB 세팅
+		    if (f.getFilesubject() == null || f.getFilesubject().isEmpty()) {
+		        f.setFilesubject(originName);
+		    }
+		    f.setFiledate(new Date());
+		    f.setFilename(originName);
+		    f.setFileextension(originName.substring(originName.lastIndexOf(".")).toLowerCase());
+		    f.setFilepath(dest.getAbsolutePath());  // 서버 절대 경로
+		    f.setFileroad("/upload/reference/" + currentDate + "/" + newFileName); // 웹 접근 경로
+
+		    referenceFileRepository.save(f);
+
+		    return "success";
 		
-    	String contentType = file.getContentType();
-        String originalFileExtension = "";
-        // 확장자 명 NULL 검증
-		if (ObjectUtils.isEmpty(contentType)) {
-			return "NONE";
-		} 
-        String new_file_name = generatedString +  "_" + file.getOriginalFilename();
-        if(env.equals("local")) {
-        	fileFolder = new File(absolutePath + path + "/" + new_file_name);
-        	f.setFilepath(absolutePath + path + "/" + new_file_name);
-		}else if(env.equals("prod")) {
-			fileFolder = new File(path + "/" + new_file_name);
-			f.setFilepath(path + "/" + new_file_name);
-		}
-        
-        file.transferTo(fileFolder);
-        if(f.getFilesubject().isEmpty()) {
-        	f.setFilesubject(file.getOriginalFilename());
-        }
-        f.setFiledate(new Date());
-        f.setFileextension(originalFileExtension);
-        f.setFilename(file.getOriginalFilename());
-        f.setFileroad(road + "/" +  new_file_name);
-        referenceFileRepository.save(f);
-        
-        return "success";
-		
+	}
+	
+	
+	private String generateRandomString(int length) {
+	    int leftLimit = 48; // '0'
+	    int rightLimit = 122; // 'z'
+	    Random random = new Random();
+
+	    return random.ints(leftLimit, rightLimit + 1)
+	            .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+	            .limit(length)
+	            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+	            .toString();
 	}
 }
 

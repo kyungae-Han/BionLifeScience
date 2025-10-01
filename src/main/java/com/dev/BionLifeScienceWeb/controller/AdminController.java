@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dev.BionLifeScienceWeb.controller.api.SummernoteImageProcessor;
 import com.dev.BionLifeScienceWeb.model.Client;
@@ -54,7 +55,6 @@ import com.dev.BionLifeScienceWeb.service.NoticeService;
 import org.jsoup.Jsoup;
 
 import lombok.RequiredArgsConstructor;
-import com.dev.BionLifeScienceWeb.controller.api.SummernoteImageProcessor;
 
 @Controller
 @RequestMapping("/admin")
@@ -364,31 +364,38 @@ public class AdminController {
 		return "admin/noticeInsertForm";
 	}
 	
-	@RequestMapping(value = "/noticeInsert",
-		    method = {RequestMethod.GET, RequestMethod.POST}
-	)
-	@ResponseBody
+	
+	
+	@PostMapping("/noticeInsert")
 	public String noticeInsert(
-			Notice notice, Model model
-			) {
+			Notice notice, Model model,
+			RedirectAttributes rttr
+			)throws IOException  {
 		
 		
-		String html = notice.getContent();
-		String firstImg = extractFirstImageUrl(html);
-		notice.setImageUrl(firstImg);
-		
-		notice.setDate(new Date());
-		notice.setNoticeSubject(noticeSubjectRepository.findById(notice.getSubjectId()).get());
-		noticeRepository.save(notice);
-		StringBuffer sb = new StringBuffer();
-		String msg = "공지사항이 등록 되었습니다.";
+		 String processedContent = imageProcessor.processEditorImages(notice.getContent(), "notice");
+		    notice.setContent(processedContent);
+		   // 본문에서 첫 번째 이미지 추출
+		   String firstImg = extractFirstImageUrl(processedContent);
+		    if (firstImg != null && firstImg.length() > 500) {
+		        firstImg = firstImg.substring(0, 500);
+		    }
+		    
+	    notice.setImageUrl(firstImg);
 
-		sb.append("alert('" + msg + "');");
-		sb.append("location.href='/admin/noticeManager'");
-		sb.append("</script>");
-		sb.insert(0, "<script>");
+	    // 날짜 및 분류 세팅
+	    notice.setDate(new Date());
+	    notice.setNoticeSubject(
+	        noticeSubjectRepository.findById(notice.getSubjectId())
+	            .orElseThrow(() -> new IllegalArgumentException("잘못된 분류 ID"))
+	    );
 
-		return sb.toString();
+	    // 저장
+	    noticeRepository.save(notice);
+
+	    // 메시지 전달 후 리다이렉트
+	    rttr.addFlashAttribute("msg", "공지사항이 등록되었습니다.");
+	    return "redirect:/admin/noticeManager";
 		
 	}
 	

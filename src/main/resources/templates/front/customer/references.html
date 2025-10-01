@@ -18,36 +18,54 @@
 		</div>
 
 		<section id="content">
-			<div class="content-wrap">
-				<div class="container clearfix">
-					<div class="row gutter-40 col-mb-80">
-						<div class="postcontent col-lg-12 order-lg-last">
-							<div id="posts" class="row grid-container gutter-30">
-
-								<div class="entry col-4" th:each="f:${file}">
-								
-								
-									<div class="grid-inner">
-										<div class="entry-title">
-											<h2>
-												<a th:href="@{${f.fileroad}}" download th:text="|# 참고파일 명 : ${f.filesubject}|">Screw Caps and Tubes</a>
-											</h2>
-										</div>
-										<div class="entry-meta">
-											<ul>
-												<li style="margin-bottom:0px;"><i class="icon-file"></i> # 파일 확장자 : [[${f.fileextension}]]</li>
-												<li><i class="icon-stack"></i> # 파일명을 클릭하면 다운로드가 진행 됩니다.</li>
-											</ul>
-										</div>
-										
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+		 <div class="content-wrap">
+		  <div class="container clearfix">
+		   <div class="row gutter-40 col-mb-80">
+		    <div class="postcontent col-lg-12 order-lg-last">
+		     <table class="table table-bordered table-hover text-center align-middle">
+		      <thead>
+		       <tr>
+		        <th scope="col" style="width:120px;">미리보기</th>
+		        <th scope="col">파일명</th>
+		        <th scope="col">등록일</th>
+		        <th scope="col">확장자</th>
+		        <th scope="col" style="width:150px;">다운로드</th>
+		       </tr>
+		      </thead>
+		      <tbody>
+		       <tr th:each="f : ${file}">
+		        <!-- 이미지 미리보기 -->
+		        <td>
+			        <div class="reference-files">
+				         <img th:src="@{${f.fileroad}}" alt="product brochure">
+		              </div>
+		        </td>
+		
+		        <!-- 파일 제목 -->
+		        <td th:text="${f.filesubject}">파일제목</td>
+		
+		        <!-- 등록일 -->
+		        <td th:text="${#dates.format(f.filedate, 'yyyy-MM-dd')}">2023-07-05</td>
+		
+		        <!-- 확장자 -->
+		        <td th:text="${f.fileextension}">.png</td>
+		
+		        <!-- 다운로드 버튼 -->
+		        <td>
+		         <a th:href="@{${f.fileroad}}" download class="btn btn-sm btn-primary">
+		          <i class="icon-download"></i> 다운로드
+		         </a>
+		        </td>
+		       </tr>
+		      </tbody>
+		     </table>
+		
+		    </div>
+		   </div>
+		  </div>
+		 </div>
 		</section>
+
 
 		<th:block th:replace="~{/fragments/front/common :: footerSrc}"></th:block>
 	</div>
