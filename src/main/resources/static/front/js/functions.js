@@ -543,21 +543,27 @@ window.scwEvents = window.scwEvents || {};
 
 			submenus.children().css({ 'display': 'block' });
 			submenus.css({ 'display': 'block' });
-			submenus.each( function( index, element ){
-				let viewportOffset = element.getBoundingClientRect();
+			submenus.each(function(index, element) {
+			    // 임시로 display 저장
+			    let prevDisplay = $(element).css('display');
+			    
+			    // 계산 위해 강제 열기
+			    $(element).css({ 'display': 'block' });
 
-				if( $body.hasClass('rtl') ) {
-					if( viewportOffset.left < 0 ) {
-						element.classList.add('menu-pos-invert');
-					}
-				}
+			    let viewportOffset = element.getBoundingClientRect();
 
-				if((viewportOffset.left + viewportOffset.width) - windowWidth > 0) {
-					element.classList.add('menu-pos-invert');
-				}
-			});
-			submenus.children().css({ 'display': '' });
-			submenus.css({ 'display': '' });
+			    if ($body.hasClass('rtl')) {
+			      if (viewportOffset.left < 0) {
+			        element.classList.add('menu-pos-invert');
+			      }
+			    }
+
+			    if ((viewportOffset.left + viewportOffset.width) - windowWidth > 0) {
+			      element.classList.add('menu-pos-invert');
+			    }
+
+			    $(element).css({ 'display': prevDisplay });
+			  });
 		},
 
 		includeOffset: function(){

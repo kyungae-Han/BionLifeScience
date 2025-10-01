@@ -43,16 +43,6 @@
 								</a> 
 							</div>
 
-							<div class="header-misc primary-menu" id="search-wrap">
-								<div id="top-search" class="header-misc-icon">
-									<a href="#" id="top-search-trigger"><i class="icon-line-search"></i><i class="icon-line-cross"></i>검색</a>
-								</div>
-								<div id="top-cart" class="header-misc-icon d-sm-block">
-									<span><a style="font-weight: 600;" href="#">ENG </a></span> / <span><a class="active" style="font-weight: 600;" href="#"> KOR</a></span>
-								</div>
-							</div>
-
-
 							<div id="hamburger-menu-trigger">
 								<svg class="svg-trigger" viewBox="0 0 100 100" width="60" height="60" preserveAspectRatio="xMidYMid meet">
                                     <path d="m 30,33 h 40 c 3.722839,0 7.5,3.126468 7.5,8.578427 0,5.451959 -2.727029,8.421573 -7.5,8.421573 h -20">
@@ -206,6 +196,16 @@
 									</ul>
 								</div>
 							</nav>
+							
+							<div class="header-misc primary-menu" id="search-wrap">
+								<div id="top-search" class="header-misc-icon">
+									<a href="#" id="top-search-trigger"><i class="icon-line-search"></i><i class="icon-line-cross"></i>검색</a>
+								</div>
+								<div id="top-cart" class="header-misc-icon d-sm-block">
+									<span><a style="font-weight: 600;" href="#">ENG </a></span> / <span><a class="active" style="font-weight: 600;" href="#"> KOR</a></span>
+								</div>
+							</div>
+							
 							<form class="top-search-form" action="/searchAll" method="get" id="top-search-form">
 								<div>
 									<input type="text" name="searchWord" class="form-control" required="required" placeholder="검색어를 입력 하세요." autocomplete="off"> <span class="search-btn" id="search-btn"><i
@@ -611,16 +611,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (li.dataset.type === 'PARTNER') sub.appendChild(li.cloneNode(true));
   });
 </script>
-<script>
+<!-- <script>
 document.querySelectorAll('.product-mega-wrap').forEach(el => {
-//	  el.classList.add('debug-open');
-//	  el.style.opacity = "1";
-//	  el.style.visibility = "visible";
-//	  el.style.pointerEvents = "auto";
-//	  el.style.transform = "translateX(-50%)";
+	  el.classList.add('debug-open');
+	  el.style.opacity = "1";
+	  el.style.visibility = "visible";
+	  el.style.pointerEvents = "auto";
+	  el.style.transform = "translateX(-50%)";
 	});
-
-</script>
+</script> -->
 		
 </th:block>
 </body>

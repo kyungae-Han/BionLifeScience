@@ -2730,6 +2730,15 @@ body:not(.top-search-open) .top-search-parent #hamburger-menu-trigger {
   font-family: "Noto Sans KR", sans-serif;
 }
 
+@media(max-width:1150px){
+	.menu-link{padding: 14px 7px;}
+}
+
+
+@media(max-width:1120px){
+	.menu-link{padding: 14px 0;}
+}
+
 .menu-link div {padding: 0;}
 
 .menu-link span {
@@ -2899,7 +2908,7 @@ nav .menu-item:hover > .menu-link,
   display: -ms-flexbox;
   display: flex;
   align-items: center;
-  right: clamp(20px, 4vw, 20px);
+  right: 20px;
   max-height: 100px;
   top: 0px;
   bottom: 0px;
@@ -2970,6 +2979,7 @@ nav .menu-item:hover > .menu-link,
 	justify-content:center;
 	display:flex;
 }
+
 
 .top-search-open .top-search-form {
   opacity: 1;
@@ -15753,13 +15763,12 @@ label.checkbox {
 
 .product-mega-wrap .inner{
 		width: 100%;
-		/*max-width: 1520px;*/
 		position: relative;
 		height: auto;
 		z-index: 999;
 		margin: 0 auto;
 		padding: 0 13rem;
-		/*height: 100%;*/
+		height: 100%;
 		box-sizing: border-box;
 	}
 
@@ -15780,6 +15789,12 @@ label.checkbox {
     overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
+}
+
+.mega-grid .col a.menu-link {height: 48px;}
+
+@media(max-width:998px){
+	.mega-grid .col a.menu-link {height: auto;}
 }
 
 .mega-grid .col .menu-item{
@@ -17534,6 +17549,8 @@ h4 {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: none;
   }
+  
+
 
 /* ----------------------------------------------------------------
 		Sticky Header
@@ -17605,10 +17622,17 @@ h4 {
 
 .primary-menu {
     -ms-flex: 0 0 auto;
-    flex: 0 0 auto;
     -ms-flex-positive: 0;
+    flex: 1 1 auto;
     flex-grow: 0;
+    min-width: 0; 
   }
+  
+@media(max-width:1100px){
+.primary-menu {
+    flex: 1 1 1;
+  }
+}  
 
 .primary-menu + .primary-menu {
     border-top: 0;
@@ -18270,6 +18294,11 @@ nav .menu-link {
 .side-header .header-misc {
     width: 100%;
     margin: 0;
+    flex-shrink: 0;
+    margin-left: auto;
+	display: flex;
+	align-items: center;
+	gap: 12px;
   }
 
 .side-header .primary-menu {
@@ -19745,19 +19774,6 @@ body:not(.stretched) #wrapper {
     display: none !important;
   }
 }  
-  
-  @media (min-width: 991px) {
-    nav.primary-menu .nav.is-desktop { display: block !important;}
-    nav.primary-menu .nav.is-mobile  { display: none  !important; }
-    #hamburger-menu-trigger           { display: none  !important; }
-  }
-  
-  
-  @media (max-width: 990.98px) {
-    nav.primary-menu .nav.is-desktop { display: none  !important; }
-    nav.primary-menu .nav.is-mobile  { display: block !important; }
-    #hamburger-menu-trigger           { display: flex  !important; }
-  }
 
   /* 패널이 다른 요소에 가려지지 않게 (안전망) */
   #product-items, #brands-items { z-index: 1100; position: absolute; }

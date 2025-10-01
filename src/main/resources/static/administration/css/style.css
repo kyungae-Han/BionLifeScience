@@ -233,8 +233,16 @@ ul.top-menu > li > .logout {
 }
 
 
-/*sidebar navigation*/
+/*--------------------------------
+	table 공통
+----------------------------------*/
+table {font-size:clamp(14px, 1.5rem, 16px);}
+table .border-top {border-top:1px solid rgba(0,0,0,1);}
+table .center {text-align:center;}
+table tbody td a.black {color:#000;}
+table tbody td a.black:hover {font-weight: 700;}
 
+/*sidebar navigation*/
 #sidebar {
     width: 210px;
     height: 100%;
