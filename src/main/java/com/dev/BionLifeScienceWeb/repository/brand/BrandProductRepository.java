@@ -69,4 +69,7 @@ public interface BrandProductRepository extends JpaRepository<BrandProduct, Long
 	@Query("SELECT MAX(brandProductIndex) FROM BrandProduct")
 	Optional<Integer> findFirstIndex();
 	
+	
+	List<BrandProduct> findAllByBrand_TypeOrderByBrandProductIndexAsc(Brand.BrandType type);
+	
 }

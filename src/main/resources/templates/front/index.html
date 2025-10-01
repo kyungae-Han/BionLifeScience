@@ -136,36 +136,27 @@
 <section class="section clearfix bg-white section-line" id="productsItems">
 	 <div class="pro-container">
 	  <header class="pro-head">
-	   <p class="eyebrow">PRODUCTS</p>
-	   <h2>BIOTREAT 라인업</h2>
-	   <p class="sub">핵심 공정의 안정성과 효율을 높여 주는 솔루션을 한눈에.</p>
+	   <p class="eyebrow">MEETS INNOVATION</p>
+	   <h2>PRODUCTS</h2>
+	   <p class="sub">바이온 자체 브랜드의 핵심 공정과 제품 안정성을 한눈에 볼 수 있습니다.</p>
 	  </header>
 	
 	  <!-- 가로 스크롤 트랙 -->
 	<div class="pro-slider" id="proSlider">
+	
 	 <div class="pro-track">
-	  <!-- 카드: 기존 portfolio-item 반복 그대로 사용 -->
-	 <div class="portfolio-item" th:each="product:${product}">
-	  <div class="portfolio-image">
-	   <a th:href="@{|/productDetail/${product.id}|}"> <img th:src="${product.firstImageRoad}" alt="PRODUCT">
-	   </a>
-	   <div class="bg-overlay">
-	    <div class="bg-overlay-content dark" data-hover-animate="fadeIn" data-hover-speed="350">
-	     <a th:href="@{${product.firstImageRoad}}" class="overlay-trigger-icon bg-light text-dark"
-	      data-lightbox="image"><i class="icon-line-plus"></i></a> <a th:href="@{|/productDetail/${product.id}|}"
-	      class="overlay-trigger-icon bg-light text-dark"> <i class="icon-line-ellipsis"></i>
-	     </a>
-	    </div>
-	    <div class="bg-overlay-bg dark" data-hover-animate="fadeIn" data-hover-speed="350"></div>
+	   <div class="portfolio-item" th:each="product : ${products}">
+	     <div class="portfolio-image">
+	       <a th:href="@{|/brandProductDetail/${product.id}|}">
+	         <img th:src="${product.firstImageRoad}" alt="PRODUCT">
+	       </a>
+	     </div>
+	     <div class="portfolio-desc">
+	       <h3 th:text="${product.subject}"></h3>
+	     </div>
 	   </div>
-	  </div>
-	  <div class="portfolio-desc">
-	   <h3>
-	    <a href="javascript:void(0);" th:text="${product.smallSort.name}">Sorts of Product</a>
-	   </h3>
-	  </div>
 	 </div>
-	</div>
+		
 	
 	<!-- 네비게이션 + 프로그레스 -->
 	   <div class="pro-controls">

@@ -25,5 +25,4 @@ public interface BrandRepository extends JpaRepository<Brand, Long>{
 	Optional<Integer> findFirstIndex();
 	
 	List<Brand> findAllByTypeOrderByNameAsc(Brand.BrandType type);
-	
 }

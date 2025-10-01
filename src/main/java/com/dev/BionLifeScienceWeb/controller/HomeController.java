@@ -105,20 +105,18 @@ public class HomeController {
 		}
 		List<Notice> notice = noticeRepository.findTop5ByOrderBySignDescDateDesc();
 		List<ReferenceFile> fi = referenceFileRepository.findAll();
-		List<Product> pr = productRepository.findAllBySignOrderByProductIndexAsc(true);
-		for(Product p : pr) {
-			if(p.getImages().size() > 0) {
-				
-				p.setFirstImageRoad(p.getImages().get(0).getProductImageRoad());
-			}else {
-				p.setFirstImageRoad("null");
-			}
-		}
+		List<BrandProduct> pr =
+				brandProductRepository.findAllByBrand_TypeOrderByBrandProductIndexAsc(Brand.BrandType.OWN);
+		
+		
+		for (BrandProduct p : pr) {
+	        p.setFirstImageRoad(p.addFirstImage());
+	    }
 		
 		
 		model.addAttribute("fi", fi);
 		model.addAttribute("notice", notice);
-		model.addAttribute("product", pr);
+		model.addAttribute("products", pr);
 		model.addAttribute("ev", ev.get(0));
 		model.addAttribute("ba", b);
 		
