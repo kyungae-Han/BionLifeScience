@@ -13857,14 +13857,14 @@ input.switch-flat-xlarge.switch-toggle-flat:checked + label::after {
 .page-link:hover,
 .page-link:focus {
   color: #fff !important;
-  background-color: #fe5000 !important;
-  border-color: #fe5000 !important;
+  background-color:var(--bs-orange) !important;
+  border-color: var(--bs-orange) !important;
 }
 
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
-  background-color: #fe5000;
+  background-color: var(--bs-orange);
 }
 
 label.radio,

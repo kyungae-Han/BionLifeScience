@@ -257,7 +257,7 @@
 }
 
 .product-grid{
-	display: grid;
+	display: flex;
 	grid-template-columns: repeat(4, 1fr);
 	gap: 40px; /* 카드 사이 간격 */
 	max-width: 1280px;

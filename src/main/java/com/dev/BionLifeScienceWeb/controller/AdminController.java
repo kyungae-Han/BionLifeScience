@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dev.BionLifeScienceWeb.controller.api.SummernoteImageProcessor;
 import com.dev.BionLifeScienceWeb.model.Client;
 import com.dev.BionLifeScienceWeb.model.CompanyEmail;
 import com.dev.BionLifeScienceWeb.model.CompanyInfo;
@@ -53,12 +54,14 @@ import com.dev.BionLifeScienceWeb.service.NoticeService;
 import org.jsoup.Jsoup;
 
 import lombok.RequiredArgsConstructor;
+import com.dev.BionLifeScienceWeb.controller.api.SummernoteImageProcessor;
 
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
 	
+	private final SummernoteImageProcessor imageProcessor;
 	private final HistorySubjectRepository historySubjectRepository;
 	private final HistoryContentRepository historyContentRepository;
 	private final CompanyInfoRepository companyInfoRepository;
@@ -298,15 +301,17 @@ public class AdminController {
 	@PostMapping("/notice/image")
 	@ResponseBody
 	public Map<String, String> uploadNoticeImage(@RequestParam("file") MultipartFile file) throws IOException {
-	    String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+		String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
 
+	    // 저장 경로 (서버 내부)
 	    Path saveDir  = Paths.get(System.getProperty("user.dir"), "upload", "front", "images", "notice");
 	    Files.createDirectories(saveDir);
 
 	    Path savePath = saveDir.resolve(fileName);
 	    file.transferTo(savePath.toFile());
-	    
-	    String url = "/front/images/notice/" + fileName;
+
+	    // 상품등록처럼 상대경로만 주기
+	    String url = "/upload/notice/" + fileName;
 
 	    return Map.of("url", url);
 	}
@@ -315,12 +320,27 @@ public class AdminController {
 	public String noticeUpdate(
 			Notice notice,
 			Model model
-			) {
-		
-		noticeService.noticeUpdate(notice);
-		model.addAttribute("subject", noticeSubjectRepository.findAll());
-		model.addAttribute("notice", noticeRepository.findById(notice.getId()).get());
-		return "admin/noticeDetail";
+			)throws IOException {
+	    String html = notice.getContent();
+	    
+	    
+	    String processed = imageProcessor.processEditorImages(notice.getContent(), "notice");
+	    notice.setContent(processed);
+
+	    
+	    // 🔹 첫 번째 이미지 경로 추출 & 가공
+	    String firstImg = extractFirstImageUrl(processed);
+	    if (firstImg != null) {
+	        firstImg = firstImg.replaceAll("https?://[^/]+", ""); // 도메인 제거
+	        firstImg = firstImg.replaceAll("(\\?[^\"'>]*)", "");  // ? 파라미터 제거
+	    }
+	    notice.setImageUrl(firstImg);
+
+	    noticeService.noticeUpdate(notice);
+
+	    model.addAttribute("subject", noticeSubjectRepository.findAll());
+	    model.addAttribute("notice", noticeRepository.findById(notice.getId()).get());
+	    return "admin/noticeDetail";
 	}
 	
 	@RequestMapping(value = "/noticeDetail/{id}",

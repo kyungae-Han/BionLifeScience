@@ -1,14 +1,9 @@
 package com.dev.BionLifeScienceWeb.controller;
 
-import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -25,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dev.BionLifeScienceWeb.controller.api.SummernoteImageProcessor;
 import com.dev.BionLifeScienceWeb.exception.DeleteViolationException;
 import com.dev.BionLifeScienceWeb.model.brand.Brand;
 import com.dev.BionLifeScienceWeb.model.brand.BrandBigSort;
@@ -50,16 +46,12 @@ import com.dev.BionLifeScienceWeb.service.brand.BrandService;
 import lombok.RequiredArgsConstructor;
 
 
-import java.io.FileOutputStream;
-import java.util.Base64;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class BrandController {
 
+	private final SummernoteImageProcessor imageProcessor;
 	private final BrandRepository brandRepository;
 	private final BrandBigSortRepository brandBigSortRepository;
 	private final BrandMiddleSortRepository brandMiddleSortRepository;
@@ -120,7 +112,7 @@ public class BrandController {
 	        return "<script>alert('로고 파일은 필수입니다.');history.back();</script>";
 	    }
 	    
-	    String desc = processDescImages(brand.getDesc(), commonPath);
+	    String desc = imageProcessor.processEditorImages(brand.getDesc(), "brand");
 		
 		if (desc != null) {
 		    desc = desc.replaceAll("(?i)<p>(\\s|&nbsp;|<br>|)*</p>", "");
@@ -774,7 +766,7 @@ public class BrandController {
 		}
 		
 		
-		String desc = processDescImages(brand.getDesc(), commonPath);
+		String desc = imageProcessor.processEditorImages(brand.getDesc(), "brand");
 		
 		if (desc != null) {
 		    desc = desc.replaceAll("(?i)<p>(\\s|&nbsp;|<br>|)*</p>", "");
@@ -796,51 +788,6 @@ public class BrandController {
 	      .append("location.href='/admin/brandManager'")
 	      .append("</script>");
 	    return sb.toString();
-	}
-	
-	
-	
-	@Value("${spring.upload.path}")
-	private String commonPath;
-
-	@Value("${spring.upload.env}")
-	private String env;
-	
-	private String processDescImages(String desc, String commonPath) throws IOException {
-	    if (desc == null || !desc.contains("data:image")) return desc;
-
-	    Pattern pattern = Pattern.compile(
-	        "<img[^>]*src=['\"]data:image/(png|jpg|jpeg);base64,([^'\"]+)['\"][^>]*>"
-	    );
-	    Matcher matcher = pattern.matcher(desc);
-
-	    String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-	    String uploadDir = commonPath + "/brand/editor/" + today;
-	    String webPath   = "/upload/brand/editor/" + today;
-
-	    File dir = new File(uploadDir);
-	    if (!dir.exists()) dir.mkdirs();
-
-	    while (matcher.find()) {
-	        String ext = matcher.group(1);
-	        String base64 = matcher.group(2);
-
-	        byte[] decoded = Base64.getDecoder().decode(base64);
-	        String fileName = UUID.randomUUID() + "." + ext;
-	        File target = new File(dir, fileName);
-	        try (FileOutputStream fos = new FileOutputStream(target)) {
-	            fos.write(decoded);
-	        }
-
-	        String oldTag = matcher.group(0);
-	        String newTag = oldTag.replaceFirst(
-	            "src=['\"][^'\"]+['\"]",
-	            "src='" + webPath + "/" + fileName + "'"
-	        );
-	        desc = desc.replace(oldTag, newTag);
-	    }
-
-	    return desc;
 	}
 	
 }

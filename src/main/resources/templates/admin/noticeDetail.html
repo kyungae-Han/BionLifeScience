@@ -61,9 +61,7 @@
                       <label class="control-label col-lg-2"># 공지사항</label>
                       <div class="col-lg-10">
                         <!-- 전송용: hidden에 최종 HTML을 담아 보냄 -->
-                        <input type="hidden" id="content" name="content" th:value="${notice.content}">
-                        <!-- 에디터 표시 영역 -->
-                        <div id="editor"></div>
+                        <textarea id="editor" name="content" th:utext="${notice.content}"></textarea>
                         <span class="alsert-message">* 이미지 업로드 가능, 저장 시 본문 첫 이미지가 대표로 저장됩니다.</span>
                       </div>
                     </div>
@@ -89,67 +87,227 @@
 </section>
 
 <th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
+<script src="/administration/lib/noticeManager.js"></script>
 
-<!-- Toast UI Editor -->
-<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
-<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
 
 <script>
-  (function () {
-    // CSRF 메타가 있으면 자동 포함
-    var CSRF = (document.querySelector('meta[name=\"_csrf\"]')||{}).content;
-    var CSRF_HEADER = (document.querySelector('meta[name=\"_csrf_header\"]')||{}).content;
+$.summernote.plugins.imageSize100 = function (context) {
+	  context.memo('button.imageSize100', function () {
+	    return $.summernote.ui.button({
+	      contents: '100%',
+	      click: function () {
+	        const $img = $(context.invoke('editor.restoreTarget')).closest('img');
+	        $img.css('width', '100%');
+	      }
+	    }).render();
+	  });
+	};
+	
+	$.summernote.plugins.imageSize75 = function (context) {
+		  context.memo('button.imageSize75', function () {
+		    return $.summernote.ui.button({
+		      contents: '75%',
+		      click: function () {
+		        const $img = $(context.invoke('editor.restoreTarget')).closest('img');
+		        $img.css('width', '75%');
+		      }
+		    }).render();
+		  });
+		};
 
-    // 초기값: hidden에 들어있는 기존 본문
-    var initial = document.getElementById('content').value || '';
+	$.summernote.plugins.imageSize50 = function (context) {
+	  context.memo('button.imageSize50', function () {
+	    return $.summernote.ui.button({
+	      contents: '50%',
+	      click: function () {
+	        const $img = $(context.invoke('editor.restoreTarget')).closest('img');
+	        $img.css('width', '50%');
+	      }
+	    }).render();
+	  });
+	};
 
-    // 에디터 생성
-    var editor = new toastui.Editor({
-      el: document.querySelector('#editor'),
-      height: '420px',
-      initialEditType: 'wysiwyg',
-      previewStyle: 'vertical',
-      initialValue: initial,
-      hooks: {
-        // 이미지 업로드 → 백엔드 /admin/notice/image
-        addImageBlobHook: async function (blob, callback) {
-          try {
-            var fd = new FormData();
-            fd.append('file', blob);
-            var res = await fetch('/admin/notice/image', {
-              method: 'POST',
-              headers: CSRF_HEADER ? { [CSRF_HEADER]: CSRF } : {},
-              body: fd
-            });
-            if (!res.ok) throw new Error('upload failed');
-            var data = await res.json(); // {url: '/front/images/notice/xxx.png'}
-            callback(data.url, blob.name);
-          } catch (e) {
-            alert('이미지 업로드에 실패했습니다.');
-          }
-        }
-      }
-    });
+	$.summernote.plugins.imageSize25 = function (context) {
+	  context.memo('button.imageSize25', function () {
+	    return $.summernote.ui.button({
+	      contents: '25%',
+	      click: function () {
+	        const $img = $(context.invoke('editor.restoreTarget')).closest('img');
+	        $img.css('width', '25%');
+	      }
+	    }).render();
+	  });
+	};
+	
+	
+	$.extend($.summernote.plugins, {
+		  tableCellColor: function (context) {
+		    const ui = $.summernote.ui;
+		    
+		    // 공통 셀 선택 함수
+		    function getSelectedCells() {
+		      const sel = window.getSelection();
+		      if (!sel.rangeCount) return [];
+		      const range = sel.getRangeAt(0);
 
-    var form = document.getElementById('noticeUpdateForm');
-    var hidden = document.getElementById('content');
-    
+		      const fragment = range.cloneContents();
+		      const tempDiv = document.createElement('div');
+		      tempDiv.appendChild(fragment);
+		      const selectedCells = tempDiv.querySelectorAll('td,th');
 
-    // 제출 직전 검증 + 값 세팅
-    form.addEventListener('submit', function (e) {
-      var html = editor.getHTML().trim();
-      var plain = editor.getMarkdown().replace(/\s+/g, '').trim(); // 실제 내용 유무
+		      if (selectedCells.length > 0) {
+		        // 여러 셀 선택
+		        return Array.from(range.cloneContents().querySelectorAll('td,th'))
+		          .map(el => {
+		            return Array.from(document.querySelectorAll('td,th'))
+		              .find(c => c.textContent === el.textContent);
+		          }).filter(Boolean);
+		      } else {
+		        // 단일 셀
+		        const singleCell = $(range.startContainer).closest('td,th')[0];
+		        return singleCell ? [singleCell] : [];
+		      }
+		    }
+		    
+		    context.memo('button.tableBorderColor', function () {
+		        const $input = $('<input type="color" style="display:none;">').appendTo(document.body);
 
-      if (!plain) {
-        e.preventDefault();
-        alert('공지사항 내용을 입력해 주세요.');
-        return;
-      }
-      hidden.value = html; // 최종 본문 HTML 반영
-    });
-  })();
+		        $input.on('input', function () {
+		          const color = this.value;
+		          getSelectedCells().forEach(cell => {
+		            cell.style.borderColor = color;
+		          });
+		        });
+
+		        return ui.button({
+		          contents: '<i class="note-icon-magic"></i>',
+		          click: function () { $input.trigger('click'); }
+		        }).render();
+		        
+		      });
+		    
+
+		    context.memo('button.tableCellColor', function () {
+		      // 숨겨진 color input
+		      const $input = $('<input type="color" style="display:none;">').appendTo(document.body);
+
+		      $input.on('input', function () {
+		        const color = this.value;
+		        const sel = window.getSelection();
+		        if (!sel.rangeCount) return;
+
+		        context.invoke('editor.beforeCommand');
+
+		        // 현재 선택된 영역
+		        const range = sel.getRangeAt(0);
+		        const container = range.commonAncestorContainer;
+
+		        // 선택된 여러 셀 찾기
+		        let $cells = $(container).closest('td,th');
+		        if ($cells.length === 0 && container.querySelectorAll) {
+		          $cells = $(container).find('td,th');
+		        }
+
+		        if ($cells.length > 0) {
+		          $cells.each(function () {
+		            this.style.backgroundColor = color;
+		          });
+		        } else {
+		          // 단일 셀 클릭한 경우
+		          const singleCell = $(range.startContainer).closest('td,th')[0];
+		          if (singleCell) {
+		            singleCell.style.backgroundColor = color;
+		          }
+		        }
+
+		        context.invoke('editor.afterCommand');
+		      });
+
+		      return ui.button({
+		        contents: '<i class="note-icon-pencil"></i>',
+		        click: function () {
+		          $input.trigger('click'); // 컬러 피커 실행
+		        }
+		      }).render();
+		      
+		    });
+		  }
+		});
+
+	let lastRange = null;
+
+	$('#editor').summernote({
+		height: 570,
+	    minHeight: null,
+	    maxHeight: null,
+	    focus: true,
+	    lang: 'ko-KR',
+	    placeholder: '브랜드 상세 설명(선택)',
+	    toolbar: [
+	      ['style', ['bold', 'italic', 'underline', 'strikethrough' , 'clear']],
+	      ['font', ['fontsize', 'fontname', 'color']],
+	      ['height',['height']],
+	      ['para', ['ul', 'ol', 'paragraph']],
+	      ['insert', ['link', 'picture', 'video', 'table', 'hr']],
+	      ['view', ['fullscreen', 'codeview', 'help']],
+	    ],
+	    popover: {
+	        image: [
+	          ['custom', ['imageSize100','imageSize75' ,'imageSize50', 'imageSize25']],
+	          ['float', ['floatLeft', 'floatRight', 'floatNone']],          
+	          ['remove', ['removeMedia']]                              
+	        ],
+	        table: [
+	            ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
+	            ['delete', ['deleteRow', 'deleteCol', 'deleteTable']],
+	            ['merge', ['mergeCell', 'splitCell']],
+	            ['custom', ['tableCellColor','tableBorderColor', 'tableBorderWidth']]
+	          ]
+	      },
+	    fontSizes: Array.from({ length: 65 }, (_, i) => (i + 8).toString()),
+	    fontNames: ['Arial', 'Verdana', 'Times New Roman', 'Noto Sans KR', 'IBM Plex Sans KR', '맑은 고딕','궁서','굴림'],
+	    styleTags: [
+	      'p',
+	      { title: 'Blockquote', tag: 'blockquote', className: 'blockquote', value: 'blockquote' },
+	      'pre', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
+	    ],
+	    lineHeights: ['0.8', '1.0', '1.2', '1.4', '1.5', '2.0', '3.0'],
+	    callbacks: {
+	    	  onInit: function () {
+	    	    $('.note-editable').css({ 'background-color': '#fff' });
+	    	  },
+    	
+	    	  onChange: function (contents, $editable) {
+	    	    $('.note-editable table td').resizable({
+	    	      handles: "e, s",
+	    	      minWidth: 50,
+	    	      minHeight: 30
+	    	    });
+	    	  }
+	    },
+	    codeviewFilter: false, 
+	    codeviewIframeFilter: false, 
+	    onPaste: function (e) {
+	    	  e.preventDefault(); // 기본 붙여넣기 막기
+
+	    	  const clipboardData = (e.originalEvent || e).clipboardData;
+	    	  const html = clipboardData.getData('text/html');
+	    	  const text = clipboardData.getData('text/plain');
+
+	    	  $('#desc').summernote('focus'); // 커서 위치 복원
+
+	    	  if (html) {
+	    	    document.execCommand('insertHTML', false, html); // HTML 붙여넣기
+	    	  } else {
+	    	    document.execCommand('insertText', false, text); // 텍스트만 있을 경우
+	    	  }
+	    	}
+	});
+
 </script>
 
-<script src="/administration/lib/noticeManager.js"></script>
 </body>
 </html>

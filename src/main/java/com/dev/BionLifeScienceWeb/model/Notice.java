@@ -2,6 +2,8 @@ package com.dev.BionLifeScienceWeb.model;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -27,6 +29,7 @@ public class Notice {
 	@Column(name="NOTICE_SUBJECT")
 	private String subject;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name="NOTICE_DATE")
 	private Date date;
 	

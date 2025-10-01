@@ -2742,6 +2742,7 @@ tbody td:not(.table__subject){
 	margin: 45px auto;
 	border-top: 3px solid var(--bs-orange);
 	border-bottom: 3px solid var(--bs-orange);
+	padding:0 0 20px;
 }
 
 .notice-detail img {
@@ -2790,66 +2791,83 @@ tbody td:not(.table__subject){
   display:flex; gap:12px; justify-content:space-between; align-items:center; margin-top:32px;
 }
 
+* 기본 버튼 */
 .nav-btn {
-  position:relative;
-  display:inline-flex; align-items:center; gap:.5rem;
-  padding:10px 18px;
-  border:1px solid #ddd; border-radius:9999px;
-  background:#fff; color:#111; text-decoration:none;
-  transition:transform .18s ease, box-shadow .18s ease, color .18s ease, border-color .18s ease;
-  overflow:hidden;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  padding: 10px 18px;
+
+  border: 1px solid #ddd;
+  border-radius: 9999px;
+  background: #fff;
+  color: #111;
+  text-decoration: none;
+
+  transition: transform 0.4s ease,
+              box-shadow 0.3s ease,
+              color 0.3s ease,
+              border-color 0.3s ease;
+
+  overflow: hidden;
 }
 
 /* 배경 슬라이드 채우기 */
-.nav-btn::after{
-  content:"";
-  position:absolute; inset:0; border-radius:inherit;
-  background:var(--bs-orange);
-  transform:scaleY(0); transform-origin:top;
-  transition:transform .22s ease;
-  z-index:-1;
-  color:#fff;
+.nav-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--bs-orange);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform .22s ease;
+  z-index: -1;
 }
 
-/* 호버 시: 살짝 떠오르고, 색 반전, 배경 채움 */
-.nav-btn:hover{
-  animation: bobY .6s ease-in-out infinite alternate;
-  box-shadow:0 8px 18px rgba(0,0,0,.08);
-  border-color:#ccc;
-  color:#fff;
+/* 호버: 둥실 모션, 색 반전, 그림자, 배경 채움 */
+.nav-btn:hover {
+  animation: bobY 1.5s ease-in-out infinite alternate;
+  box-shadow: 0 8px 18px rgba(0,0,0,.08);
+  border-color: #ccc;
+  color: #fff;
 }
 
-.nav-btn:active{
+.nav-btn:hover::after {
+  transform: scaleY(1);
+}
+
+/* active: 눌림 효과 (둥실 모션 중단) */
+.nav-btn:active {
   animation: none;
   transform: translateY(2px);
-  color:#fff;
+  color: #fff;
 }
 
-.nav-btn:focus-visible{
-  outline: 2px solid #ff7a00; outline-offset: 2px;
+/* focus 접근성 표시 */
+.nav-btn:focus-visible {
+  outline: 2px solid #ff7a00;
+  outline-offset: 2px;
 }
 
-.nav-btn.disabled{
-  pointer-events:none; opacity:.45; border-style:dashed; animation:none;
+/* disabled 상태 */
+.nav-btn.disabled {
+  pointer-events: none;
+  opacity: .45;
+  border-style: dashed;
+  animation: none;
 }
 
-/* 위아래 반복 */
+/* 위아래 반복 애니메이션 */
 @keyframes bobY {
   from { transform: translateY(-6px); }
   to   { transform: translateY(6px);  }
 }
 
 /* 모션 민감 사용자 배려 */
-@media (prefers-reduced-motion: reduce){
-  .nav-btn:hover{ animation:none; }
-}
-
-.nav-btn:hover::after{ transform:scaleX(1); }
-
-
-/* 비활성 */
-.nav-btn disabled{
-  opacity:.4; pointer-events:none; border-style:dashed;
+@media (prefers-reduced-motion: reduce) {
+  .nav-btn:hover { animation: none; }
 }
 
 
