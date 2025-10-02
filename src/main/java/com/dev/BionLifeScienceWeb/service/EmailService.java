@@ -43,18 +43,25 @@ public class EmailService {
         }
     	
         return """
-			<div style="line-height:1.6;">
-			  <p><strong>이름:</strong> %s</p>
-			  <p><strong>회사:</strong> %s</p>
-			  <p><strong>이메일:</strong> %s</p>
-			  <p><strong>전화번호:</strong> %s</p>
-			  <p><strong>국가:</strong> %s</p>
-			  <p><strong>문의 주제:</strong> %s</p>
-			  <p><strong>문의 제목:</strong> %s</p>
-			  <p><strong>문의 내용:</strong> %s</p>
-			  <p><strong>첨부파일:</strong> %s</p>
-			  <p><strong>등록일:</strong> %s</p>
-			</div>
+			<div style="font-family:'Noto Sans KR',sans-serif; line-height:1.6; font-size:14px; color:#333;">
+	          <h2 style="margin-bottom:10px; color:#2a4d8f;">신규 고객 문의가 접수되었습니다</h2>
+	          <table style="width:100%; border-collapse:collapse; margin-bottom:15px;">
+	            <tr><th style="text-align:left; width:20%; padding:6px; background:#f9f9f9;">이름</th><td style="padding:6px;">%s</td></tr>
+	            <tr><th style="text-align:left; padding:6px; background:#f9f9f9;">회사</th><td style="padding:6px;">%s</td></tr>
+	            <tr><th style="text-align:left; padding:6px; background:#f9f9f9;">이메일</th><td style="padding:6px;">%s</td></tr>
+	            <tr><th style="text-align:left; padding:6px; background:#f9f9f9;">전화번호</th><td style="padding:6px;">%s</td></tr>
+	            <tr><th style="text-align:left; padding:6px; background:#f9f9f9;">국가</th><td style="padding:6px;">%s</td></tr>
+	            <tr><th style="text-align:left; padding:6px; background:#f9f9f9;">문의 주제</th><td style="padding:6px;">%s</td></tr>
+	            <tr><th style="text-align:left; padding:6px; background:#f9f9f9;">문의 제목</th><td style="padding:6px;">%s</td></tr>
+	            <tr><th style="text-align:left; padding:6px; background:#f9f9f9;">등록일</th><td style="padding:6px;">%s</td></tr>
+	            <tr><th style="text-align:left; padding:6px; background:#f9f9f9;">첨부파일</th><td style="padding:6px;">%s</td></tr>
+	          </table>
+	
+	          <h3 style="margin:10px 0 5px; color:#2a4d8f;">문의 내용</h3>
+	          <div style="border:1px solid #ddd; padding:12px; border-radius:6px; background:#fafafa;">
+	            %s
+	          </div>
+	        </div>
             """.formatted(
                 safe(client.getName()),
                 safe(client.getCompany()),
