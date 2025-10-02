@@ -263,6 +263,11 @@ public class HomeController {
 	        return "redirect:/brand/own/" + id;
 	    }
 	    
+	    if (brand.getType() == Brand.BrandType.GENERIC) {
+	        // OTHER는 바로 리스트 페이지로 이동
+	        return "redirect:/brandProductSorted/list/" + id;
+	    }
+	    
 	    // PARTNER: 해당 브랜드의 첫 상품으로 이동 (없으면 카테고리로)
 	    Page<BrandProduct> firstPage =
 	            brandProductRepository
@@ -577,6 +582,11 @@ public class HomeController {
 	            .findAllByTypeOrderByNameAsc(Brand.BrandType.OWN);
 	    }
 	    
+	    @ModelAttribute("genericBrands")
+	    public List<Brand> genericBrands() {
+	        return brandRepository
+	        		.findAllByTypeOrderByNameAsc(Brand.BrandType.GENERIC);
+	    }
 	    
 	    // 3depth → BigSort (브랜드별)
 	    @ModelAttribute("brandBigSortList")

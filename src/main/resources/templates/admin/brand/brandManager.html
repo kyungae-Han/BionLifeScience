@@ -121,7 +121,7 @@
 								    <option value="" disabled selected>선택</option>
 								    <option th:each="t : ${T(com.dev.BionLifeScienceWeb.model.brand.Brand.BrandType).values()}"
 								            th:value="${t}"
-								            th:text="${t.name() == 'OWN' ? '자사브랜드' : '타사브랜드'}">
+								            th:text="${t.label}">
 								    </option>
 								  </select>
 								  </div>

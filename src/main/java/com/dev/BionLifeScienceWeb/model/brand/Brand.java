@@ -50,7 +50,19 @@ public class Brand {
 	private BrandType type;
 	
 	public enum BrandType {
-		OWN, PARTNER
+		 OWN("자사브랜드"),
+		 PARTNER("타사브랜드"),
+		 GENERIC("GENERIC");
+	
+		 private final String label;
+	
+		 BrandType(String label) {
+		     this.label = label;
+		  }
+	
+		 public String getLabel() {
+		     return label;
+		  }
 	}
 	
 	

@@ -65,21 +65,13 @@
 						<li><a th:classappend="${code} == 'reference' ? 'active' : ''"  href="/admin/referenceManager"> <i
 								class="fa fa-cogs"></i><span>자료실 관리</span>
 						</a></li>
-						<li class="sub-menu"><a th:classappend="${code} == 'product' ? 'active' : ''"  href="javascript:;"> <i
-								class="fa fa-desktop"></i> <span>제품 관리</span>
-						</a>
-							<ul class="sub">
-								<li><a href="/admin/sortManager">제품 분류 관리</a></li>
-								<li><a href="/admin/productManager">제품 상세 등록</a></li>
-							</ul>
-						</li>
 						<li class="sub-menu"><a th:classappend="${code} == 'brand' ? 'active' : ''"  href="javascript:;"> <i class="fa fa-dashboard"></i>
-							<span>브랜드관리</span>
+							<span>제품관리(브랜드관리)</span>
 						</a>
 							<ul class="sub">
-								<li><a href="/admin/brandManager">브랜드 관리</a></li>
-								<li><a href="/admin/brandSortManager">브랜드 분류 관리</a></li>
-								<li><a href="/admin/brandProductManager">브랜드 제품 상세 등록</a></li>
+								<li><a href="/admin/brandManager">브랜드등록</a></li>
+								<li><a href="/admin/brandSortManager">카테고리 관리</a></li>
+								<li><a href="/admin/brandProductManager">제품 등록</a></li>
 							</ul>
 						</li>
 						<li class="sub-menu"><a th:classappend="${code} == 'site' ? 'active' : ''"  href="javascript:;"> <i

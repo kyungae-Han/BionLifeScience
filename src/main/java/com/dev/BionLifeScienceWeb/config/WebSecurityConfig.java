@@ -42,28 +42,18 @@ public class WebSecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     	http
-        .csrf(csrf -> csrf.disable()) // 필요 시 enable
+        .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            // 정적 리소스 허용
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-            .requestMatchers("/css/**", "/js/**", "/images/**", "/upload/**").permitAll()
-
-            // 로그인, 회원가입, 에러 페이지 등 공개 경로
-            .requestMatchers("/", "/memberLoginForm", "/memberJoinForm", "/error", "/api/v1/**").permitAll()
-
-            // 에디터 이미지 업로드 같은 공개 허용 API
             .requestMatchers("/admin/uploadEditorImage").permitAll()
-
-            // 관리자 전용
-            .requestMatchers("/admin/**").hasRole("ADMIN") // ROLE_ADMIN 권한 필요
-
-            // 그 외 요청은 인증 필요
+            .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+            .requestMatchers("/**", "/api/v1/**").permitAll()
             .anyRequest().authenticated()
         )
         .formLogin(form -> form
-            .loginPage("/memberLoginForm")          // 로그인 페이지
-            .loginProcessingUrl("/memberLogin")     // 로그인 처리 URL
-            .failureHandler(customFailureHandler)   // 로그인 실패 핸들러
+            .loginPage("/memberLoginForm")
+            .loginProcessingUrl("/memberLogin")
+            .failureHandler(customFailureHandler)
             .defaultSuccessUrl("/admin/index", true)
             .permitAll()
         )
@@ -76,10 +66,9 @@ public class WebSecurityConfig {
         )
         .exceptionHandling(ex -> ex
             .authenticationEntryPoint(new AjaxAuthenticationEntryPoint("/memberLoginForm"))
-        )
-        .sessionManagement(session -> session
-            .invalidSessionUrl("/session-timeout")
-        );
+        ).sessionManagement(session -> session
+                .invalidSessionUrl("/session-timeout")
+	    );
 
     return http.build();
     }
