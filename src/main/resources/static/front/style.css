@@ -12583,6 +12583,7 @@ body:not(.device-touch) #gotoTop {
 #footer {
   position: relative;
   background-color: #eee;
+  margin: 120px auto 0;
 }
 
 #footer .logo-wrap {
