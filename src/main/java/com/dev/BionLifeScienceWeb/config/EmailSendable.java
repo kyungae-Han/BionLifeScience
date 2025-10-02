@@ -6,5 +6,5 @@ package com.dev.BionLifeScienceWeb.config;
  *  EmailService 를 통해 구현합니다.
  */
 public interface EmailSendable {
-	void send(String[] to, String subject, String message) throws InterruptedException;
+	void send(String[] to, String subject, String message, String replyTo) throws InterruptedException;
 }

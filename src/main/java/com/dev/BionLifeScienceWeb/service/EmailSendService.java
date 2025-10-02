@@ -1,10 +1,13 @@
 package com.dev.BionLifeScienceWeb.service;
 
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.dev.BionLifeScienceWeb.config.EmailSendable;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class EmailSendService implements EmailSendable{
@@ -16,14 +19,21 @@ public class EmailSendService implements EmailSendable{
     }
 
     @Override
-    public void send(String[] to, String subject, String message) {
-        // 보낸 사람, 받는 사람, 참조, 제목 및 텍스트를 포함하는 메시지 생성
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        
-        mailMessage.setTo(to); //받는 사람 주소
-        mailMessage.setSubject(subject); //제목
-        mailMessage.setText(message); //메시지 내용
-        javaMailSender.send(mailMessage); //메일 발송
+    public void send(String[] to, String subject, String message, String replyTo) {
+    	 try {
+             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
-    }
+             helper.setTo(to);                                 // 수신자
+             helper.setFrom("info@bionlifescience.com");       // SMTP 인증 계정
+             helper.setReplyTo(replyTo); 
+             helper.setSubject(subject);                       // 제목
+             helper.setText(message, true);                    // 본문 (true = HTML 지원)
+
+             javaMailSender.send(mimeMessage);
+
+         } catch (MessagingException e) {
+             throw new RuntimeException("메일 전송 실패", e);
+         }
+     }
 }

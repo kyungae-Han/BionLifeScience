@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dev.BionLifeScienceWeb.model.Client;
 import com.dev.BionLifeScienceWeb.model.CompanyEmail;
@@ -32,7 +32,8 @@ public class ClientController {
 	@PostMapping("/clientInsert")
 	public String clientInsert(
 			Client client,
-			MultipartFile file
+			MultipartFile file,
+			RedirectAttributes redirectAttributes
 			) throws IllegalStateException, IOException {
 		clientService.clientInsert(client, file);
 		List<CompanyEmail> list = companyEmailRepository.findAll();
@@ -40,23 +41,18 @@ public class ClientController {
 		ExecutorService executorService = Executors.newCachedThreadPool();
 
 		executorService.submit(() -> {
-        	String[] to = new String[list.size()];
-        	int i=0;
-        	for(CompanyEmail a : list) {
-        		to[i] = a.getEmail();
-        		i++;
-        	}
-        	
-        	try {
-        		emailService.sendEmail(to, "고객 문의 발생 - 웹서버 발송", client.toString());
-        	}catch(MailSendException e) {
-        		System.out.println(e);
-        	} catch (InterruptedException e) {
-        		e.printStackTrace();
-        	}
-        });
+		    String[] to = list.stream().map(CompanyEmail::getEmail).toArray(String[]::new);
+		    try {
+		        // 📌 Client 객체 그대로 전달
+		        emailService.sendClientMail(to, client);
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		});
 
         executorService.shutdown();
+        
+        redirectAttributes.addFlashAttribute("mailSuccess", true);
 		return "redirect:/contact";
 	}
 }

@@ -88,16 +88,6 @@ button {background: none; border:0; }
   
   
   
-.about .breadcrumb-wrap {
-  background: #f9f9f9;
-}
-.about .breadcrumb-wrap a,
-.about .breadcrumb-wrap li,
-.about .breadcrumb-wrap span {
-  color: #333 !important;
-  opacity: 1;
-}
-
 .about .breadcrumb-wrap.fixed-bottom {
     top: auto !important;
     bottom: 0;

@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -52,7 +53,8 @@ public class Client {
 	@Column(name="CLIENT_CONTACT")
 	private Boolean contact;
 	
-	@Column(name="CLIENT_COMMENT")
+	@Lob
+	@Column(name="CLIENT_COMMENT", columnDefinition = "LONGTEXT")
 	private String comment;
 	
 	@Column(name="CLIENT_FILE_DATE")

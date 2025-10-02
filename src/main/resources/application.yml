@@ -48,10 +48,10 @@ spring:
       maxFileSize: 1000MB
       maxRequestSize: -1
   mail:
-    host: smtp.gmail.com
+    host: smtps.hiworks.com
     port: 587
-    username: 'bionlifesci@gmail.com'
-    password: 'nuuhdepcsveygwsy'
+    username: 'admin@bionlifescience.com'
+    password: 'jQWtWhTyOKrc4Xm9GBLg'
     properties:
       mail:
         smtp:
@@ -92,10 +92,10 @@ spring:
       maxFileSize: 1000MB
       maxRequestSize: -1
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: 'bionlifesci@gmail.com'
-    password: 'nuuhdepcsveygwsy'
+    host:  smtps.hiworks.com
+    port: 465
+    username: 'admin@bionlifescience.com'
+    password: 'jQWtWhTyOKrc4Xm9GBLg'
     properties:
       mail:
         smtp:

@@ -50,13 +50,13 @@
 
 								<div class="form-group">
 									<label for="template-contactform-email">이메일<small>*</small></label>
-									<input type="text" id="template-contactform-email" name="email" required="required"
+									<input type="email" id="template-contactform-email" name="email" required="required"
 										class="sm-form-control" />
 								</div>
 
 								<div class="form-group">
 									<label for="template-contactform-phone">연락처<small>*</small>
-									</label> <input type="text" id="template-contactform-phone" name="phone"
+									</label> <input type="phone" id="template-contactform-phone" name="phone"
 										required="required" class="sm-form-control" />
 								</div>
 
@@ -110,6 +110,9 @@
 
 
 <th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
+<script th:if="${mailSuccess}">
+    alert("문의가 정상적으로 접수되었습니다.");
+</script>
 <script src="/front/js/contact.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {

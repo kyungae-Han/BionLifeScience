@@ -33,6 +33,7 @@ import com.dev.BionLifeScienceWeb.model.product.Product;
 import com.dev.BionLifeScienceWeb.model.product.SmallSort;
 import com.dev.BionLifeScienceWeb.repository.BannerRepository;
 import com.dev.BionLifeScienceWeb.repository.CertificationRepository;
+import com.dev.BionLifeScienceWeb.repository.CompanyEmailRepository;
 import com.dev.BionLifeScienceWeb.repository.EventRepository;
 import com.dev.BionLifeScienceWeb.repository.HistoryContentRepository;
 import com.dev.BionLifeScienceWeb.repository.HistorySubjectRepository;
@@ -48,6 +49,8 @@ import com.dev.BionLifeScienceWeb.repository.product.MiddleSortRepository;
 import com.dev.BionLifeScienceWeb.repository.product.ProductRepository;
 import com.dev.BionLifeScienceWeb.repository.product.SmallSortRepository;
 import com.dev.BionLifeScienceWeb.model.Certification;
+import com.dev.BionLifeScienceWeb.model.CompanyEmail;
+
 import org.springframework.data.domain.Sort;
 
 import lombok.RequiredArgsConstructor;
@@ -72,6 +75,7 @@ public class HomeController {
 	private final BrandSmallSortRepository brandSmallSortRepository;
 	private final BrandProductRepository brandProductRepository;
 	private final CertificationRepository certificationRepository;
+	private final CompanyEmailRepository companyEmailRepository;
 	
 	
 	@ResponseStatus(value=HttpStatus.NOT_FOUND, reason="잘못된 접근입니다.")
@@ -112,7 +116,6 @@ public class HomeController {
 		for (BrandProduct p : pr) {
 	        p.setFirstImageRoad(p.addFirstImage());
 	    }
-		
 		
 		model.addAttribute("fi", fi);
 		model.addAttribute("notice", notice);
@@ -604,6 +607,23 @@ public class HomeController {
 	    @ModelAttribute("brandSmallSortList")
 	    public List<BrandSmallSort> brandSmallSortList() {
 	        return smallSortRepository.findAllByOrderByBrandSmallSortIndexAsc();
+	    }
+	}
+	
+	
+	@ControllerAdvice
+	@RequiredArgsConstructor
+	public class GlobalAdvice {
+
+	    private final CompanyEmailRepository companyEmailRepository;
+
+	    @ModelAttribute("companyEmail")
+	    public String companyEmail() {
+	        return companyEmailRepository.findAll()
+	                .stream()
+	                .findFirst()
+	                .map(CompanyEmail::getEmail)
+	                .orElse("info@bionlifescience.com");
 	    }
 	}
 }

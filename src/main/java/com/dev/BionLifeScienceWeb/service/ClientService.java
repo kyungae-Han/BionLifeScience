@@ -38,9 +38,14 @@ public class ClientService {
 		
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String current_date = simpleDateFormat.format(new Date());
+        
         String absolutePath = new File("").getAbsolutePath() + "\\";
         String path = commonPath + "/clientfiles/" + current_date;
         String road = "/administration/clientfiles/" + current_date;
+        
+        
+        
+        
         File fileFolder = new File(path);
         
         int leftLimit = 48; // numeral '0'
