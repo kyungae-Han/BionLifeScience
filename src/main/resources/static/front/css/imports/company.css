@@ -65,7 +65,7 @@ button {background: none; border:0; }
 ----------------------------------*/
    
 
-  .breadcrumb-wrap {
+ .about .breadcrumb-wrap {
     position: fixed;
     left: 0;
     right: 0;
@@ -87,14 +87,24 @@ button {background: none; border:0; }
   }
   
   
+  
+.about .breadcrumb-wrap {
+  background: #f9f9f9;
+}
+.about .breadcrumb-wrap a,
+.about .breadcrumb-wrap li,
+.about .breadcrumb-wrap span {
+  color: #333 !important;
+  opacity: 1;
+}
 
- .breadcrumb-wrap.fixed-bottom {
+.about .breadcrumb-wrap.fixed-bottom {
     top: auto !important;
     bottom: 0;
   }
 
   /* 숨김 상태 */
-  .breadcrumb-wrap.hide {
+ .about .breadcrumb-wrap.hide {
     opacity: 0;
     transform: scale(0.95); /* 작아지면서 사라짐 */
     visibility: hidden;
@@ -105,7 +115,7 @@ button {background: none; border:0; }
   }
   
   
-.breadcrumb-wrap.gone{
+.about .breadcrumb-wrap.gone{
   display: none;                 
 }
 
@@ -127,10 +137,10 @@ button {background: none; border:0; }
 
 
 
-.breadcrumb-wrap ul, 
+.about .breadcrumb-wrap ul, 
 .breadcrumb-wrap li {list-style: none;}
 
-.breadcrumb-wrap ul {
+.about .breadcrumb-wrap ul {
 	position:relative;
 	display: flex;
 	justify-content: center;
@@ -138,7 +148,7 @@ button {background: none; border:0; }
 	gap: 120px;
 }
 
-.breadcrumb-wrap ul::after{
+.about .breadcrumb-wrap ul::after{
 	content: '';
 	position:absolute;
 	top:0;
@@ -152,7 +162,7 @@ button {background: none; border:0; }
 }
 
 
-.breadcrumb-wrap li {
+.about .breadcrumb-wrap li {
   position: relative;
   padding: 20px 0;
   opacity: 0;
@@ -161,7 +171,7 @@ button {background: none; border:0; }
 }
 
 /*페이지 로드시 활성화 클래스*/
-.breadcrumb-wrap.show li {
+.about .breadcrumb-wrap.show li {
 	opacity: 1;
 	transform: translateY(0);
 	transition-delay: 0.35s;
@@ -169,7 +179,7 @@ button {background: none; border:0; }
 
 
 
-.breadcrumb-wrap li:not(:last-child)::after {
+.about .breadcrumb-wrap li:not(:last-child)::after {
   content: '';
   position: absolute;
   right: -60px;  /* 선 위치 (gap 절반만큼) */
@@ -181,14 +191,14 @@ button {background: none; border:0; }
 }
 
 
-.breadcrumb-wrap a {
+.about .breadcrumb-wrap a {
 	color: #fff;
 	font-weight: 700;
 	font-family: 'Noto Sans KR', sans-serif;
 	font-size: clamp(14px, 2.6vw, 18px);
 }
 
-.breadcrumb-wrap a:hover {color: var(--bs-orange);}
+.about .breadcrumb-wrap a:hover {color: var(--bs-orange);}
 
 
 

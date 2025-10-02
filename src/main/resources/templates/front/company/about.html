@@ -136,7 +136,7 @@
 		</section>
 		
 		
-		<section class="glance-slider">
+		<section class="glance-slider" id="glance-slider">
 					<div class="p-item">
 						<h2 class="sec-head">인증서</h2>
 						<p class="pb-lg-5">2012년 설립 이후, 바이온은 생명과학 실험기자재 연구와 독자 기술 특허를 이어가고 있습니다.</p>
@@ -226,8 +226,8 @@
 					</div>
 				</section>
 				
-				<section id="certificates">
-					<div class="container">
+				<section>
+					<div class="container"  id="certificates" >
 						<!-- 필터 -->
 						<div class="grid-filter-container">
 							<div class="grid-filter-wrap">
@@ -383,6 +383,7 @@
 
 </div>
 <th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
+
 <script th:src="@{/front/js/timeline.js}" defer></script>
 <script th:src="@{/front/js/company/about.js}" defer></script>
 
