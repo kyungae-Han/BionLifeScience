@@ -32,8 +32,13 @@
        nextBtn.disabled = viewport.scrollLeft >= max;
      };
 
-     prevBtn.addEventListener('click', () => scrollByStep(-1));
-     nextBtn.addEventListener('click', () => scrollByStep(1));
+	 if (prevBtn) {
+	   prevBtn.addEventListener('click', () => scrollByStep(-1));
+	 }
+
+	 if (nextBtn) {
+	   nextBtn.addEventListener('click', () => scrollByStep(1));
+	 }
 
      const initDragScroll = () => {
        let dragging = false;
