@@ -486,7 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function loadContactOnce() {
     if (bodyBox.dataset.loaded === '1') return;
     bodyBox.innerHTML = '<p>Loading...</p>';
-    fetch('/contact', { credentials: 'same-origin' })
+    fetch('/contact-body', { credentials: 'same-origin' })
       .then(r => r.text())
       .then(html => {
         const temp = document.createElement('div');
@@ -595,6 +595,10 @@ document.querySelectorAll('.product-mega-wrap').forEach(el => {
 	  el.style.transform = "translateX(-50%)";
 	});
 </script> -->
+
+
+
+
 		
 </th:block>
 </body>

@@ -1,5 +1,6 @@
 package com.dev.BionLifeScienceWeb.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +49,9 @@ import com.dev.BionLifeScienceWeb.repository.product.BigSortRepository;
 import com.dev.BionLifeScienceWeb.repository.product.MiddleSortRepository;
 import com.dev.BionLifeScienceWeb.repository.product.ProductRepository;
 import com.dev.BionLifeScienceWeb.repository.product.SmallSortRepository;
+
+import jakarta.servlet.http.HttpServletResponse;
+
 import com.dev.BionLifeScienceWeb.model.Certification;
 import com.dev.BionLifeScienceWeb.model.CompanyEmail;
 
@@ -182,12 +186,22 @@ public class HomeController {
 	}
 	
 	
-	@GetMapping("/contact")
-	public String contact(
-			Model model
-			) {
-		return "front/customer/contact";
-	}
+    @GetMapping("/contact")
+    public void contactRedirect(HttpServletResponse response) throws IOException {
+        response.setContentType("text/html; charset=UTF-8");
+        response.getWriter().write("""
+            <script>
+                alert('잘못된 접근입니다');
+                window.location.href = '/';
+            </script>
+        """);
+    }
+
+    // ✅ 모달에서 불러올 실제 HTML
+    @GetMapping("/contact-body")
+    public String contactBody() {
+        return "front/customer/contact";  // 기존 contact.html 템플릿 경로
+    }
 	
 	
 	

@@ -26,9 +26,6 @@ public class ClientController {
 	private final ClientService clientService;
 	private final EmailService emailService;
 	
-	/**
-	 * 스레드 처리로 이메일 발송과 DB Insert 병렬처리
-	 */
 	@PostMapping("/clientInsert")
 	public String clientInsert(
 			Client client,
@@ -43,7 +40,6 @@ public class ClientController {
 		executorService.submit(() -> {
 		    String[] to = list.stream().map(CompanyEmail::getEmail).toArray(String[]::new);
 		    try {
-		        // 📌 Client 객체 그대로 전달
 		        emailService.sendClientMail(to, client);
 		    } catch (Exception e) {
 		        e.printStackTrace();
