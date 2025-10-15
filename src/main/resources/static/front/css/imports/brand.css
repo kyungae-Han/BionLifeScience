@@ -385,3 +385,149 @@
   }
 }
 
+
+
+/* === 브랜드 모달 카테고리 바 === */
+#brandProductList .product-card {
+  max-width: none !important;
+}
+
+#brandModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.65);
+  transition: opacity .35s ease, visibility 0.3s ease;
+  overflow: hidden;
+  padding-top: 120px;
+}
+
+#brandModal .modal-dialog-centered {
+	position: relative;
+}
+
+#brandModal .modal-content {
+  background: #fff;
+  max-width: 1280px;
+  margin: auto;
+  overflow-y: auto !important;   
+  overflow-x: clip !important;      
+  max-height: 90vh;
+  position: relative;     
+  border-radius: 25px !important;
+  scrollbar-width: none;           /* Firefox용 */
+  -ms-overflow-style: none;        /* IE, Edge(구버전) */
+}
+
+/* ✅ Chrome, Safari, Edge 최신 버전 */
+#brandModal .modal-content::-webkit-scrollbar {
+  display: none !important;        /* 완전 숨김 */
+}
+
+
+/* Prev / Next 버튼 기본 스타일 */
+.brand-nav-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: #fff;
+  color: #222;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 1056; /* ✅ 모달보다 위 */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+}
+
+.brand-nav-btn:hover {
+  background: #007bff;
+  color: #fff;
+}
+
+#brandModal .btn-close:focus,
+#brandModal .btn-close:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* 버튼 hover 시 자연스럽게 표시 */
+#brandModal:hover .brand-nav-btn {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 초기 상태 살짝 숨김 효과 (선택사항) */
+.brand-nav-btn {
+  opacity: 0.6;
+  visibility: visible;
+}
+
+
+#brandPrev,
+#brandNext {
+  pointer-events: auto;
+  z-index: 1056;
+}
+
+#brandPrev {
+	left: -28px !important;
+}
+
+#brandNext {
+	right: -28px !important;
+}
+
+
+.brand-category-bar {
+  background-color: #f7f7f7;
+  border-radius: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.brand-category-bar .category-item {
+	position:relative;
+  cursor: pointer;
+  color: #333;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+  border:0 !important;
+  background: none;
+}
+
+.brand-category-bar .category-item:not(:last-child)::after{
+  content: '|';
+  position: absolute;
+  right: -10px;
+  color: #ccc;
+  font-weight: 400;
+}
+
+.brand-category-bar .category-item:hover {
+  color: #000;
+  text-decoration: underline;
+}
+
+.brand-category-bar .category-item.active {
+  font-weight: 600;
+  color: #000;
+}
+
+.brand-category-bar .divider {
+  color: #aaa;
+  margin: 0 6px;
+}
+
+
+
+#page-title.page-title-dark h1.brand-section-title,
+#page-title.page-title-dark .brand-section-desc {
+	color: var(--bs-gray-700) !important;
+}

@@ -26,6 +26,10 @@ public interface BrandProductRepository extends JpaRepository<BrandProduct, Long
 	
 	Page<BrandProduct> findAllByBrand(Pageable pageable, Brand brand);
 	
+	
+	List<BrandProduct> findByBrandOrderByBrandProductIndexAsc(Brand brand);
+	
+	
 	Page<BrandProduct> findAll(Pageable pageble);
 
 	List<BrandProduct> findAllBySign(Boolean sign);

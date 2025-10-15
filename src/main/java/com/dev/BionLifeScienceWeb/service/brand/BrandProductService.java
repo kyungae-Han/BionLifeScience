@@ -430,6 +430,12 @@ public class BrandProductService {
 		product.setSpecImageName(specFileName);
 		product.setSpecImagePath(specPath + "/" + specFileName);
 		product.setSpecImageRoad(specRoad + "/" + specFileName);
+		
+		String subContent = product.getProductSubContent();
+		if (subContent != null) {
+		    subContent = subContent.replace("\n", "<br>");
+		}
+		product.setProductSubContent(subContent);
 
 		return brandProductRepository.save(product);
 
@@ -523,7 +529,13 @@ public class BrandProductService {
 
 	    saved.setSubject(product.getSubject());
 	    saved.setContent(product.getContent());
-	    saved.setProductSubContent(product.getProductSubContent());
+	    
+	    String subContent = product.getProductSubContent();
+	    
+	    if (subContent != null) {
+	        subContent = subContent.replace("\n", "<br>");
+	    }
+	    saved.setProductSubContent(subContent);
 	    saved.setSign(product.getSign());
 
 	    brandProductRepository.save(saved);

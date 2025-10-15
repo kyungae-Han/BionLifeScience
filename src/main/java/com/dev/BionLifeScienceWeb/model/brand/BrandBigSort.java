@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -31,10 +32,8 @@ public class BrandBigSort {
 	@Column(name="BRAND_BIGSORT_INDEX")
 	private int brandBigSortIndex;
 	
-	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(
-			name="BRAND_BIGSORT_REFER_ID", referencedColumnName="BRAND_ID"
-			)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "BRAND_BIGSORT_REFER_ID", referencedColumnName = "BRAND_ID")
 	private Brand brand;
 
 }

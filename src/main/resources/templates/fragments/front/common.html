@@ -85,22 +85,23 @@
 									
 									        <!-- PARTNER 그룹 (취급브랜드) -->
 									        <li class="menu-item">
-									          <a class="menu-link" href="#">
+									          <a class="menu-link" href="/brands">
 									            <div><i class="icon-stack"></i> 취급브랜드</div>
 									          </a>
 									
 									          <ul class="sub-menu-container sub-menu-items">
 									            <li class="menu-item"
-									                th:each="b:${partnerBrands}"
-									                th:attr="data-id=${'brand-' + b.id}">
-									              <a class="menu-link" th:href="@{|/brandProductSorted/brand/${b.id}|}">
-									                <div th:text="${b.name}">Brand Name</div>
-									              </a>
-									
+									                th:each="pb : ${partnerBrands}"
+												    th:attr="data-id=${'brand-' + pb.id}, data-parent='partner', 
+												             data-name=${pb.name}, data-desc=${pb.desc}, data-image=${pb.imageRoad}">
+												  <a class="menu-link" href="javascript:void(0);" onclick="window.location.href='/brands'">
+												    <div th:text="${pb.name}">Brand Name</div>
+												  </a>
+																			
 									              <ul class="sub-menu-container">
 									                <li class="menu-item"
 									                    th:each="bb : ${menuList.brandBigSortList}"
-									                    th:if="${bb.brand.id == b.id}">
+									                    th:if="${bb.brand.id == pb.id}">
 									                  <a class="menu-link" th:href="@{|/brandProductSorted/main/${bb.id}|}">
 									                    <div th:text="${bb.name}">BigSort</div>
 									                  </a>
@@ -219,7 +220,7 @@
 						
 						        <!-- PARTNER 그룹 -->
 						        <li class="menu-item" data-id="partner">
-						          <a class="menu-link" href="#">
+						          <a class="menu-link" href="/brands">
 						            <div><i class="icon-stack"></i> 취급브랜드</div>
 						          </a>
 						        </li>
@@ -239,8 +240,9 @@
 						        <!-- PARTNER: 브랜드 목록 -->
 						        <li class="menu-item"
 						            th:each="pb : ${partnerBrands}"
-						            th:attr="data-id=${'brand-' + pb.id}, data-parent='partner'">
-						          <a class="menu-link" th:href="@{|/brandProductSorted/brand/${pb.id}|}">
+								    th:attr="data-id=${'brand-' + pb.id}, data-parent='partner', 
+								             data-name=${pb.name}, data-desc=${pb.desc}, data-image=${pb.imageRoad}">
+								  <a class="menu-link" href="javascript:void(0);" onclick="window.location.href='/brands'">
 						            <div th:text="${pb.name}">Partner Brand</div>
 						          </a>
 						        </li>
@@ -429,6 +431,7 @@
   </div>
 </div>
 
+
 <script>
 /* 스크롤 고정: 위치 보존(Fixed Body) + 중첩 모달 안전 */
 (() => {
@@ -586,6 +589,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (li.dataset.type === 'PARTNER') sub.appendChild(li.cloneNode(true));
   });
 </script>
+
+
 <!-- <script>
 document.querySelectorAll('.product-mega-wrap').forEach(el => {
 	  el.classList.add('debug-open');
@@ -596,10 +601,7 @@ document.querySelectorAll('.product-mega-wrap').forEach(el => {
 	});
 </script> -->
 
-
-
-
-		
 </th:block>
+
 </body>
 </html>

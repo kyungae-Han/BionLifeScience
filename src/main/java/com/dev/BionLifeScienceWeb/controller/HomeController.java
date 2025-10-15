@@ -1,8 +1,13 @@
 package com.dev.BionLifeScienceWeb.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.dev.BionLifeScienceWeb.model.Banner;
@@ -310,7 +316,69 @@ public class HomeController {
 	}
 
 	
+	@GetMapping("/brands")
+	public String brandOverview(Model model) {
+		
+	    model.addAttribute("partnerBrands",
+	        brandRepository.findAllByTypeOrderByNameAsc(Brand.BrandType.PARTNER));
+
+	    return "front/brand/brandOverview";
+	}
 	
+	
+	@GetMapping("/brand/{id}/products")
+	@ResponseBody
+	public Map<String, Object> brandProductsAjax(@PathVariable Long id) {
+	    Brand brand = brandRepository.findById(id)
+	            .orElseThrow(UrlNotFoundException::new);
+
+	    Map<String, Object> result = new HashMap<>();
+	    result.put("brandName", brand.getName());
+	    result.put("brandDesc", brand.getContent());
+	    result.put("brandLogo", brand.getImageRoad());
+
+	    // ✅ 1️⃣ 브랜드의 전체 대분류 가져오기
+	    List<BrandBigSort> bigSortList =
+	    	    brandBigSortRepository.findAllByBrandOrderByBrandBigSortIndexAsc(brand);
+
+	    // ✅ 2️⃣ 브랜드의 전체 상품
+	    List<BrandProduct> products = brandProductRepository
+	            .findByBrandOrderByBrandProductIndexAsc(brand);
+
+	    // ✅ 3️⃣ 대분류별 상품 매핑
+	    List<Map<String, Object>> bigSortResult = new ArrayList<>();
+
+	    for (BrandBigSort bigSort : bigSortList) {
+	        Map<String, Object> categoryMap = new HashMap<>();
+	        categoryMap.put("bigSortName", bigSort.getName());
+
+	        List<Map<String, Object>> productList = products.stream()
+	                .filter(p -> p.getBigSort() != null &&
+	                        Objects.equals(p.getBigSort().getId(), bigSort.getId()))
+	                .map(p -> {
+	                    Map<String, Object> m = new HashMap<>();
+	                    m.put("id", p.getId());
+	                    m.put("subject", p.getSubject());
+	                    m.put("content", p.getContent());
+	                    m.put("firstImageRoad", (p.getImages() != null && !p.getImages().isEmpty())
+	                            ? p.getImages().get(0).getProductImageRoad()
+	                            : "/front/images/no-image.png");
+	                    return m;
+	                })
+	                .collect(Collectors.toList());
+
+	        categoryMap.put("products", productList);
+	        bigSortResult.add(categoryMap);
+	    }
+
+	    result.put("categories", bigSortResult);
+	    return result;
+	}
+
+
+
+
+
 	@GetMapping("/brand/own/{id}")
 	public String ownBrandDetail(@PathVariable Long id, Model model) {
 	    Brand brand = brandRepository.findById(id)

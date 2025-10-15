@@ -52,16 +52,14 @@
 														</div>
 													</div>
 												</div>
-												<div class="sale-flash badge bg-danger p-2">Tubes</div>
+												<div class="sale-flash badge bg-danger p-2"
+										     th:text="${product.bigSort != null ? product.bigSort.name : '기타'}">
+										    Category
+										</div>
 											</div>
 										</div>
 
 										<div class="col-md-6 product-desc">
-
-											<p th:text="${product.productSubContent}">
-												특허받은 설계로 스왑을 담고 있는 꽉 잠긴 Screw Caps and Tubes을 개봉하면 뚜껑부분에 스왑이
-												꼽혀서 나오며 또한 <strong></strong>작은 힘으로도 뚜껑과 스왑을 쉽게 분리</strong>할 수 있습니다.
-											</p>
 											<ul class="iconlist">
 												<li th:each="i:${product.infos}"><i class="icon-caret-right"></i>
 													<span th:text="${i.productInfoText}"></span></li>
@@ -96,13 +94,17 @@
 
 													<div class="tab-content clearfix text-center" id="tabs-1"
 														style="text-align: center;">
-														<img width="1200px" style="margin: 0 auto;"
-															th:src="${product.tableImageRoad}">
+														<!-- <img width="1200px" style="margin: 0 auto;"
+															th:src="${product.tableImageRoad}"> -->
+														 <img width="1200px" style="margin: 0 auto;"
+															th:src="${product.specImageRoad}">
 													</div>
 													<div class="tab-content clearfix text-center" id="tabs-2"
-														style="text-align: center;">
-														<img width="1200px" style="margin: 0 auto;"
-															th:src="${product.specImageRoad}">
+														style="text-align: left;">
+															<div th:utext="${product.productSubContent}">
+																특허받은 설계로 스왑을 담고 있는 꽉 잠긴 Screw Caps and Tubes을 개봉하면 뚜껑부분에 스왑이
+																꼽혀서 나오며 또한 <strong></strong>작은 힘으로도 뚜껑과 스왑을 쉽게 분리</strong>할 수 있습니다.
+															</div>
 
 													</div>
 													<div class="tab-content clearfix" id="tabs-3">

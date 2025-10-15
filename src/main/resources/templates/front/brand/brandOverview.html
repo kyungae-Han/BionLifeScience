@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/front/common :: headSrc('취급 브랜드 | Bion Life Science')}"></head>
+
+<link rel="stylesheet" th:href="@{/front/css/imports/brand.css}">
+
+
+<body class="stretched">
+<div id="wrapper" class="clearfix">
+
+  <th:block th:replace="~{/fragments/front/common :: headerSrc(false, ${menuList})}"></th:block>
+
+  <div id="page-title" class="page-title include-header"
+           style="padding: 240px 0 180px; background: url('/front/images/others/common_1.jpg') center/cover no-repeat;">
+    <div class="text-center">
+      <h1 class="fw-bold mb-3 brand-section-title">Partner Brands</h1>
+      <p class="mb-0 brand-section-desc">바이온은 믿음과 품질을 바탕으로 한 브랜드를 안정적인 유통망으로 제공하며, 고객과의 신뢰를 최우선 가치로 삼습니다.</p>
+    </div>
+  </div>
+  
+  <div class="breadcrumb-wrap py-3 bg-light border-top border-bottom">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0 small">
+          <li class="breadcrumb-item"><a href="/" class="text-decoration-none">메인</a></li>
+          <li class="breadcrumb-item">브랜드</li>
+          <li class="breadcrumb-item active" aria-current="page">취급 브랜드</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+  
+  
+    <div class="content-wrap">
+      <div class="container">
+         <div class="row justify-content-center py-6 g-6">
+		  <div class="col-xl-3 col-lg-6" th:each="b,iterStat : ${partnerBrands}">
+		    <div class="brand-card text-center border rounded-3 bg-white"
+		         style="cursor:pointer; transition:all .25s ease;"
+		         th:data-index="${iterStat.index}"
+		         th:data-name="${b.name}"
+		         th:data-desc="${b.desc}"
+		         th:data-image="${b.imageRoad}"
+		         th:data-id="${b.id}">
+		      <div class="brand-thumb">
+		        <img th:src="${b.imageRoad}" alt="[[${b.name}]]" class="img-fluid rounded-3" style="object-fit:cover;">
+		      </div>
+		    </div>
+		  </div>
+		</div>
+      </div>
+    </div>
+  
+  
+  
+  
+  <!-- ===============================
+     BRAND MODAL
+=============================== -->
+<div id="brandModal" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+
+    <!-- Prev / Next Buttons -->
+    <button id="brandPrev"
+            onclick="navigateBrand(-1)"
+            class="btn-light position-absolute top-50 start-0 translate-middle-y shadow-sm"
+            style="border-radius:50%; width:48px; height:48px; z-index:1056;">
+      <i class="icon-line-arrow-left"></i>
+    </button>
+
+    <button id="brandNext"
+            onclick="navigateBrand(1)"
+            class="btn-light position-absolute top-50 end-0 translate-middle-y shadow-sm"
+            style="border-radius:50%; width:48px; height:48px; z-index:1056;">
+      <i class="icon-line-arrow-right"></i>
+    </button>
+
+    <!-- ===============================
+         Modal Content (Custom Scroll Safe)
+    =============================== -->
+    <div class="modal-content border-0 rounded-4 shadow-lg" 
+         style="max-height:90vh; overflow-y:auto; overflow-x:hidden; position:relative;">
+
+      <!-- ✅ Custom Header -->
+      <div class="brand-modal-header d-flex align-items-center justify-content-between px-4 pt-3 pb-2"
+           style="position:sticky; top:0; background:#fff; z-index:1055; border-bottom:1px solid #eee;">
+        <h4 id="brandModalName" class="fw-bold m-0"></h4>
+        <button type="button" class="btn-close" aria-label="Close" onclick="closeBrandModal()"><i class="bi bi-x-lg"></i></button>
+      </div>
+
+      <!-- ✅ Body -->
+      <div class="modal-body position-relative px-4 pb-5">
+
+        <!-- Brand Info -->
+        <div class="row g-0 align-items-center mb-4">
+          <div class="col-md-5 text-center p-0 border border-1 rounded-2">
+            <img id="brandModalLogo" src="" alt="Brand Logo"
+                 style="width:100%; height:auto; object-fit:contain; border-radius:10px;">
+          </div>
+
+          <div class="col-md-7 ps-md-5 ps-4">
+            <p id="brandModalDesc" class="mb-4 text-muted"></p>
+          </div>
+        </div>
+
+        <!-- Category + Products -->
+        <div id="brandCategoryList" class="d-flex flex-wrap gap-2 mb-4 mt-4 brand-category-bar"></div>
+        <div id="brandProductList" class="row g-6"></div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <th:block th:replace="~{/fragments/front/common :: footerSrc}"></th:block>
+</div>
+
+<th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+	
+let scrollPosition = 0;
+
+function lockBodyScroll() {
+  scrollPosition = window.scrollY;
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${scrollPosition}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+  document.body.style.overflowY = 'hidden';
+  document.body.style.width = '100%';
+}
+
+function unlockBodyScroll() {
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+  document.body.style.overflowY = '';
+  document.body.style.width = '';
+  window.scrollTo(0, scrollPosition);
+}
+
+
+  const modal     = document.querySelector('#brandModal');
+  const logo      = document.querySelector('#brandModalLogo');
+  const nameBox   = document.querySelector('#brandModalName');
+  const descBox   = document.querySelector('#brandModalDesc');
+  const cards     = document.querySelectorAll('.brand-card');
+  const prevBtn   = document.querySelector('#brandPrev');
+  const nextBtn   = document.querySelector('#brandNext');
+  const categoryBox = document.querySelector('#brandCategoryList');
+  const productList = document.querySelector('#brandProductList');
+  
+  let currentIndex = -1;
+
+  
+  window.navigateBrand = function(dir) {
+	    if (cards.length === 0) return;
+	    if (currentIndex === -1) {
+	      currentIndex = 0;
+	    }
+
+	    const nextIndex = (currentIndex + dir + cards.length) % cards.length;
+	    currentIndex = nextIndex;
+
+	    const nextCard = cards[nextIndex];
+	    if (nextCard) openModal(nextCard);
+	  };
+  
+  // ✅ 모달 열기
+  window.openModal = function(card) {
+    if (!card) return;
+
+    currentIndex = [...cards].indexOf(card);
+
+    const brandId = card.dataset.id;
+    const brandName = card.dataset.name || '브랜드명 없음';
+    const brandDesc = (card.dataset.desc && card.dataset.desc.trim() !== '')
+    ? card.dataset.desc
+    : '브랜드 소개가 준비 중입니다.';
+    const brandImg = card.dataset.image || '/front/images/no-logo.png';
+
+    // 모달 데이터 세팅
+    logo.src = brandImg;
+    nameBox.textContent = brandName;
+    descBox.textContent = brandDesc;
+
+    // ✅ 모달 표시 (부트스트랩 없이)
+    lockBodyScroll();
+    modal.style.display = 'flex';
+    modal.style.opacity = '1';
+    modal.style.pointerEvents = 'auto';
+    modal.setAttribute('aria-hidden', 'false');
+
+    // ✅ 배경 스크롤 유지 — body 변경 없음
+    // (overflow hidden 안 씀)
+
+    // ✅ 로딩 표시
+    productList.innerHTML = `<p class="text-muted text-center my-4">Loading...</p>`;
+
+    // ✅ 데이터 요청
+    fetch(`/brand/${brandId}/products`)
+    .then(res => res.json())
+    .then(data => {
+      // ✅ 브랜드 정보 표시
+      nameBox.textContent = data.brandName || '브랜드명 없음';
+      descBox.innerHTML = (data.brandDesc && data.brandDesc.trim() !== '')
+        ? data.brandDesc
+        : '브랜드 소개가 준비 중입니다.';
+      logo.src = data.brandLogo || '/front/images/no-logo.png';
+
+
+      // ✅ 카테고리 추출
+      const categories = data.categories || [];
+
+// categories 안의 products들을 평탄화(flat)하면서 bigSortName을 병합
+	const products = categories.flatMap(c => 
+	  (c.products || []).map(p => ({
+	    ...p,
+	    bigSortName: c.bigSortName || '기타'
+	  }))
+	);
+	
+	// ✅ 제품이 없을 경우
+	if (products.length === 0) {
+	  categoryBox.innerHTML = '';
+	  productList.innerHTML = `<p class="text-muted text-center my-4">등록된 제품이 없습니다.</p>`;
+	  return;
+	}
+	
+	// ✅ 카테고리 버튼 생성
+	const categoryNames = [...new Set(categories.map(c => c.bigSortName || '기타'))];
+	categoryBox.innerHTML = categoryNames.map((c, i) => `
+	  <button class="category-item m-2 text-center ${i === 0 ? 'active' : ''}" data-category="${c}">
+	    ${c}
+	  </button>
+	`).join('');
+	
+	// ✅ 제품 카드 렌더링 (기존 구조 그대로 유지)
+	productList.innerHTML = products.map(p => `
+	  <div class="col-lg-3 col-md-4 col-6 mb-4 brand-product-item" data-category="${p.bigSortName}">
+	    <div class="product-card entry">
+	      <a href="/brandProductDetail/${p.id}" class="text-decoration-none text-dark d-block h-100">
+	        <div class="entry-image position-relative overflow-hidden">
+	          <img src="${p.firstImageRoad}" alt="${p.subject}" class="img-fluid w-100">
+	        </div>
+	        <div class="entry-content mt-3">
+	          <h4 class="entry-title fw-semibold text-truncate">${p.subject}</h4>
+	          <p class="small text-muted mb-0 text-truncate">${p.content || ''}</p>
+	        </div>
+	      </a>
+	    </div>
+	  </div>
+	`).join('');
+	
+	// ✅ 필터 기능
+	const filterProducts = (category) => {
+	  document.querySelectorAll('#brandCategoryList button').forEach(b => {
+	    b.classList.toggle('active', b.dataset.category === category);
+	  });
+	
+	  document.querySelectorAll('.brand-product-item').forEach(item => {
+	    if (category === 'ALL' || category === '전체') {
+	      item.style.display = 'block';
+	    } else {
+	      item.style.display = (item.dataset.category === category) ? 'block' : 'none';
+	    }
+	  });
+	};
+	
+	// ✅ 카테고리 버튼 렌더링 (ALL 버튼 항상 첫 번째)
+	categoryBox.innerHTML = `
+	  <button class="category-item m-2" data-category="ALL">ALL</button>
+	` + categoryNames.map(c => `
+	  <button class="category-item m-2" data-category="${c}">
+	    ${c}
+	  </button>
+	`).join('');
+	
+	// ✅ 클릭 이벤트 연결
+	document.querySelectorAll('#brandCategoryList button').forEach(btn => {
+	  btn.addEventListener('click', () => filterProducts(btn.dataset.category));
+	});
+	
+	// ✅ DOM 렌더 완료 후 ALL 자동 선택 (살짝 지연)
+	setTimeout(() => {
+	  filterProducts('ALL');
+}, 0);
+
+      // ✅ 기본 첫 카테고리 적용
+      filterProducts(categories[0]);
+    })
+    .catch(err => {
+      console.error(err);
+      productList.innerHTML = `<p class="text-danger text-center my-4">제품 정보를 불러오지 못했습니다.</p>`;
+    });
+
+  };
+
+  // ✅ 닫기
+  window.closeBrandModal = function() {
+	unlockBodyScroll();
+    modal.style.opacity = '0';
+    modal.style.pointerEvents = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    setTimeout(() => {
+      modal.style.display = 'none';
+    }, 200); // fade-out 효과
+  };
+
+  // ✅ 카드 클릭
+  cards.forEach(card => {
+    card.addEventListener('click', () => openModal(card));
+  });
+
+  // ✅ ESC 키 닫기
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeBrandModal();
+  });
+
+});
+</script>
+
+
+</body>
+</html>

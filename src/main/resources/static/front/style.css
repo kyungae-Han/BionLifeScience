@@ -5799,6 +5799,14 @@ body:not(.device-touch):not(.device-sm):not(.device-xs) .product-image > a {
   padding: 15px 0;
 }
 
+.product-desc p {
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  line-height: 1.6;
+  color: #444;
+}
+
 .product-title {
   margin-bottom: 7px;
 }
