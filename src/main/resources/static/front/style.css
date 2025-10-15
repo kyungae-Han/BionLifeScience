@@ -19979,3 +19979,259 @@ body:not(.stretched) #wrapper {
 }
 
 
+
+
+.product-card .entry-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;  /* 정사각형 */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position:relative;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.product-card {
+  transition: hidden;
+  max-width: 295px;
+}
+
+.product-card .entry-image img {
+  width: 100%;
+  display: block;
+  height: auto;
+  transition: transform 0.3s ease;
+  border-radius: 25px;
+  object-fit:cover;
+}
+
+.product-card:hover img {
+	transform: scale(1.1);
+}
+
+.product-card:after {
+	
+}
+
+.product-card .entry-image::after{
+	content:'';
+	position:absolute;
+	inset: 0;
+	background: rgba(0,0,0,0.4);
+	opacity: 0;
+	transition: opacity 0.3s ease;
+	z-index:1;
+}
+
+.product-card .entry-image:hover::after{
+	opacity: 1;
+}
+
+/* hover 아이콘 (before 사용) */
+.product-card .entry-image::before {
+  content: "\F341";
+  font-family: "bootstrap-icons";
+  font-weight: 500;
+  font-size: 28px;
+  color: white;
+  background: #0a1e4e;
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.6);
+  opacity: 0;
+  transition: all .3s ease;
+  pointer-events: none;
+  z-index:5;
+}
+
+/* hover 시 */
+.product-card .entry-image:hover::before {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+
+.product-card .entry-title h2 {text-align: left; font-weight: 800;}
+.product-card .entry-meta {padding: 7px 0;}
+.product-card .entry-meta li {font-size: 85% !important; padding: 0; margin: 0;}
+.entry-meta li::before {
+	content: '' !important;
+} 
+
+
+.entry-image::before,
+.entry-image::after {
+  pointer-events: none;
+}
+
+
+@media (max-width: 768px) {
+  .category-tabs ul {
+    flex-direction: column;
+    gap: 5px;
+  }
+  .category-tabs a {
+    border-radius: 4px;
+    border: 1px solid #ddd;
+  }
+}
+
+
+#brandGlobalModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.65);
+  transition: opacity .35s ease, visibility 0.3s ease;
+  overflow: hidden;
+}
+
+
+#brandGlobalModal .global__brandModal {
+	max-width: 1280px;
+	position: relative;
+}
+
+
+#brandGlobalModal .modal-content {
+	width: 100%;
+	max-width: 1280px;
+	padding: 0;
+}
+
+/* 공통 버튼 스타일 */
+#brandGlobalModal .brand-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  color: #111;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 9999;
+  transition: all 0.25s ease;
+}
+
+/* hover 시 스타일 */
+#brandGlobalModal .brand-nav-btn:hover {
+  border-color: var(--bs-primary, #ff6600) !important;
+  color: var(--bs-primary, #ff6600);
+  background: #fff;
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* 좌우 위치 */
+#brandGlobalModal .brand-nav-btn.prev {
+  left: -70px !important;
+}
+
+#brandGlobalModal .brand-nav-btn.next {
+  right: -70px !important;
+}
+
+
+#brandGlobalModal .brand-category-bar {
+  background-color: #f7f7f7;
+  border-radius: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+
+#brandGlobalModal .category-item {
+  border: 0;
+  background: transparent;
+  font-weight: 400;
+  color: #555;
+  padding: 8px 16px;
+  cursor: pointer;
+  position: relative;
+}
+
+
+#brandGlobalModal .category-item:hover {
+  color: #000;
+  text-decoration: underline;
+}
+
+
+#brandGlobalModal .category-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 1px;
+  height: 16px;
+  background: #ddd;
+  transform: translateY(-50%);
+}
+
+#brandGlobalModal .category-item.active {
+  font-weight: 700;
+  color: #000;
+}
+
+
+/* 모바일 대응 */
+@media (max-width: 991px) {
+  .brand-nav-btn.prev {
+    left: 10px;
+  }
+  .brand-nav-btn.next {
+    right: 10px;
+  }
+}
+
+#brandGlobalModal {
+  pointer-events: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.35) transparent;
+}
+
+#brandGlobalModal.show {
+  pointer-events: auto;
+}
+
+
+#brandGlobalModal::-webkit-scrollbar {
+  width: 4px; /* 스크롤바 폭 */
+}
+
+#brandGlobalModal::-webkit-scrollbar-track {
+  background: transparent !important; /* 배경 제거 */
+}
+
+#brandGlobalModal::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.4); /* 스크롤 손잡이 */
+  border-radius: 8px;
+}
+
+#brandGlobalModal::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.6);
+}
+
+/* Firefox용 */
+#brandGlobalModal {
+  scrollbar-color: rgba(0,0,0,0.4) transparent;
+  scrollbar-width: thin;
+}

@@ -282,109 +282,6 @@
 
 .sorted-entry {width: 100%;} 
 
-.product-card .entry-image {
-  width: 100%;
-  aspect-ratio: 1 / 1;  /* 정사각형 */
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position:relative;
-  border-radius: 25px;
-  cursor: pointer;
-}
-
-.product-card {
-  transition: hidden;
-  max-width: 295px;
-}
-
-.product-card .entry-image img {
-  width: 100%;
-  display: block;
-  height: auto;
-  transition: transform 0.3s ease;
-  border-radius: 25px;
-  object-fit:cover;
-}
-
-.product-card:hover img {
-	transform: scale(1.1);
-}
-
-.product-card:after {
-	
-}
-
-.product-card .entry-image::after{
-	content:'';
-	position:absolute;
-	inset: 0;
-	background: rgba(0,0,0,0.4);
-	opacity: 0;
-	transition: opacity 0.3s ease;
-	z-index:1;
-}
-
-.product-card .entry-image:hover::after{
-	opacity: 1;
-}
-
-/* hover 아이콘 (before 사용) */
-.product-card .entry-image::before {
-  content: "\F341";
-  font-family: "bootstrap-icons";
-  font-weight: 500;
-  font-size: 28px;
-  color: white;
-  background: #0a1e4e;
-  width: 50px;
-  height: 50px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0.6);
-  opacity: 0;
-  transition: all .3s ease;
-  pointer-events: none;
-  z-index:5;
-}
-
-/* hover 시 */
-.product-card .entry-image:hover::before {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-
-.product-card .entry-title h2 {text-align: left; font-weight: 800;}
-.product-card .entry-meta {padding: 7px 0;}
-.product-card .entry-meta li {font-size: 85% !important; padding: 0; margin: 0;}
-.entry-meta li::before {
-	content: '' !important;
-} 
-
-
-.entry-image::before,
-.entry-image::after {
-  pointer-events: none;
-}
-
-
-@media (max-width: 768px) {
-  .category-tabs ul {
-    flex-direction: column;
-    gap: 5px;
-  }
-  .category-tabs a {
-    border-radius: 4px;
-    border: 1px solid #ddd;
-  }
-}
-
 
 
 /* === 브랜드 모달 카테고리 바 === */
@@ -398,7 +295,7 @@
   inset: 0;
   background-color: rgba(0,0,0,0.65);
   transition: opacity .35s ease, visibility 0.3s ease;
-  overflow: hidden;
+  overflow: hidden;   
   padding-top: 120px;
 }
 
@@ -410,19 +307,39 @@
   background: #fff;
   max-width: 1280px;
   margin: auto;
-  overflow-y: auto !important;   
-  overflow-x: clip !important;      
+  overflow-y: auto;     
+  overflow-x: hidden;
   max-height: 90vh;
-  position: relative;     
-  border-radius: 25px !important;
-  scrollbar-width: none;           /* Firefox용 */
-  -ms-overflow-style: none;        /* IE, Edge(구버전) */
+  position: relative;
+  border-radius: 25px;
+  scrollbar-width: thin;  
+  scrollbar-color: rgba(0,0,0,0.35) transparent;
+  padding: 0;
 }
 
-/* ✅ Chrome, Safari, Edge 최신 버전 */
-#brandModal .modal-content::-webkit-scrollbar {
-  display: none !important;        /* 완전 숨김 */
+#brandModal::-webkit-scrollbar {
+  width: 4px; /* 스크롤바 폭 */
 }
+
+#brandModal::-webkit-scrollbar-track {
+  background: transparent !important; /* 배경 제거 */
+}
+
+#brandModal::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.4); /* 스크롤 손잡이 */
+  border-radius: 8px;
+}
+
+#brandModal::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.6);
+}
+
+/* Firefox용 */
+#brandModal {
+  scrollbar-color: rgba(0,0,0,0.4) transparent;
+  scrollbar-width: thin;
+}
+
 
 
 /* Prev / Next 버튼 기본 스타일 */
@@ -482,7 +399,7 @@
 }
 
 
-.brand-category-bar {
+#brandModal .brand-category-bar {
   background-color: #f7f7f7;
   border-radius: 50px;
   height: 50px;
@@ -492,7 +409,7 @@
   justify-content: center;
 }
 
-.brand-category-bar .category-item {
+#brandModal .brand-category-bar .category-item {
 	position:relative;
   cursor: pointer;
   color: #333;
@@ -502,7 +419,7 @@
   background: none;
 }
 
-.brand-category-bar .category-item:not(:last-child)::after{
+#brandModal .brand-category-bar .category-item:not(:last-child)::after{
   content: '|';
   position: absolute;
   right: -10px;
@@ -510,17 +427,17 @@
   font-weight: 400;
 }
 
-.brand-category-bar .category-item:hover {
+#brandModal .brand-category-bar .category-item:hover {
   color: #000;
   text-decoration: underline;
 }
 
-.brand-category-bar .category-item.active {
+#brandModal .brand-category-bar .category-item.active {
   font-weight: 600;
   color: #000;
 }
 
-.brand-category-bar .divider {
+#brandModal .brand-category-bar .divider {
   color: #aaa;
   margin: 0 6px;
 }

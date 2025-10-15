@@ -63,14 +63,14 @@
     <!-- Prev / Next Buttons -->
     <button id="brandPrev"
             onclick="navigateBrand(-1)"
-            class="btn-light position-absolute top-50 start-0 translate-middle-y shadow-sm"
+            class="position-absolute top-50 start-0 translate-middle-y shadow-sm brand-nav-btn"
             style="border-radius:50%; width:48px; height:48px; z-index:1056;">
       <i class="icon-line-arrow-left"></i>
     </button>
 
     <button id="brandNext"
             onclick="navigateBrand(1)"
-            class="btn-light position-absolute top-50 end-0 translate-middle-y shadow-sm"
+            class="position-absolute top-50 end-0 translate-middle-y shadow-sm brand-nav-btn"
             style="border-radius:50%; width:48px; height:48px; z-index:1056;">
       <i class="icon-line-arrow-right"></i>
     </button>
@@ -242,7 +242,7 @@ function unlockBodyScroll() {
 	
 	// ✅ 제품 카드 렌더링 (기존 구조 그대로 유지)
 	productList.innerHTML = products.map(p => `
-	  <div class="col-lg-3 col-md-4 col-6 mb-4 brand-product-item" data-category="${p.bigSortName}">
+	  <div class="col-lg-3 col-md-4 col-6 brand-product-item" data-category="${p.bigSortName}">
 	    <div class="product-card entry">
 	      <a href="/brandProductDetail/${p.id}" class="text-decoration-none text-dark d-block h-100">
 	        <div class="entry-image position-relative overflow-hidden">
@@ -250,7 +250,7 @@ function unlockBodyScroll() {
 	        </div>
 	        <div class="entry-content mt-3">
 	          <h4 class="entry-title fw-semibold text-truncate">${p.subject}</h4>
-	          <p class="small text-muted mb-0 text-truncate">${p.content || ''}</p>
+	          <p class="small text-muted mb-0">${p.content || ''}</p>
 	        </div>
 	      </a>
 	    </div>
@@ -263,14 +263,36 @@ function unlockBodyScroll() {
 	    b.classList.toggle('active', b.dataset.category === category);
 	  });
 	
-	  document.querySelectorAll('.brand-product-item').forEach(item => {
+	  const items = document.querySelectorAll('.brand-product-item');
+	  let visibleCount = 0;
+	
+	  items.forEach(item => {
 	    if (category === 'ALL' || category === '전체') {
 	      item.style.display = 'block';
+	      visibleCount++;
+	    } else if (item.dataset.category === category) {
+	      item.style.display = 'block';
+	      visibleCount++;
 	    } else {
-	      item.style.display = (item.dataset.category === category) ? 'block' : 'none';
+	      item.style.display = 'none';
 	    }
 	  });
+	
+	  // ✅ 제품이 없는 경우 "등록된 제품이 없습니다." 메시지 출력
+	  const existingMsg = document.getElementById('noProductMsg');
+	  if (visibleCount === 0) {
+	    if (!existingMsg) {
+	      const msg = document.createElement('p');
+	      msg.id = 'noProductMsg';
+	      msg.className = 'text-muted text-center my-4';
+	      msg.textContent = '등록된 제품이 없습니다.';
+	      productList.appendChild(msg);
+	    }
+	  } else {
+	    if (existingMsg) existingMsg.remove();
+	  }
 	};
+
 	
 	// ✅ 카테고리 버튼 렌더링 (ALL 버튼 항상 첫 번째)
 	categoryBox.innerHTML = `

@@ -94,7 +94,11 @@
 									                th:each="pb : ${partnerBrands}"
 												    th:attr="data-id=${'brand-' + pb.id}, data-parent='partner', 
 												             data-name=${pb.name}, data-desc=${pb.desc}, data-image=${pb.imageRoad}">
-												  <a class="menu-link" href="javascript:void(0);" onclick="window.location.href='/brands'">
+												  <a class="menu-link brand-link" href="javascript:void(0);" 
+													   th:data-id="${pb.id}"
+													   th:data-name="${pb.name}"
+													   th:data-page="${pageType}"
+													   th:data-url="@{'/brand/' + ${pb.id} + '/products'}">
 												    <div th:text="${pb.name}">Brand Name</div>
 												  </a>
 																			
@@ -242,7 +246,11 @@
 						            th:each="pb : ${partnerBrands}"
 								    th:attr="data-id=${'brand-' + pb.id}, data-parent='partner', 
 								             data-name=${pb.name}, data-desc=${pb.desc}, data-image=${pb.imageRoad}">
-								  <a class="menu-link" href="javascript:void(0);" onclick="window.location.href='/brands'">
+								  <a class="menu-link brand-link" href="javascript:void(0);" 
+								  					   th:data-id="${pb.id}"
+													   th:data-name="${pb.name}"
+													   th:data-page="${pageType}"
+													   th:data-url="@{'/brand/' + ${pb.id} + '/products'}">
 						            <div th:text="${pb.name}">Partner Brand</div>
 						          </a>
 						        </li>
@@ -432,6 +440,58 @@
 </div>
 
 
+
+
+<!-- 브랜드카테고리 -->
+<div class="modal fade" id="brandGlobalModal" tabindex="-1">
+<div class="global__brandModal modal-xl modal-dialog-centered">
+  
+  
+    
+   <button id="brandGlobalPrev"
+           onclick="navigateBrandModal(-1)"
+           class="position-absolute top-50 start-0 translate-middle-y shadow-sm brand-nav-btn prev"
+           style="border-radius:50%; width:48px; height:48px; z-index:1056;">
+          <i class="bi bi-chevron-left"></i>
+   </button>
+
+   <button id="brandGlobalNext"
+           onclick="navigateBrandModal(1)"
+           class="position-absolute top-50 end-0 translate-middle-y shadow-sm brand-nav-btn next"
+           style="border-radius:50%; width:48px; height:48px; z-index:1056;">
+     <i class="bi bi-chevron-right"></i>
+   </button>
+   
+   
+  <div class="modal-content border-0 rounded-4"
+  		style="max-height:90vh; overflow-y:auto; overflow-x:hidden; position:relative;">
+    
+    
+    <div class="brand-modal-header d-flex align-items-center justify-content-between px-4 pt-3 pb-2"
+    style="position:sticky; top:0; background:#fff; z-index:1055; border-bottom:1px solid #eee;">
+      <h3 id="brandGlobalModalLabel" style="margin:0; font-weight:700; font-size:1.4rem;"></h3>
+      <button id="brandGlobalModalClose" style="background:none; border:0; font-size:1.5rem; cursor:pointer;">&times;</button>
+    </div>
+    
+    <div class="modal-body position-relative pt-3 px-4 pb-5">
+      <div class="row g-0 align-items-center mb-4">
+        <div class="col-md-5 text-center p-0 border border-1 rounded-2">
+          <img id="brandGlobalModalLogo" src="" alt="Brand Logo"
+               style="width:100%; height:auto; object-fit:contain; border-radius:10px;">
+        </div>
+        <div class="col-md-7 ps-md-5 ps-4">
+          <p id="brandGlobalModalDesc"></p>
+        </div>
+      </div>
+      <div id="brandGlobalCategoryList" class="mb-4 brand-category-bar"></div>
+      <div id="brandGlobalModalProducts" class="row g-6"></div>
+    </div>
+    
+  </div>
+</div>
+</div>
+
+
 <script>
 /* 스크롤 고정: 위치 보존(Fixed Body) + 중첩 모달 안전 */
 (() => {
@@ -600,6 +660,226 @@ document.querySelectorAll('.product-mega-wrap').forEach(el => {
 	  el.style.transform = "translateX(-50%)";
 	});
 </script> -->
+
+
+<script>
+
+let currentIndex = 0;
+
+function navigateBrandModal(direction) {
+  const brandLinks = document.querySelectorAll('.brand-link');
+  if (!brandLinks.length) return;
+
+  currentIndex += direction;
+  if (currentIndex < 0) currentIndex = brandLinks.length - 1;
+  if (currentIndex >= brandLinks.length) currentIndex = 0;
+
+  brandLinks[currentIndex].click();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ====== 스크롤 잠금 유틸 ======
+  let scrollPosition = 0;
+  function lockBodyScroll() {
+    scrollPosition = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollPosition}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.overflowY = 'hidden';
+    document.body.style.width = '100%';
+  }
+  function unlockBodyScroll() {
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.overflowY = '';
+    document.body.style.width = '';
+    window.scrollTo(0, scrollPosition);
+  }
+
+  // ====== 요소 선택 ======
+  const modal       = document.getElementById('brandGlobalModal');
+  const modalTitle  = document.getElementById('brandGlobalModalLabel');
+  const modalLogo   = document.getElementById('brandGlobalModalLogo');
+  const modalDesc   = document.getElementById('brandGlobalModalDesc');
+  const modalClose  = document.getElementById('brandGlobalModalClose');
+  const categoryBox = document.getElementById('brandGlobalCategoryList');
+  const productList = document.getElementById('brandGlobalModalProducts');
+  const prevBtn     = document.getElementById('brandGlobalPrev');
+  const nextBtn     = document.getElementById('brandGlobalNext');
+  const brandLinks  = document.querySelectorAll('.brand-link');
+
+  // ====== 모달 열기/닫기 ======
+  const openModal = () => {
+    lockBodyScroll();
+    modal.style.display = 'flex';
+    modal.style.opacity = '1';
+    modal.style.pointerEvents = 'auto';
+    modal.setAttribute('aria-hidden', 'false');
+  };
+
+  const closeModal = () => {
+    unlockBodyScroll();
+    modal.style.opacity = '0';
+    modal.style.pointerEvents = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    setTimeout(() => (modal.style.display = 'none'), 200);
+  };
+
+  // ESC 키 닫기
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  // 오버레이 클릭 닫기
+  modal.addEventListener('click', e => {
+    if (e.target === modal) closeModal();
+  });
+
+  // 닫기 버튼
+  modalClose.addEventListener('click', closeModal);
+
+  // ====== 브랜드 링크 클릭 ======
+  brandLinks.forEach(link => {
+    link.addEventListener('click', async e => {
+      e.preventDefault();
+
+      const brandId = link.dataset.id;
+      const brandName = link.dataset.name || '브랜드명 없음';
+      const brandDesc = (link.dataset.desc && link.dataset.desc.trim() !== '')
+        ? link.dataset.desc
+        : '브랜드 소개가 준비 중입니다.';
+      const brandImg = link.dataset.image || '/front/images/logo.png';
+
+      // 기본 정보 먼저 채우기
+      modalTitle.textContent = brandName;
+      modalLogo.src = brandImg;
+      modalDesc.textContent = brandDesc;
+      productList.innerHTML = `<p class="text-muted text-center my-4">Loading...</p>`;
+      categoryBox.innerHTML = '';
+
+      openModal();
+
+      try {
+        const res = await fetch(`/brand/${brandId}/products`);
+        const data = await res.json();
+
+        // 브랜드 정보 표시
+        modalTitle.textContent = data.brandName || brandName;
+        modalLogo.src = data.brandLogo || brandImg;
+        modalDesc.innerHTML = (data.brandDesc && data.brandDesc.trim() !== '')
+          ? data.brandDesc
+          : '브랜드 소개가 준비 중입니다.';
+
+        // 카테고리 및 제품 렌더링
+        const categories = data.categories || [];
+        const products = categories.flatMap(c =>
+          (c.products || []).map(p => ({
+            ...p,
+            bigSortName: c.bigSortName || '기타'
+          }))
+        );
+
+        if (products.length === 0) {
+          categoryBox.innerHTML = '';
+          productList.innerHTML = `<p class="text-muted text-center my-4">등록된 제품이 없습니다.</p>`;
+          return;
+        }
+
+        // ✅ 카테고리 버튼 생성
+        const categoryNames = [...new Set(categories.map(c => c.bigSortName || '기타'))];
+        categoryBox.innerHTML = `
+        	  <div id="brandGlobalCategoryList">
+        	    ${['ALL', ...categoryNames].map((c, i, arr) => `
+        	      <button class="category-item ${c === 'ALL' ? 'active' : ''}"
+        	        data-category="${c}">
+        	        ${c}
+        	      </button>
+        	    `).join('')}
+        	  </div>
+        	`;
+
+        	// ✅ 버튼 동작 연결
+        	const buttons = categoryBox.querySelectorAll('.category-item');
+        	const items = document.querySelectorAll('.brand-product-item');
+
+        // ✅ 제품 카드 렌더링
+        productList.innerHTML = products.map(p => `
+          <div class="col-lg-3 col-md-4 col-6 mb-4 brand-product-item" data-category="${p.bigSortName}" style="width:200px;">
+            <div class="product-card entry">
+              <a href="/brandProductDetail/${p.id}" class="text-decoration-none text-dark d-block h-100">
+                <div class="entry-image position-relative overflow-hidden" style="border-radius:12px; overflow:hidden;">
+                  <img src="${p.firstImageRoad}" alt="${p.subject}" class="img-fluid w-100" style="object-fit:cover;">
+                </div>
+                <div class="entry-content mt-2">
+                  <h4 class="entry-title fw-semibold text-truncate" style="font-size:1rem;">${p.subject}</h4>
+                  <p class="small text-muted mb-0">${p.content || ''}</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        `).join('');
+
+        // ✅ 필터 기능
+        const filterProducts = (category) => {
+		  const buttons = document.querySelectorAll('#brandGlobalCategoryList .category-item');
+		  const items = document.querySelectorAll('.brand-product-item');
+		
+		  // 🔹 모든 버튼에서 active 제거
+		  buttons.forEach(btn => btn.classList.remove('active'));
+		
+		  // 🔹 클릭된 버튼에 active 추가
+		  const activeBtn = Array.from(buttons).find(b => b.dataset.category === category);
+		  if (activeBtn) activeBtn.classList.add('active');
+		
+		  // 🔹 제품 표시/비표시
+		  let visibleCount = 0;
+		  items.forEach(item => {
+		    const match = (category === 'ALL' || category === '전체') ||
+		      (item.dataset.category && item.dataset.category === category);
+		    item.style.display = match ? 'block' : 'none';
+		    if (match) visibleCount++;
+		  });
+		
+		  // 🔹 제품 없음 문구 처리
+		  let msg = document.querySelector('#noProductMessage');
+		  if (visibleCount === 0) {
+		    if (!msg) {
+		      msg = document.createElement('p');
+		      msg.id = 'noProductMessage';
+		      msg.className = 'text-muted text-center my-4';
+		      msg.textContent = '등록된 제품이 없습니다.';
+		      productList.appendChild(msg);
+		    }
+		  } else if (msg) {
+		    msg.remove();
+		  }
+		};
+
+        
+
+        // ✅ 클릭 이벤트 연결
+        document.querySelectorAll('#brandGlobalCategoryList .category-item').forEach(btn => {
+          btn.addEventListener('click', () => filterProducts(btn.dataset.category));
+        });
+
+        // ✅ ALL 기본 선택
+        setTimeout(() => filterProducts('ALL'), 0);
+
+      } catch (err) {
+        console.error('브랜드 모달 로드 오류:', err);
+        productList.innerHTML = `<p class="text-danger text-center my-4">제품 정보를 불러오지 못했습니다.</p>`;
+      }
+    });
+  });
+
+});
+</script>
+
+
 
 </th:block>
 
