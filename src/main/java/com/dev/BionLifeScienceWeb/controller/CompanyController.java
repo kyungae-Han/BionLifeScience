@@ -21,4 +21,17 @@ public class CompanyController {
         return "front/company/privacy-policy";
     }
     
+    
+    @GetMapping("/privacy")
+    public String privacy() {
+        return "front/company/privacy";
+    }
+
+    @GetMapping("/privacy/iframe")
+    public String privacyIframe(HttpServletResponse res) {
+        res.setHeader("X-Frame-Options", "SAMEORIGIN");
+        res.setHeader("Content-Security-Policy", "frame-ancestors 'self'");
+        return "front/company/privacy";
+    }
+    
 }

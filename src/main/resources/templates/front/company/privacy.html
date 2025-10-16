@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/front/common :: headSrc('이용약관')}">
+</head>
+<link rel="stylesheet" th:href="@{/front/css/bootstrap.css}">
+
+<style>
+/* =========================================================
+   이용약관 / 개인정보처리방침 공통 스타일
+   (bio-policy-wrap 전용)
+========================================================= */
+body {
+  font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+  font-size: 15px;
+  color: #222;
+  line-height: 1.8;
+  letter-spacing: -0.3px;
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 제목 */
+body h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 32px 0 12px;
+  color: #111;
+  letter-spacing: -0.5px;
+  border-left: 4px solid var(--bs-orange);
+  padding-left: 10px;
+}
+
+/* 표 기본 */
+body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+}
+body thead { background: #f9f9f9; }
+body th,
+body td {
+  border: 1px solid #e1e1e1;
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 14px;
+  color: #333;
+}
+
+/* 강조 */
+.bold { font-weight: 600; color: #000; }
+
+/* 약관 영역 */
+.policy-box {
+  background: #fff;
+  padding: 32px 40px;
+  margin: 40px auto;
+  max-width: 900px;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+  overflow-y: auto;
+  max-height: calc(100vh - 120px);
+  border: 1px solid #f0f0f0;
+}
+
+.policy-box h3 {
+  margin-top: 28px;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+}
+
+.policy-box p {
+  margin: 0 0 10px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #444;
+  text-align: justify;
+}
+
+.policy-box p span {
+  display: block;
+  padding-left: 20px;
+  color: #555;
+  font-size: 14px;
+}
+
+/* 하단 정보 */
+.policy-list-item {
+  width: 100%;
+  margin: 32px auto 0;
+  background: #f8f9fb;
+  border-radius: 12px;
+  border: 1px solid #e1e4e8;
+}
+.policy-list-item p {
+  padding: 24px 32px;
+  font-size: 15px;
+  color: #333;
+  margin: 0;
+}
+.flex-body {
+  width: 100%;
+  padding: 16px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  text-align: left;
+  background: #fafbfc;
+  border-radius: 8px;
+}
+.flex-body ol {
+  margin: 0;
+  padding: 0 24px 0 0;
+  list-style: decimal;
+  font-size: 14px;
+  color: #444;
+}
+.flex-body ol li {
+  line-height: 1.8;
+  margin-bottom: 2px;
+}
+
+.policy-box li p {
+  margin-top: 2px !important;
+  line-height: 1.6;
+}
+
+/* 스크롤바 */
+:root { scrollbar-width: thin; scrollbar-color: rgba(0,0,0,.25) transparent; }
+*::-webkit-scrollbar       { width: 6px; height: 6px; }
+*::-webkit-scrollbar-thumb { background: rgba(0,0,0,.25); border-radius: 6px; }
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* 반응형 보정 */
+@media (max-width: 768px) {
+  .policy-box {
+    padding: 24px 20px;
+    border-radius: 8px;
+  }
+  .policy-box h3 { font-size: 18px; }
+  .policy-box p { font-size: 14px; }
+}
+
+
+</style>
+<body>
+		<main id="main">
+    <section class="bio-policy-wrap">
+      <div class="container">
+        <div class="policy-content">
+
+          <h3>제1조 (목적)</h3>
+          <p>
+            본 약관은 ㈜바이온라이프사이언스(이하 "회사"라 합니다)가 운영하는 웹사이트에서 제공하는 정보 및 서비스의 이용과 관련하여
+            회사와 이용자 간의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.
+          </p>
+
+          <h3>제2조 (약관의 효력 및 변경)</h3>
+          <ol>
+            <li>본 약관은 웹사이트에 게시함으로써 효력이 발생합니다.</li>
+            <li>회사는 관련 법령을 위반하지 않는 범위에서 본 약관을 변경할 수 있습니다.</li>
+            <li>변경된 약관은 웹사이트에 공지한 날로부터 효력이 발생합니다.</li>
+          </ol>
+
+          <h3>제3조 (서비스의 제공 및 변경)</h3>
+          <ol>
+            <li class="mb-3">회사는 다음과 같은 서비스를 제공합니다.
+                <p class="mt-1" style="margin-bottom:0;">① 자사 및 타사 제품, 브랜드 관련 정보 제공</p>
+                <p style="margin-bottom:0;">② 공지사항 및 회사 홍보 콘텐츠 제공</p>
+                <p style="margin-bottom:0;">③ 기타 회사가 정하는 서비스</p>
+            </li>
+            <li>회사는 기술적 또는 운영상의 사유로 서비스의 내용을 변경·중단할 수 있으며, 필요한 경우 사전에 공지합니다.</li>
+          </ol>
+
+          <h3>제4조 (지식재산권 및 저작권)</h3>
+          <ol>
+            <li>웹사이트에 게재된 모든 콘텐츠(텍스트, 이미지, 영상, 로고 등)의 저작권 및 지식재산권은 회사 또는 정당한 권리자에게 귀속됩니다.</li>
+            <li>이용자는 회사의 사전 서면 동의 없이 콘텐츠를 복제, 배포, 전송, 수정, 판매할 수 없습니다.</li>
+          </ol>
+
+          <h3>제5조 (면책조항)</h3>
+          <ol>
+            <li>회사는 천재지변, 시스템 장애, 제3자의 불법행위 등 불가항력으로 인한 서비스 중단에 대해 책임을 지지 않습니다.</li>
+            <li>이용자가 웹사이트에 게재된 정보를 활용하여 발생한 손해에 대하여 회사는 책임을 지지 않습니다.</li>
+            <li>회사는 웹사이트에 게재된 외부 링크의 내용, 광고, 거래 등에 대해 일체의 책임을 지지 않습니다.</li>
+          </ol>
+
+          <h3>제6조 (서비스 이용의 제한)</h3>
+          <p>
+            회사는 이용자가 본 약관 및 관련 법령을 위반하는 경우, 사전 통보 없이 서비스 이용을 제한할 수 있습니다.
+          </p>
+
+          <h3>제7조 (준거법 및 관할법원)</h3>
+          <p>
+            본 약관의 해석 및 분쟁에 관하여는 대한민국 법률을 적용하며, 
+            서비스 이용과 관련하여 회사와 이용자 간에 발생한 분쟁은 서울중앙지방법원을 관할 법원으로 합니다.
+          </p>
+
+          <h3>부칙</h3>
+          <p>본 약관은 2025년 11월 01일부터 시행합니다.</p>
+
+        </div>
+      </div>
+    </section>
+  </main>
+</body>	
+</html>		
