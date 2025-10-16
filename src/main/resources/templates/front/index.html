@@ -8,67 +8,79 @@
  <div id="wrapper" class="clearfix">
   <th:block th:replace="~{/fragments/front/common :: headerSrc(false, ${menuList})}"></th:block>
   
-	<!--메인배-->
+	<!--메인배너-->
   <section id="slider" class="slider-element slider-parallax swiper_wrapper vh-75">
-   <div class="slider-inner">
+  <div class="slider-inner">
 
     <div class="swiper-container swiper-parent">
-     <div class="swiper-wrapper" th:if="${ba != null}">
-      <div class="swiper-slide" th:each="b:${ba}">
-       <div class="container">
-        <div class="slider-caption dark">
-         <div data-animate="fadeInUp" data-delay="200">
-         	<h1 th:utext="${b.subject}"></h1>
-         	<p th:utext="${b.content}"></p>
-         </div>
+      <div class="swiper-wrapper" th:if="${ba != null}">
+
+        <!-- 슬라이드 시작 -->
+        <div class="swiper-slide" th:each="b : ${ba}">
+
+          <!-- 📌 배경(데스크톱용) -->
+          <div class="swiper-slide-bg is-desktop" th:if="${!#strings.isEmpty(b.webroad)}">
+
+            <!-- 비디오(.mp4) -->
+            <video th:if="${#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4')}"
+                   autoplay muted loop playsinline>
+              <source th:src="@{${b.webroad}}" type="video/mp4" />
+            </video>
+
+            <!-- 이미지(그 외) -->
+            <div th:if="${!(#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4'))}"
+            	 class="bg-inner"
+                 th:style="'background-image:url(' + @{${b.webroad}(v=${#dates.createNow().time})} + ');'">
+            </div>
+          </div>
+
+          <!-- 📌 배경(모바일용) -->
+          <div class="swiper-slide-bg is-mobile" th:if="${!#strings.isEmpty(b.mobileroad)}">
+
+            <!-- 비디오(.mp4) -->
+            <video th:if="${#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4')}"
+                   autoplay muted loop playsinline>
+              <source th:src="@{${b.mobileroad}}" type="video/mp4" />
+            </video>
+
+            <!-- 이미지(그 외) -->
+            <div th:if="${!(#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4'))}"
+            	 class="bg-inner"
+                 th:style="'background-image:url(' + @{${b.mobileroad}(v=${#dates.createNow().time})} + ');'">
+            </div>
+          </div>
+
+          <!-- 📌 텍스트 콘텐츠 -->
+          <div class="container">
+            <div class="slider-caption">
+              <div data-animate="fadeInUp" data-delay="200">
+                <h1 th:utext="${b.subject}"></h1>
+                <p th:utext="${b.content}"></p>
+              </div>
+            </div>
+          </div>
+
         </div>
-       </div>
-       
-       
-       <!-- 데스크톱용 -->
-       <div class="swiper-slide-bg is-desktop" th:if="${!#strings.isEmpty(b.webroad)}">
+        <!-- 슬라이드 끝 -->
 
-        <!-- 비디오(.mp4) -->
-        <video th:if="${#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4')}" autoplay muted loop playsinline>
-         <source th:src="@{${b.webroad}}" type="video/mp4" />
-        </video>
-
-        <!-- 이미지(그 외) -->
-        <div th:if="${!(#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4'))}"
-         th:style="'background-image:url(' + @{${b.webroad}} + ');'"></div>
-       </div>
-
-       <!-- 모바일용 -->
-       <!-- /* -->
-       <div class="swiper-slide-bg is-mobile" th:if="${!#strings.isEmpty(b.mobileroad)}">
-        <!-- */ -->
-        <!-- 비디오(.mp4) -->
-        <video th:if="${#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4')}" autoplay muted loop playsinline>
-         <source th:src="@{${b.mobileroad}}" type="video/mp4" />
-        </video>
-
-        <!-- 이미지(그 외) -->
-        <div th:if="${!(#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4'))}"
-         th:style="'background-image:url(' + @{${b.mobileroad}} + ');'"></div>
-       </div>
       </div>
-     </div>
-     <div class="slider-arrow-left">
-      <i class="icon-angle-left"></i>
-     </div>
-     <div class="slider-arrow-right">
-      <i class="icon-angle-right"></i>
-     </div>
-     <div class="slide-number">
-      <div class="slide-number-current"></div>
-      <span></span>
-      <div class="slide-number-total"></div>
-     </div>
-     <div class="swiper-pagination"></div>
+
+      <!-- Swiper 내비게이션 -->
+      <div class="slider-arrow-left"><i class="icon-angle-left"></i></div>
+      <div class="slider-arrow-right"><i class="icon-angle-right"></i></div>
+
+      <div class="slide-number">
+        <div class="slide-number-current"></div>
+        <span></span>
+        <div class="slide-number-total"></div>
+      </div>
+
+      <div class="swiper-pagination"></div>
     </div>
 
-   </div>
-  </section>
+  </div>
+</section>
+
   
 
   <section id="content">
@@ -191,16 +203,16 @@
 	  <div class="news-track is-active" id="noticeTrack">
 	  	<div class="news-card" th:each="i:${notice}">
 	  		<a th:href="@{/notice#faq-} + ${i.id}">
-	  		<p class="meta notice"><i class="icon-time"></i> 공지일 : [[${i.date}]]</p>
-	  		<h3 class="headline" th:text="${i.subject}">
-	            이곳은 공지사항의 제목이 들어가는 곳 입니다..
-	           </h3>
-	  		<div class="card-link">
-	           <p># 공지사항주제 : [[${i.noticeSubject.text}]]</p>
-	  		</div>
+		  		<p class="meta notice"><i class="icon-time"></i> 공지일 : [[${i.date}]]</p>
+		  		<h3 class="headline" th:text="${i.subject}">
+		            이곳은 공지사항의 제목이 들어가는 곳 입니다..
+		           </h3>
+		  		<div class="card-link">
+		           <p># 공지사항주제 : [[${i.noticeSubject.text}]]</p>
+		  		</div>
 	  		</a>
 	  	</div>
-	     </div>
+     </div>
 
 	     <!-- 자료(카탈로그) -->
 	     <div class="news-track" id="refsTrack" hidden>
@@ -304,6 +316,27 @@
  
  <script th:src="@{/front/js/countdown-timers/flipclock.js}"></script>
  <script type="text/javascript">
+ 
+	 $('#oc-clients').owlCarousel({
+		  loop: true,
+		  nav: true,
+		  dots: false,
+		  autoplay: true,
+		  autoplayTimeout: 3000,
+		  smartSpeed: 600,
+		  margin: 30,
+		  stagePadding: 20,
+		  responsive: {
+			    0:   { items: 2, margin: 12 },
+			    480: { items: 3, margin: 16 },
+			    768: { items: 4, margin: 20 },
+			    992: { items: 5, margin: 24 },
+			    1200:{ items: 6, margin: 30 }
+			  }
+		});
+
+
+ 
 		var clock;
 
 		$(document).ready(function() {
@@ -374,6 +407,7 @@
 </script>
 
 <script>
+
 (function(){
   const root = document.getElementById('newsSection');
   if (!root) return;
@@ -525,6 +559,21 @@
     paused = true; setPaused(true);
   }
 })();
+
+
+function adjustBannerView() {
+	  const isMobile = window.innerWidth <= 768;
+	  document.querySelectorAll('.swiper-slide-bg.is-mobile').forEach(el => {
+	    el.style.display = isMobile ? 'block' : 'none';
+	  });
+	  document.querySelectorAll('.swiper-slide-bg.is-desktop').forEach(el => {
+	    el.style.display = isMobile ? 'none' : 'block';
+	  });
+	  if (window.mySwiper) setTimeout(() => window.mySwiper.update(), 300);
+	}
+	window.addEventListener('load', adjustBannerView);
+	window.addEventListener('resize', adjustBannerView);
+
 </script>
 
 

@@ -108,5 +108,61 @@ public class BannerService {
 	    bannerRepository.save(banner);
 	    return "success";
 	}
+	
+	
+	public String bannerUpdate(Long id, MultipartFile webFile, MultipartFile mobileFile, Banner banner) throws IOException {
+	    Banner existing = bannerRepository.findById(id)
+	            .orElseThrow(() -> new IllegalArgumentException("배너를 찾을 수 없습니다."));
+
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    String current_date = sdf.format(new Date());
+	    String path = commonPath + "/banner/" + current_date;
+	    String road = "/administration/banner/" + current_date;
+
+	    String absolutePath = "";
+	    if ("local".equals(env)) absolutePath = new File("").getAbsolutePath() + "/";
+
+	    File dir = ("local".equals(env)) ? new File(absolutePath + path) : new File(path);
+	    if (!dir.exists()) dir.mkdirs();
+
+	    Random random = new Random();
+	    String randomStr = random.ints(48, 122)
+	            .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+	            .limit(10)
+	            .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+	            .toString();
+
+	    // WEB
+	    if (webFile != null && !webFile.isEmpty()) {
+	        String fileName = webFile.getOriginalFilename();
+	        String savedName = randomStr + "_web_" + fileName;
+	        String savePath = ("local".equals(env) ? absolutePath + path : path) + "/" + savedName;
+
+	        webFile.transferTo(new File(savePath));
+	        existing.setWebname(fileName);
+	        existing.setWebpath(savePath);
+	        existing.setWebroad(road + "/" + savedName);
+	    }
+
+	    // MOBILE
+	    if (mobileFile != null && !mobileFile.isEmpty()) {
+	        String fileName = mobileFile.getOriginalFilename();
+	        String savedName = randomStr + "_mobile_" + fileName;
+	        String savePath = ("local".equals(env) ? absolutePath + path : path) + "/" + savedName;
+
+	        mobileFile.transferTo(new File(savePath));
+	        existing.setMobilename(fileName);
+	        existing.setMobilepath(savePath);
+	        existing.setMobileroad(road + "/" + savedName);
+	    }
+
+	    // 텍스트 수정
+	    existing.setSubject(banner.getSubject());
+	    existing.setContent(banner.getContent());
+
+	    bannerRepository.save(existing);
+	    return "updated";
+	}
+
 
 }

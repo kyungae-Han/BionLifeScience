@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,11 +40,25 @@ public class SiteManagerController {
 	public String bannerManager(
 			Model model
 			) {
+		
+		
+		List<Banner> banners = bannerRepository.findAll();
+
+	    for (Banner b : banners) {
+	        if (b.getWebroad() != null) {
+	            b.setWebroad(b.getWebroad().replace("/administration/", "/upload/"));
+	        }
+	        if (b.getMobileroad() != null) {
+	            b.setMobileroad(b.getMobileroad().replace("/administration/", "/upload/"));
+	        }
+	    }
+		
 		model.addAttribute("banners", bannerRepository.findAll());
+		model.addAttribute("timestamp", System.currentTimeMillis());
 		return "admin/bannerManager";
 	}
 	
-	@RequestMapping(value = "/bannerInsert", method = {RequestMethod.GET, RequestMethod.POST})
+	@PostMapping("/bannerInsert")
 	@ResponseBody
 	public String bannerInsert(
 	    @RequestParam("webFile") MultipartFile webFile,
@@ -61,6 +76,29 @@ public class SiteManagerController {
 	    String script = "<script>alert('" + msg + "');location.href='/admin/bannerManager'</script>";
 	    return script;
 	}
+	
+	
+	@GetMapping("/getBanner/{id}")
+	@ResponseBody
+	public Banner getBanner(@PathVariable Long id) {
+	    return bannerRepository.findById(id)
+	            .orElseThrow(() -> new IllegalArgumentException("배너를 찾을 수 없습니다."));
+	}
+	
+	
+	@PostMapping("/bannerUpdate/{id}")
+	@ResponseBody
+	public String bannerUpdate(
+	        @RequestParam("id") Long id,
+	        @RequestParam(value = "webFile", required = false) MultipartFile webFile,
+	        @RequestParam(value = "mobileFile", required = false) MultipartFile mobileFile,
+	        Banner banner
+	) throws IOException {
+	    bannerService.bannerUpdate(id, webFile, mobileFile, banner);
+	    return "success";
+	}
+
+	
 	
 	@RequestMapping(value = "/deleteBanner/{id}",
 		    method = {RequestMethod.GET, RequestMethod.POST}

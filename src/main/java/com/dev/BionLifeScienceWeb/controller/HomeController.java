@@ -85,7 +85,6 @@ public class HomeController {
 	private final BrandSmallSortRepository brandSmallSortRepository;
 	private final BrandProductRepository brandProductRepository;
 	private final CertificationRepository certificationRepository;
-	private final CompanyEmailRepository companyEmailRepository;
 	
 	
 	@ResponseStatus(value=HttpStatus.NOT_FOUND, reason="잘못된 접근입니다.")
@@ -98,16 +97,16 @@ public class HomeController {
 		 Model model
 			) {
 		
-		List<Banner> b = bannerRepository.findAll();
-		if(b.size()<1) {
-			Banner ba = new Banner();
-			ba.setMobileroad("/front/images/slider/swiper/1.jpg");
-			ba.setWebroad("/front/images/slider/swiper/1.jpg");
-			ba.setSubject("WELCOME to Bion Life Science");
-			ba.setContent("You'll be surprised to see the Final\r\n" + 
-					"										Results of your Creation &amp; would crave for more.");
-			b.add(ba);
-		}
+		List<Banner> banners = bannerRepository.findAll();
+		
+		for (Banner b : banners) {
+	        if (b.getWebroad() != null) {
+	            b.setWebroad(b.getWebroad().replace("/administration/", "/upload/"));
+	        }
+	        if (b.getMobileroad() != null) {
+	            b.setMobileroad(b.getMobileroad().replace("/administration/", "/upload/"));
+	        }
+	    }
 		
 		List<Event> ev = eventRepository.findAll();
 		if(ev.size()<1) {
@@ -131,7 +130,7 @@ public class HomeController {
 		model.addAttribute("notice", notice);
 		model.addAttribute("products", pr);
 		model.addAttribute("ev", ev.get(0));
-		model.addAttribute("ba", b);
+		model.addAttribute("ba", banners);
 		
 		return "front/index";
 	}

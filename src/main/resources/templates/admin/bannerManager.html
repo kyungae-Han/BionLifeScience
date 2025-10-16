@@ -103,9 +103,14 @@
 										<li th:each="b:${banners}">
 											<div class="task-title">
 												<div class="admin-banner-wrap">
-													<h3 th:text="${b.subject}">제목영역</h3>
-													<p th:text="${b.content}">컨텐츠 영역</p>
+													<h3 th:utext="${b.subject}">제목영역</h3>
+													<p th:utext="${b.content}">컨텐츠 영역</p>
 													<div class="pull-right hidden-phone">
+														
+														<button class="btn btn-primary btn-xs" th:onclick="|openBannerEditModal('${b.id}')|">
+														    <i class="fa fa-pencil"></i>
+														  </button>
+													
 														<button class="btn btn-danger btn-xs" th:onclick="|deleteBanner('${b.id}')|">
 															<i class="fa fa-trash-o "></i>
 														</button>
@@ -116,20 +121,21 @@
 													<img width="150px" th:src="${b.mobileroad}">
 												</div> -->
 												
-												
-												<div class="admin-banner-image row" style="display:flex; gap:12px; align-items:flex-start;">
+												<div class="admin-banner-image row" style="display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap;">
 												  <!-- Web -->
 												  <div>
 												    <!-- 이미지 -->
-												    <img
-												      th:if="${!#strings.isEmpty(b.webroad) and (
+												    <img th:if="${!#strings.isEmpty(b.webroad) and (
 												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.jpg') or
 												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.jpeg') or
 												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.png') or
 												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.gif') or
 												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.webp')
 												              )}"
-												      th:src="${b.webroad}" width="150" alt="web banner" />
+												     th:src="${b.webroad + '?v=' + timestamp}"
+												     width="150"
+												     alt="web banner"
+												     style="border-radius:6px;display:block;height:auto;object-fit:cover;background:#f8f8f8;" />
 												
 												    <!-- 동영상 -->
 												    <video
@@ -137,35 +143,53 @@
 												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4') or
 												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.mov')
 												              )}"
-												      width="150" playsinline muted controls preload="metadata"
-												      style="display:block;height:auto;">
-												      <source th:src="${b.webroad}" type="video/mp4"/>
+												      width="150"
+												      autoplay
+												      loop
+												      muted
+												      playsinline
+												      preload="auto"
+												      poster="/administration/images/video-placeholder.jpg"
+												      style="display:block;height:auto;border-radius:6px;overflow:hidden;">
+												      <source th:src="${b.webroad}" type="video/mp4" />
 												    </video>
 												  </div>
 												
 												  <!-- Mobile -->
 												  <div>
-												    <img
-												      th:if="${!#strings.isEmpty(b.mobileroad) and (
+												    <!-- 이미지 -->
+												    <img th:if="${!#strings.isEmpty(b.mobileroad) and (
 												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.jpg') or
 												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.jpeg') or
 												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.png') or
 												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.gif') or
 												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.webp')
 												              )}"
-												      th:src="${b.mobileroad}" width="150" alt="mobile banner" />
+												     th:src="${b.mobileroad + '?v=' + timestamp}"
+												     width="150"
+												     alt="mobile banner"
+												     style="border-radius:6px;display:block;height:auto;object-fit:cover;background:#f8f8f8;" />
 												
+												    <!-- 동영상 -->
 												    <video
 												      th:if="${!#strings.isEmpty(b.mobileroad) and (
 												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4') or
 												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mov')
 												              )}"
-												      width="150" playsinline muted controls preload="metadata"
-												      style="display:block;height:auto;">
-												      <source th:src="${b.mobileroad}" type="video/mp4"/>
+												      width="150"
+												      autoplay
+												      loop
+												      muted
+												      playsinline
+												      preload="auto"
+												      poster="/administration/images/video-placeholder.jpg"
+												      style="display:block;height:auto;border-radius:6px;overflow:hidden;">
+												      <source th:src="${b.mobileroad}" type="video/mp4" />
 												    </video>
 												  </div>
 												</div>
+												
+												
 											</div>
 										</li>
 									</ul>
@@ -177,6 +201,58 @@
 			</section>
 		</section>
 	</section>
+	
+	
+	<!-- 🔽 수정 모달 -->
+<div class="modal fade" id="bannerEditModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">배너 수정</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <form id="bannerEditForm" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="id" id="editBannerId">
+
+          <div class="form-group">
+            <label>Subject</label>
+            <textarea class="form-control" name="subject" id="editBannerSubject" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Content</label>
+            <textarea class="form-control" name="content" id="editBannerContent" required></textarea>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <label>PC용 파일 변경</label>
+              <input type="file" name="webFile" class="form-control" id="editWebFile" />
+              <div id="previewWeb" style="margin-top:10px;"></div>
+            </div>
+
+            <div class="col-md-6">
+              <label>모바일용 파일 변경</label>
+              <input type="file" name="mobileFile" class="form-control" id="editMobileFile" />
+              <div id="previewMobile" style="margin-top:10px;"></div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+        <button type="button" class="btn btn-success" id="saveBannerBtn">수정 완료</button>
+      </div>
+    </div>
+  </div>
+</div>
+	
+	
 	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
 	<script src="/administration/lib/jquery-ui-1.9.2.custom.min.js"></script>
 	<script type="text/javascript"
@@ -216,7 +292,77 @@
 			location.href="/admin/deleteBanner/" + id;
 		}
 	}
+	
+	let bannerId = null; 
+	
+	  // 🔹 수정 모달 열기 함수
+	  function openBannerEditModal(id) {
+
+		  bannerId = id;
+		  
+	    $.ajax({
+	      url: '/admin/getBanner/' + id,
+	      type: 'GET',
+	      success: function (banner) {
+	        // 데이터 주입
+	        $('#editBannerId').val(banner.id);
+	        $('#editBannerSubject').val(banner.subject);
+	        $('#editBannerContent').val(banner.content);
+
+	        // 미리보기 초기화
+	        $('#previewWeb').empty();
+	        $('#previewMobile').empty();
+
+	        // PC용 미리보기
+	        if (banner.webroad) {
+	          if (banner.webroad.endsWith('.mp4')) {
+	            $('#previewWeb').html(`<video width="200" controls><source src="${banner.webroad}" type="video/mp4"></video>`);
+	          } else {
+	            $('#previewWeb').html(`<img src="${banner.webroad}" width="200" />`);
+	          }
+	        }
+
+	        // 모바일용 미리보기
+	        if (banner.mobileroad) {
+	          if (banner.mobileroad.endsWith('.mp4')) {
+	            $('#previewMobile').html(`<video width="200" controls><source src="${banner.mobileroad}" type="video/mp4"></video>`);
+	          } else {
+	            $('#previewMobile').html(`<img src="${banner.mobileroad}" width="200" />`);
+	          }
+	        }
+
+	        // 모달 표시
+	        $('#bannerEditModal').modal('show');
+	      },
+	      error: function () {
+	        alert('배너 정보를 불러오지 못했습니다.');
+	      }
+	    });
+	  }
+
+	  // 🔹 수정 저장 버튼 클릭 시
+	  $('#saveBannerBtn').on('click', function () {
+	    let formData = new FormData($('#bannerEditForm')[0]);
+
+	    $.ajax({
+		  url: '/admin/bannerUpdate/' + bannerId,
+		  type: 'POST',
+		  data: formData,
+		  processData: false,
+		  contentType: false,
+		  success: function(res) {
+		    alert('수정 완료되었습니다.');
+		    location.reload();
+		  },
+		  error: function(err) {
+		    alert('수정 중 오류가 발생했습니다.');
+		  }
+		});
+	  });
+
+	
 	  
+	 
 	</script>
 </body>
 
