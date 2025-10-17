@@ -911,7 +911,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sw = new Swiper('.glance-swiper', {
       speed: 600,
       slidesPerView:'auto',
-      autoHeight: 'auto',
+      autoHeight: true,
       loop: false,
       breakpoints: {
         0:   { slidesPerView: 1, centeredSlides: true,  centeredSlidesBounds:true },
@@ -931,7 +931,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (typeof setupIndicator === 'function') setupIndicator(this);
             if (typeof renderIndicator === 'function') renderIndicator(this);
           } catch (e) {}
-
+		  
           const btn = document.querySelector('.gi-toggle');
           if (!btn) return;
           const setUI = (running) => {
@@ -994,7 +994,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // (선택) 버튼 위치 보정 예시 함수 - 필요 시 호출
- /* function setNavPosition(swiper) {
+  function setNavPosition(swiper) {
     const activeSlide = swiper.slides[swiper.activeIndex];
     if (!activeSlide) return;
     const slideWidth = activeSlide.offsetWidth;
@@ -1004,5 +1004,5 @@ document.addEventListener('DOMContentLoaded', () => {
       prevBtn.style.top = slideWidth + 'px';
       nextBtn.style.top = slideWidth + 'px';
     }
-  }*/
+  }
 })();
