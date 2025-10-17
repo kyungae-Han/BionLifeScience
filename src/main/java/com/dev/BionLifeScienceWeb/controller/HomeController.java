@@ -384,34 +384,36 @@ public class HomeController {
 	            .orElseThrow(UrlNotFoundException::new);
 	    
 	    for (BrandProduct p : brand.getProducts()) {
-	    	if (p.getImages() != null && !p.getImages().isEmpty()) {
-	    	    p.setFirstImageRoad(p.getImages().get(0).getProductImageRoad()); // ✅ ROAD 값만 사용
-	    	} else {
-	    	    p.setFirstImageRoad("/front/images/common/no-image.png"); // 기본 이미지
-	    	}
+	        if (p.getImages() != null && !p.getImages().isEmpty()) {
+	            p.setFirstImageRoad(p.getImages().get(0).getProductImageRoad());
+	        } else {
+	            p.setFirstImageRoad("/front/images/common/no-image.png");
+	        }
 	    }
 	    
+	    System.out.println("Products size = " + brand.getProducts().size());
+	    System.out.println("Products class = " + brand.getProducts().getClass());
+
+	    List<BrandProduct> products = brand.getProducts();
+
+	    // ✅ 이 부분 추가
+	    if (products == null || products.isEmpty()) {
+	        model.addAttribute("products", null);
+	    } else {
+	        model.addAttribute("products", products);
+	    }
+
 	    List<BrandBigSort> bigSorts = brandBigSortRepository.findAllByBrand_IdOrderByBrandBigSortIndexAsc(id);
-
-		 // MiddleSort: BigSort 기반 필터링 필요
-		 List<BrandMiddleSort> middleSorts = brandMiddleSortRepository.findAllByBigSort_Brand_IdOrderByBrandMiddleSortIndexAsc(id);
-	
-		 // SmallSort: MiddleSort 기반 필터링 필요
-		 List<BrandSmallSort> smallSorts = brandSmallSortRepository.findAllByMiddleSort_BigSort_Brand_IdOrderByBrandSmallSortIndexAsc(id);
-
-
-
-	    model.addAttribute("brand", brand);
-	    model.addAttribute("products", brand.getProducts());
+	    List<BrandMiddleSort> middleSorts = brandMiddleSortRepository.findAllByBigSort_Brand_IdOrderByBrandMiddleSortIndexAsc(id);
+	    List<BrandSmallSort> smallSorts = brandSmallSortRepository.findAllByMiddleSort_BigSort_Brand_IdOrderByBrandSmallSortIndexAsc(id);
 	    
+	    model.addAttribute("brand", brand);
 	    model.addAttribute("bigSorts", bigSorts);
 	    model.addAttribute("middleSorts", middleSorts);
 	    model.addAttribute("smallSorts", smallSorts);
-
-	    // view에서 탭 표시용
 	    model.addAttribute("sort", "brand");
 	    model.addAttribute("id", id);
-	    
+
 	    return "front/brand/ownBrandDetail";
 	}
 	

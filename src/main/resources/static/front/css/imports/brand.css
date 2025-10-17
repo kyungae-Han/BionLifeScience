@@ -14,7 +14,6 @@
   z-index: 1000;
 }
 
-
 .brand-page #header.full-header {
   transition: all 0.3s ease;
 }
@@ -56,12 +55,13 @@
   transition: height .35s ease;
   height: 100px;
 }
+
 .brand-page #header.full-header.scrolled .container {
   height: 70px;
 }
 
 
-#logo img {
+/* #logo img {
   display: block;
   max-height: 100px;
   width: auto;
@@ -71,38 +71,27 @@
 #header.scrolled #logo img {
   max-height: 70px;
 }
-
-
+ */
 
 .brand-page #header:hover {
-  background: rgba(255, 255, 255, 0.95); /* hover 시 fade-in */
+  background: rgba(255, 255, 255, 1); /* hover 시 fade-in */
 }
 
 
-@media(max-width:998px){
-	.brand-page #header {background: #fff;}
-	
-	.header-row.top-search-parent {width: 100%;}
-	.mobile-primary-menu {position: relative;}
-	ul.menu-container.mobile-primary-menu.open::before {
-	  content: '';
-	  position: fixed;
-	  top: 0;
-	  left: 0;
-	  width: 100vw;
-	  height: 100vh;
-	  background: #fff;
-	  z-index: -1; /* 메뉴 아이템보다 뒤 */
-	}
-}
 
+ @media (max-width: 998px) {
+   
+   .brand-page .header-row {width: 100%; border-bottom: 1px solid #eee;}
+   .svg-trigger {right: 0;}
+}
+ 
 
 /* Visual 영역 */
 .brand-visual {
   width: 100%;
-  height: 600px; /* Momsday와 유사 height */
+  height: 600px;
   background-size: cover;
-  background-position: center;
+  background-position: 64% top;
   position: relative;
   display: flex;
   align-items: center;
@@ -211,7 +200,12 @@
 .category-tabs {
   width: 100%;
   margin: 20px 0;
-  border-bottom: 2px solid #eee;
+  background-color: #f8f8f8;
+  border-radius: 25px;
+}
+
+@media(max-width:991px){
+	.category-tabs {border-bottom: 0;}
 }
 
 /* 탭 목록 */
@@ -233,7 +227,7 @@
 .category-tabs button {
   display: inline-block;
   padding: 8px 16px;
-  border-radius: 4px 4px 0 0;
+  border-radius: 25px;
   background: #f8f8f8;
   color: #333;
   font-weight: 500;
@@ -249,10 +243,8 @@
 
 /* active 상태 */
 .category-tabs button.active {
-  background: #fff;
-  border: 2px solid #0072ce;
-  border-bottom: 2px solid #fff; /* 아래쪽은 끊어서 연결된 느낌 */
-  color: #0072ce;
+  background: var(--bs-orange);
+  color: #fff;
   font-weight: 600;
 }
 
@@ -263,7 +255,10 @@
 	max-width: 1280px;
 	margin: 0 auto;
 	box-sizing: border-box;
+	width: 100%;
+	overflow: hidden;
 }
+
 
 @media(max-width:998px){
 	.product-grid{
@@ -448,3 +443,139 @@
 #page-title.page-title-dark .brand-section-desc {
 	color: var(--bs-gray-700) !important;
 }
+
+
+
+@media (max-width: 991px) {
+    .brand-body-container {margin-bottom: 95px !important;}
+    .product-container {padding: 0 17px;}
+    
+    
+  .brand-body-container [style*="margin-left"],
+  .brand-body-container [style*="text-align:left"],
+  .brand-body-container [style*="text-align: justify"] {
+    margin-left: 20px !important;
+    margin-right: 20px !important;
+    text-align: center !important;
+    display: block !important;
+  }
+
+  /* 전체 문단 중앙 정렬 */
+  .brand-body-container p,
+  .brand-body-container div {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  
+  .category-tabs {width: 100%; margin: 25px auto 25px;}
+  
+  .category-tabs ul {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    white-space: nowrap;
+    gap: 8px;
+    margin: 0;
+    scroll-snap-type: x mandatory;
+    flex-direction: row;
+  }
+
+  .category-tabs li {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+/*   .category-tabs button {
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    background: #f8f8f8;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    white-space: nowrap;
+  }
+
+  .category-tabs button.active {
+    background: #fff;
+    font-weight: 600;
+  } */
+
+  /* 상품 2열 정렬 */
+  .product-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+    width: 100%;
+    padding: 0 10px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  .product-grid .product-card {
+    width: 100%;
+    border: none;
+  }
+
+  .product-grid .product-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+  }
+
+  .product-grid .product-card h3 {
+    font-size: 0.9rem;
+    margin: 8px 0 4px;
+  }
+
+  .product-grid .product-card p {
+    font-size: 0.8rem;
+    color: #444;
+    line-height: 1.4;
+  }
+  
+  .brand-page .entry-image,
+  .brand-page .entry-image > a,
+  .brand-page .entry-image .slide a,
+  .brand-page .entry-image img {
+    height: auto !important;
+    max-height: none !important;
+    object-fit: contain !important;
+  }
+  
+  /* 푸터 여백 정리 */
+  #footer {
+    margin-top: 40px !important;
+  }
+}
+
+
+.no-data {
+  width: 100%;
+  text-align: center;
+  color: #777;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 60px 0;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fafafa;
+  margin: 40px auto;
+  box-sizing: border-box;
+}
+
+/* ✅ 모바일 전용 */
+@media (max-width: 768px) {
+  .product-grid:has(.no-data[style*="display: block"]) {
+    display: block !important;
+  }
+
+  .no-data {
+    width: 90%;
+    margin: 24px auto;
+    padding: 40px 0;
+    font-size: 0.95rem;
+  }
+}
+
+

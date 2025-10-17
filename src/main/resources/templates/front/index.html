@@ -573,10 +573,28 @@ function adjustBannerView() {
 	}
 	window.addEventListener('load', adjustBannerView);
 	window.addEventListener('resize', adjustBannerView);
+	
+	
+	function fixParallaxOnResize() {
+	  const isMobile = window.innerWidth < 992;
+	  const sliders = document.querySelectorAll('.slider-parallax .slider-inner, .slider-parallax .slider-caption');
 
+	  sliders.forEach(el => {
+	    if (isMobile) {
+	      el.style.position = 'relative';
+	      el.style.transform = 'none';
+	      el.style.webkitTransform = 'none';
+	    } else {
+	      el.style.position = '';
+	      el.style.transform = 'translate3d(0,0,0)';
+	      el.style.webkitTransform = 'translate3d(0,0,0)';
+	    }
+	  });
+	}
+
+	window.addEventListener('load', fixParallaxOnResize);
+	window.addEventListener('resize', fixParallaxOnResize);
 </script>
-
-
 
 </body>
 

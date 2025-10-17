@@ -89,34 +89,38 @@
 			
 			
 			<div class="product-grid">
-				<div class="product-card entry sorted-entry col-lg-4 col-6" 
-				th:each="product : ${products}"
-				th:attr="data-big-id=${product.bigSort?.id},
-			              data-middle-id=${product.middleSort != null ? product.middleSort.id : ''},
-			              data-small-id=${product.smallSort != null ? product.smallSort.id : ''}">
-					<div class="grid-inner">
-						<div class="entry-image mb-2">
-							<a th:href="@{|/brandProductDetail/${product.id}|}">
-							<img th:src="${product.firstImageRoad}" alt="Product Image"></a>
-						</div>
-						<div class="entry-title">
-							<h2>
-								<a th:href="@{|/brandProductDetail/${product.id}|}" th:text="${product.subject}">Screw Caps and Tubes</a>
-							</h2>
-						</div>
-						<div class="entry-content mt-1">
-							<p th:text="${product.content}">간단한 제품에 대한 설명이 들어가는 영역입니다.</p>
-						</div>
-						<div class="entry-meta" th:if="${product.specs != null and !product.specs.isEmpty()}">
-						    <ul>
-						        <li th:each="spec : ${product.specs}">
-						            # [[${spec.productSpecContent}]]
-						        </li>
-						    </ul>
-						</div>
-					</div>
-				</div>
+			  <div class="no-data" style="display:none;">데이터가 없습니다.</div>
+			
+			  <div class="product-card entry sorted-entry col-lg-4 col-6"
+			       th:each="product : ${products}"
+			       th:attr="data-big-id=${product.bigSort?.id},
+			                data-middle-id=${product.middleSort != null ? product.middleSort.id : ''},
+			                data-small-id=${product.smallSort != null ? product.smallSort.id : ''}">
+			    <div class="grid-inner">
+			      <div class="entry-image mb-2">
+			        <a th:href="@{|/brandProductDetail/${product.id}|}">
+			          <img th:src="${product.firstImageRoad}" alt="Product Image">
+			        </a>
+			      </div>
+			      <div class="entry-title">
+			        <h2>
+			          <a th:href="@{|/brandProductDetail/${product.id}|}" th:text="${product.subject}">Screw Caps and Tubes</a>
+			        </h2>
+			      </div>
+			      <div class="entry-content mt-1">
+			        <p th:text="${product.content}">간단한 제품에 대한 설명이 들어가는 영역입니다.</p>
+			      </div>
+			      <div class="entry-meta" th:if="${product.specs != null and !product.specs.isEmpty()}">
+			        <ul>
+			          <li th:each="spec : ${product.specs}">
+			            # [[${spec.productSpecContent}]]
+			          </li>
+			        </ul>
+			      </div>
+			    </div>
+			  </div>
 			</div>
+
 		</section>
 
 
@@ -126,68 +130,58 @@
 	<script src="/front/js/timeline.js"></script>
 	
 	<script>
-	  document.addEventListener("DOMContentLoaded", function () {
-		const logoImg = document.querySelector('#logo img');
-		
-		  if (logoImg) {
-		    logoImg.removeAttribute("style");  // height:100px 제거
-		  }
-		
-		
-	    const header = document.querySelector(".brand-page #header.full-header");
-	    if (!header) return;
-	
-	    function checkScroll() {
-	      if (window.scrollY > 366) {
-	        header.classList.add("scrolled");
-	        header.classList.remove("bg-active");
-	      } else if (window.scrollY > 5) {
-	        header.classList.add("bg-active");
-	        header.classList.remove("scrolled");
-	      } else {
-	        header.classList.remove("bg-active", "scrolled");
-	      }
-	    }
-	
-	    // 스크롤 이벤트마다 실행
-	    window.addEventListener("scroll", checkScroll);
-	
-	    // 페이지 로딩 직후 한 번 실행 → 새로고침 시 현재 스크롤 위치 반영
-	    checkScroll();
-	    
-	    
-	    
-	    /*탭이벤트*/
-	    const tabs = document.querySelectorAll(".category-tabs .tab-btn");
-		const cards = document.querySelectorAll(".product-card");
-	    
-		tabs.forEach(tab => {
-		    tab.addEventListener("click", function () {
-		      const selectedId = this.getAttribute("data-id");
+document.addEventListener("DOMContentLoaded", function () {
+  const tabs = document.querySelectorAll(".category-tabs .tab-btn");
+  const cards = document.querySelectorAll(".product-card");
+  const noData = document.querySelector(".no-data");
 
-		      // 모든 탭 active 해제 후 현재 탭에 active 추가
-		      tabs.forEach(t => t.classList.remove("active"));
-		      this.classList.add("active");
+  function updateProductVisibility(selectedId) {
+    let visibleCount = 0;
 
-		      // 카드 필터링
-		      cards.forEach(card => {
-		        const bigId = card.getAttribute("data-big-id");
-		        const middleId = card.getAttribute("data-middle-id");
-		        const smallId = card.getAttribute("data-small-id");
+    cards.forEach(card => {
+      const bigId = card.getAttribute("data-big-id");
+      const middleId = card.getAttribute("data-middle-id");
+      const smallId = card.getAttribute("data-small-id");
 
-		        if (selectedId === "all") {
-		            card.style.display = ""; // ✅ All 클릭 시 전체 보이기
-		          } else if ([bigId, middleId, smallId].includes(selectedId)) {
-		            card.style.display = ""; // 조건 일치 시 보이기
-		          } else {
-		            card.style.display = "none"; // 조건 불일치 시 숨기기
-		          }
-		      });
-		    });
-		  });
-	  });
+      if (
+        selectedId === "all" ||
+        [bigId, middleId, smallId].includes(selectedId)
+      ) {
+        card.style.display = "";
+        visibleCount++;
+      } else {
+        card.style.display = "none";
+      }
+    });
 
-	</script>
+    // ✅ 제품 보이는 개수에 따라 no-data 표시/숨김
+    if (noData) {
+      noData.style.display = visibleCount === 0 ? "block" : "none";
+    }
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", function () {
+      const selectedId = this.getAttribute("data-id");
+
+      // 탭 활성화 처리
+      tabs.forEach(t => t.classList.remove("active"));
+      this.classList.add("active");
+
+      // 제품 필터링 업데이트
+      updateProductVisibility(selectedId);
+    });
+  });
+
+  // ✅ 초기 로드시 "All" 탭 활성화
+  const defaultTab = document.querySelector(".category-tabs .tab-btn[data-id='all']");
+  if (defaultTab) {
+    defaultTab.classList.add("active");
+    updateProductVisibility("all");
+  }
+});
+</script>
+
 
 </body>
 </html>

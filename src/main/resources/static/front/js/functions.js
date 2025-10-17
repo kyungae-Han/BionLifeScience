@@ -516,7 +516,7 @@ window.scwEvents = window.scwEvents || {};
 
 			initHeaderHeight = $headerWrap.outerHeight();
 
-			if( $headerWrap.length > 0 ) {
+			/*if( $headerWrap.length > 0 ) {
 				if( $('.header-wrap-clone').length < 1 ) {
 					$headerWrap.after('<div class="header-wrap-clone"></div>');
 				}
@@ -526,7 +526,7 @@ window.scwEvents = window.scwEvents || {};
 			if( $pagemenu.length > 0 ) {
 				$pagemenu.find('#page-menu-wrap').after('<div class="page-menu-wrap-clone"></div>');
 				$pageMenuClone = $('.page-menu-wrap-clone');
-			}
+			}*/
 
 			let menuItemSubs = $( '.menu-item:has(.sub-menu-container)' );
 
@@ -2104,7 +2104,44 @@ window.scwEvents = window.scwEvents || {};
 
 		onReady: function(){
 
-			// Add JS Codes here to Run on Document Ready
+			window.addEventListener("load", function () {
+			    const header = document.querySelector("#header.full-header") 
+			                || document.querySelector("#header"); // fallback
+
+			    if (!header) return;
+
+			    const logoImg = document.querySelector("#logo img");
+			    if (logoImg) logoImg.removeAttribute("style");
+
+			    const scrollThreshold = 200;
+
+			    const getScrollTop = () =>
+			      window.pageYOffset ||
+			      document.documentElement.scrollTop ||
+			      document.body.scrollTop ||
+			      0;
+
+			    function checkScroll() {
+			      const scrollTop = getScrollTop();
+
+			      if (scrollTop > scrollThreshold) {
+			        header.classList.add("scrolled");
+			        header.classList.remove("bg-active");
+			      } else if (scrollTop > 5) {
+			        header.classList.add("bg-active");
+			        header.classList.remove("scrolled");
+			      } else {
+			        header.classList.remove("bg-active", "scrolled");
+			      }
+			    }
+
+			    ["scroll", "touchmove", "wheel", "resize"].forEach((evt) => {
+			      window.addEventListener(evt, checkScroll, { passive: true });
+			    });
+
+			    // 초기 상태 반영
+			    checkScroll();
+			  });
 
 		},
 
@@ -2348,5 +2385,45 @@ window.scwEvents = window.scwEvents || {};
 			}
 		}, 250);
 	});
+	
+	
+	document.addEventListener('DOMContentLoaded', function() {
+	  const header = document.querySelector('#header');
+	  const menu   = document.querySelector('.mobile-primary-menu');
+	  const trigger = document.querySelector('#hamburger-menu-trigger, .primary-menu-trigger');
+
+	  if (!header || !menu) return;
+
+	  function updateMenuTop() {
+	    const headerHeight = header.offsetHeight || 0;
+	    menu.style.top = `${headerHeight}px`;
+	  }
+
+	  // scroll/resize 중에도 반영
+	  ['scroll', 'resize', 'orientationchange'].forEach(evt =>
+	    window.addEventListener(evt, updateMenuTop, { passive: true })
+	  );
+
+	  // ✅ 메뉴 열릴 때 즉시 반영 (여기가 핵심)
+	  document.addEventListener('click', e => {
+	    const t = e.target.closest('#hamburger-menu-trigger, .primary-menu-trigger');
+	    if (t) {
+	      updateMenuTop();
+	      setTimeout(updateMenuTop, 150); // transition 고려해 약간의 보정
+	    }
+	  });
+
+	  // transition 끝날 때도 반영
+	  header.addEventListener('transitionend', e => {
+	    if (e.propertyName === 'height') updateMenuTop();
+	  });
+
+	  // 최초 실행
+	  window.addEventListener('load', updateMenuTop);
+	  updateMenuTop();
+	});
+
+
+
 
 })(jQuery);
