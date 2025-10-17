@@ -4,7 +4,6 @@
 </head>
 
 <link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 
 
 <style>
@@ -31,8 +30,6 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 				<article class="il-overview p-item" data-speed="0.22">
 					<div class="il-overview__body p-item"
 						style="--bg-img: url('/front/images/about/1.jpg')">
-						<div class="il-overview__caption">
-						</div>
 					</div>
 					
 					
@@ -334,7 +331,7 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 	</th:block>
 	<script>
 (function(){
-  const heroes = document.querySelectorAll('.section-1');
+	const heroes = document.querySelectorAll('.section-1:not(.fp)');
   if (!heroes.length) return;
 
   // 등장하면 .show 부여 → Ken Burns 시작 + 텍스트 슬라이드업은 기존 CSS로
@@ -406,6 +403,38 @@ function splitTextNode(node){
 	  }
 	  return frag;
 	}
+	
+	document.addEventListener("DOMContentLoaded", function () {
+		  const grid = document.querySelector(".irregular-image-grid .grid-layout");
+		  const videoCard = grid?.querySelector(".card:has(video)");
+
+		  if (!grid || !videoCard) return;
+
+		  function reorderVideoCard() {
+		    if (window.innerWidth <= 991) {
+		      // ✅ 비디오 카드를 맨 아래로 이동
+		      grid.appendChild(videoCard);
+
+		      // ✅ grid는 2열 유지 (절대 건드리지 않음)
+		      grid.style.removeProperty("grid-template-columns");
+
+		      // ✅ 비디오만 전체폭 차지
+		      videoCard.style.setProperty("grid-column", "1 / -1", "important");
+		      videoCard.style.aspectRatio = "16 / 9";
+		      videoCard.style.width = "100%";
+		      videoCard.style.display = "block";
+		      videoCard.style.overflow = "hidden";
+		    } else {
+		      // PC 복귀 시 원복
+		      grid.style.removeProperty("grid-template-columns");
+		      videoCard.style.removeProperty("grid-column");
+		    }
+		  }
+
+		  reorderVideoCard();
+		  window.addEventListener("resize", reorderVideoCard);
+		});
+
 </script>
 	
 </body>
