@@ -5,6 +5,7 @@
 @media (prefers-reduced-motion: no-preference) {
   :root {
     scroll-behavior: auto;
+	--pro-gap : 20px;
   }
 }
 
