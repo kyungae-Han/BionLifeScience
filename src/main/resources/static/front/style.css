@@ -3906,7 +3906,7 @@ body:not(.has-plugin-html5video) .video-wrap video {
   position: relative;
   display: -ms-flexbox;
   display: flex;
-  height: 75% !important;
+  height: 80% !important;
   flex-flow: row;
   justify-content: left;
   align-items:center;
