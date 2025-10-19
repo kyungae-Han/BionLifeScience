@@ -2106,14 +2106,14 @@ window.scwEvents = window.scwEvents || {};
 
 			window.addEventListener("load", function () {
 			    const header = document.querySelector("#header.full-header") 
-			                || document.querySelector("#header"); // fallback
+			                || document.querySelector("#header");
 
 			    if (!header) return;
 
 			    const logoImg = document.querySelector("#logo img");
 			    if (logoImg) logoImg.removeAttribute("style");
 
-			    const scrollThreshold = 200;
+			    const scrollThreshold = 100;
 
 			    const getScrollTop = () =>
 			      window.pageYOffset ||

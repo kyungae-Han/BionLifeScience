@@ -1658,7 +1658,7 @@ il-callout.p-item {
 }
 
 @media(max-width:991px){
- .chip-caption{padding: 7px 0 20px 0;}
+ .chip-caption{padding: 7px 0 20px 10px;}
 }
 
 
@@ -3025,6 +3025,11 @@ tbody td:not(.table__subject){
 	padding:0 0 20px;
 }
 
+@media(max-width:991px){
+	.notice-detail {padding: 25px 25px 20px; margin: 0 20px 25px;}
+	.notice_list_page {max-width: 95% !important; margin-top: 0 !important;}
+}
+
 .notice-detail img {
   width: 100%;
   max-width: 740px;
@@ -3165,10 +3170,12 @@ tbody td:not(.table__subject){
 	width: 100%;
 	object-fit:cover;
 }
- 
-
 
 @media (max-width: 768px) {
+	
+	.notice_body table th {min-width: 60px;}
+	.table__subject {max-width:280px; padding: 14px 0 !important;}
+
 	
 	main, 
 	#page-title,
@@ -3224,6 +3231,13 @@ tbody td:not(.table__subject){
 
 /* 🔹 모바일 이하 해상도 */
 @media (max-width: 991px) {
+	
+	.notice_body table th {min-width: 60px;}
+	  
+	  .table__subject {max-width:280px;}
+	
+	  .search-container .search_module {top:0;left: 50%;transform: translateX(-55%);}
+	
   /* 🔹 레이아웃 강제 리셋 */
   .irregular-image-grid > .grid-layout {
     all: unset; /* 기존 모든 속성 초기화 */
@@ -3296,6 +3310,8 @@ tbody td:not(.table__subject){
     overflow: hidden;
     padding: 25px 25px 0;
   }
+  
+  .organic {margin-top: 35px;}
 
   .organic .biz-left video {
 	  display: block !important;
@@ -3362,10 +3378,9 @@ tbody td:not(.table__subject){
   .fp-card {
   position: relative;
   width: 100%;
-  min-height: 300px;
   height: auto;
   aspect-ratio: auto;
-  background-position: center center;
+  background-position: top center;
   background-size: cover;
   border-radius: 24px;
   overflow: hidden;
@@ -3397,14 +3412,7 @@ tbody td:not(.table__subject){
 
   /* 배경 이미지 */
   .fp-bg {
-  position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
     background: var(--bg) no-repeat bottom center / cover !important;
-    object-fit: cover !important;
-    object-position: bottom center !important;
-    z-index: 1;
 }
 
 

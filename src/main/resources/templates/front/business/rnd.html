@@ -319,16 +319,11 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
     
     <th:block th:replace="~{/fragments/front/common :: footerSrc}"></th:block>
   </div>
+  <th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
+
+  <script th:src="@{/front/js/timeline.js}" defer></script>
   
-  	<th:block th:fragment="scriptSrc">
-		<div id="gotoTop" class="icon-angle-up"></div>
-		<script src="/front/js/jquery.js"></script>
-		<script src="/front/js/plugins.min.js"></script>
-		<script src="/front/js/functions.js"></script>
-		<script src="/front/js/menu.tree.js"></script>
-		<script src="/front/js/header.toggle.js"></script>
-		<script src="/front/js/company/about.js"></script>
-	</th:block>
+  
 	<script>
 (function(){
 	const heroes = document.querySelectorAll('.section-1:not(.fp)');

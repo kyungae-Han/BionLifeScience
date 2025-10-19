@@ -4,17 +4,24 @@
 <head th:replace="~{/fragments/front/common :: headSrc('바이온라이프사이언스 공지사항')}">
 </head>
 <link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
-
 <style>
- .sec-head {height: 75px; line-height: 2;}
- .sec-head h3 {padding-top:15px;}
-</style>
-
-<body class="stretched">
+	
+#page-title {text-align: left !important;}	
+.breadcrumb {justify-content: left !important; padding: 0 20px 20px; border-bottom: 1px solid #eee;}
+		
+</style>	
+<body class="stretched notice-detail-body">
 
 	<div id="wrapper" class="clearfix">
 
 		<th:block th:replace="~{/fragments/front/common :: headerSrc(false, ${menuList})}"></th:block>
+		
+		<section id="page-title" class="clearfix">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="/index">메인</a></li>
+				<li class="breadcrumb-item active" aria-current="page">공지사항</li>
+			</ol>
+		</section>
 
 		<section id="content">
 		  <div class="notice-detail">

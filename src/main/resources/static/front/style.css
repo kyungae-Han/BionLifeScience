@@ -2917,10 +2917,11 @@ nav .menu-item:hover > .menu-link,
     left: 0;
     max-width: 100% !important;
     background: #fff !important;
-    padding: 0 20px 20px !important; /* 상단 여백: 햄버거, 로고 영역 확보 */
+    padding: 0 20px 20px !important;
     box-sizing: border-box;
     z-index: 2000 !important;
     overflow-y: auto;
+	box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.55);
   }
 
   /* 메뉴 아이템들 정렬 */
@@ -3901,14 +3902,11 @@ body:not(.has-plugin-html5video) .video-wrap video {
 
 /* Slider Caption
 -----------------------------------------------------------------*/
-
-
-
 .slider-caption {
   position: relative;
   display: -ms-flexbox;
   display: flex;
-  height: 75%;
+  height: 75% !important;
   flex-flow: row;
   justify-content: left;
   align-items:center;
@@ -4546,6 +4544,7 @@ body:not(.has-plugin-html5video) .video-wrap video {
 .content-wrap {
   position: relative;
   overflow: hidden;
+  margin-bottom: 40px;
 }
 
 .content-wrap.list-inner{
@@ -16573,12 +16572,11 @@ h4 {
     font-size: 1rem;
   }
 
-#page-title .breadcrumb {
+#page-title .breadcrumb{
     position: relative !important;
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    margin: 20px 0 0 !important;
     justify-content: center;
     -webkit-transform: translateY(0);
     transform: translateY(0);
@@ -20218,6 +20216,56 @@ body:not(.stretched) #wrapper {
 	width: 100%;
 	max-width: 1280px;
 	padding: 0;
+}
+
+@media(max-width: 991px), (max-width: 768px){
+	
+	#brandGlobalModal .row.align-items-center {
+	    flex-direction: column !important;
+	  }
+
+	  #brandGlobalModal .row.align-items-center > [class*="col-"] {
+	    width: 100% !important;
+	    max-width: 100% !important;
+	  }
+
+	  #brandGlobalModal .col-md-5 {
+	    order: 1; /* 이미지 위 */
+	    margin-bottom: 1.25rem; /* 텍스트와 간격 */
+	  }
+
+	  #brandGlobalModal .col-md-7 {
+	    order: 2; /* 텍스트 아래 */
+	  }
+	  
+	  #brandGlobalModal .col-md-7 {
+	     padding-left: 0 !important;
+	     padding-right: 0 !important;
+	   }
+	
+	#brandGlobalModal .modal-content {
+	  width: 97%;
+	  margin: 0 auto;
+    }
+	
+	.brand-modal .row.align-items-center {
+	    flex-direction: column !important;
+	  }
+
+	  .brand-modal .row.align-items-center > [class*="col-"] {
+	    width: 100% !important;
+	    max-width: 100% !important;
+	  }
+
+	  .brand-modal .row.align-items-center img {
+	    display: block;
+	    margin: 0 auto 1.5rem auto;
+	  }
+
+	  .brand-modal .row.align-items-center p {
+	    text-align: center;
+	  }
+	
 }
 
 /* 공통 버튼 스타일 */

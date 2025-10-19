@@ -36,6 +36,7 @@
   border-bottom: 1px solid rgba(0,0,0,.08);
 }
 
+
 #header .container > * {
   height: auto;
   transition: height .3s ease;
@@ -393,6 +394,21 @@
 	right: -28px !important;
 }
 
+
+@media(max-width:768px){
+	
+	.brand-section-desc {padding: 0 25px}
+	
+	#brandPrev {
+		left: 0 !important;
+	}
+
+	#brandNext {
+		right: 0 !important;
+	}
+	
+	.row > *  {width: 50%; margin-bottom: 20px;}
+}
 
 #brandModal .brand-category-bar {
   background-color: #f7f7f7;
