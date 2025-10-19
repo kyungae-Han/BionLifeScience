@@ -247,6 +247,13 @@
 								<div tabindex="0" class="cert-viewport swiper-wrapper"
 									id="certViewport">
 									<div class="cert-track swiper-slide" id="certTrack">
+										<!-- ✅ 데이터가 없을 때 -->
+							            <th:block th:if="${#lists.isEmpty(certification)}">
+							              <div class="cert-empty">
+							                <p>등록된 인증 데이터가 없습니다.</p>
+							              </div>
+							            </th:block>
+										
 										<div class="cert" th:each="c : ${certification}"
 											th:classappend="${' pf-' + c.sort}">
 											<img th:src="${c.road}" alt="CERTIFICATION"> <span

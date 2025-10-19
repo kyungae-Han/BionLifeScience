@@ -3883,12 +3883,9 @@ body:not(.has-plugin-html5video) .video-wrap video {
 }
 
 @media (max-width:768px){
-  .swiper-container,
-  .swiper-wrapper,
-  .swiper-slide,
   .swiper-slide-bg,
   .video-wrap {
-    height: 100vh !important;   /* 화면 높이 꽉 채우기 */
+    height: 100vh !important;
     min-height: 100vh !important;
   }
 
