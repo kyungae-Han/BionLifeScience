@@ -16396,7 +16396,7 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
   #productsItems .pro-track{
     display: grid;
     grid-auto-flow: column;
-    grid-template-rows: repeat(2, auto);
+    grid-template-rows: repeat(1, auto);
     grid-auto-columns: calc((100% - var(--pro-gap,16px)) / 2);
     column-gap: var(--pro-gap,16px);
     row-gap: var(--pro-gap,16px);

@@ -480,15 +480,21 @@ window.scwEvents = window.scwEvents || {};
 		},
 
 		stickFooterOnSmall: function(){
+			
 			$footer.css({ 'margin-top': '' });
-			let windowH = $window.height(),
-				wrapperH = $wrapper.height();
 
-			if( !$body.hasClass('sticky-footer') && $footer.length > 0 && $wrapper.has('#footer') ) {
-				if( windowH > wrapperH ) {
-					$footer.css({ 'margin-top': ( windowH - wrapperH ) });
-				}
-			}
+			 // window 높이와 wrapper(전체 콘텐츠) 높이 계산
+			 let windowH = $window.height(),
+			     wrapperH = $wrapper.outerHeight(true);
+
+			 // sticky-footer 클래스가 없고, footer가 wrapper 내부에 있을 때만 실행
+			 if( !$body.hasClass('sticky-footer') && $footer.length > 0 && $wrapper.has('#footer').length ) {
+			   const diff = windowH - wrapperH;
+			   if( diff > 0 ) {
+			     // 여백이 실제로 필요할 때만 추가
+			     $footer.css({ 'margin-top': diff + 120 + 'px' });
+			   }
+			 }
 		}
 
 	};

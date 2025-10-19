@@ -54,7 +54,6 @@
   align-items: center;
   justify-content: space-between;
   transition: height .35s ease;
-  height: 100px;
 }
 
 .brand-page #header.full-header.scrolled .container {

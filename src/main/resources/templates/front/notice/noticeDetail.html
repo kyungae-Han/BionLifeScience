@@ -4,12 +4,19 @@
 <head th:replace="~{/fragments/front/common :: headSrc('바이온라이프사이언스 공지사항')}">
 </head>
 <link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
+
 <style>
-	
-#page-title {text-align: left !important;}	
-.breadcrumb {justify-content: left !important; padding: 0 20px 20px; border-bottom: 1px solid #eee;}
-		
+#page-title { padding:0 !important; margin: 17px 0; text-align: left !important;}	
+.breadcrumb {justify-content: left !important; padding: 0 200px 20px; border-bottom: 1px solid #eee;}
+
+@media(max-width: 991px){
+	#page-title {margin-top: 120px;}
+	.breadcrumb {padding: 0 20px 20px;}
+}
 </style>	
+
+
+
 <body class="stretched notice-detail-body">
 
 	<div id="wrapper" class="clearfix">

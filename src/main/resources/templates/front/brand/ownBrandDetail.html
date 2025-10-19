@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 
-<body class="stretched">
+<body class="stretched brand-page">
 
 	<div id="wrapper" class="clearfix">
 
@@ -127,6 +127,36 @@
 		<th:block th:replace="~{/fragments/front/common :: footerSrc}"></th:block>
 	</div>
 	<th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
+	
+	
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+		  setTimeout(() => {
+		    const header = document.querySelector("#header.full-header");
+		    if (!header) return;
+
+		    function checkScroll() {
+		      const threshold = document.body.classList.contains("brand-page") ? 100 : 366;
+		      if (window.scrollY > threshold) {
+		        header.classList.add("scrolled");
+		        header.classList.remove("bg-active");
+		      } else if (window.scrollY > 5) {
+		        header.classList.add("bg-active");
+		        header.classList.remove("scrolled");
+		      } else {
+		        header.classList.remove("bg-active", "scrolled");
+		      }
+		    }
+
+		    window.addEventListener("scroll", checkScroll);
+		    checkScroll();
+		  }, 200); // 0.2초 뒤 실행
+		});
+
+	</script>
+	
+	
 	<script>
 document.addEventListener("DOMContentLoaded", function () {
   const tabs = document.querySelectorAll(".category-tabs .tab-btn");
