@@ -30,4 +30,9 @@ public class BrandProductSpec {
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="BRAND_PRODUCT_ID", nullable = false)
     private BrandProduct product;
+	
+	
+	@Column(name = "SPEC_ORDER")
+	private Integer specOrder;
+	
 }

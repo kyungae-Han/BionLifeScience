@@ -22,32 +22,25 @@ import org.zeroturnaround.zip.ZipUtil;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProduct;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProductFile;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProductImage;
-import com.dev.BionLifeScienceWeb.model.brand.BrandProductInfo;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProductSpec;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductFileRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductImageRepository;
-import com.dev.BionLifeScienceWeb.repository.brand.BrandProductInfoRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductSpecRepository;
 
 import lombok.RequiredArgsConstructor;
 
 
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class BrandProductService {
 	
-	private final BrandProductSpecRepository specRepository;
 
 	private final BrandProductRepository brandProductRepository;
 	private final BrandProductFileRepository brandProductFileRepository;
 	private final BrandProductImageRepository brandProductImageRepository;
-	 private final BrandProductInfoRepository infoRepository;
+	private final BrandProductSpecRepository brandProductSpecRepository;
 	
 	@Value("${spring.upload.env}")
 	private String env;
@@ -649,4 +642,21 @@ public class BrandProductService {
 
 		return "success";
 	}
+	
+	public void saveSpecsWithOrder(BrandProduct product) {
+	    if (product.getSpecs() != null) {
+	        // 기존 스펙 전체 삭제 후 새로 저장
+	        brandProductSpecRepository.deleteAllByProduct_Id(product.getId());
+	        
+	        for (int i = 0; i < product.getSpecs().size(); i++) {
+	            BrandProductSpec spec = product.getSpecs().get(i);
+	            spec.setSpecOrder(i);  // ✅ 순서 반영
+	            spec.setProduct(product);
+	        }
+
+	        brandProductSpecRepository.saveAll(product.getSpecs());
+	    }
+	}
+	
+	
 }

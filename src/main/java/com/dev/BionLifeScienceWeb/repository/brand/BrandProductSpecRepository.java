@@ -14,5 +14,5 @@ public interface BrandProductSpecRepository extends JpaRepository<BrandProductSp
 	List<BrandProductSpec> findAllByProductId(Long productId);
 	
 	@Transactional
-	int deleteAllByProductId(Long id);
+    int deleteAllByProduct_Id(Long productId);
 }

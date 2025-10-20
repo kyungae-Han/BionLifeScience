@@ -26,11 +26,11 @@
 
 							<div class="heading-block center">
 								<h2 th:text="${product.subject}">Screw Caps and Tubes</h2>
-								<span th:text="${product.content}">Screw Caps and Tubes 제품 상세 페이지 입니다</span>
+								<p th:text="${product.content}">Screw Caps and Tubes 제품 상세 페이지 입니다</p>
 							</div>
 						</div>
 					</div>
-					<div class="row gutter-40 col-mb-80 justify-content-end">
+					<div class="row gutter-40 col-mb-80 justify-content-center">
 						<div class="postcontent col-lg-10 order-lg-last">
 
 							<div class="single-product">
@@ -92,14 +92,14 @@
 
 												<div class="tab-container">
 
-													<div class="tab-content clearfix text-center" id="tabs-1"
+													<div class="tab-content clearfix text-left" id="tabs-1"
 														style="text-align: center;">
 														<!-- <img width="1200px" style="margin: 0 auto;"
 															th:src="${product.tableImageRoad}"> -->
 														 <img width="1200px" style="margin: 0 auto;"
 															th:src="${product.specImageRoad}">
 													</div>
-													<div class="tab-content clearfix text-center" id="tabs-2"
+													<div class="tab-content clearfix text-left" id="tabs-2"
 														style="text-align: left;">
 															<div th:utext="${product.productSubContent}">
 																특허받은 설계로 스왑을 담고 있는 꽉 잠긴 Screw Caps and Tubes을 개봉하면 뚜껑부분에 스왑이
@@ -169,7 +169,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="w-100 clearfix mt-10">
+					<div class="clearfix mt-10" style="max-width:1180px; margin:0 auto;">
 						<div class="line"></div>
 						<div class="mt-5 bg-white">
 							<h4 class="m-b-0">연관된 상품</h4>
