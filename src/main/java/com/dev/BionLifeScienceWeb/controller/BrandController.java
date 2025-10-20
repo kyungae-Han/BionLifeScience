@@ -592,14 +592,12 @@ public class BrandController {
 	        @RequestParam(required = false) String[] spec,
 	        @RequestParam(required = false) String[] infoQ,
 	        @RequestParam(required = false) String[] infoA,
+	        @RequestParam(required = false) Integer[] specOrder,
 	        Model model,
 	        @PageableDefault(size = 10) Pageable pageable
 			) throws IllegalStateException, IOException {
 		
 		
-		 System.out.println("==== brandProductUpdate 호출됨 ====");
-		    System.out.println("productId = " + product.getId()); 
-		    
 		
 		if(product.getSign() == null) {
 			product.setSign(false);
@@ -649,15 +647,33 @@ public class BrandController {
 		}
 		
 		if (infoQ != null && infoQ.length > 0) {
-		    for (int a = 0; a < infoQ.length; a++) {
-		        if ((infoQ[a] != null && !infoQ[a].trim().isEmpty()) ||
-		            (infoA[a] != null && !infoA[a].trim().isEmpty())) {
-		            BrandProductSpec sp = new BrandProductSpec();
-		            sp.setProductSpecSubject(infoQ[a] != null ? infoQ[a].trim() : "");
-		            sp.setProductSpecContent(infoA[a] != null ? infoA[a].trim() : "");
-		            sp.setProduct(product);
-		            brandProductSpecRepository.save(sp);
+		    List<BrandProductSpec> specList = new ArrayList<>();
+
+		    for (int i = 0; i < infoQ.length; i++) {
+		        String q = (infoQ[i] != null) ? infoQ[i].trim() : "";
+		        String a = (infoA != null && infoA.length > i && infoA[i] != null) ? infoA[i].trim() : "";
+
+		        // ✅ 완전 빈 항목은 skip
+		        if (q.isEmpty() && a.isEmpty()) continue;
+
+		        BrandProductSpec sp = new BrandProductSpec();
+		        sp.setProductSpecSubject(q);
+		        sp.setProductSpecContent(a);
+
+		        // ✅ specOrder 배열이 있으면 그대로, 없으면 순차
+		        if (specOrder != null && specOrder.length > i) {
+		            sp.setSpecOrder(specOrder[i]);
+		        } else {
+		            sp.setSpecOrder(i + 1);
 		        }
+
+		        specList.add(sp);
+		    }
+
+		    // ✅ 필터 후 남은 항목이 있을 때만 저장
+		    if (!specList.isEmpty()) {
+		        product.setSpecs(specList);
+		        brandProductService.saveSpecsWithOrder(product.getId(), specList);
 		    }
 		}
 		
@@ -789,6 +805,33 @@ public class BrandController {
 	      .append("</script>");
 	    return sb.toString();
 	}
+	
+	
+	@RequestMapping(
+		    value = "/brandProductSpecDelete/{id}",
+		    method = {RequestMethod.GET, RequestMethod.POST, RequestMethod.DELETE}
+		)
+		@ResponseBody
+		public String brandProductSpecDelete(@PathVariable Long id) {
+		    StringBuffer sb = new StringBuffer();
+		    try {
+		        if (brandProductSpecRepository.existsById(id)) {
+		            brandProductService.deleteSpecById(id);
+		            String msg = "선택한 스펙이 삭제되었습니다.";
+		            sb.append("alert('" + msg + "');");
+		        } else {
+		            String msg = "이미 삭제되었거나 존재하지 않는 스펙입니다.";
+		            sb.append("alert('" + msg + "');");
+		        }
+		    } catch (Exception e) {
+		        System.out.println("❌ 스펙 삭제 오류: " + e.getMessage());
+		        sb.append("alert('삭제 중 오류가 발생했습니다.');");
+		    }
+
+		    sb.append("</script>");
+		    sb.insert(0, "<script>");
+		    return sb.toString();
+		}
 	
 }
 

@@ -145,16 +145,22 @@
 								    <div class="spec-wrap">
 								      <button type="button" class="btn btn-success" id="info-plus-button">+ 추가</button>
 								      <button type="button" class="btn btn-danger" id="info-del-button">- 삭제</button>
+								      <p class="mt-3">※ 삭제 버튼을 누르면 항목이 바로 삭제됩니다.</p>
+								      <p>※ 데이터수정시에는 하단의 수정버튼을 눌러주세요. (삭제시에는 하단 수정버튼 X)</p>
 								    </div>
 								
 								    <!-- 반복 영역 -->
 								    <div class="spec-wrap spec-item d-flex align-items-center gap-2"
 								         th:each="i, iterStat : ${product.specs}">
 								      <input type="hidden" th:name="|specs[${iterStat.index}].id|" th:value="${i.id}">
+								      <input type="checkbox" name="specSelect" class="spec-check" style="width:18px;height:18px;margin-right:8px;">
 								      <input type="text" class="form-control" style="width:40%;" 
 								             th:name="|specs[${iterStat.index}].productSpecSubject|" th:value="${i.productSpecSubject}">
 								      <input type="text" class="form-control" style="width:40%;" 
 								             th:name="|specs[${iterStat.index}].productSpecContent|" th:value="${i.productSpecContent}">
+						             <input type="hidden"
+										       th:name="|specs[${iterStat.index}].specOrder|"
+										       th:value="${iterStat.index + 1}">
 								
 								      <!-- ✅ 버튼을 안쪽으로 이동 -->
 								      <div class="btn-group-vertical ms-2">
@@ -275,67 +281,49 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 	  const wrap = document.querySelector('#info-wrap');
-	  const addBtn = document.querySelector('#info-plus-button');
-	  const delBtn = document.querySelector('#info-del-button');
 
-	  // 행 추가
-	  addBtn.addEventListener('click', () => {
-	    const specs = wrap.querySelectorAll('.spec-item');
-	    const sample = specs[0];
-	    if (!sample) return;
-	    const newSpec = sample.cloneNode(true);
-	    newSpec.querySelectorAll('input').forEach(input => input.value = '');
-	    wrap.appendChild(newSpec);
-	    reindexSpecs();
-	  });
-
-	  // 행 삭제
-	  delBtn.addEventListener('click', () => {
-	    const specs = wrap.querySelectorAll('.spec-item');
-	    if (specs.length > 1) {
-	      specs[specs.length - 1].remove();
-	      reindexSpecs();
-	    }
-	  });
-
-	  // 이동 이벤트
+	  // ▲▼ 버튼 이벤트
 	  wrap.addEventListener('click', e => {
 	    const btn = e.target;
 	    if (!btn.classList.contains('move-up') && !btn.classList.contains('move-down')) return;
 
-	    const currentWrap = btn.closest('.spec-item');
-	    if (!currentWrap) return;
+	    const current = btn.closest('.spec-item');
+	    if (!current) return;
 
 	    if (btn.classList.contains('move-up')) {
-	      const prev = currentWrap.previousElementSibling;
+	      const prev = current.previousElementSibling;
 	      if (prev && prev.classList.contains('spec-item')) {
-	        wrap.insertBefore(currentWrap, prev);
+	        wrap.insertBefore(current, prev);
 	      }
 	    }
 
 	    if (btn.classList.contains('move-down')) {
-	      const next = currentWrap.nextElementSibling;
+	      const next = current.nextElementSibling;
 	      if (next && next.classList.contains('spec-item')) {
-	        wrap.insertBefore(next, currentWrap);
+	        wrap.insertBefore(next, current);
 	      }
 	    }
 
-	    // ✅ 이동 후 반드시 인덱스 갱신
-	    reindexSpecs();
+	    reindexSpecs(); // ✅ 순서 재세팅
 	  });
 
-	  // ✅ 인덱스 재정렬 함수 (수정 버전)
 	  function reindexSpecs() {
-	    const specs = wrap.querySelectorAll('.spec-item');
-	    specs.forEach((div, index) => {
-	      div.querySelectorAll('input').forEach(input => {
-	        if (input.name) {
-	          // 🔥 완전 정규식으로 기존 인덱스 부분 전체를 재정의
-	          input.name = input.name.replace(/specs\[\d+\]/, `specs[${index}]`);
-	        }
-	      });
-	    });
-	  }
+		    const items = wrap.querySelectorAll('.spec-item');
+		    items.forEach((item, idx) => {
+		      // name 재정렬
+		      item.querySelectorAll('input').forEach(input => {
+		        if (input.name) {
+		          input.name = input.name.replace(/specs\[\d+\]/, `specs[${idx}]`);
+		        }
+		      });
+
+		      // specOrder value도 인덱스 기준으로 갱신
+		      const orderInput = item.querySelector('input[name$=".specOrder"]');
+		      if (orderInput) {
+		        orderInput.value = idx + 1; // ✅ 1부터 순서대로 세팅
+		      }
+		    });
+		  }
 	});
 
 </script>

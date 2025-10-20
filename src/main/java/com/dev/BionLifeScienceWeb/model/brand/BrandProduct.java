@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Data;
@@ -113,6 +114,7 @@ public class BrandProduct {
 			orphanRemoval = true,
 			mappedBy = "product"
 			)
+	@OrderBy("specOrder ASC")
 	private List<BrandProductSpec> specs = new ArrayList<>();
 	
 	@ManyToOne(fetch = FetchType.EAGER)

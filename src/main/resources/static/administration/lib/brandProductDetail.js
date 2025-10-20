@@ -87,20 +87,66 @@ $(function() {
 		}
 	});
 	
-	$('#info-plus-button').on('click',function(){
-		var infoDiv = $('<div class="spec-wrap">'
-		+'<input type="text" class="form-control" name="infoQ" required="required" placeholder="주제를 입력 해 주세요. 예) 제조자" style="width:40%;margin-right:4px;">'+
-		'<input type="text" class="form-control" name="infoA" required="required" placeholder="답변을 입력 해 주세요. 예) 바이온라이프사이언스" style="width:40%;">'+
-		'</div>');
-		$(infoDiv).appendTo('#info-wrap');
+	$('#info-plus-button').on('click', function(){
+	  const wrap = $('#info-wrap');
+	  const nextOrder = wrap.find('.spec-wrap').length + 1;
+
+	  const infoDiv = $(`
+	    <div class="spec-wrap spec-item">
+		  <input type="checkbox" class="spec-check" style="width:18px;height:18px;margin-right:8px;">
+	      <input type="text" class="form-control" name="infoQ" required="required" placeholder="주제를 입력 해 주세요. 예) 제조자" style="width:40%;margin-right:4px;">
+	      <input type="text" class="form-control" name="infoA" required="required" placeholder="답변을 입력 해 주세요. 예) 바이온라이프사이언스" style="width:40%;">
+	      <input type="hidden" name="specOrder" value="${nextOrder}"> <!-- ✅ 이 부분 추가 -->
+	    </div>
+	  `);
+	  wrap.append(infoDiv);
 	});
-	$('#info-del-button').on('click',function(){
-		if($('#info-wrap div').length < 3){
-			alert('1개 이하로 삭제할 수 없습니다.');			
-		}else{
-			$('#info-wrap').find('div:last').remove();
-		}
+	$('#info-del-button').on('click', function () {
+	    const $wrap = $('#info-wrap');
+	    const $checkedItems = $wrap.find('.spec-item input[type="checkbox"]:checked');
+	    const totalItems = $wrap.find('.spec-item').length;
+
+	    if ($checkedItems.length === 0) {
+	        alert('삭제할 항목을 선택해주세요.');
+	        return;
+	    }
+
+	    if ($checkedItems.length === totalItems) {
+	        alert('1개 이하로는 삭제할 수 없습니다.');
+	        return;
+	    }
+
+	    // ✅ 선택된 항목들만 순회
+	    $checkedItems.each(function () {
+	        const $specItem = $(this).closest('.spec-item');
+	        const specIdInput = $specItem.find('input[name$=".id"]');
+	        const specId = specIdInput.val();
+
+	        if (specId) {
+	            // ✅ DB에 저장된 항목이면 Ajax 삭제
+	            if (confirm(`이 항목(ID: ${specId})을 삭제하시겠습니까?`)) {
+	                $.ajax({
+	                    url: `/admin/brandProductSpecDelete/${specId}`,
+	                    type: 'DELETE',
+	                    success: function () {
+	                        console.log(`✅ DB 삭제 완료: ${specId}`);
+	                        $specItem.remove();
+	                        reindexSpecs();
+	                    },
+	                    error: function (xhr) {
+	                        console.error('❌ 삭제 실패', xhr);
+	                        alert('삭제 중 오류가 발생했습니다.');
+	                    }
+	                });
+	            }
+	        } else {
+	            // ✅ DB에 없는 항목은 그냥 제거
+	            $specItem.remove();
+	            reindexSpecs();
+	        }
+	    });
 	});
+
 	$("#sighCheck").on('change', function() {
 		alert('gd')
 	  if ($(this).is(':checked')) {

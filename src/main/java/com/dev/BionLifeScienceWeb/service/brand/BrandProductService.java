@@ -28,8 +28,9 @@ import com.dev.BionLifeScienceWeb.repository.brand.BrandProductImageRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductSpecRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-
+import java.util.List;
 
 
 @Service
@@ -530,6 +531,11 @@ public class BrandProductService {
 	    }
 	    saved.setProductSubContent(subContent);
 	    saved.setSign(product.getSign());
+	    
+	    
+	    if (product.getSpecs() != null && !product.getSpecs().isEmpty()) {
+	        saveSpecsWithOrder(product.getId(), product.getSpecs());
+	    }
 
 	    brandProductRepository.save(saved);
 
@@ -643,20 +649,35 @@ public class BrandProductService {
 		return "success";
 	}
 	
-	public void saveSpecsWithOrder(BrandProduct product) {
-	    if (product.getSpecs() != null) {
-	        // 기존 스펙 전체 삭제 후 새로 저장
-	        brandProductSpecRepository.deleteAllByProduct_Id(product.getId());
-	        
-	        for (int i = 0; i < product.getSpecs().size(); i++) {
-	            BrandProductSpec spec = product.getSpecs().get(i);
-	            spec.setSpecOrder(i);  // ✅ 순서 반영
-	            spec.setProduct(product);
-	        }
+	@Transactional
+	public void saveSpecsWithOrder(Long productId, List<BrandProductSpec> specs) {
+	    BrandProduct persisted = brandProductRepository.findById(productId)
+	        .orElseThrow(() -> new IllegalArgumentException("해당 제품이 존재하지 않습니다."));
 
-	        brandProductSpecRepository.saveAll(product.getSpecs());
+	    if (specs == null) return;
+
+	    for (BrandProductSpec s : specs) {
+	        if (s.getId() != null) {
+	            brandProductSpecRepository.findById(s.getId()).ifPresent(existing -> {
+	                existing.setSpecOrder(s.getSpecOrder());
+	                existing.setProductSpecSubject(s.getProductSpecSubject());
+	                existing.setProductSpecContent(s.getProductSpecContent());
+	                brandProductSpecRepository.save(existing);
+	            });
+	        } else {
+	            s.setProduct(persisted);
+	            brandProductSpecRepository.save(s);
+	        }
 	    }
 	}
 	
 	
+	@Transactional
+	public void deleteSpecById(Long id) {
+	    brandProductSpecRepository.findById(id).ifPresent(spec -> {
+	        System.out.println("❌ 스펙 삭제됨: " + id + " (" + spec.getProductSpecSubject() + ")");
+	        brandProductSpecRepository.delete(spec);
+	    });
+	}
+
 }

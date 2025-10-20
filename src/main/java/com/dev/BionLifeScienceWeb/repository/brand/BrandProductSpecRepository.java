@@ -2,7 +2,9 @@ package com.dev.BionLifeScienceWeb.repository.brand;
 
 import java.util.List;
 
+import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,5 +16,8 @@ public interface BrandProductSpecRepository extends JpaRepository<BrandProductSp
 	List<BrandProductSpec> findAllByProductId(Long productId);
 	
 	@Transactional
-    int deleteAllByProduct_Id(Long productId);
+	int deleteAllByProductId(Long id);
+	
+	@Query("SELECT s FROM BrandProductSpec s WHERE s.product.id = :productId ORDER BY s.specOrder ASC")
+	List<BrandProductSpec> findAllByProductIdOrderBySpecOrderAsc(@Param("productId") Long productId);
 }
