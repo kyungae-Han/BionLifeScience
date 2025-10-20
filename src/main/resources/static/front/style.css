@@ -6121,7 +6121,12 @@ body:not(.device-touch):not(.device-sm):not(.device-xs) .product-image > a {
 
 .product-meta > .card-body > span {
   display: inline-block;
-  margin: 0 5px;
+  margin: 0 5px 7px;
+}
+
+
+.product-meta > .card-body > span a:hover {
+  color: #333;
 }
 
 .single-product .fbox-plain.fbox-sm .fbox-icon {
