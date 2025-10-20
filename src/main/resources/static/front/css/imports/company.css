@@ -2016,7 +2016,7 @@ il-callout.p-item {
     background: var(--depth-bg);
     color: #fff;
   }
-}
+
 	#gotoTop {
 		margin-bottom: 50px;
 	}
@@ -3195,6 +3195,9 @@ tbody td:not(.table__subject){
 	  padding-right: 5px !important;
 	  box-sizing: border-box;
 	}
+	
+	
+	#page-title p {padding: 0 25px;}
 	
 	
 	/* 가로 레일 + 카드 그리드 */

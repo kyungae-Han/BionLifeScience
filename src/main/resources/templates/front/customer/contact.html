@@ -5,6 +5,20 @@
 </head>
 <link rel="stylesheet" th:href="@{/front/css/bootstrap.css}">
 
+
+<style>
+@media (max-width:991px){
+	
+	#policyFrame {
+	  width: 100%;
+	  border: 0;
+	  display: block;
+	  border-radius: 8px;
+	}
+}
+</style>
+
+
 <body class="stretched">
 	<div id="wrapper" class="clearfix">
 		<section id="openContact">
@@ -87,8 +101,7 @@
 								<div id="policyEmbed" style="margin-top:10px;">
 								  <div style="border:1px solid #eee; background:#fff; border-radius:10px; padding:12px 6px 12px 12px;">
 								  	<h4>※ 개인 정보 처리방침 이용약관</h4>
-								    <iframe id="policyFrame" src="/front/company/privacy-policy/iframe" 
-								    style="width:100%; height:25vh; border:0; display:block; border-radius:8px;"></iframe>
+								    <iframe id="policyFrame" src="/front/company/privacy-policy/iframe" ></iframe>
 								  </div>
 								</div>
 								<div class="form-check">
@@ -120,6 +133,7 @@
       .addEventListener('click', (e) => window.open(e.currentTarget.dataset.url, '_blank'));
   });
 </script>
+
 
 </body>
 </html>
