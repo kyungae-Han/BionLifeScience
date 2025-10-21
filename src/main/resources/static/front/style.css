@@ -2546,7 +2546,7 @@ html[xmlns] .slider-wrap {
    will-change: left, top, transform;
    z-index: 299;
    background: #fff;
-   border-bottom: 1px solid #eee;
+   border-bottom: 1px soild #eee;
 }
 
 .header-wrap-clone {
@@ -2568,7 +2568,7 @@ html[xmlns] .slider-wrap {
   max-width: 100%;
 }
 
-/* .brand-page #header.full-header.bg-active {
+.brand-page #header.full-header.bg-active {
   height: 70px;
   background: #fff;
   border-bottom: 1px solid rgba(0,0,0,.08);
@@ -2580,7 +2580,7 @@ html[xmlns] .slider-wrap {
   background: #fff;
   border-bottom: 1px solid rgba(0,0,0,.08);
 }
- */
+
 
 /* ----------------------------------------------------------------
 	Logo

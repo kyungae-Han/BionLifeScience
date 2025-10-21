@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 .brand-page #header-wrap {
-  background: transparent !important;  /*기본은 투명*/
+  background: transparent !important;  /* 기본은 투명 */
 }
 
 .brand-page #header {
@@ -9,7 +9,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  background: rgba(255, 255, 255, 0); /*초기 투명*/
+  background: rgba(255, 255, 255, 0); /* 초기 투명 */
   transition: background 0.4s ease;
   z-index: 1000;
 }
@@ -19,33 +19,42 @@
 }
 
 
- /*자식 요소 border 제거*/
+/* 자식 요소 border 제거 */
 .brand-page #header.full-header * {
   border: none !important;
 }
+
+
+
 .brand-page #header.full-header.bg-active {
+  height: 70px;
   background: #fff;
   border-bottom: 1px solid rgba(0,0,0,.08);
 }
 
-/* 397px 이상 내려오면 높이 축소 */
+
 .brand-page #header.full-header.scrolled {
   height: 70px;
   background: #fff;
   border-bottom: 1px solid rgba(0,0,0,.08);
 }
 
-/* 
+
+.brand-page #header.full-header.scrolled #logo img {
+	height: 70px !important;
+}
+
+
 #header .container > * {
   height: auto;
   transition: height .3s ease;
 }
 
-스크롤 내려서 scrolled 붙은 경우
+/* 스크롤 내려서 scrolled 붙은 경우 */
 #header.scrolled .container > * {
   height: 70px;
 }
- */
+
 
 .brand-page #header .header-row,
 .brand-page #header.full-header .container {
@@ -77,13 +86,13 @@
 }
 
 
-/* 
+
  @media (max-width: 998px) {
    
    .brand-page .header-row {width: 100%; border-bottom: 1px solid #eee;}
    .svg-trigger {right: 0;}
 }
-  */
+ 
 
 /* Visual 영역 */
 .brand-visual {
