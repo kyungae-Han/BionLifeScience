@@ -1921,6 +1921,14 @@ a.h-text-dark:hover {
   max-height: none !important;
 }
 
+
+@media (max-width: 991.98px) {
+  .vh-75 {
+    height: auto !important;
+  }
+}
+
+
 /* ----------------------------------------------------------------
 	Position Utility Classes: Extended
 -----------------------------------------------------------------*/
@@ -4071,6 +4079,15 @@ body:not(.has-plugin-html5video) .video-wrap video {
   transition: background-color 0.3s ease-in-out;
 }
 
+
+
+@media (max-width:991px){
+	#slider .slider-arrow-left,
+    #slider .slider-arrow-right {
+    	top: 50% !important;
+    }
+}
+
 .slider-arrow-top-sm,
 .slider-arrow-bottom-sm {
   top: auto;
@@ -4209,6 +4226,29 @@ body:not(.has-plugin-html5video) .video-wrap video {
 .slide-toggle.is-paused::before{ content:"▶"; }
 
 /* 재생 표시 */
+
+
+
+
+@media (max-width:991px){
+	
+	#slider .swiper-container {
+		height: 100vh !important;
+	}
+	
+	#slider .slider-arrow-left,
+    #slider .slider-arrow-right {
+    	top: 50%;
+    }
+    
+    #slider .swiper-pagination {
+    	bottom: 54px;
+    }
+    
+    #slider .slide-number {
+    	bottom: 54px;
+    }
+}
 
 
 
@@ -20509,7 +20549,7 @@ body:not(.stretched) #wrapper {
   /*  제품 카드 2열 고정 */
   #brandGlobalModalProducts:has(.text-muted) {
   display: flex !important;
-  justify-content: left;
+  justify-content: center;
   flex-wrap: wrap;
   width: 100%;
 }

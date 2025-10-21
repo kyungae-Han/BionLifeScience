@@ -1439,6 +1439,10 @@ html.is-switching-tab, body.is-switching-tab{ overflow-anchor:none !important; }
 }
 
 
+@media(max-width:441px){
+	#institute .il-chip {width: 100% !important;}
+}
+
 
 /* Cards */
 #institute .il-cards {
@@ -1681,50 +1685,6 @@ il-callout.p-item {
  .chip-caption{padding: 7px 0 20px 10px;}
 }
 
-
-/* Photo-Gullary */
-.irregular-image-grid {
-  padding: 60px 0 0;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-.irregular-image-grid .grid-layout {
-  display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(6, 1fr);
-  grid-auto-rows: auto;
-}
-
-.irregular-image-grid .card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-  min-height:350px;
-  padding: 0; 
-}
-
-.irregular-image-grid .card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.irregular-image-grid .card.small {
-  grid-column: span 2;
-  height: 200px;
-}
-
-.irregular-image-grid .card.medium {
-  grid-column: span 3;
-  height: 250px;
-}
-
-.irregular-image-grid .card.wide {
-  grid-column: span 6;
-  height: 300px;
-}
 
 /* ===== Certificates scoped to #certificates to avoid collisions ===== */
 #certificates {
@@ -3281,16 +3241,105 @@ tbody td:not(.table__subject){
 }
 
 
-/* 🔹 모바일 이하 해상도 */
-@media (max-width: 991px) {
-	
-	.notice_body table th {min-width: 60px;}
-	  
-	  .table__subject {max-width:280px;}
-	
-	  .search-container .search_module {top:0;left: 50%;transform: translateX(-55%);}
-	
-  /* 🔹 레이아웃 강제 리셋 */
+
+
+
+/* Photo-Gullary */
+.irregular-image-grid {
+  padding: 60px 0 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.irregular-image-grid .grid-layout {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: auto;
+}
+
+.irregular-image-grid .card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  min-height:350px;
+  padding: 0; 
+}
+
+.irregular-image-grid .card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.irregular-image-grid .card.small {
+  grid-column: span 2;
+  height: 200px;
+}
+
+.irregular-image-grid .card.medium {
+  grid-column: span 3;
+  height: 250px;
+}
+
+.irregular-image-grid .card.wide {
+  grid-column: span 6;
+  height: 300px;
+}
+
+.irregular-image-grid {
+  width: 100%;
+  display: block;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.irregular-image-grid .grid-layout {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* ✅ PC 그대로 3열 유지 */
+  gap: 12px;
+}
+
+/* 모든 카드 공통 */
+.irregular-image-grid .card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #f6f6f6;
+  transform: translateZ(0);
+}
+
+.irregular-image-grid .card img,
+.irregular-image-grid .card video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  backface-visibility: hidden;
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1px;
+}
+
+/* ✅ PC 비율 유지 */
+.irregular-image-grid .card.small {
+  grid-column: span 1;
+  aspect-ratio: 1 / 1;
+}
+
+.irregular-image-grid .card.medium {
+  grid-column: span 2;
+  aspect-ratio: 4 / 3;
+}
+
+
+@media (max-width: 991.98px) {
+  .irregular-image-grid .grid-layout {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+
+/* 🔹 레이아웃 강제 리셋 */
   .irregular-image-grid > .grid-layout {
     all: unset; /* 기존 모든 속성 초기화 */
     display: grid !important;
@@ -3328,13 +3377,57 @@ tbody td:not(.table__subject){
     aspect-ratio: 16 / 9 !important;
     order: 99 !important;
   }
+  
+  
 
-  /* 🔸 기존 small/medium 클래스 완전 무시 */
-  .irregular-image-grid > .grid-layout > .card.small,
-  .irregular-image-grid > .grid-layout > .card.medium {
-    grid-column: span 1 !important;
-    grid-row: auto !important;
+  /* 작은 카드들 */
+  .irregular-image-grid .card.small {
+    aspect-ratio: 1 / 1;
+    grid-column: auto;
+    order: 1; /* 기본 순서 */
   }
+
+  .irregular-image-grid > .grid-layout > .card.medium:nth-child(1){
+  	grid-column: 1 / span 2 !important;
+    aspect-ratio: 16 / 9 !important;
+    order: 100 !important;
+  
+  }
+
+
+
+  /* 비디오 카드: 항상 맨 마지막 */
+  .irregular-image-grid .card:has(video) {
+    grid-column: 1 / span 2;
+    aspect-ratio: 16 / 9;
+    order: 99;
+  }
+
+  /* Safari 14 이하 호환 */
+  @supports not (selector(:has(*))) {
+    .irregular-image-grid .card.video-card {
+      grid-column: 1 / span 2;
+      aspect-ratio: 16 / 9;
+      order: 99;
+    }
+  }
+}
+
+/* 초소형 모바일 (≤576px): 세로 나열 */
+@media (max-width: 576px) {
+  .irregular-image-grid .grid-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+/* 🔹 모바일 이하 해상도 */
+@media (max-width: 991px) {
+	
+	.notice_body table th {min-width: 60px;}
+	.table__subject {max-width:280px;}
+	.search-container .search_module {top:0;left: 50%;transform: translateX(-55%);}
 }
 
 

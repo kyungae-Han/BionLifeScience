@@ -494,6 +494,7 @@
     margin: 0;
     scroll-snap-type: x mandatory;
     flex-direction: row;
+    justify-content: center;
   }
 
   .category-tabs li {

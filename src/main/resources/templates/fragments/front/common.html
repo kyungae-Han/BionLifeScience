@@ -81,16 +81,6 @@
 									        </li>
 									        <!-- /OWN -->
 									
-									        <!-- OTHER NOBRAND 그룹 -->
-									        <li class="menu-item"
-									            th:each="gb : ${genericBrands}"
-									            th:attr="data-id=${'brand-' + gb.id}">
-									          <a class="menu-link" th:href="@{|/brandProductSorted/brand/${gb.id}|}">
-									            <div><i class="icon-stack"></i> OTHER</div>
-									          </a>
-									        </li>
-									        <!-- /OTHER -->
-									
 									        <!-- PARTNER 그룹 (취급브랜드) -->
 									        <li class="menu-item">
 									          <a class="menu-link" href="/brands">
@@ -153,6 +143,16 @@
 									          </ul>
 									        </li>
 									        <!-- /PARTNER -->
+									        
+									        <!-- OTHER NOBRAND 그룹 -->
+									        <li class="menu-item"
+									            th:each="gb : ${genericBrands}"
+									            th:attr="data-id=${'brand-' + gb.id}">
+									          <a class="menu-link" th:href="@{|/brandProductSorted/brand/${gb.id}|}">
+									            <div><i class="icon-stack"></i> OTHER</div>
+									          </a>
+									        </li>
+									        <!-- /OTHER -->
 									
 									      </ul>
 									    </li>

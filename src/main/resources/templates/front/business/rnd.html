@@ -162,7 +162,7 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 						      </div>
 						      <div class="step-card last">
 						        <div class="icon">
-						        	<i class="fa-solid fa-truck-fast"></i>
+						        	<i class="bi bi-truck"></i>
 						        </div>
 						        <h6>향상된 제품공급</h6>
 						        <div class="hover-content">
@@ -399,9 +399,11 @@ function splitTextNode(node){
 	  return frag;
 	}
 	
+	
+	
 	document.addEventListener("DOMContentLoaded", function () {
 		  const grid = document.querySelector(".irregular-image-grid .grid-layout");
-		  const videoCard = grid?.querySelector(".card:has(video)");
+		  const videoCard = grid?.querySelector(".card video")?.closest(".card");
 
 		  if (!grid || !videoCard) return;
 
@@ -419,6 +421,7 @@ function splitTextNode(node){
 		      videoCard.style.width = "100%";
 		      videoCard.style.display = "block";
 		      videoCard.style.overflow = "hidden";
+		      
 		    } else {
 		      // PC 복귀 시 원복
 		      grid.style.removeProperty("grid-template-columns");
@@ -429,7 +432,7 @@ function splitTextNode(node){
 		  reorderVideoCard();
 		  window.addEventListener("resize", reorderVideoCard);
 		});
-
+	
 </script>
 	
 </body>
