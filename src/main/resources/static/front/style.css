@@ -2546,7 +2546,7 @@ html[xmlns] .slider-wrap {
    will-change: left, top, transform;
    z-index: 299;
    background: #fff;
-   border-bottom: 1px soild #eee;
+   border-bottom: 1px solid #eee;
 }
 
 .header-wrap-clone {
