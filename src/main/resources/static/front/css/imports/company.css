@@ -1439,7 +1439,7 @@ html.is-switching-tab, body.is-switching-tab{ overflow-anchor:none !important; }
 }
 
 
-@media(max-width:441px){
+@media(max-width:478px){
 	#institute .il-chip {width: 100% !important;}
 }
 
