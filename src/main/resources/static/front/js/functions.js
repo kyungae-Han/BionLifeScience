@@ -2116,8 +2116,8 @@ window.scwEvents = window.scwEvents || {};
 
 			    if (!header) return;
 
-			    const logoImg = document.querySelector("#logo img");
-			    if (logoImg) logoImg.removeAttribute("style");
+			    //const logoImg = document.querySelector("#logo img");
+			    //if (logoImg) logoImg.removeAttribute("style");
 
 			    const scrollThreshold = 100;
 
@@ -2338,7 +2338,6 @@ window.scwEvents = window.scwEvents || {};
 		stickyMenuClasses = $header.attr('data-sticky-class'),
 		responsiveMenuClasses = $header.attr('data-responsive-class'),
 		logo = $('#logo'),
-		
 		defaultLogo = logo.find('.standard-logo'),
 		defaultLogoWidth = defaultLogo.find('img').outerWidth(),
 		retinaLogo = logo.find('.retina-logo'),

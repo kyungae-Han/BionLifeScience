@@ -26,12 +26,12 @@
 
 
 
-.brand-page #header.full-header.bg-active {
+/* .brand-page #header.full-header.bg-active {
   height: 70px;
   background: #fff;
   border-bottom: 1px solid rgba(0,0,0,.08);
 }
-
+ */
 
 .brand-page #header.full-header.scrolled {
   height: 70px;
@@ -40,18 +40,14 @@
 }
 
 
-.brand-page #header.full-header.scrolled #logo img {
-	height: 70px !important;
-}
 
-
-#header .container > * {
+.brand-page #header .container > * {
   height: auto;
   transition: height .3s ease;
 }
 
 /* 스크롤 내려서 scrolled 붙은 경우 */
-#header.scrolled .container > * {
+.brand-page #header.scrolled .container > * {
   height: 70px;
 }
 
@@ -61,7 +57,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: height .35s ease;
+  /* transition: height .35s ease; */
 }
 
 .brand-page #header.full-header.scrolled .container {
@@ -69,20 +65,26 @@
 }
 
 
-/* #logo img {
+ .brand-page #logo img {
   display: block;
   max-height: 100px;
   width: auto;
   transition: max-height 0.35s ease, transform 0.35s ease;
   transform: translateY(0);
 }
-#header.scrolled #logo img {
+.brand-page #header.scrolled #logo img {
   max-height: 70px;
 }
- */
+
+ 
+ 
+.brand-page #header.full-header.scrolled #logo img {
+	height: 70px !important;
+}
+
 
 .brand-page #header:hover {
-  background: rgba(255, 255, 255, 1); /* hover 시 fade-in */
+  background: rgba(255, 255, 255, 1);
 }
 
 
