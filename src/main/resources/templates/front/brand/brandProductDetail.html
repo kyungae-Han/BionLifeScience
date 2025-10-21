@@ -61,10 +61,10 @@
 
 										<div class="col-md-6 product-desc">
 											<ul class="iconlist">
-												<li th:each="i:${product.infos}"><i class="icon-caret-right"></i>
+												<li class="mb-1" th:each="i:${product.infos}"><i class="icon-caret-right"></i>
 													<span th:text="${i.productInfoText}"></span></li>
 											</ul>
-											<div class="card product-meta">
+											<div class="card product-meta mt-3">
 												<div class="card-body">
 													<th:block th:each="s:${product.specs}">
 														<span class="posted_in">[[${s.productSpecSubject}]]
@@ -96,7 +96,7 @@
 														style="text-align: center;">
 														<!-- <img width="1200px" style="margin: 0 auto;"
 															th:src="${product.tableImageRoad}"> -->
-														 <img width="1200px" style="margin: 0 auto;"
+														 <img style="margin: 0 auto;"
 															th:src="${product.specImageRoad}">
 													</div>
 													<div class="tab-content clearfix text-left" id="tabs-2"
