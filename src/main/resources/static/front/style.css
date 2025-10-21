@@ -2546,6 +2546,7 @@ html[xmlns] .slider-wrap {
    will-change: left, top, transform;
    z-index: 299;
    background: #fff;
+   border-bottom: 1px solid #eee;
 }
 
 .header-wrap-clone {
@@ -2567,7 +2568,7 @@ html[xmlns] .slider-wrap {
   max-width: 100%;
 }
 
-.brand-page #header.full-header.bg-active {
+/* .brand-page #header.full-header.bg-active {
   height: 70px;
   background: #fff;
   border-bottom: 1px solid rgba(0,0,0,.08);
@@ -2579,7 +2580,7 @@ html[xmlns] .slider-wrap {
   background: #fff;
   border-bottom: 1px solid rgba(0,0,0,.08);
 }
-
+ */
 
 /* ----------------------------------------------------------------
 	Logo
@@ -4070,7 +4071,7 @@ body:not(.has-plugin-html5video) .video-wrap video {
   position: absolute;
   cursor: pointer;
   z-index: 10;
-  top: 40%;
+  top: 50%;
   left: 0;
   background-color: rgba(0, 0, 0, 0.3);
   width: 52px;
@@ -4088,7 +4089,7 @@ body:not(.has-plugin-html5video) .video-wrap video {
 @media (max-width:991px){
 	#slider .slider-arrow-left,
     #slider .slider-arrow-right {
-    	top: 50% !important;
+    	top: 55% !important;
     }
 }
 
@@ -20590,3 +20591,11 @@ body:not(.stretched) #wrapper {
 }
 }
 
+
+.adress-body #page-title {text-algin: center;}
+
+@media(max-width:991px){
+	.adress-body #page-title{
+		margin-top: 100px;
+	}
+}

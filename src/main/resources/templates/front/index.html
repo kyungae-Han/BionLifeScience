@@ -202,7 +202,7 @@
       <!-- 공지사항 -->
 	  <div class="news-track is-active" id="noticeTrack">
 	  	<div class="news-card" th:each="i:${notice}">
-	  		<a th:href="@{/notice#faq-} + ${i.id}">
+	  		<a th:href="@{'/noticeDetail/' + ${i.id}}">
 		  		<p class="meta notice"><i class="icon-time"></i> 공지일 : [[${i.date}]]</p>
 		  		<h3 class="headline" th:text="${i.subject}">
 		            이곳은 공지사항의 제목이 들어가는 곳 입니다..
