@@ -12143,6 +12143,11 @@ h3.titular-title {
   margin-bottom: 50px;
 }
 
+.heading-block p {
+	white-space: wrap !important;
+}
+
+
 .heading-block h1,
 .heading-block h2,
 .heading-block h3,
