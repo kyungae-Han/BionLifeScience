@@ -911,24 +911,44 @@ button {background: none; border:0; }
 }
 
 .about-history-section {
-	background: var(--bg);
-	height: auto;
-	overflow: visible;
+  background: var(--bg);
+  height: auto;
+  overflow-x: hidden; /* visible 대신 hidden 또는 auto */
+  overflow-y: visible;
 }
 
-.about-history-section, .bio-history-tab-content {
-	overflow: hidden;
-	display: block;
-	position: relative;
-	top: clamp(120px,10dvh,240px);
-	bottom: auto;
-	z-index: 1;
+/* iPhone에서도 수평 스크롤 인식되도록 분리 */
+.bio-history-tab-content {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  touch-action: pan-x pan-y;
+  display: block;
+  position: relative;
+  z-index: 1;
 }
 
+@supports (-webkit-touch-callout: none) {
+  .bio-history-tab-content {
+    transform: none !important;
+    will-change: auto !important;
+  }
+}
+
+/* 레이아웃 관련 스타일은 섹션에만 유지 */
+.about-history-section {
+  transform: translate3d(0,0,0);
+  will-change: transform;
+  top: clamp(120px, 10dvh, 240px);
+  bottom: auto;
+}
+
+/* 일반 구조 유지 */
 .about-history-wrap {
-	max-width: 1280px;
-	margin:  0 auto;
-	padding-top: clamp(100px, 1vh, 120px);
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-top: clamp(100px, 1vh, 120px);
 }
 
 
@@ -2247,7 +2267,7 @@ il-callout.p-item {
 	}
 	
 	.bio-history-timeline__group {
-		--gutter: 16px;
+		--gutter: 0;
 		--railY: 78px;
 		display: grid;
 		grid-auto-flow: column;
@@ -2314,23 +2334,6 @@ il-callout.p-item {
 		left: 0;
 	}
 }
-
-
-
-@media ( prefers-reduced-motion : reduce) {
-	.bio-history-card, .bio-history-tab-nav li a {
-		transition: none !important;
-	}
-}
-
-.bio-history-timeline { touch-action: pan-y; } 
-
-.bio-history-timeline {
-  overscroll-behavior-inline: contain;
-  overscroll-behavior-block: auto;
-}
-
-
 
 
 /*-------------------------------------------------------
@@ -2638,9 +2641,13 @@ il-callout.p-item {
 }
 
 .section-1 h2 {font-size:2.5rem !important;}
+
+
 }
 
-/* 바이온연구소 contact-us */
+
+
+
 .overview-contact-us {
 	position: relative;
 	margin: 0 auto;
@@ -2676,19 +2683,6 @@ il-callout.p-item {
 .overview-contact-us{ overflow: visible; }
 
 
-@media (max-width: 991.98px){
-  .overview-contact-us > .container{
-    grid-template-columns: 1fr;
-  }
-
-  .overview-contact-us div.section-left{
-	position: relative !important;
-	top: 0;
-  	margin: 0;
-  }
-  
-}
-
 .overview-contact-us div.section-left h3 {
 	font-size: 2rem;
 } 
@@ -2701,6 +2695,40 @@ il-callout.p-item {
 .overview-contact-us div.section-right{
 	position:relative;
 	width:100%;
+}
+
+
+@media (max-width: 991.98px){
+	
+	.overview-contact-us .container {
+		padding-inline: 0 !important;
+	}
+	
+	 .overview-contact-us {
+	 	padding: 0 !important;
+	 }
+ 
+ .overview-contact-us > .container {
+     grid-template-columns : 1fr;
+	  max-width: 100%;
+	  overflow-x: hidden;
+	  margin: 0 auto;
+	  box-sizing: border-box;
+	}
+
+  .overview-contact-us div.section-left{
+    top: 0 !important;
+	position: relative !important;
+	min-width: auto !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
+  
+  
+	.overview-contact-us div.section-left h3 {
+		font-size: 1.5rem;
+	} 
+  
 }
 
 .overview-contact-us div.section-right .form-group + .form-group {
@@ -2744,6 +2772,27 @@ il-callout.p-item {
 	border-color: var(--depth-bg);
 }
 
+
+
+
+@media(max-width: 991px){
+	input[type="file"] {
+  font-size: 0.85rem;              /* “선택된 파일 없음” 글씨 줄이기 */
+}
+
+input[type="file"]::file-selector-button {
+  font-size: 0.8rem;               /* “파일 선택” 버튼 글씨 줄이기 */
+  padding: 6px 12px;               /* 버튼 내부 여백 */
+  border: 1px solid var(--bs-gray-400);
+  border-radius: 6px;
+  background: var(--bs-gray-100);
+  color: var(--bs-gray-800);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+	
+	
+}
 
 .fixed-icon{
 	position:absolute;

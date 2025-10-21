@@ -327,6 +327,7 @@
 
       scroller.addEventListener("pointerdown", (e) => {
         if (e.isPrimary === false || e.button === 2) return;
+		e.preventDefault();
         dragging   = true;
         pointerId  = e.pointerId;
         startX     = e.clientX;
