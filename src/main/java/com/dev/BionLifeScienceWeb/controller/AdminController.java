@@ -21,6 +21,8 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -39,6 +42,8 @@ import com.dev.BionLifeScienceWeb.model.CompanyEmail;
 import com.dev.BionLifeScienceWeb.model.CompanyInfo;
 import com.dev.BionLifeScienceWeb.model.HistoryContent;
 import com.dev.BionLifeScienceWeb.model.HistorySubject;
+import com.dev.BionLifeScienceWeb.model.Member;
+import com.dev.BionLifeScienceWeb.model.MemberAccount;
 import com.dev.BionLifeScienceWeb.model.Notice;
 import com.dev.BionLifeScienceWeb.model.NoticeSubject;
 import com.dev.BionLifeScienceWeb.repository.ClientRepository;
@@ -46,11 +51,13 @@ import com.dev.BionLifeScienceWeb.repository.CompanyEmailRepository;
 import com.dev.BionLifeScienceWeb.repository.CompanyInfoRepository;
 import com.dev.BionLifeScienceWeb.repository.HistoryContentRepository;
 import com.dev.BionLifeScienceWeb.repository.HistorySubjectRepository;
+import com.dev.BionLifeScienceWeb.repository.MemberRepository;
 import com.dev.BionLifeScienceWeb.repository.NoticeRepository;
 import com.dev.BionLifeScienceWeb.repository.NoticeSubjectRepository;
 import com.dev.BionLifeScienceWeb.service.ClientService;
 import com.dev.BionLifeScienceWeb.service.CompanyInfoService;
 import com.dev.BionLifeScienceWeb.service.NoticeService;
+import com.dev.BionLifeScienceWeb.utils.PasswordEncoding;
 
 import org.jsoup.Jsoup;
 
@@ -72,6 +79,10 @@ public class AdminController {
 	private final ClientService clientService;
 	private final CompanyInfoService companyInfoService;
 	private final NoticeService noticeService;
+	
+	
+	private final MemberRepository memberRepository;
+	private final PasswordEncoding passwordEncoder;
 	
 	@RequestMapping(
 		    value = {"/index", "", "/clientManager"},
@@ -165,8 +176,11 @@ public class AdminController {
 	
 	@GetMapping("/memberLoginForm")
 	public String memberLoginForm() {
+		
 		return "admin/login";
 	}
+	
+	
 	
 	@GetMapping("/historyManager")
 	public String historyManager(
@@ -501,6 +515,49 @@ public class AdminController {
 		
 		return "admin/siteManager :: #companyEmailCheck";
 	}
+	
+	
+	
+	@GetMapping("/passwordForm")
+	public String passwordForm() {
+	    return "admin/passwordForm";
+	}
+
+	@PostMapping("/passwordUpdate")
+	public String updatePassword(@RequestParam String oldPwd,
+	                             @RequestParam String newPwd) {
+
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    Object principal = authentication.getPrincipal();
+
+	    Member member = null;
+
+	    if (principal instanceof MemberAccount) {
+	        member = ((MemberAccount) principal).getMember();
+	    } else if (principal instanceof Member) {
+	        // 혹시 Member 자체로 로드되었을 경우 fallback
+	        member = (Member) principal;
+	    } else {
+	        return "redirect:/memberLoginForm?error=principal";
+	    }
+
+	    Member dbMember = memberRepository.findById(member.getId()).orElse(null);
+	    if (dbMember == null) {
+	        return "redirect:/admin/passwordForm?error=db";
+	    }
+
+	    if (!passwordEncoder.matches(oldPwd, dbMember.getPassword())) {
+	        return "redirect:/admin/passwordForm?error=wrong";
+	    }
+
+	    dbMember.setPassword(passwordEncoder.encode(newPwd));
+	    memberRepository.save(dbMember);
+
+	    SecurityContextHolder.clearContext();
+	    return "redirect:/memberLoginForm?passwordChanged";
+	}
+
+
 }
 
 

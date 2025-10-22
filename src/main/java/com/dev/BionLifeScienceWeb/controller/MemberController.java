@@ -10,5 +10,4 @@ public class MemberController {
 	public String memberLoginForm() {
 		return "admin/login";
 	}
-
 }
