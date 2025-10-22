@@ -16052,7 +16052,11 @@ label.checkbox {
 
 .depth-4 {width: 100%;}
 
-.mega-grid .col li a {color: #fff;}
+.mega-grid .col li a {
+	-webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+	color: #fff;
+	}
 
 .product-mega-wrap .inner .menu-link{display:block; padding: clamp(8px, 1.2vw, 10px) clamp(8px, 2.2vw, 12px) !important; white-space:nowrap;}
 
@@ -16061,7 +16065,7 @@ label.checkbox {
 .menu-link.is-active{font-weight:700; color:#fff;}
 
 .mega-grid .col li a:hover  {
-	color: #ff6a00;
+	color: var(--accent);
 }
 
 /* 필터링 */
@@ -18108,7 +18112,7 @@ nav .menu-link {
 .sub-menu-container .menu-item:hover > .menu-link {
     background-color: #f9f9f9;
     padding-left: 18px;
-    color: #fe5000;
+    color: var(--bs-orange);
   }
 
 .menu-link div > i.icon-angle-down {
@@ -18317,8 +18321,7 @@ nav .menu-link {
 
 .style-3 .menu-container > .menu-item.current > .menu-link {
     color: #fff;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-    background-color: #fe5000;
+    background-color: var(--bs-orange);
   }
 
 /* Primary Menu - Style 4
@@ -18334,7 +18337,7 @@ nav .menu-link {
 
 .style-4 .menu-container > .menu-item:hover > .menu-link,
   .style-4 .menu-container > .menu-item.current > .menu-link {
-    border-color: #fe5000;
+    border-color: var(--bs-orange);;
   }
 
 /* Primary Menu - Style 5
@@ -20599,10 +20602,22 @@ body:not(.stretched) #wrapper {
 }
 
 
-.adress-body #page-title {text-algin: center;}
+.adress-body #page-title {text-align: center;}
 
 @media(max-width:991px){
 	.adress-body #page-title{
 		margin-top: 100px;
 	}
 }
+
+
+/* 메뉴 디버깅용 css */
+
+/* .debug-open {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translateX(-50%) !important;
+  display: block !important;
+} */
+
