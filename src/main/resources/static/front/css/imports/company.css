@@ -587,6 +587,7 @@ button {background: none; border:0; }
   border: 1px solid #d8e1ee;
 }
 
+
 .step-card i {font-size:3rem;}
 .step-card.last i {padding-bottom:10px;}
 
@@ -621,6 +622,13 @@ button {background: none; border:0; }
   width: 100%;
 }
 
+.hover-content {
+	text-align: left;
+	font-size: 0.9rem;
+}
+
+
+
 .grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr); /* 5개 항목 가로 한 줄 */
@@ -628,15 +636,34 @@ button {background: none; border:0; }
   overflow-x: auto;
 }
 
-.hover-content {
-	text-align: left;
-	font-size: 0.9rem;
-}
 
 
 @media (max-width: 1024px) {
-  .grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 반응형 */
+    .grid {
+    grid-template-columns: repeat(2, 1fr); /* 3열로 고정 */
+  }
+
+  /* 두 번째 줄(4,5번째 카드) 전체 폭을 균등하게 채우기 */
+  .grid .step-card:nth-child(4),
+  .grid .step-card:nth-child(5) {
+    grid-column: span 1; /* 각각 1칸씩 차지 (총 2칸 차지) */
+  }
+
+  /* 4~5가 3번째 열을 비워두지 않고 가운데 정렬 */
+  .product-development .grid .step-card.last {
+   grid-column: 1 / -1; 
+  }
+  
+  .product-development .grid .step-card.last .hover-content {text-align:center;}
+  
+}
+
+
+/* 모바일에서 마지막 카드 1열로 확장 */
+@media (max-width: 767.98px) {
+
+  .product-development .grid .step-card.last {
+   grid-column: 1 / -1; 
   }
 }
 

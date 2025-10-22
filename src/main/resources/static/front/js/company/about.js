@@ -708,7 +708,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // 카드 리빌(IntersectionObserver)
-document.addEventListener('DOMContentLoaded', () => {
+/*document.addEventListener('DOMContentLoaded', () => {
   const observer = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -723,7 +723,25 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.5 });
 
   document.querySelectorAll('.il-image-card__content').forEach(card => observer.observe(card));
+});*/
+
+
+window.addEventListener('load', () => {
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }, 150);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.il-image-card__content').forEach(card => observer.observe(card));
 });
+
+
 
 (() => {
   /* =========================
