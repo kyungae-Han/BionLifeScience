@@ -2773,14 +2773,13 @@ body:not(.top-search-open) .top-search-parent #hamburger-menu-trigger {
 
 nav .menu-item:hover > .menu-link,
 .menu-item.current > .menu-link {
-  color: #fe5000;
+  color: var(--bs-orange);
 }
 
-@media (max-width:1024){
-	nav .menu-item:hover > .menu-link,
-	.menu-item.current > .menu-link {
-	  color: #292929;
-	}
+
+.nav .menu-item:hover > .menu-link,
+.menu-item.current > .menu-link {
+  color: var(--bs-orange);
 }
 
 
@@ -3738,7 +3737,7 @@ body:not(.stretched) .slider-parallax .slider-inner {
 #slider {
   position: relative;
   width: 100%;
-  height: 100vh; /* 한 화면 높이 */
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -3752,17 +3751,21 @@ body:not(.stretched) .slider-parallax .slider-inner {
 #slider .swiper-slide {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 75vh;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+
+@media (max-width:991px){
+	#slider .swiper-slide {height: 100vh;}
+}
+
 .swiper_wrapper .swiper-container {
   position: relative;
   width: 100%;
-  height: 100%;
   margin: 0;
   overflow: hidden;
 }
