@@ -36,7 +36,7 @@
 		    <!-- 단일 객체 사용: th:each 쓰지 말기 -->
 		    
 		    <div class="sec-head left">
-			    <h3 th:text="'제목 : ' +${notice.subject}">제목</h3>
+			    <h3 class="mt-3" th:text="'제목 : ' +${notice.subject}">제목</h3>
 			    <span th:if="${notice != null and notice.date != null}"
 			            th:text="'날짜 : '+${#dates.format(notice.date, 'yyyy-MM-dd')}">2023-06-27</span>
 			</div>
