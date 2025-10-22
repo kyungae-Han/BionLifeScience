@@ -104,7 +104,7 @@ button {background: none; border:0; }
   
 .about .breadcrumb-wrap.fixed-bottom {
     top: auto !important;
-    bottom: 0;
+    bottom: 30px;
   }
 
   /* 숨김 상태 */
