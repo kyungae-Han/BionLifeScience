@@ -26,13 +26,6 @@
 
 
 
-/* .brand-page #header.full-header.bg-active {
-  height: 70px;
-  background: #fff;
-  border-bottom: 1px solid rgba(0,0,0,.08);
-}
- */
-
 .brand-page #header.full-header.scrolled {
   height: 70px;
   background: #fff;
@@ -46,18 +39,13 @@
   transition: height .3s ease;
 }
 
-/* 스크롤 내려서 scrolled 붙은 경우 */
-.brand-page #header.scrolled .container > * {
-  height: 70px;
-}
-
 
 .brand-page #header .header-row,
 .brand-page #header.full-header .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* transition: height .35s ease; */
+  transition: height .35s ease;
 }
 
 .brand-page #header.full-header.scrolled .container {

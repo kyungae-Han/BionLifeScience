@@ -61,7 +61,7 @@
 		</section>
 		
 		
-			<section id="history" class="about-history-section" aria-label="연혁">
+			<section id="history" class="about-history-section mt-10" aria-label="연혁">
 			<div th:each="blk : ${subjectBlocks}">
 				<h3 th:text="${blk.subject.title}">제목</h3>
 				<div th:each="h : ${blk.histories}">
