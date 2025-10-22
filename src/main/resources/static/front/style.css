@@ -2771,14 +2771,12 @@ body:not(.top-search-open) .top-search-parent #hamburger-menu-trigger {
 }
 
 
-nav .menu-item:hover > .menu-link,
-.menu-item.current > .menu-link {
+nav .menu-item.current:hover > .menu-link{
   color: var(--bs-orange);
 }
 
 
-.nav .menu-item:hover > .menu-link,
-.menu-item.current > .menu-link {
+.nav .menu-item.current:hover > .menu-link {
   color: var(--bs-orange);
 }
 

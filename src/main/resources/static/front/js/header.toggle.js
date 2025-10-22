@@ -197,7 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
     else          primaryMenu.style.removeProperty('display');
   });
 
-  // 아코디언: 자식 UL/패널이 있는 항목만 펼침/접힘 (모바일 전용)
   primaryMenu.addEventListener('click', (e) => {
     if (isDesktop()) return;
 
@@ -208,15 +207,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const li = trigger.closest('li');
     if (!li) return;
 
-    // 직계 하위 컨테이너(테마별 클래스 대응)
     const childList = li.querySelector(':scope > ul, :scope > .mega-menu-content, :scope > .sub-menu-container');
-    if (!childList) return; // 자식 없으면 기본 링크 이동
+    if (!childList) return; 
 
-    // 자식 있으면 아코디언 토글
-    e.preventDefault();
     const willOpen = trigger.getAttribute('aria-expanded') !== 'true';
 
-    // 같은 레벨 형제 닫기(원치 않으면 이 블록을 주석 처리)
     [...li.parentElement.children].forEach(sib => {
       const a = sib.querySelector(':scope > .menu-link[aria-expanded="true"]');
       a && a.setAttribute('aria-expanded', 'false');
@@ -225,7 +220,6 @@ document.addEventListener('DOMContentLoaded', () => {
     trigger.setAttribute('aria-expanded', String(willOpen));
   });
 
-  // 바깥 클릭 시 닫기(모바일 전용, 선택사항)
   document.addEventListener('pointerdown', (e) => {
     if (isDesktop()) return;
     if (!primaryMenu.contains(e.target) && e.target !== hamburger && !hamburger.contains(e.target)) {
@@ -236,7 +230,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 브레이크포인트 전환 시 초기화
   resetForDesktop();
   mqDesktop.addEventListener?.('change', resetForDesktop);
   window.addEventListener('resize', resetForDesktop);
