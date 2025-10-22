@@ -984,8 +984,8 @@ button {background: none; border:0; }
 .bio-history-tab-nav {
 	display: flex;
 	flex-wrap: wrap;
-	gap: 8px;
-	margin: 0 23px 18px;
+	gap: 24px;
+	margin-bottom:30px;
 	padding: 0;
 	list-style: none;
 }
