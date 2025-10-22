@@ -16358,7 +16358,7 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
   width: min(1240px, 92%);
   margin: 0 auto;
   position: relative;
-  padding-bottom: 64px;          /* 버튼이 콘텐츠와 겹치지 않도록 여유 */
+  padding-bottom: 64px;         
 }
 
 /* 헤더 & 탭 */
@@ -16367,7 +16367,7 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
   align-items:flex-end;
   justify-content:flex-start;
   gap:24px;
-  position:relative;              /* 유지! */
+  position:relative;            
 }
 
 #newsSection .news-head h2{
@@ -16386,8 +16386,8 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
 
 .news-more {
   position: absolute;
-  left: 125px;     /* PC에서 타이틀 옆 */
-  top: 7px;    /* 헤더 내부 하단 */
+  left: 125px;     
+  top: 7px;    
   transform: none;
   height: auto;
 }
