@@ -334,7 +334,7 @@
         startY     = e.clientY;
         startLeft  = scroller.scrollLeft;
         lock       = null;
-      }, { passive: true });
+      }, { passive: false });
 
       scroller.addEventListener("pointermove", (e) => {
         if (!dragging || e.pointerId !== pointerId) return;
