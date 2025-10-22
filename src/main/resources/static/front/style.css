@@ -2617,7 +2617,7 @@ html[xmlns] .slider-wrap {
   height: 100px;
 }
 
-.header-size-sm #header-wrap #logo img {
+/* .header-size-sm #header-wrap #logo img {
   height: 70px;
 }
 
@@ -2627,7 +2627,7 @@ html[xmlns] .slider-wrap {
 
 .header-size-lg #header-wrap #logo img {
   height: 100px;
-}
+} */
 
 /* ----------------------------------------------------------------
 	Header Right Area
@@ -16410,12 +16410,11 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
   display: grid;
   grid-auto-flow: column;   
   grid-auto-columns: calc(33.333% - 16px);
-  gap: 24px;                   
+  gap: 18px;                   
   overflow-x: auto;             
   overflow-y: hidden;              
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  padding: 6px 0 8px;
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
@@ -16429,13 +16428,10 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
 /* 카드 */
 .news-card{
   scroll-snap-align:start;
-  flex:0 0 clamp(320px, 28vw, 420px);
   background:#f6f7f8;
   border-radius:20px;
-  box-shadow:var(--news-shadow);
   transition:transform .25s, box-shadow .25s;
   overflow:hidden;
-  margin: 15px;
   border: 1px solid #ddd;
 }
 
