@@ -25,7 +25,6 @@ public class MemberController {
 		return "admin/login";
 	}
 	
-	
     // 등록 폼
     @GetMapping("/admin/memberInsert")
     public String insertForm(Model model) {
