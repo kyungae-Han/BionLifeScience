@@ -4,6 +4,8 @@ spring:
     name: BionLifeScienceWeb
   profiles:
     active: prod
+  thymeleaf:
+    cache: false
 server:
   port: 8080
   servlet:
