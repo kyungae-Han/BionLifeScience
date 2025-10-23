@@ -190,16 +190,17 @@
 												<div>
 													<p class="text-muted mb-1">분류</p>
 													<div class="badge bg-success-subtle text-success fs-12"
-														th:text="${p.brand.name}">브랜드</div>
+     													th:text="${p.brand?.name}">브랜드</div>
+
 													>>
 													<div class="badge bg-success-subtle text-success fs-12"
-														th:text="${p.bigSort.name}">대분류</div>
+     													th:text="${p.bigSort?.name}">대분류</div>
 													>>
 													<div class="badge bg-success-subtle text-warning fs-12"
-														th:text="${p.middleSort.name}">중분류</div>
+     														th:text="${p.middleSort?.name}">중분류</div>
 													>>
 													<div class="badge bg-success-subtle text-danger fs-12"
-														th:text="${p.smallSort.name}">소분류</div>
+     														th:text="${p.smallSort?.name}">소분류</div>
 												</div>
 											</div>
 											<div class="col-12">

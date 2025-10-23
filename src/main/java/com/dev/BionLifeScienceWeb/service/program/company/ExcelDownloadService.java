@@ -219,44 +219,53 @@ public class ExcelDownloadService {
 			}
 		}
 		
-		for (int x=0; x<productBodyDatass.length; x++) {
-			productBodyRow = product.createRow(productRowCount++);
-			for (int i = 0; i < productBodyDatass[x].length; i++) {
-				
-				productBodyCell = productBodyRow.createCell(cellNumbber);
-				productBodyCell.setCellValue(products.get(x).getProductCode()); 
-				productBodyCell.setCellStyle(bodyXssfCellStyle);
-				
-				productBodyCell = productBodyRow.createCell(cellNumbber+1);
-				productBodyCell.setCellValue(products.get(x).getSubject()); 
-				productBodyCell.setCellStyle(bodyXssfCellStyle);
-				
-				productBodyCell = productBodyRow.createCell(cellNumbber+2);
-				productBodyCell.setCellValue(products.get(x).getContent());
-				productBodyCell.setCellStyle(bodyXssfCellStyle);
-				
-				productBodyCell = productBodyRow.createCell(cellNumbber+3);
-				productBodyCell.setCellValue(products.get(x).getProductSubContent());
-				productBodyCell.setCellStyle(bodyXssfCellStyle);
-				
-				productBodyCell = productBodyRow.createCell(cellNumbber+4);
-				productBodyCell.setCellValue(products.get(x).getSign());
-				productBodyCell.setCellStyle(bodyXssfCellStyle);
-				
-				productBodyCell = productBodyRow.createCell(cellNumbber+5);
-				productBodyCell.setCellValue(products.get(x).getSmallSort().getId());
-				productBodyCell.setCellStyle(bodyXssfCellStyle);
-				
-				productBodyCell = productBodyRow.createCell(cellNumbber+6);
-				productBodyCell.setCellValue(products.get(x).getMiddleSort().getId());
-				productBodyCell.setCellStyle(bodyXssfCellStyle);
-				
-				productBodyCell = productBodyRow.createCell(cellNumbber+7);
-				productBodyCell.setCellValue(products.get(x).getBigSort().getId());
-				productBodyCell.setCellStyle(bodyXssfCellStyle);
-				
-			}
+		for (int x = 0; x < productBodyDatass.length; x++) {
+		    productBodyRow = product.createRow(productRowCount++);
+
+		    Product p = products.get(x);
+		    String productCode = (p.getProductCode() != null) ? p.getProductCode() : "-";
+		    String subject = (p.getSubject() != null) ? p.getSubject() : "-";
+		    String content = (p.getContent() != null) ? p.getContent() : "-";
+		    String subContent = (p.getProductSubContent() != null) ? p.getProductSubContent() : "-";
+		    String sign = (p.getSign() != null) ? p.getSign().toString() : "-";
+
+		    Long smallId = (p.getSmallSort() != null) ? p.getSmallSort().getId() : null;
+		    Long middleId = (p.getMiddleSort() != null) ? p.getMiddleSort().getId() : null;
+		    Long bigId = (p.getBigSort() != null) ? p.getBigSort().getId() : null;
+
+		    productBodyCell = productBodyRow.createCell(cellNumbber);
+		    productBodyCell.setCellValue(productCode);
+		    productBodyCell.setCellStyle(bodyXssfCellStyle);
+
+		    productBodyCell = productBodyRow.createCell(cellNumbber + 1);
+		    productBodyCell.setCellValue(subject);
+		    productBodyCell.setCellStyle(bodyXssfCellStyle);
+
+		    productBodyCell = productBodyRow.createCell(cellNumbber + 2);
+		    productBodyCell.setCellValue(content);
+		    productBodyCell.setCellStyle(bodyXssfCellStyle);
+
+		    productBodyCell = productBodyRow.createCell(cellNumbber + 3);
+		    productBodyCell.setCellValue(subContent);
+		    productBodyCell.setCellStyle(bodyXssfCellStyle);
+
+		    productBodyCell = productBodyRow.createCell(cellNumbber + 4);
+		    productBodyCell.setCellValue(sign);
+		    productBodyCell.setCellStyle(bodyXssfCellStyle);
+
+		    productBodyCell = productBodyRow.createCell(cellNumbber + 5);
+		    productBodyCell.setCellValue(smallId != null ? smallId : 0);
+		    productBodyCell.setCellStyle(bodyXssfCellStyle);
+
+		    productBodyCell = productBodyRow.createCell(cellNumbber + 6);
+		    productBodyCell.setCellValue(middleId != null ? middleId : 0);
+		    productBodyCell.setCellStyle(bodyXssfCellStyle);
+
+		    productBodyCell = productBodyRow.createCell(cellNumbber + 7);
+		    productBodyCell.setCellValue(bigId != null ? bigId : 0);
+		    productBodyCell.setCellStyle(bodyXssfCellStyle);
 		}
+
 		
 		for (int x=0; x<productInfoBodyDatass.length; x++) {
 			productInfoBodyRow = productInfo.createRow(productInfoRowCount++);

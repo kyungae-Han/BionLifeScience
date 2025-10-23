@@ -337,6 +337,7 @@ public class BrandManageController {
 		return "program/brand/brandProductResetManager";
 	}
 	
+	
 	@PostMapping("/changeIndex")
 	public String changeIndex(
 			@RequestParam(value="exIndex[]") Long[] exIndex,
