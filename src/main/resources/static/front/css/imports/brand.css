@@ -592,6 +592,19 @@
     padding: 40px 0;
     font-size: 0.95rem;
   }
+  
+  #brandModal .modal-content .row.brand__info > * {
+  	width: 100% !important;
+  }
+  
+  #brandModal .modal-content .brand__info {
+  	display: flex !important;       
+    flex-direction: column !important;
+  }
+  
+  #brandProductList > p {
+  	flex: 0 0 100%;
+  }
 }
 
 
