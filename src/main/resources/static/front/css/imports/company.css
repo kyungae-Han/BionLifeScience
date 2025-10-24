@@ -1467,8 +1467,13 @@ html.is-switching-tab, body.is-switching-tab{ overflow-anchor:none !important; }
 }
 
 
+@media(max-width:768px){
+	#institute .icon-caption {flex-direction: column;}
+	#institute .il-chip {width: 100%;}
+}
+
 @media(max-width:478px){
-	#institute .il-chip {width: 100% !important;}
+	#institute .il-chip {width: 100%;}
 }
 
 

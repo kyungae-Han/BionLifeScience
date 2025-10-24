@@ -4702,6 +4702,7 @@ body:not(.has-plugin-html5video) .video-wrap video {
   background-repeat: no-repeat;
 }
 
+
 body:not(.device-touch) .grid-container {
   -webkit-transition: height 0.4s ease;
   -o-transition: height 0.4s ease;

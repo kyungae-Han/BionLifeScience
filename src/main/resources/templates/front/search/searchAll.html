@@ -82,6 +82,34 @@
 	<th:block th:replace="~{/fragments/front/common :: footerSrc}"></th:block>
 	</div>
 	<th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
+	
+<script>
+
+//isotope 초기화 이후 추가
+$(window).on('resize', function () {
+  var ww = $(window).width();
+
+  if (ww <= 991) {
+    // 태블릿 크기에서는 2열 배치
+    $('.grid-container .entry').css({
+      width: '50%',
+    });
+  } else {
+   // PC에서는 기본 (4열)
+    $('.grid-container .entry').css({
+      width: '25%',
+    });
+  }
+
+  // 레이아웃 재계산
+  $('.grid-container').isotope('layout');
+});
+
+// 페이지 로드 시에도 한 번 실행
+$(window).trigger('resize');
+
+</script>	
+	
 
 </body>
 </html>
