@@ -3032,6 +3032,13 @@ nav .menu-item.current:hover > .menu-link{
 	display:flex;
 }
 
+.brand-page .top-search-form{
+	top: 0 !important;
+	padding-top: 72px;
+	padding-bottom: 50px;
+	background: #fff !important;
+	height: 200px;
+}
 
 .top-search-open .top-search-form {
   opacity: 1;
@@ -18955,7 +18962,7 @@ nav .menu-link {
 
 #top-cart span a{
 	font-size:1.125rem;
-	transition:all 0.3s ease-in-out;
+	/* transition:all 0.3s ease-in-out; */
   }
 
 #top-cart span a.active{

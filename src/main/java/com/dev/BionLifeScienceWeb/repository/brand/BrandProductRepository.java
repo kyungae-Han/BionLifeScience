@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.dev.BionLifeScienceWeb.model.brand.Brand;
@@ -35,6 +36,19 @@ public interface BrandProductRepository extends JpaRepository<BrandProduct, Long
 	List<BrandProduct> findAllBySign(Boolean sign);
 	
 	List<BrandProduct> findBySubjectContains(String subject);
+	
+	
+	 @Query("""
+		    SELECT DISTINCT p
+		    FROM BrandProduct p
+		    LEFT JOIN p.specs s
+		    WHERE LOWER(p.subject) LIKE LOWER(CONCAT('%', :keyword, '%'))
+		       OR LOWER(p.content) LIKE LOWER(CONCAT('%', :keyword, '%'))
+		       OR (LOWER(s.productSpecSubject) = '품목코드' AND LOWER(s.productSpecContent) LIKE LOWER(CONCAT('%', :keyword, '%')))
+		       OR LOWER(s.productSpecContent) LIKE LOWER(CONCAT('%', :keyword, '%'))
+		    """)
+    List<BrandProduct> searchAllByKeyword(@Param("keyword") String keyword);
+	
 	
 	Page<BrandProduct> findAllBySubjectContainsOrderByIdDesc(Pageable pageable, String searchWord);
 	

@@ -45,14 +45,13 @@ public class SearchController {
 		}
 		model.addAttribute("products", products);
 		
-		List<BrandProduct> brandProducts = brandProductRepository.findBySubjectContains(searchWord);
-		for(BrandProduct p : brandProducts) {
-			if(p.getImages().size() > 0) {
-				
-				p.setFirstImageRoad(p.getImages().get(0).getProductImageRoad());
-			}else {
-				p.setFirstImageRoad("null");
-			}
+		List<BrandProduct> brandProducts = brandProductRepository.searchAllByKeyword(searchWord);
+		for (BrandProduct p : brandProducts) {
+		    if (p.getImages().size() > 0) {
+		        p.setFirstImageRoad(p.getImages().get(0).getProductImageRoad());
+		    } else {
+		        p.setFirstImageRoad("null");
+		    }
 		}
 		model.addAttribute("brandProducts", brandProducts);
 		
