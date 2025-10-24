@@ -64,6 +64,14 @@
 							<nav class="primary-menu">
 							<!-- /* -->
 								<div class="nav is-mobile">
+									<div class="header-misc primary-menu search-wrap-mobile" id="search-wrap">
+										<div id="top-search" class="header-misc-icon">
+											<a href="#" id="top-search-trigger"><i class="icon-line-search"></i><i class="icon-line-cross"></i>검색</a>
+										</div>
+										<div id="top-cart" class="header-misc-icon d-sm-block">
+											<span><a style="font-weight: 600;" href="#">ENG </a></span> / <span><a class="active" style="font-weight: 600;" href="#"> KOR</a></span>
+										</div>
+									</div>
 									  <ul class="menu-container mobile-primary-menu">
 									    <li class="menu-item">
 									      <a class="menu-link" href="#">
@@ -183,9 +191,10 @@
 										</a></li>
 									</ul>
 								</div>
+								
 							</nav>
 							
-							<div class="header-misc primary-menu" id="search-wrap">
+							<div class="header-misc primary-menu search-wrap-desktop" id="search-wrap">
 								<div id="top-search" class="header-misc-icon">
 									<a href="#" id="top-search-trigger"><i class="icon-line-search"></i><i class="icon-line-cross"></i>검색</a>
 								</div>
@@ -193,7 +202,6 @@
 									<span><a style="font-weight: 600;" href="#">ENG </a></span> / <span><a class="active" style="font-weight: 600;" href="#"> KOR</a></span>
 								</div>
 							</div>
-							
 							<form class="top-search-form" action="/searchAll" method="get" id="top-search-form">
 								<div>
 									<input type="text" name="searchWord" class="form-control" required="required" placeholder="검색어를 입력 하세요." autocomplete="off"> <span class="search-btn" id="search-btn"><i
