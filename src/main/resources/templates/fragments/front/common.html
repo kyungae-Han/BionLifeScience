@@ -63,113 +63,117 @@
 							
 							<nav class="primary-menu">
 							<!-- /* -->
-								<div class="nav is-mobile">
-									<div class="header-misc primary-menu search-wrap-mobile" id="search-wrap">
-										<div id="top-search" class="header-misc-icon">
-											<a href="#" id="top-search-trigger"><i class="icon-line-search"></i><i class="icon-line-cross"></i>검색</a>
+									<div class="nav is-mobile">
+									<div class="menu-container mobile-primary-menu">
+										<div class="header-misc search-wrap-mobile" id="search-wrap">
+											<form class="top-search-form-mobile" action="/searchAll" method="get" id="top-search-form">
+												<div>
+													<input type="text" name="searchWord" class="form-control" required="required" placeholder="검색어를 입력 하세요." autocomplete="off"> <span class="search-btn" id="search-btn"><i
+														class="icon-line-search"></i></span>
+												</div>
+											</form>
 										</div>
-										<div id="top-cart" class="header-misc-icon d-sm-block">
-											<span><a style="font-weight: 600;" href="#">ENG </a></span> / <span><a class="active" style="font-weight: 600;" href="#"> KOR</a></span>
-										</div>
-									</div>
-									  <ul class="menu-container mobile-primary-menu">
-									    <li class="menu-item">
-									      <a class="menu-link" href="#">
-									        <div>제품</div>
-									      </a>
-									      <ul class="mega-menu-content">
-									
-									        <!-- OWN 브랜드 루프 -->
-									        <li class="menu-item"
-									            th:each="b:${ownBrands}"
-									            th:attr="data-id=${'brand-' + b.id}">
-									          <a class="menu-link" th:href="@{|/brandProductSorted/brand/${b.id}|}">
-									            <div><i class="icon-stack"></i> [[${b.name}]]</div>
-									          </a>
-									        </li>
-									        <!-- /OWN -->
-									
-									        <!-- PARTNER 그룹 (취급브랜드) -->
-									        <li class="menu-item">
-									          <a class="menu-link" href="/brands">
-									            <div><i class="icon-stack"></i> 취급브랜드</div>
-									          </a>
-									
-									          <ul class="sub-menu-container sub-menu-items">
-									            <li class="menu-item"
-									                th:each="pb : ${partnerBrands}"
-												    th:attr="data-id=${'brand-' + pb.id}, data-parent='partner', 
-												             data-name=${pb.name}, data-desc=${pb.desc}, data-image=${pb.imageRoad}">
-												  <a class="menu-link brand-link" href="javascript:void(0);" 
-													   th:data-id="${pb.id}"
-													   th:data-name="${pb.name}"
-													   th:data-page="${pageType}"
-													   th:data-url="@{'/brand/' + ${pb.id} + '/products'}">
-												    <div th:text="${pb.name}">Brand Name</div>
-												  </a>
-																			
-									              <ul class="sub-menu-container">
-									                <li class="menu-item"
-									                    th:each="bb : ${menuList.brandBigSortList}"
-									                    th:if="${bb.brand.id == pb.id}">
-									                  <a class="menu-link" th:href="@{|/brandProductSorted/main/${bb.id}|}">
-									                    <div th:text="${bb.name}">BigSort</div>
-									                  </a>
-									
-									                  <ul class="sub-menu-container">
-									                    <li class="menu-item"
-									                        th:each="bm:${menuList.brandMiddleSortList}"
-									                        th:if="${bm.bigSort.id == bb.id}">
-									                      <a class="menu-link" th:href="@{|/brandProductSorted/middle/${bm.id}|}">
-									                        <div th:text="${bm.name}">MiddleSort</div>
-									                      </a>
-									
-									                      <ul class="sub-menu-container left-container">
-									                        <li class="menu-item"
-									                            th:each="bs:${menuList.brandSmallSortList}"
-									                            th:if="${bs.middleSort.id == bm.id}">
-									                          <a class="menu-link" th:href="@{|/brandProductSorted/sub/${bs.id}|}">
-									                            <div th:text="${bs.name}">SmallSort</div>
-									                          </a>
-									
-									                          <ul class="sub-menu-container">
-									                            <li class="menu-item"
-									                                th:each="bp:${menuList.brandProductList}"
-									                                th:if="${bp.smallSort.id == bs.id}">
-									                              <a class="menu-link" th:href="@{|/brandProductDetail/${bp.id}|}">
-									                                <div th:text="${bp.subject}">Product</div>
-									                              </a>
-									                            </li>
-									                          </ul>
-									                        </li>
-									                      </ul>
-									                    </li>
-									                  </ul>
-									                </li>
-									              </ul>
-									            </li>
-									          </ul>
-									        </li>
-									        <!-- /PARTNER -->
-									        
-									        <!-- OTHER NOBRAND 그룹 -->
-									        <li class="menu-item"
-									            th:each="gb : ${genericBrands}"
-									            th:attr="data-id=${'brand-' + gb.id}">
-									          <a class="menu-link" th:href="@{|/brandProductSorted/brand/${gb.id}|}">
-									            <div><i class="icon-stack"></i> OTHER</div>
-									          </a>
-									        </li>
-									        <!-- /OTHER -->
-									
-									      </ul>
-									    </li>
-									
-									    <li class="menu-item"><a class="menu-link" href="/rnd"><div>R&D</div></a></li>
-									    <li class="menu-item"><a class="menu-link" href="/references"><div>자료실</div></a></li>
-									    <li class="menu-item"><a class="menu-link" id="js-open-contact"><div>고객지원</div></a></li>
-									    <li class="menu-item"><a class="menu-link" href="/about"><div>회사소개</div></a></li>
-									  </ul>
+										  <ul>
+										    <li class="menu-item">
+										      <a class="menu-link" href="#">
+										        <div>제품</div>
+										      </a>
+										      <ul class="mega-menu-content">
+										
+										        <!-- OWN 브랜드 루프 -->
+										        <li class="menu-item"
+										            th:each="b:${ownBrands}"
+										            th:attr="data-id=${'brand-' + b.id}">
+										          <a class="menu-link" th:href="@{|/brandProductSorted/brand/${b.id}|}">
+										            <div><i class="icon-stack"></i> [[${b.name}]]</div>
+										          </a>
+										        </li>
+										        <!-- /OWN -->
+										
+										        <!-- PARTNER 그룹 (취급브랜드) -->
+										        <li class="menu-item">
+										          <a class="menu-link" href="/brands">
+										            <div><i class="icon-stack"></i> 취급브랜드</div>
+										          </a>
+										
+										          <ul class="sub-menu-container sub-menu-items">
+										            <li class="menu-item"
+										                th:each="pb : ${partnerBrands}"
+													    th:attr="data-id=${'brand-' + pb.id}, data-parent='partner', 
+													             data-name=${pb.name}, data-desc=${pb.desc}, data-image=${pb.imageRoad}">
+													  <a class="menu-link brand-link" href="javascript:void(0);" 
+														   th:data-id="${pb.id}"
+														   th:data-name="${pb.name}"
+														   th:data-page="${pageType}"
+														   th:data-url="@{'/brand/' + ${pb.id} + '/products'}">
+													    <div th:text="${pb.name}">Brand Name</div>
+													  </a>
+																				
+										              <ul class="sub-menu-container">
+										                <li class="menu-item"
+										                    th:each="bb : ${menuList.brandBigSortList}"
+										                    th:if="${bb.brand.id == pb.id}">
+										                  <a class="menu-link" th:href="@{|/brandProductSorted/main/${bb.id}|}">
+										                    <div th:text="${bb.name}">BigSort</div>
+										                  </a>
+										
+										                  <ul class="sub-menu-container">
+										                    <li class="menu-item"
+										                        th:each="bm:${menuList.brandMiddleSortList}"
+										                        th:if="${bm.bigSort.id == bb.id}">
+										                      <a class="menu-link" th:href="@{|/brandProductSorted/middle/${bm.id}|}">
+										                        <div th:text="${bm.name}">MiddleSort</div>
+										                      </a>
+										
+										                      <ul class="sub-menu-container left-container">
+										                        <li class="menu-item"
+										                            th:each="bs:${menuList.brandSmallSortList}"
+										                            th:if="${bs.middleSort.id == bm.id}">
+										                          <a class="menu-link" th:href="@{|/brandProductSorted/sub/${bs.id}|}">
+										                            <div th:text="${bs.name}">SmallSort</div>
+										                          </a>
+										
+										                          <ul class="sub-menu-container">
+										                            <li class="menu-item"
+										                                th:each="bp:${menuList.brandProductList}"
+										                                th:if="${bp.smallSort.id == bs.id}">
+										                              <a class="menu-link" th:href="@{|/brandProductDetail/${bp.id}|}">
+										                                <div th:text="${bp.subject}">Product</div>
+										                              </a>
+										                            </li>
+										                          </ul>
+										                        </li>
+										                      </ul>
+										                    </li>
+										                  </ul>
+										                </li>
+										              </ul>
+										            </li>
+										          </ul>
+										        </li>
+										        <!-- /PARTNER -->
+										        
+										        <!-- OTHER NOBRAND 그룹 -->
+										        <li class="menu-item"
+										            th:each="gb : ${genericBrands}"
+										            th:attr="data-id=${'brand-' + gb.id}">
+										          <a class="menu-link" th:href="@{|/brandProductSorted/brand/${gb.id}|}">
+										            <div><i class="icon-stack"></i> OTHER</div>
+										          </a>
+										        </li>
+										        <!-- /OTHER -->
+										
+										      </ul>
+										    </li>
+										
+										    <li class="menu-item"><a class="menu-link" href="/rnd"><div>R&D</div></a></li>
+										    <li class="menu-item"><a class="menu-link" href="/references"><div>자료실</div></a></li>
+										    <li class="menu-item"><a class="menu-link" id="js-open-contact"><div>고객지원</div></a></li>
+										    <li class="menu-item"><a class="menu-link" href="/about"><div>회사소개</div></a></li>
+										    <li class="menu-item customer__center"><a class="menu-link" href="/notice"><div>공지사항</div></a></li>
+										    
+										  </ul>
+									  </div>
 									</div>
 								<!-- */ -->
 								<div class="nav is-desktop">
@@ -927,9 +931,6 @@ document.querySelectorAll('.product-mega-wrap').forEach(el => {
 	});
 </script> 
  -->
-
-
-
 </th:block>
 
 </body>

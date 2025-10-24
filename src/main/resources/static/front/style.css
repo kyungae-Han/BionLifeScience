@@ -2974,46 +2974,6 @@ nav .menu-item.current:hover > .menu-link{
 .header-misc.search-wrap-desktop {display: inline-block; display: flex;}
 .header-misc.search-wrap-mobile {display: none;}
 
-@media(max-width:991px){
-	
-	.is-mobile .header-misc {
-	    position: relative !important;
-	    right: auto;
-	    top: auto;
-	    bottom: auto;
-	    margin-left: 0;
-	    width: 100%;
-	    border-left: none;
-	    padding: 10px 15px;
-	    background: #fff;
-	    box-sizing: border-box;
-	  }
-	  
-	  
-	 .header-misc.search-wrap-mobile {
-		  display: none;
-		  position: relative;
-		  width: 100%;
-		  background: #fff;
-		  z-index: 99999;
-		  background: #eee;
-		  border-radius: 25px;
-
-		}
-		
-	.header-misc.search-wrap-desktop {display: none;}
-	#hamburger-menu-trigger.active ~ nav .header-misc.search-wrap-mobile {
-	  display: flex !important;
-	  justify-content: space-between;
-	}
-	
-	.mobile-primary-menu.open {
-		  position: relative;
-		  margin-top: 42px;
-	  }
-}
-
-
 .header-misc-element,
 .header-misc-icon {
   margin: 0 8px;
@@ -3140,6 +3100,52 @@ nav .menu-item.current:hover > .menu-link{
   align-items: center;
   justify-content: center;
 }
+
+
+@media(max-width:991px){
+	
+	 .mobile-primary-menu.open {top: 0 !important;}
+	 .mobile-primary-menu.open ul {list-style: none;}
+	
+	.is-mobile .header-misc {
+	    position: relative !important;
+	    right: auto;
+	    top: auto;
+	    bottom: auto;
+	    margin-left: 0;
+	    width: 100%;
+	    border-left: none;
+	    padding: 10px 15px;
+	    background: #fff;
+	    box-sizing: border-box;
+		z-index: 99999;
+		border-bottom: 1px solid #eee;
+	  }
+	  
+	  
+	 .header-misc.search-wrap-mobile {
+		  display: none;
+		  position: relative;
+		  width: 100%;
+		}
+		
+		
+	.header-misc.search-wrap-desktop {display: none;}
+	#hamburger-menu-trigger.active ~ nav .header-misc.search-wrap-mobile {
+	  display: flex !important;
+	  justify-content: space-between;
+	}
+	
+	.mobile-primary-menu.open {
+		  position: relative;
+	  }
+	  
+	 .top-search-form-mobile {width: 100%; position: relative; margin-bottom: 25px;} 
+	 .top-search-form-mobile input {border-radius: 25px;}
+	 .top-search-form-mobile .icon-line-search {position: absolute; top:0; right: 10px; font-size: 1.5rem !important;}
+}
+
+
 
 .search-overlay .top-search-form input {
   max-width: 580px;
@@ -16914,9 +16920,6 @@ h4 {
 		font-size:12px;
 	}
 
-.entry-image, .entry-image > a, .entry-image .slide a, .entry-image img{
-		height:130px;
-	}
 }
 
 @media (max-width: 575.98px) {

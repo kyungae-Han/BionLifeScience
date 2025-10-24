@@ -2,8 +2,22 @@
 <html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{/fragments/front/common :: headSrc('바이온라이프사이언스 검색페이지')}">
-
 </head>
+
+<style>
+
+.search-body .grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+.search-body .entry {
+  display: flex;
+  flex-direction: column;
+}
+
+</style>
 
 <body class="stretched">
 
@@ -32,7 +46,7 @@
 					<div class="divider">
 						<i class="icon-circle"></i><span>브랜드제품검색 : 총 [[${brandProducts.size}]]건 검색</span>
 					</div>
-					<div class="row gutter-40 col-mb-80">
+					<div class="row gutter-40 col-mb-80 search-body">
 						<div class="postcontent col-lg-12 order-lg-last">
 							<div class="row grid-container gutter-30">
 								<div class="entry col-lg-3 col-xs-6" th:each="product : ${brandProducts}">

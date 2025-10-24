@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+@media(min-width:1024px){
 .brand-page #header-wrap {
   background: transparent !important;  /* 기본은 투명 */
 }
@@ -74,8 +75,7 @@
 .brand-page #header:hover {
   background: rgba(255, 255, 255, 1);
 }
-
-
+}
 
  @media (max-width: 998px) {
    
