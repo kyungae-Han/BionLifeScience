@@ -180,34 +180,39 @@
 								data-items-xl="4">
 
 								<div class="portfolio-item" th:each="p : ${relatedProducts}">
-									<div class="portfolio-image">
-										<a href="javascript:void(0);" th:text="${product.smallSort != null ? product.smallSort.name : 'No Sort'}"></a>
-										<div class="bg-overlay">
-											<div class="bg-overlay-content dark"
-												data-hover-animate="fadeIn" data-hover-speed="350">
-												<a th:href="@{${product.firstImageRoad}}"
-													class="overlay-trigger-icon bg-light text-dark"
-													data-hover-animate="fadeInDownSmall"
-													data-hover-animate-out="fadeInUpSmall"
-													data-hover-speed="350" data-lightbox="image"><i
-													class="icon-line-plus"></i></a> <a
-													th:href="@{|/brandProductDetail/${product.id}|}"
-													class="overlay-trigger-icon bg-light text-dark"
-													data-hover-animate="fadeInDownSmall"
-													data-hover-animate-out="fadeInUpSmall"
-													data-hover-speed="350"><i class="icon-line-ellipsis"></i></a>
-											</div>
-											<div class="bg-overlay-bg dark" data-hover-animate="fadeIn"
-												data-hover-speed="350"></div>
-										</div>
-									</div>
-									<div class="portfolio-desc">
-										<h3>
-									        <a href="javascript:void(0);" 
-									           th:text="${smallSort != null ? smallSort.name : 'No Sort'}">Sorts of Product</a>
-									    </h3>
-									</div>
-								</div>
+							    <div class="portfolio-image">
+							        <a href="javascript:void(0);" 
+							           th:text="${p.smallSort != null ? p.smallSort.name : 'No Sort'}"></a>
+							        <div class="bg-overlay">
+							            <div class="bg-overlay-content dark"
+							                 data-hover-animate="fadeIn" data-hover-speed="350">
+							                <a th:href="@{${p.firstImageRoad}}"
+							                   class="overlay-trigger-icon bg-light text-dark"
+							                   data-hover-animate="fadeInDownSmall"
+							                   data-hover-animate-out="fadeInUpSmall"
+							                   data-hover-speed="350">
+							                    <i class="icon-line-plus"></i>
+							                </a>
+							                <a th:href="@{|/brandProductDetail/${p.id}|}"
+							                   class="overlay-trigger-icon bg-light text-dark"
+							                   data-hover-animate="fadeInDownSmall"
+							                   data-hover-animate-out="fadeInUpSmall"
+							                   data-hover-speed="350">
+							                    <i class="icon-line-ellipsis"></i>
+							                </a>
+							            </div>
+							            <div class="bg-overlay-bg dark" data-hover-animate="fadeIn"
+							                 data-hover-speed="350"></div>
+							        </div>
+							    </div>
+							    <div class="portfolio-desc">
+							        <h3>
+							            <a href="javascript:void(0);" 
+							               th:text="${p.productSubject}">Sorts of Product</a>
+							        </h3>
+							    </div>
+							</div>
+
 							</div>
 						</div>
 					</div>
