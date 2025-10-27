@@ -12942,11 +12942,16 @@ body:not(.device-touch) #gotoTop {
 }
 
 #footer .container .f-left .adress {font-size:1.1rem !important;}
-#footer .container .f-left .f-mail {font-size:1.1rem !important;}
+#footer .container .f-right .f-mail { display: flex; flex-direction: row; font-size:1.2rem !important;}
+#footer .container .f-right .f-mail .bi {padding-top: 5px; font-size: 1rem !important;}
+
+@media(max-width: 991px){
+	#footer .container .f-right .f-mail {justify-content: center;}
+}
 
 
 #footer .container .f-right .copyrights-call > *{
-	font-size: clamp(20px, 2rem, 32px);
+	font-size: 1.5rem;
 }
 
 #footer .copyrights-menu {
@@ -13004,6 +13009,9 @@ body:not(.device-touch) #gotoTop {
 	font-size:0.7em;
 }
 
+p.copyrights_block {margin-top:25px; font-size: 0.8em;}
+.f-right .copyrights-call > div {padding-bottom: 7px;}
+
 @media (max-width:1024.98px){
 	
   #footer {
@@ -13019,7 +13027,7 @@ body:not(.device-touch) #gotoTop {
   
 	
 	#footer .container .logo-wrap{
-		padding:0 20px 0 40px;
+		padding:0 20px;
 		width: 45.777%;
 	}
 	
@@ -13038,7 +13046,7 @@ body:not(.device-touch) #gotoTop {
 	
 	#footer .container .f-right{
 		width: 100%;
-		padding:0 20px 0 40px;
+		padding:0 20px;
 	}
 	
 	

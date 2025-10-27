@@ -23,7 +23,7 @@ public class SessionTimeoutController {
             // 일반 사용자 세션 만료
             return "<script>"
                  + "alert('세션이 만료되었습니다. 메인 페이지로 이동합니다.');"
-                 + "location.href='/'"
+                 + "location.href='/memberLoginForm'"
                  + "</script>";
         }
     }

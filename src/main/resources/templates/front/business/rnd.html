@@ -25,7 +25,6 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
     
 		<!-- Corporate Lab -->
 		<section id="institute" class="section about-body">
-			<div class="p-wrap">
 				<!-- 개요 -->
 				<article class="il-overview p-item" data-speed="0.22">
 					<div class="il-overview__body p-item"
@@ -35,10 +34,11 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 					
 					<div class="il-cards il-cards--image il-cards--portrait">
 					<!-- 1) 진단·의료기기 -->
-					<article class="il-image-card"
-						style="--img: url('/front/images/about/institute-bg4.jpg'); --pos: 50% 45%;">
-						<div class="il-image-card__media" aria-hidden="true"></div>
-						<div class="il-image-card__scrim"></div>
+					
+					<div class="il-image-card__contain">
+						<article class="il-image-card"
+							style="--img: url('/front/images/about/institute-bg4.jpg'); --pos: 50% 45%;">
+						</article>
 						<div class="il-image-card__content">
 							<h4 class="il-image-card__title">진단·의료기기</h4>
 							<p class="il-image-card__subtitle">진단용 기자재·진단 Kit·소모품 R&amp;D</p>
@@ -52,13 +52,13 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 								<li>국내외 다수의 <strong>특허출원</strong> 및 <strong>디자인 등록</strong></li>
 							</ul>
 						</div>
-					</article>
-
+					</div>
 					<!-- 2) 연구 기자재 -->
+					
+					<div class="il-image-card__contain">
 					<article class="il-image-card"
 						style="--img: url('/front/images/about/institute-bg2.jpg'); --pos: 48% 40%;">
-						<div class="il-image-card__media" aria-hidden="true"></div>
-						<div class="il-image-card__scrim"></div>
+					</article>
 						<div class="il-image-card__content">
 							<h4 class="il-image-card__title">연구 기자재</h4>
 							<p class="il-image-card__subtitle">생명과학 연구용
@@ -74,13 +74,13 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 								</li>
 							</ul>
 						</div>
-					</article>
+					</div>
 
 					<!-- 3) 천연물·향장 -->
-					<article class="il-image-card"
-						style="--img: url('/front/images/about/institute-bg1.jpg'); --pos: 55% 42%;">
-						<div class="il-image-card__media" aria-hidden="true"></div>
-						<div class="il-image-card__scrim"></div>
+					<div class="il-image-card__contain">
+						<article class="il-image-card"
+							style="--img: url('/front/images/about/institute-bg1.jpg'); --pos: 55% 42%;">
+						</article>
 						<div class="il-image-card__content">
 							<h4 class="il-image-card__title">천연물소재 연구개발</h4>
 							<p class="il-image-card__subtitle">기능성 화장품·건강식품 소재</p>
@@ -96,16 +96,31 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 								<li>향장 소재 유효 성분 분석 및 문헌/데이터 기반 <strong>활용 기술컨설팅</strong></li>
 							</ul>
 						</div>
-					</article>
+					</div>
 				</div>
-
-				<!-- 3D 모델링/프린팅 콜아웃 -->
-				<aside class="il-callout p-item" data-speed="0.28" role="note">
-					<strong>3D 모델링 &amp; 프린팅</strong> 설계 검증 → 기능 개선 → 대량 생산(사출 금형)으로
-					이어지는 R&amp;D 파이프라인을 운영합니다.<br>(주)바이온라이프사이언스는 현장 요구를 신속히 반영하는
-					시제품 제작 체계를 갖추고 있습니다.
-				</aside>
-
+				
+				<aside class="il-info li-tags">
+						<div class="il-info__list p-item">
+						  <div class="icon-caption">
+						    <span class="il-chip">설립</span>
+						    <span class="chip-caption">2023 연구전담부서 시작 → 2025 기업부설연구소 전환·운영</span>
+						  </div>
+						  <div class="icon-caption">
+						    <span class="il-chip">영역</span>
+						    <span class="chip-caption">생명과학, 질병 진단, 의료기기 소모품·부자재·Plasticware, 진단 Kit R&D</span>
+						  </div>
+						</div>
+						<div class="il-info__list p-item">
+						  <div class="icon-caption">
+						    <span class="il-chip">핵심기능</span>
+						    <span class="chip-caption"><strong>혁신적이고 경쟁력 있는 제품개발</strong><br>외산 제품 대응 국산화 지속추진, 현장 문제 신속 해결 및 제품 개선 반영</span>
+						  </div>
+						  <div class="icon-caption">
+						    <span class="il-chip">확장</span>
+						    <span class="chip-caption">천연물 기반 기능성 화장품·건강식품 소재 연구, 3D 모델링·프린팅 도입</span>
+						  </div>
+					  </div>
+                </aside>
 				<!-- 분석 장비/방법 태그 -->
 				<div class="il-tags p-item" data-speed="0.26"
 					aria-label="주요 분석 장비/방법">
@@ -117,9 +132,9 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 					
 						
 					<div class="copylight__p p-item">
-						<div class="mt-lg-4">
-							<h5>3D 모델링을 통한 제품 개발 연구</h5>
-							<p class="mb-4">㈜바이온라이프사이언스 기업부설연구소는 생명과학 시장을 다수 점유하고 있는 외산 제품에 대응한 국산화를 지속적으로 추진하고 있습니다.</p>
+						<div class="text-center">
+							<h4 class="fp-heading">혁신적이고 경쟁력 있는 제품개발</h4>
+							<p class="mb-4">본 연구소는 생명과학 관련 소모품·부자재·Plasticware 시장에서 다수 점유하고 있는 외산 제품에 대응한 국산화와 함께 혁신적인 제품 개발을 지속적으로 추진하고 있습니다.</p>
 						</div>
 						
 						<div class="product-development">
@@ -174,54 +189,76 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 						
 	        		</div>
 	        		
-        		<div class="irregular-image-grid">
-				    <div class="grid-layout">
-				      <div class="card small p-item">
-				        <img th:src="@{/front/images/about/card-grid-1.png}" alt="rack">
-				      </div>
-				      <div class="card small fp-dim p-item">
-				        <img th:src="@{/front/images/about/card-grid-2.png}" alt="swap">
-				      </div>
-				      <div class="card small p-item">
-				        <img th:src="@{/front/images/about/card-grid-3.png}" alt="ring stand">
-				      </div>
-				      <div class="card medium p-item">
-				        <video autoplay muted loop playsinline>
-			      			<source th:src="@{/front/images/about/movie-1-1.mp4}" type="video/mp4"></video>
-				      </div>
-				      <div class="card medium p-item">
-				        <img th:src="@{/front/images/about/card-grid-5.png}" alt="rack">
-				      </div>
-				    </div>
-				</div>
-					
-					<div class="il-info">
+	        		<div class="irregular-image-grid">
+					    <div class="grid-layout">
+					      <div class="card small p-item">
+					        <img th:src="@{/front/images/about/card-grid-1.png}" alt="rack">
+					      </div>
+					      <div class="card small fp-dim p-item">
+					        <img th:src="@{/front/images/about/card-grid-2.png}" alt="swap">
+					      </div>
+					      <div class="card small p-item">
+					        <img th:src="@{/front/images/about/card-grid-3.png}" alt="ring stand">
+					      </div>
+					      <div class="card medium p-item">
+					        <video autoplay muted loop playsinline>
+				      			<source th:src="@{/front/images/about/movie-1-1.mp4}" type="video/mp4"></video>
+					      </div>
+					      <div class="card medium p-item">
+					        <img th:src="@{/front/images/about/card-grid-5.png}" alt="rack">
+					      </div>
+					    </div>
+					</div>
 						
-						<div class="il-info__list p-item">
-						  <div class="icon-caption">
-						    <span class="il-chip">설립</span>
-						    <span class="chip-caption">2023 연구전담부서 시작 → 2025 기업부설연구소 전환·운영</span>
-						  </div>
-						  <div class="icon-caption">
-						    <span class="il-chip">영역</span>
-						    <span class="chip-caption">생명과학, 질병 진단, 의료기기 소모품·부자재·Plasticware, 진단 Kit R&D</span>
+					<aside class="il-callout p-item" data-speed="0.28" role="note">
+						<strong>3D 모델링 &amp; 프린팅</strong> 설계 검증 → 기능 개선 → 대량 생산(사출 금형)으로
+						이어지는 R&amp;D 파이프라인을 운영합니다.<br>(주)바이온라이프사이언스는 현장 요구를 신속히 반영하는
+						시제품 제작 체계를 갖추고 있습니다.
+					</aside>
+				</article>
+				</section>
+				
+				
+				
+				
+				    <section class="organic">
+					    <div class="biz-overlay p-item">
+					      <h4 class="fp-heading">천연물연구</h4>
+					      <p>본 연구소는 그동안 다져온 과학 기자재 사업 역량 위에 새로운 미래 성장 동력을 확보하기 위하여 천연물 기반 화장품·건강기능식품 소재 연구 개발을 추진하고 있습니다.</p>
+					    </div>
+					    <div class="biz-section">
+					    	<div class="container">
+							  <div class="biz-left">
+							    <video autoplay muted loop playsinline>
+							      <source th:src="@{/front/images/about/movie-1.mp4}" type="video/mp4"></video>
+							  </div>
+							
+							  <div class="biz-right">
+							    <div class="card">
+							    	<img th:src="@{/front/images/about/movie-img-1.jpg}" alt="크로마토그래피">
+							    </div>
+							
+							     <div class="card">
+							    	<img th:src="@{/front/images/about/movie-img-2.jpg}" alt="크로마토그래피">
+							    </div>
+							
+							    <div class="card">
+							    	<img th:src="@{/front/images/about/movie-img-3.jpg}" alt="크로마토그래피">
+							    </div>
+							
+							     <div class="card">
+							    	<img th:src="@{/front/images/about/movie-img-4.jpg}" alt="크로마토그래피">
+							    </div>
+							  </div>
 						  </div>
 						</div>
-						<div class="il-info__list p-item">
-						  <div class="icon-caption">
-						    <span class="il-chip">국산화</span>
-						    <span class="chip-caption">외산 제품 대응 국산화 지속추진, 현장 문제 신속 해결 및 제품 개선 반영</span>
-						  </div>
-						  <div class="icon-caption">
-						    <span class="il-chip">확장</span>
-						    <span class="chip-caption">천연물 기반 기능성 화장품·건강식품 소재 연구(2025~), 3D 모델링·프린팅 도입</span>
-						  </div>
-						  </div>
-					</div>
-	   
-				</article>
+				    </section>
+				    
+    
 				
 				
+				
+				<section id="related-company">
 				 <article class="fp">
 				  <h4 class="fp-heading">Quality Enhancement</h4>
 				  <p class="fp-sub">혁신적인 제품의 개발과 생산, 첨단기술력의 발전과 끊임없는 도전으로 가치를 만들어 갑니다.</p>
@@ -252,7 +289,7 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 				    </div>
 				
 				    <!-- 카드 3 (초기 강조) -->
-				    <div class="fp-card is-active" role="listitem"
+				    <div class="fp-card" role="listitem"
 				       style="--bg:url('/front/images/about/section-bg-2.jpg')">
 				      <div class="fp-bg"></div>
 				      <div class="fp-dim"></div>
@@ -264,7 +301,7 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 				    </div>
 				
 				    <!-- 카드 4 -->
-				    <div class="fp-card" role="listitem"
+				    <div class="fp-card is-active" role="listitem"
 				       style="--bg:url('/front/images/about/section-bg-5.jpg')">
 				      <div class="fp-bg"></div>
 				      <div class="fp-dim"></div>
@@ -276,45 +313,7 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 				    </div>
 				  </div>
 				</article>
-			</div>
-		</section>
-    
-    
-    <section class="organic">
-	    <div class="biz-overlay p-item">
-	      <h4 class="fp-heading">천연물연구</h4>
-	      <p>바이온 부설 연구소에서는 지금까지의 연구 개발 노하우를 바탕으로 사업 역량을 강화하고 새로운 미래 성장 동력을 발굴하기 위하여 천연물 자원 연구를 수행하고 있습니다.</p>
-	    </div>
-	    <div class="biz-section">
-	    	<div class="container">
-			  <div class="biz-left">
-			    <video autoplay muted loop playsinline>
-			      <source th:src="@{/front/images/about/movie-1.mp4}" type="video/mp4"></video>
-			  </div>
-			
-			  <div class="biz-right">
-			    <div class="card">
-			    	<img th:src="@{/front/images/about/movie-img-1.jpg}" alt="크로마토그래피">
-			    </div>
-			
-			     <div class="card">
-			    	<img th:src="@{/front/images/about/movie-img-2.jpg}" alt="크로마토그래피">
-			    </div>
-			
-			    <div class="card">
-			    	<img th:src="@{/front/images/about/movie-img-3.jpg}" alt="크로마토그래피">
-			    </div>
-			
-			     <div class="card">
-			    	<img th:src="@{/front/images/about/movie-img-4.jpg}" alt="크로마토그래피">
-			    </div>
-			  </div>
-		  </div>
-		</div>
-    </section>
-    
-    
-    
+			</section>
     
     
     <th:block th:replace="~{/fragments/front/common :: footerSrc}"></th:block>
