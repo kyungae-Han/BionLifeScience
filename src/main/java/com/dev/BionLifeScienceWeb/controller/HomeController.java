@@ -126,11 +126,19 @@ public class HomeController {
 	        p.setFirstImageRoad(p.addFirstImage());
 	    }
 		
+		
+		List<Brand> partnerBrands = brandRepository.findAllByTypeOrderByNameAsc(Brand.BrandType.PARTNER);
+	    for (Brand b : partnerBrands) {
+	        if (b.getImageRoad() != null)
+	            b.setImageRoad(b.getImageRoad().replace("/administration/", "/upload/"));
+	    }
+		
 		model.addAttribute("fi", fi);
 		model.addAttribute("notice", notice);
 		model.addAttribute("products", pr);
 		model.addAttribute("ev", ev.get(0));
 		model.addAttribute("ba", banners);
+		model.addAttribute("brands",partnerBrands);
 		
 		return "front/index";
 	}

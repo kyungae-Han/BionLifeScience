@@ -265,7 +265,22 @@
 	   
       </div>
      </div>
-     <div id="oc-clients" class="owl-carousel carousel-widget" data-margin="30" data-loop="true" data-nav="true" data-autoplay="5000" data-pagi="false"
+     
+     <div id="oc-clients" class="owl-carousel carousel-widget"
+		  data-margin="30" data-loop="true" data-nav="false" data-autoplay="3000"
+		  data-pagi="false" data-items-xs="3" data-items-sm="4" data-items-md="5"
+		  data-items-lg="6" data-items-xl="8" style="padding: 20px 0;">
+		
+		  <div class="oc-item" th:each="b : ${brands}">
+		    <a href="#" target="_blank">
+		      <img th:src="${b.imageRoad}" th:alt="${b.name}" />
+		    </a>
+		  </div>
+		
+		</div>
+     
+     
+<!--      <div id="oc-clients" class="owl-carousel carousel-widget" data-margin="30" data-loop="true" data-nav="true" data-autoplay="5000" data-pagi="false"
       data-items-xs="3" data-items-sm="4" data-items-md="5" data-items-lg="6" data-items-xl="8" style="padding: 20px 0;">
       <div class="oc-item">
        <a href="#"><img th:src="@{/front/images/clients/1.png}" alt="Clients"></a>
@@ -307,7 +322,10 @@
        <a href="#"><img th:src="@{/front/images/clients/13.png}" alt="Clients"></a>
       </div>
      </div>
-    </div>
+ -->    
+ 
+ 
+ </div>
 
   <th:block th:replace="~{/fragments/front/common :: footerSrc}"></th:block>
  </div>
@@ -319,20 +337,23 @@
  
 	 $('#oc-clients').owlCarousel({
 		  loop: true,
-		  nav: true,
+		  nav: false,
 		  dots: false,
 		  autoplay: true,
-		  autoplayTimeout: 3000,
-		  smartSpeed: 600,
+		  autoplayTimeout: 2500,  
+		  autoplaySpeed: 1000,     
+		  smartSpeed: 700,
+		  slideBy: 1,       
 		  margin: 30,
 		  stagePadding: 20,
+		  autoplayHoverPause: true,
 		  responsive: {
-			    0:   { items: 2, margin: 12 },
-			    480: { items: 3, margin: 16 },
-			    768: { items: 4, margin: 20 },
-			    992: { items: 5, margin: 24 },
-			    1200:{ items: 10, margin: 30 }
-			  }
+		    0:   { items: 2, margin: 12 },
+		    480: { items: 3, margin: 16 },
+		    768: { items: 4, margin: 20 },
+		    992: { items: 5, margin: 24 },
+		    1200:{ items: 10, margin: 30 } 
+		  }
 		});
 
 
