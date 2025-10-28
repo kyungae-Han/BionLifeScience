@@ -469,7 +469,6 @@ button {background: none; border:0; }
     padding: 0 0 80px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
   }
   
   
@@ -2976,7 +2975,7 @@ input[type="file"]::file-selector-button {
 /*notice*/
 .search-container {width: 100%; max-width: 1280px; height:75px; margin: 0 auto; position: relative;}
 .search-container .search_module {position: absolute; top:0; right: 0;}
-.search-container .search_module input {width: 355px; height: 45px; border-radius:25px; border:1px solid var(--bs-orange); text-align: center; z-index: 0;}
+.search-container .search_module input {height: 45px; border-radius:25px; border:1px solid var(--bs-orange); text-align: center; z-index: 0;}
 
 @media(max-width:991px){
 	.search-container .search_module input {width: auto !important;}
@@ -2997,6 +2996,7 @@ input[type="file"]::file-selector-button {
 	color: var(--bs-orange);
 }
 
+
 .notice_body {width:100%; margin:0 auto;}
 .notice_body table td a {cursor: pointer; color: var(--bs-gray-900);}
 .notice_body table td a:hover,
@@ -3005,10 +3005,12 @@ input[type="file"]::file-selector-button {
 .notice_body table tbody tr {height: 81px;}
 
 
-@media(max-width:991px){
+@media(max-width:991px), (max-width:768px), (max-width:478px){
 	.notice_body {width:95%;}
 	
 	.notice_body table td {font-size:0.9rem;}
+	
+	.search-container .search_module button {right: 30px;}
 	
 }
 

@@ -2988,9 +2988,6 @@ nav .menu-item.current:hover > .menu-link{
   font-weight:600;
   line-height: 20px;
   text-align: center;
-  -webkit-transition: color 0.3s ease-in-out;
-  -o-transition: color 0.3s ease-in-out;
-  transition: color 0.3s ease-in-out;
 }
 
 #top-search a {
@@ -20021,6 +20018,7 @@ body:not(.stretched) #wrapper {
 }
 
 /* SVG 래퍼: 회전은 이 요소 하나만 건드림 */
+
 #hamburger-menu-trigger .svg-trigger {
   width: 60px; height: 70px;
   transform-origin: center;
@@ -20039,33 +20037,30 @@ body:not(.stretched) #wrapper {
   transition: transform 0.4s ease, stroke-dasharray 0.4s ease, stroke-dashoffset 0.4s ease;
 }
 
-/* 각 선의 기본 dash — 길이가 서로 달라요! */
-#hamburger-menu-trigger .svg-trigger path:nth-of-type(1) { /* top */
+
+
+#hamburger-menu-trigger .svg-trigger path:nth-of-type(1) {
   stroke-dasharray: 40 160;
   stroke-dashoffset: 0;
 }
-#hamburger-menu-trigger .svg-trigger path:nth-of-type(2) { /* middle */
+#hamburger-menu-trigger .svg-trigger path:nth-of-type(2) {
   stroke-dasharray: 40 142;
   stroke-dashoffset: 0;
 }
-#hamburger-menu-trigger .svg-trigger path:nth-of-type(3) { /* bottom (짧음) */
+#hamburger-menu-trigger .svg-trigger path:nth-of-type(3) {
   stroke-dasharray: 40 85;
   stroke-dashoffset: 0;
 }
 
-/* === 활성(닫기) 상태 ===
-   1) 전체 SVG 45° 회전
-   2) 가운데 선만 90° 회전
-   3) 위/아래 선 끝을 살짝 잘라내어 X 중앙을 또렷하게 */
-#hamburger-menu-trigger.active .svg-trigger {
-  transform: rotate(45deg);
+/* ✅ active 시 애니메이션 */
+#hamburger-menu-trigger.active .svg-trigger path:nth-of-type(1) {
+  transform: translateY(15px) rotate(45deg);
 }
 #hamburger-menu-trigger.active .svg-trigger path:nth-of-type(2) {
-  transform: rotate(90deg);
+  opacity: 0;
 }
-#hamburger-menu-trigger.active .svg-trigger path:nth-of-type(1),
 #hamburger-menu-trigger.active .svg-trigger path:nth-of-type(3) {
-  stroke-dashoffset: -64px; /* 필요하면 -56 ~ -68px 사이로 미세조정 */
+  transform: translateY(-15px) rotate(-45deg);
 }
 
 
