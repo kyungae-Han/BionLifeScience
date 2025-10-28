@@ -27,6 +27,8 @@ html {
 }
 html, body { max-width: 100%; overflow-x: clip; }
 
+#header a:hover {color: var(--bs-orange);}
+
 
 .p-item:not(.il-tags) {min-height:55px;}
 .p-wrap h2 {font-size: clamp(38px, 4vw, 55px);}
@@ -228,7 +230,7 @@ button {background: none; border:0; }
 	font-size: clamp(14px, 2.6vw, 18px);
 }
 
-.about .breadcrumb-wrap a:hover {color: var(--bs-orange);}
+.about .breadcrumb-wrap a:hover {color: var(--bs-gray-900);}
 
 
 
@@ -1014,7 +1016,7 @@ button {background: none; border:0; }
 
 .bio-history-tab-nav li a:focus,
 .bio-history-tab-nav li a:focus-visible {
-  background:black;
+  background: var(--depth-bg);
   color: #fff;
 }
 
@@ -1383,7 +1385,6 @@ html.is-switching-tab, body.is-switching-tab{ overflow-anchor:none !important; }
   background: #fff;
   border-radius: 18px;
   padding: clamp(18px, 3.2vw, 28px);
-  box-shadow: 0 10px 24px rgba(3, 10, 27, .06);
   max-width: 1280px;
   margin: 0 auto clamp(20px, 2.4vw, 32px);
 }
@@ -1828,8 +1829,9 @@ il-callout.p-item {
 }
 
 #certificates .grid-filter-container .grid-filter li a:hover{
-	color: var(--bs-gray-600);
 	font-weight: 500;
+	background: var(--depth-bg);
+	color: #fff;
 }
 
 .grid-filter li.activeFilter a {
