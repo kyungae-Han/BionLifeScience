@@ -12924,6 +12924,7 @@ body:not(.device-touch) #gotoTop {
 
 #footer .container .f-left .adress {font-size:1.1rem !important;}
 #footer .container .f-right .f-mail { display: flex; flex-direction: row; font-size:1.2rem !important;}
+#footer .container .f-right .f-mail .email-text {letter-spacing: 1px;}
 #footer .container .f-right .f-mail .bi {padding-top: 5px; font-size: 1rem !important;}
 
 @media(max-width: 991px){
