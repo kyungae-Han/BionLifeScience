@@ -2533,14 +2533,13 @@ html[xmlns] .slider-wrap {
 #header.bg-active #header-wrap,
 #header.scrolled #header-wrap {
 	background: #fff;
-	border-bottom:1px solid #eee;
 } 
 
 #header-wrap:not(.sticky-header) {
-  position: fixed;
-  width: 100%;
+   position: fixed;
+   width: 100%;
    box-shadow: 0 0 0 rgba(0, 0, 0, 0.1);
-   transition: height 0.2s ease 0s, background-color 0.3s ease 0s;
+   transition: height 0.3s ease 0s, background-color 0.3s ease 0s;
    -webkit-backface-visibility: hidden;
    backface-visibility: hidden;
    will-change: left, top, transform;
@@ -2566,19 +2565,6 @@ html[xmlns] .slider-wrap {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
   max-width: 100%;
-}
-
-.brand-page #header.full-header.bg-active {
-  height: 70px;
-  background: #fff;
-  border-bottom: 1px solid rgba(0,0,0,.08);
-}
-
-
-.brand-page #header.full-header.scrolled {
-  height: 70px;
-  background: #fff;
-  border-bottom: 1px solid rgba(0,0,0,.08);
 }
 
 
@@ -2903,11 +2889,10 @@ nav .menu-item.current:hover > .menu-link{
 
 @media (max-width: 991px){ 
 	
-	#header {position: fixed; top: 0; left: 0; width: 100%; height: 100px; transition: height .35s ease;}
-	
+	#header {position: fixed; top: 0; left: 0; width: 100%; height: 100px;}
 	#header.full-header.bg-active {height:70px;}
 	#header.full-header.scrolled {height: 70px;}
-  /*  #header .header-row { height: 100px; transition: height .35s ease; } */
+	
    .svg-trigger {right: 0;}
    
    
@@ -2915,8 +2900,7 @@ nav .menu-item.current:hover > .menu-link{
 	  display: block;
 	  max-height: 100px;
 	  width: auto;
-	  transition: max-height 0.20s ease, transform 0.35s ease;
-	  transform: translateY(0);
+	  transition: max-height .15s ease;
 	}
 	
 	#header.bg-active #logo img,
