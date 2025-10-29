@@ -131,6 +131,7 @@ public class BrandService {
     public void brandInsert(
             MultipartFile brandImage,
             MultipartFile visualImage,
+            MultipartFile brandFooterImage,
             Brand brand
     ) throws IOException {
 
@@ -146,6 +147,8 @@ public class BrandService {
 
         // 비주얼 파일 처리
         applyVisual(brand, visualImage);
+        
+        applyFooter(brand, brandFooterImage);
 
         // 최종 저장
         brandRepository.save(brand);
@@ -155,6 +158,7 @@ public class BrandService {
 	public void brandUpdate(
 			  MultipartFile brandImage,
 	          MultipartFile visualImage,
+	          MultipartFile brandFooterImage,
 	          Brand brand
 			) throws IllegalStateException, IOException {
 		
@@ -175,6 +179,11 @@ public class BrandService {
 	            if (visualImage != null && !visualImage.isEmpty()) {
 	                applyVisual(b, visualImage);
 	            }
+	            
+	            // ✅ footer 파일 교체 (추가)
+	            if (brandFooterImage != null && !brandFooterImage.isEmpty()) {
+	                applyFooter(b, brandFooterImage);
+	            }
 	        } catch (IOException e) {
 	            throw new RuntimeException(e);
 	        }
@@ -183,6 +192,44 @@ public class BrandService {
 	    });
 		
 	}
+	
+	
+	public void applyFooter(Brand brand, MultipartFile brandFooterImage) throws IOException {
+	    if (brandFooterImage == null || brandFooterImage.isEmpty()) return;
+
+	    String today = today();
+	    String dirPath = commonPath + "/brand/footer/" + today;
+	    String webRoad = "/administration/brand/footer/" + today;
+
+	    String fileName = brandFooterImage.getOriginalFilename();
+	    
+	    File dir;
+	    if ("local".equalsIgnoreCase(env)) {
+	        // System.getProperty("user.dir") = 현재 프로젝트 루트 경로
+	        dir = new File(System.getProperty("user.dir"), dirPath);
+	    } else {
+	        // 운영 서버에서는 commonPath가 절대경로이므로 그대로 사용
+	        dir = new File(dirPath);
+	    }
+
+
+	    if (!dir.exists()) dir.mkdirs();
+
+	    // ✅ 파일명 및 저장
+	    File dest = new File(dir, fileName);
+	    brandFooterImage.transferTo(dest);
+	    
+	    
+	    String normalizedPath = dirPath.replace("\\", "/") + "/" + fileName;
+
+	    // ✅ DB 저장용 정보 설정
+	    brand.setBrandFooterImagePath(normalizedPath); // 실제 물리 경로
+	    brand.setBrandFooterImageRoad(webRoad + "/" + fileName);              // 웹 접근 경로
+	    brand.setBrandFooterImageName(fileName);
+	}
+
+
+
 }
 
 

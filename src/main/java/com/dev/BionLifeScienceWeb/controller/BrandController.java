@@ -101,7 +101,8 @@ public class BrandController {
 	public String brandInsert(
 	        @ModelAttribute Brand brand,
 	        @RequestParam(value = "brandImage", required = false) MultipartFile brandImage,
-	        @RequestParam(value = "visualImage", required = false) MultipartFile visualImage
+	        @RequestParam(value = "visualImage", required = false) MultipartFile visualImage,
+	        @RequestParam(value = "brandFooterImage", required = false) MultipartFile brandFooterImage
 	) throws IOException {
 
 	    if (brand.getType() == null) {
@@ -120,7 +121,7 @@ public class BrandController {
 
 	    brand.setDesc(desc);
 
-	    brandService.brandInsert(brandImage, visualImage, brand); // ✅ 세 개 넘김
+	    brandService.brandInsert(brandImage, visualImage, brandFooterImage, brand); // ✅ 세 개 넘김
 
 	    return "<script>alert('브랜드가 등록 되었습니다.');"
 	         + "location.href='/admin/brandManager';</script>";
@@ -770,7 +771,8 @@ public class BrandController {
 	public String brandUpdate(
 			@ModelAttribute Brand brand,
 	        @RequestParam(value = "brandImage", required = false) MultipartFile brandImage,
-	        @RequestParam(value = "visualImage", required = false) MultipartFile visualImage
+	        @RequestParam(value = "visualImage", required = false) MultipartFile visualImage,
+	        @RequestParam(value = "brandFooterImage", required = false) MultipartFile brandFooterImage
 			) throws IOException {
 		
 		
@@ -795,6 +797,7 @@ public class BrandController {
 	    
 	    brandService.applyLogo(saved, brandImage);
 	    brandService.applyVisual(saved, visualImage);
+	    brandService.applyFooter(saved, brandFooterImage);
 		
 	    brandRepository.save(saved);
 

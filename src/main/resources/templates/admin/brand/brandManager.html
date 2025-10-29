@@ -114,7 +114,7 @@
 							method="POST" 
 							enctype="multipart/form-data"
 							action="/admin/brandInsert">
-							  <div class="form-group has-success">
+							  <div class="form-group ">
 							    <label class="col-lg-2 control-label" for="type">브랜드 타입</label>
 							     <div class="col-lg-10">
 							      <select class="form-control gsc-selected-option-container" id="type" name="type" required>
@@ -126,7 +126,7 @@
 								  </select>
 								  </div>
 							  </div>
-								<div class="form-group has-success">
+								<div class="form-group">
 									<label class="col-lg-2 control-label">브랜드명</label>
 									<div class="col-lg-10">
 										<input 
@@ -138,7 +138,7 @@
 										<p class="help-block">* 브랜드명을 입력해 주세요</p>
 									</div>
 								</div>
-								<div class="form-group has-success">
+								<div class="form-group">
 									<label class="col-lg-2 control-label">브랜드 로고</label>
 									<div class="col-lg-10">
 										<input 
@@ -151,7 +151,15 @@
 									</div>
 								</div>
 								
-								<div class="form-group has-success">
+								<div class="form-group">
+								  <label class="col-lg-2 control-label" for="brandFooterImage">메인 Footer 전용 이미지</label>
+								  <div class="col-lg-10">
+									  <input type="file" id="brandFooterImage" class="form-control" name="brandFooterImage" accept=".png">
+									  <p class="text-muted small">※ 메인 하단 로고 전시용 이미지 (권장 사이즈: 300×150px)</p>
+								  </div>
+								</div>
+								
+								<div class="form-group">
 									<label class="col-lg-2 control-label">브랜드 소개</label>
 									<div class="col-lg-10">
 										<textarea 
@@ -162,7 +170,7 @@
 									</div>
 								</div>
 								
-								<div class="form-group has-success">
+								<div class="form-group ">
 								  <label class="col-lg-2 control-label">비주얼 이미지 (자사브랜드만 넣어주세요.)</label>
 								  	<div class="col-lg-10">
 								  		<input type="file"
@@ -186,7 +194,7 @@
 								 	</div>
 								</div>
 								
-								<div class="form-group has-success">
+								<div class="form-group ">
 								  <label class="col-lg-2 control-label">상세 설명 (선택)</label>
 								  	<div class="col-lg-10">
 								  		 <textarea id="desc" name="desc"></textarea>

@@ -92,4 +92,14 @@ public class Brand {
 	    products.remove(product);
 	    product.setBrand(null);
 	}
+	
+	@Column(name = "BRAND_FOOTER_IMAGE_PATH")
+	private String brandFooterImagePath;
+
+	@Column(name = "BRAND_FOOTER_IMAGE_ROAD")
+	private String brandFooterImageRoad;
+
+	@Column(name = "BRAND_FOOTER_IMAGE_NAME")
+	private String brandFooterImageName;
+
 }

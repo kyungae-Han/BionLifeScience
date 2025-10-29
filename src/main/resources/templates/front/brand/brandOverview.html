@@ -33,8 +33,8 @@
   
     <div class="content-wrap">
       <div class="container">
-         <div class="row justify-content-center py-6 g-6">
-		  <div class="col-xl-3 col-lg-6" th:each="b,iterStat : ${partnerBrands}">
+         <div class="row justify-content-left py-6 g-6">
+		  <div class="col-xl-3 col-lg-6 pb-4" th:each="b,iterStat : ${partnerBrands}">
 		    <div class="brand-card text-center border rounded-3 bg-white"
 		         style="cursor:pointer; transition:all .25s ease;"
 		         th:data-index="${iterStat.index}"

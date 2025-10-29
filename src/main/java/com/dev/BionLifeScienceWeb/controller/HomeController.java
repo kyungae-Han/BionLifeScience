@@ -127,10 +127,18 @@ public class HomeController {
 	    }
 		
 		
-		List<Brand> partnerBrands = brandRepository.findAllByTypeOrderByNameAsc(Brand.BrandType.PARTNER);
+		List<Brand> partnerBrands = brandRepository.findAllByTypeOrderByNameAsc(Brand.BrandType.PARTNER)
+		.stream()
+		.filter(b -> b.getBrandFooterImageRoad() != null && !b.getBrandFooterImageRoad().isBlank())
+	    .collect(Collectors.toList());
+		
+		
 	    for (Brand b : partnerBrands) {
 	        if (b.getImageRoad() != null)
 	            b.setImageRoad(b.getImageRoad().replace("/administration/", "/upload/"));
+	        
+	        if (b.getBrandFooterImageRoad() != null)
+	            b.setBrandFooterImageRoad(b.getBrandFooterImageRoad().replace("/administration/", "/upload/"));
 	    }
 		
 		model.addAttribute("fi", fi);
