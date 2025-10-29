@@ -45,7 +45,7 @@ public class EmailService {
     	
     	String baseUrl;
         if ("local".equals(env)) {
-            baseUrl = "http://localhost:8080";
+            baseUrl = "https://demo.bionlifescience.com.ngrok.dev";
         } else {
             baseUrl = "https://bionlifescience.com";
         }
