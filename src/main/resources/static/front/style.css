@@ -3002,11 +3002,11 @@ nav .menu-item.current:hover > .menu-link{
   pointer-events: none;
   position: fixed;
   width: 100% !important;
-  height: 100%;
   padding: 0;
   margin: 0;
   top: 50px;
   left: 0;
+  min-height: 120px;
   background-color:white;
   -webkit-transition: opacity 0.3s ease-in-out;
   -o-transition: opacity 0.3s ease-in-out;
@@ -3032,7 +3032,9 @@ nav .menu-item.current:hover > .menu-link{
 }
 
 .top-search-form div{
+	position: relative;
 	display:flex;
+ 	align-items: top;	
 }
 
 .top-search-form input {
@@ -3041,7 +3043,6 @@ nav .menu-item.current:hover > .menu-link{
   border: 0;
   outline: 0 !important;
   padding: 10px 80px 10px 0;
-  height: 50%;
   background-color: transparent !important;
   color: #333;
   font-weight: 700;
@@ -3058,14 +3059,16 @@ nav .menu-item.current:hover > .menu-link{
   font-size:20px;
 }
 
-.top-search-form span{
-	position:relative;
-	font-size:35px;
-	font-weight:700;
-	left:-50px;
-	cursor:pointer;
-	transition:all 0.3s ease-in-out;
+
+.top-search-form div span {
+  position: absolute;
+  font-size: 2rem;
+  font-weight: 700;
+  right: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
 }
+
 
 .search-overlay .top-search-form {
   position: fixed;
