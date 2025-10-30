@@ -226,9 +226,6 @@ function unlockBodyScroll() {
     modal.style.pointerEvents = 'auto';
     modal.setAttribute('aria-hidden', 'false');
 
-    // ✅ 배경 스크롤 유지 — body 변경 없음
-    // (overflow hidden 안 씀)
-
     // ✅ 로딩 표시
     productList.innerHTML = `<p class="text-muted text-center my-4">Loading...</p>`;
 
@@ -247,13 +244,12 @@ function unlockBodyScroll() {
       // ✅ 카테고리 추출
       const categories = data.categories || [];
 
-	// categories 안의 products들을 평탄화(flat)하면서 bigSortName을 병합
-	const products = categories.flatMap(c => 
-	  (c.products || []).map(p => ({
-	    ...p,
-	    bigSortName: c.bigSortName || '기타'
-	  }))
-	);
+		const products = categories.flatMap(c => 
+		  (c.products || []).map(p => ({
+		    ...p,
+		    bigSortName: c.bigSortName || '기타'
+		  }))
+		);
 	
 		
 	// ✅ 카테고리 버튼 생성
@@ -281,8 +277,10 @@ function unlockBodyScroll() {
 	  </div>
 	`).join('');
 	
+	
+	
 	// ✅ 필터 기능
-	const filterProducts = (category) => {
+	  const filterProducts = (category) => {
 	  document.querySelectorAll('#brandCategoryList button').forEach(b => {
 	    b.classList.toggle('active', b.dataset.category === category);
 	  });

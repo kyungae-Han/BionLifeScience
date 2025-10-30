@@ -872,7 +872,7 @@ document.addEventListener('DOMContentLoaded', () => {
         `).join('');
 
         // ✅ 필터 기능
-        const filterProducts = (category) => {
+          const filterProducts = (category) => {
 		  const buttons = document.querySelectorAll('#brandGlobalCategoryList .category-item');
 		  const items = document.querySelectorAll('.brand-product-item');
 		
@@ -891,19 +891,26 @@ document.addEventListener('DOMContentLoaded', () => {
 		    item.style.display = match ? 'block' : 'none';
 		    if (match) visibleCount++;
 		  });
-		  
-		  
+		
+		  // ✅ 제품이 없을 때는 "등록된 제품이 없습니다" 문구만 표시
+		  const existingMsg = document.querySelector('#noProductMsg');
 		  if (visibleCount === 0) {
-			    categoryBox.style.display = 'none';
-			    categoryBox.innerHTML = '';
-			    productList.style.display = 'none';
-			  } else {
-			    categoryBox.style.display = 'flex';
-			    productList.style.display = '';
-			  }
+		    if (!existingMsg) {
+		      const msg = document.createElement('p');
+		      msg.id = 'noProductMsg';
+		      msg.className = 'text-muted text-center my-5';
+		      msg.textContent = '순차적으로 업데이트될 예정입니다.';
+		      productList.appendChild(msg);
+		    }
+		  } else if (existingMsg) {
+		    existingMsg.remove();
+		  }
+		
+		  // ✅ 카테고리는 절대 숨기지 않음 (BigSort 유지)
+		  categoryBox.style.display = 'flex';
+		  productList.style.display = '';
 		};
 
-        
 
         // ✅ 클릭 이벤트 연결
         document.querySelectorAll('#brandGlobalCategoryList .category-item').forEach(btn => {
