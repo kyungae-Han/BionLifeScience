@@ -4,7 +4,7 @@
   var menuList = /*[[${menuList}]]*/ null;
 
   // ===== 1) 유틸: 안전 로그
-  const log = (...args) => console.log('[MENU]', ...args);
+  //const log = (...args) => console.log('[MENU]', ...args);
 
   // ===== 2) 인덱싱 & 트리빌드
   function indexById(list, pickId = x => x.id) {
@@ -270,7 +270,7 @@
     // 현재는 샘플로 대분류 2개만 미리 로드해두는 형태. 필요 시 확장하세요.
     return $.when(getBigSortList(), getBrandList())
       .then((gBigRes, brRes) => {
-        log('[사전 로드] 일반 대분류/브랜드', gBigRes[0], brRes[0]);
+        //log('[사전 로드] 일반 대분류/브랜드', gBigRes[0], brRes[0]);
         // 더 내려가려면 여기에 추가 호출/병합
         // 일괄 menuList 객체 형태로 만들어 buildTrees 호출
         const partialMenuList = {
@@ -285,16 +285,16 @@
           productList: []
         };
         TREE = buildTrees(partialMenuList);
-        printTrees(TREE);
+        //printTrees(TREE);
       });
   }
 
   if (!menuList) {
-    log('menuList 데이터가 없습니다. (AJAX로 부분 하이드레이션 진행 가능)');
+    //log('menuList 데이터가 없습니다. (AJAX로 부분 하이드레이션 진행 가능)');
     hydrateFromServerListsIfNeeded();
   } else {
     TREE = buildTrees(menuList);
-    printTrees(TREE);
+    //printTrees(TREE);
   }
 
   // ===== 7) 전역 디버그 노출 (개발 중 편의)
