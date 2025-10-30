@@ -587,7 +587,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const section = temp.querySelector('#openContact');
         bodyBox.innerHTML = section
           ? section.outerHTML
-          : '<p>콘텐츠를 찾지 못했습니다(#openContact).</p>';
+          : '<p>콘텐츠를 찾지 못했습니다.</p>';
         bodyBox.dataset.loaded = '1';
       })
       .catch(() => { bodyBox.innerHTML = '<p>불러오기에 실패했습니다.</p>'; });
@@ -821,15 +821,20 @@ document.addEventListener('DOMContentLoaded', () => {
             bigSortName: c.bigSortName || '기타'
           }))
         );
-
-        if (products.length === 0) {
-          categoryBox.innerHTML = '';
-          productList.innerHTML = `<p class="text-muted text-center my-4">등록된 제품이 없습니다.</p>`;
-          return;
-        }
+        
 
         // ✅ 카테고리 버튼 생성
         const categoryNames = [...new Set(categories.map(c => c.bigSortName || '기타'))];
+        
+        
+        if (products.length === 0) {
+       	  categoryBox.style.display = 'none';
+       	  categoryBox.innerHTML = '';
+       	  productList.innerHTML = ''; // “등록된 제품이 없습니다.” 문구조차 표시하지 않음
+       	  return;
+       	}
+       
+        categoryBox.style.display = 'flex';
         categoryBox.innerHTML = `
         	  <div id="brandGlobalCategoryList">
         	    ${['ALL', ...categoryNames].map((c, i, arr) => `
@@ -841,9 +846,9 @@ document.addEventListener('DOMContentLoaded', () => {
         	  </div>
         	`;
 
-        	// ✅ 버튼 동작 연결
-        	const buttons = categoryBox.querySelectorAll('.category-item');
-        	const items = document.querySelectorAll('.brand-product-item');
+       	// ✅ 버튼 동작 연결
+       	const buttons = categoryBox.querySelectorAll('.category-item');
+       	const items = document.querySelectorAll('.brand-product-item');
 
         // ✅ 제품 카드 렌더링
         productList.innerHTML = products.map(p => `
@@ -882,20 +887,16 @@ document.addEventListener('DOMContentLoaded', () => {
 		    item.style.display = match ? 'block' : 'none';
 		    if (match) visibleCount++;
 		  });
-		
-		  // 🔹 제품 없음 문구 처리
-		  let msg = document.querySelector('#noProductMessage');
+		  
+		  
 		  if (visibleCount === 0) {
-		    if (!msg) {
-		      msg = document.createElement('p');
-		      msg.id = 'noProductMessage';
-		      msg.className = 'text-muted text-center my-4';
-		      msg.textContent = '등록된 제품이 없습니다.';
-		      productList.appendChild(msg);
-		    }
-		  } else if (msg) {
-		    msg.remove();
-		  }
+			    categoryBox.style.display = 'none';
+			    categoryBox.innerHTML = '';
+			    productList.style.display = 'none';
+			  } else {
+			    categoryBox.style.display = 'flex';
+			    productList.style.display = '';
+			  }
 		};
 
         

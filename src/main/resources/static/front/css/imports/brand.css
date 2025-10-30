@@ -419,7 +419,6 @@
 #brandModal .brand-category-bar {
   background-color: #f7f7f7;
   border-radius: 50px;
-  height: 50px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
@@ -605,8 +604,8 @@
   }
   
   #brandModal .modal-content .brand__info {
-  	display: flex !important;       
-    flex-direction: column !important;
+  	display: flex;       
+    flex-direction: column;
   }
   
   #brandProductList > p {
@@ -614,4 +613,4 @@
   }
 }
 
-
+.client_btn .nav-btn {border: 1px solid #eee;}
