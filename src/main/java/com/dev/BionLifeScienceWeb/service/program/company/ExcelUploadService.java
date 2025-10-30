@@ -95,46 +95,71 @@ public class ExcelUploadService {
 		executorService.submit(() -> {
 			try {
 				Sheet productSheet = workbook.getSheetAt(3);
+
 				for (int i = 1; i < productSheet.getPhysicalNumberOfRows(); i++) {
-					Row row = productSheet.getRow(i);
+				    Row row = productSheet.getRow(i);
+				    if (row == null) continue; // 빈 행 무시
 
-					if (row != null) {
-						Product product = new Product();
-						Cell code = row.getCell(0);
-						Cell subject = row.getCell(1);
-						Cell content = row.getCell(2);
-						Cell subContent = row.getCell(3);
-						Cell sign = row.getCell(4);
-						Cell smallSort = row.getCell(5);
-						Cell middleSort = row.getCell(6);
-						Cell bigSort = row.getCell(7);
-						Long smallValue = (long) smallSort.getNumericCellValue();
-						Long middleValue = (long) middleSort.getNumericCellValue();
-						Long bigValue = (long) bigSort.getNumericCellValue();
-						String codeValue = code + "";
-						String subjectValue = subject + "";
-						String contentValue = content + "";
-						String subContentValue = subContent + "";
-						String signStr = sign + "";
-						Boolean signValue = true;
-						productCodes.add(codeValue);
-						if (signStr.equals("TRUE")) {
-							signValue = true;
-						} else {
-							signValue = false;
-						}
-						product.setProductCode(codeValue);
-						product.setSubject(subjectValue);
-						product.setContent(contentValue);
-						product.setProductSubContent(subContentValue);
-						product.setSign(signValue);
-						product.setSmallSort(smallSortRepository.findById(smallValue).get());
-						product.setMiddleSort(middleSortRepository.findById(middleValue).get());
-						product.setBigSort(bigSortRepository.findById(bigValue).get());
-						productService.excelInsert(product);
+				    try {
+				        Product product = new Product();
 
-					}
-				}
+				        // ✅ 셀 가져오기
+				        Cell codeCell        = row.getCell(0);
+				        Cell subjectCell     = row.getCell(1);
+				        Cell contentCell     = row.getCell(2);
+				        Cell subContentCell  = row.getCell(3);
+				        Cell signCell        = row.getCell(4);
+				        Cell smallSortCell   = row.getCell(5);
+				        Cell middleSortCell  = row.getCell(6);
+				        Cell bigSortCell     = row.getCell(7);
+
+				        // ✅ 셀 값 안전하게 파싱
+				        String codeValue        = getCellString(codeCell);
+				        String subjectValue     = getCellString(subjectCell);
+				        String contentValue     = getCellString(contentCell);
+				        String subContentValue  = getCellString(subContentCell);
+				        String signStr          = getCellString(signCell);
+
+				        Long smallValue  = getCellLong(smallSortCell);
+				        Long middleValue = getCellLong(middleSortCell);
+				        Long bigValue    = getCellLong(bigSortCell);
+
+				        // ✅ 최소한 bigSort는 존재해야 함
+				        if (bigValue == null) {
+				            System.out.println("⚠️ [" + i + "행] 대분류 ID 없음 → 건너뜀");
+				            continue;
+				        }
+
+				        // ✅ sign 처리 (TRUE/1/true 모두 허용)
+				        Boolean signValue = signStr != null && 
+				                            (signStr.equalsIgnoreCase("TRUE") || signStr.equals("1"));
+
+				        // ✅ 기본정보 세팅
+				        product.setProductCode(codeValue);
+				        product.setSubject(subjectValue);
+				        product.setContent(contentValue);
+				        product.setProductSubContent(subContentValue);
+				        product.setSign(signValue);
+
+				        // ✅ 분류 연결 — 존재 확인 후만 set
+				        bigSortRepository.findById(bigValue).ifPresent(product::setBigSort);
+
+				        if (middleValue != null) {
+				            middleSortRepository.findById(middleValue).ifPresent(product::setMiddleSort);
+				        }
+				        if (smallValue != null) {
+				            smallSortRepository.findById(smallValue).ifPresent(product::setSmallSort);
+				        }
+
+				        // ✅ 코드 등록
+				        productCodes.add(codeValue);
+				        productService.excelInsert(product);
+
+				    } catch (Exception e) {
+				        System.out.println("❌ [Row " + i + "] 엑셀 데이터 파싱 실패: " + e.getMessage());
+				    }
+				} // ← ✅ for 문 닫힘
+
 
 			} catch (Exception e) {
 				System.out.println(e.fillInStackTrace());
@@ -259,45 +284,71 @@ public class ExcelUploadService {
 		executorService.submit(() -> {
 			try {
 				Sheet productSheet = workbook.getSheetAt(3);
-				for (int i = 1; i < productSheet.getPhysicalNumberOfRows(); i++) {
-					Row row = productSheet.getRow(i);
-					if (row != null) {
-						Product product = new Product();
-						Cell code = row.getCell(0);
-						Cell subject = row.getCell(1);
-						Cell content = row.getCell(2);
-						Cell subContent = row.getCell(3);
-						Cell sign = row.getCell(4);
-						Cell smallSort = row.getCell(5);
-						Cell middleSort = row.getCell(6);
-						Cell bigSort = row.getCell(7);
-						Long smallValue = (long) smallSort.getNumericCellValue();
-						Long middleValue = (long) middleSort.getNumericCellValue();
-						Long bigValue = (long) bigSort.getNumericCellValue();
-						String codeValue = code + "";
-						String subjectValue = subject + "";
-						String contentValue = content + "";
-						String subContentValue = subContent + "";
-						String signStr = sign + "";
-						Boolean signValue = true;
-						productCodes.add(codeValue);
-						if (signStr.equals("TRUE")) {
-							signValue = true;
-						} else {
-							signValue = false;
-						}
-						product.setProductCode(codeValue);
-						product.setSubject(subjectValue);
-						product.setContent(contentValue);
-						product.setProductSubContent(subContentValue);
-						product.setSign(signValue);
-						product.setSmallSort(smallSortRepository.findById(smallValue).get());
-						product.setMiddleSort(middleSortRepository.findById(middleValue).get());
-						product.setBigSort(bigSortRepository.findById(bigValue).get());
-						productService.excelInsert(product);
 
-					}
-				}
+				for (int i = 1; i < productSheet.getPhysicalNumberOfRows(); i++) {
+				    Row row = productSheet.getRow(i);
+				    if (row == null) continue; // 빈 행 무시
+
+				    try {
+				        Product product = new Product();
+
+				        // ✅ 셀 가져오기
+				        Cell codeCell        = row.getCell(0);
+				        Cell subjectCell     = row.getCell(1);
+				        Cell contentCell     = row.getCell(2);
+				        Cell subContentCell  = row.getCell(3);
+				        Cell signCell        = row.getCell(4);
+				        Cell smallSortCell   = row.getCell(5);
+				        Cell middleSortCell  = row.getCell(6);
+				        Cell bigSortCell     = row.getCell(7);
+
+				        // ✅ 셀 값 안전하게 파싱
+				        String codeValue        = getCellString(codeCell);
+				        String subjectValue     = getCellString(subjectCell);
+				        String contentValue     = getCellString(contentCell);
+				        String subContentValue  = getCellString(subContentCell);
+				        String signStr          = getCellString(signCell);
+
+				        Long smallValue  = getCellLong(smallSortCell);
+				        Long middleValue = getCellLong(middleSortCell);
+				        Long bigValue    = getCellLong(bigSortCell);
+
+				        // ✅ 최소한 bigSort는 존재해야 함
+				        if (bigValue == null) {
+				            System.out.println("⚠️ [" + i + "행] 대분류 ID 없음 → 건너뜀");
+				            continue;
+				        }
+
+				        // ✅ sign 처리 (TRUE/1/true 모두 허용)
+				        Boolean signValue = signStr != null && 
+				                            (signStr.equalsIgnoreCase("TRUE") || signStr.equals("1"));
+
+				        // ✅ 기본정보 세팅
+				        product.setProductCode(codeValue);
+				        product.setSubject(subjectValue);
+				        product.setContent(contentValue);
+				        product.setProductSubContent(subContentValue);
+				        product.setSign(signValue);
+
+				        // ✅ 분류 연결 — 존재 확인 후만 set
+				        bigSortRepository.findById(bigValue).ifPresent(product::setBigSort);
+
+				        if (middleValue != null) {
+				            middleSortRepository.findById(middleValue).ifPresent(product::setMiddleSort);
+				        }
+				        if (smallValue != null) {
+				            smallSortRepository.findById(smallValue).ifPresent(product::setSmallSort);
+				        }
+
+				        // ✅ 코드 등록
+				        productCodes.add(codeValue);
+				        productService.excelInsert(product);
+
+				    } catch (Exception e) {
+				        System.out.println("❌ [Row " + i + "] 엑셀 데이터 파싱 실패: " + e.getMessage());
+				    }
+				} // ← ✅ for 문 닫힘
+
 
 			} catch (Exception e) {
 				System.out.println(e.fillInStackTrace());
@@ -383,4 +434,49 @@ public class ExcelUploadService {
 		});
 		executorService.shutdown();
 	}
+	
+	// ✅ 문자열 변환 (모든 셀 타입 안전하게 처리)
+	private String getCellString(Cell cell) {
+	    if (cell == null) return null;
+
+	    try {
+	        // 셀 타입에 상관없이 문자열 값으로 강제 변환
+	        cell.setCellType(org.apache.poi.ss.usermodel.CellType.STRING);
+	        String value = cell.getStringCellValue();
+	        return (value != null) ? value.trim() : null;
+
+	    } catch (Exception e) {
+	        System.out.println("⚠️ getCellString 변환 오류: " + e.getMessage());
+	        return null;
+	    }
+	}
+
+
+
+	// ✅ Long 변환 (문자열·숫자 혼합, null 안전)
+	private Long getCellLong(Cell cell) {
+	    if (cell == null) return null;
+
+	    try {
+	        // 강제로 문자열로 변환 후 숫자 파싱 시도
+	        cell.setCellType(org.apache.poi.ss.usermodel.CellType.STRING);
+	        String value = cell.getStringCellValue().trim();
+
+	        if (value.isEmpty()) return null;
+
+	        // "3.0" → "3"
+	        if (value.endsWith(".0")) {
+	            value = value.substring(0, value.length() - 2);
+	        }
+
+	        return Long.parseLong(value);
+
+	    } catch (Exception e) {
+	        System.out.println("⚠️ getCellLong 변환 오류: " + e.getMessage());
+	        return null;
+	    }
+	}
+
+
+
 }

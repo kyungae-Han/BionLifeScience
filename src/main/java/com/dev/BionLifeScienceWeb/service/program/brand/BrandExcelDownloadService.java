@@ -82,9 +82,11 @@ public class BrandExcelDownloadService {
 				"소분류 ID", "소분류 이름"
 				};
 		String productHeaderNames[] = new String[] {
-				"PRODUCT_CODE", "PRODUCT_SUBJECT", "PRODUCT_CONTENT", 
-				"PRODUCT_SUB_CONTENT", "소분류 ID" ,"중분류 ID",
-				"대분류 ID", "브랜드 ID"
+				"BRAND_PRODUCT_CODE", "BRAND_PRODUCT_SUBJECT", "BRAND_PRODUCT_CONTENT",
+                "BRAND_PRODUCT_SUB_CONTENT",
+                "BRAND_TABLE_IMAGE_PATH", "BRAND_TABLE_IMAGE_ROAD", "BRAND_TABLE_IMAGE_NAME",
+                "BRAND_SPEC_IMAGE_PATH", "BRAND_SPEC_IMAGE_ROAD", "BRAND_SPEC_IMAGE_NAME",
+                "BRAND_PRODUCT_SIGN", "소분류 ID", "중분류 ID", "대분류 ID", "브랜드 ID", "BRAND_PRODUCT_INDEX"
 				};
 		String productInfoHeaderNames[] = new String[] { 
 				"PRODUCT_CODE", "PRODUCT_INFO_TEXT" 
@@ -362,9 +364,11 @@ public class BrandExcelDownloadService {
 				"소분류 ID", "소분류 이름"
 				};
 		String productHeaderNames[] = new String[] {
-				"PRODUCT_CODE", "PRODUCT_SUBJECT", "PRODUCT_CONTENT", 
-				"PRODUCT_SUB_CONTENT", "소분류 ID" ,"중분류 ID",
-				"대분류 ID", "브랜드 ID"
+				"BRAND_PRODUCT_CODE", "BRAND_PRODUCT_SUBJECT", "BRAND_PRODUCT_CONTENT",
+                "BRAND_PRODUCT_SUB_CONTENT",
+                "BRAND_TABLE_IMAGE_PATH", "BRAND_TABLE_IMAGE_ROAD", "BRAND_TABLE_IMAGE_NAME",
+                "BRAND_SPEC_IMAGE_PATH", "BRAND_SPEC_IMAGE_ROAD", "BRAND_SPEC_IMAGE_NAME",
+                "BRAND_PRODUCT_SIGN", "소분류 ID", "중분류 ID", "대분류 ID", "브랜드 ID", "BRAND_PRODUCT_INDEX"
 				};
 		String productInfoHeaderNames[] = new String[] { 
 				"PRODUCT_CODE", "PRODUCT_INFO_TEXT" 

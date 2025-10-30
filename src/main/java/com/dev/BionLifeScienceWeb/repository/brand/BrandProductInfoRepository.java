@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dev.BionLifeScienceWeb.model.brand.BrandProduct;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProductInfo;
 
 @Repository
@@ -11,4 +12,6 @@ public interface BrandProductInfoRepository extends JpaRepository<BrandProductIn
 	
 	@Transactional
 	int deleteAllByProductId(Long id);
+	
+	boolean existsByProductAndProductInfoText(BrandProduct product, String productInfoText);
 }

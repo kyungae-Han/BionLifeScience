@@ -92,4 +92,6 @@ public interface BrandProductRepository extends JpaRepository<BrandProduct, Long
 	
 	List<BrandProduct> findTop8ByBrandAndIdNotOrderByBrandProductIndexAsc(Brand brand, Long id);
 	
+	boolean existsByBrandProductCode(String brandProductCode);
+	
 }

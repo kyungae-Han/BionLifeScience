@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dev.BionLifeScienceWeb.model.brand.BrandProduct;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProductSpec;
 
 @Repository
@@ -20,4 +21,7 @@ public interface BrandProductSpecRepository extends JpaRepository<BrandProductSp
 	
 	@Query("SELECT s FROM BrandProductSpec s WHERE s.product.id = :productId ORDER BY s.specOrder ASC")
 	List<BrandProductSpec> findAllByProductIdOrderBySpecOrderAsc(@Param("productId") Long productId);
+	
+	boolean existsByProductAndProductSpecSubjectAndProductSpecContent(
+		    BrandProduct product, String productSpecSubject, String productSpecContent);
 }
