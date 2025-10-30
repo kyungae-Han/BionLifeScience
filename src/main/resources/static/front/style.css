@@ -20485,22 +20485,6 @@ body:not(.stretched) #wrapper {
   right: -70px;
 }
 
-@media(max-width:991px){
-	
-#brandGlobalModal .brand-nav-btn.prev {
-  top: 75% !important;
-  left: 20px !important;
-  opacity: 0.9;
-}
-
-#brandGlobalModal .brand-nav-btn.next {
-	top: 75% !important;
-  right: 20px !important;
-  opacity: 0.9;
-}
-
-}
-
 
 #brandGlobalModal .brand-category-bar {
   background-color: #f7f7f7;
@@ -20629,13 +20613,11 @@ body:not(.stretched) #wrapper {
 
   /* 3️⃣ 좌우 네비 버튼 위치 조정 */
   #brandGlobalModal .brand-nav-btn.prev {
-    top: 75% !important;
     left: 20px !important;
     opacity: 0.9;
   }
 
   #brandGlobalModal .brand-nav-btn.next {
-    top: 75% !important;
     right: 20px !important;
     opacity: 0.9;
   }
@@ -20654,6 +20636,9 @@ body:not(.stretched) #wrapper {
   font-size: 0.95rem;
   color: var(--bs-gray-600);
 }
+
+#js-open-contact.nav-btn {width: 100%; justify-content:center;  height: 50px;}
+
 }
 
 
