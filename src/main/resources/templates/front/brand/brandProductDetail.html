@@ -169,52 +169,57 @@
 							</div>
 						</div>
 					</div>
+					
+					
 					<div class="clearfix mt-10" style="max-width:1180px; margin:0 auto;">
-						<div class="line"></div>
-						<div class="mt-5 bg-white">
-							<h4 class="m-b-0">연관된 상품</h4>
-							<p># 이미지를 클릭하시면 해당 상품의 상세페이지로 이동합니다.</p>
-							<div class="owl-carousel product-carousel carousel-widget"
-								data-margin="30" data-pagi="false" data-autoplay="5000"
-								data-items-xs="1" data-items-md="2" data-items-lg="3"
-								data-items-xl="4">
-
-								<div class="portfolio-item" th:each="p : ${relatedProducts}">
-							    <div class="portfolio-image">
-							        <a href="javascript:void(0);" 
-							           th:text="${p.smallSort != null ? p.smallSort.name : 'No Sort'}"></a>
-							        <div class="bg-overlay">
-							            <div class="bg-overlay-content dark"
-							                 data-hover-animate="fadeIn" data-hover-speed="350">
-							                <a th:href="@{${p.firstImageRoad}}"
-							                   class="overlay-trigger-icon bg-light text-dark"
-							                   data-hover-animate="fadeInDownSmall"
-							                   data-hover-animate-out="fadeInUpSmall"
-							                   data-hover-speed="350">
-							                    <i class="icon-line-plus"></i>
-							                </a>
-							                <a th:href="@{|/brandProductDetail/${p.id}|}"
-							                   class="overlay-trigger-icon bg-light text-dark"
-							                   data-hover-animate="fadeInDownSmall"
-							                   data-hover-animate-out="fadeInUpSmall"
-							                   data-hover-speed="350">
-							                    <i class="icon-line-ellipsis"></i>
-							                </a>
-							            </div>
-							            <div class="bg-overlay-bg dark" data-hover-animate="fadeIn"
-							                 data-hover-speed="350"></div>
-							        </div>
-							    </div>
-							    <div class="portfolio-desc">
-							        <h3>
-							            <a href="javascript:void(0);" 
-							               th:text="${p.productSubject}">Sorts of Product</a>
-							        </h3>
-							    </div>
-							</div>
-
-							</div>
-						</div>
+					  <div class="line"></div>
+					  <div class="mt-5 bg-white">
+					    <h6 class="m-b-2 sec-head fs-2 fw-semibold mb-4">연관된 상품</h6>
+					
+					    <div class="owl-carousel product-carousel carousel-widget"
+					         data-margin="30" data-pagi="false" data-autoplay="5000"
+					         data-items-xs="1" data-items-md="2" data-items-lg="3"
+					         data-items-xl="4">
+					
+					      <div class="portfolio-item bg-light" th:each="p : ${relatedProducts}">
+					        <div class="portfolio-image">
+					          <a th:href="@{|/brandProductDetail/${p.id}|}">
+					            <img th:src="${p.tableImageRoad}" alt="상품이미지" class="img-fluid rounded-6" />
+					          </a>
+					          <div class="bg-overlay rounded-6">
+					            <div class="bg-overlay-content dark"
+					                 data-hover-animate="fadeIn" data-hover-speed="350">
+					              <a th:href="@{|${p.tableImageRoad}|}"
+					                 class="overlay-trigger-icon bg-light text-dark"
+					                 data-hover-animate="fadeInDownSmall"
+					                 data-hover-animate-out="fadeInUpSmall"
+					                 data-hover-speed="350">
+					                 <i class="icon-line-plus"></i>
+					              </a>
+					              <a th:href="@{|/brandProductDetail/${p.id}|}"
+					                 class="overlay-trigger-icon bg-light text-dark"
+					                 data-hover-animate="fadeInDownSmall"
+					                 data-hover-animate-out="fadeInUpSmall"
+					                 data-hover-speed="350">
+					                 <i class="icon-line-ellipsis"></i>
+					              </a>
+					            </div>
+					            <div class="bg-overlay-bg dark rounded-7" data-hover-animate="fadeIn"
+					                 data-hover-speed="350"></div>
+					          </div>
+					        </div>
+					
+					        <div class="portfolio-desc text-center">
+					          <h3 class="fs-5 mt-1">
+					            <a th:href="@{|/brandProductDetail/${p.id}|}" 
+					               th:text="${p.subject}">상품명</a>
+					          </h3>
+				               <p class="text-wrap small mb-0 p-2 fs-6 fw-normal" th:text="${p.productSubContent}">고정형 튜브, 50ml, 멸균포장</p>
+					        </div>
+					      </div>
+					
+					    </div>
+					  </div>
 					</div>
 				</div>
 			</div>

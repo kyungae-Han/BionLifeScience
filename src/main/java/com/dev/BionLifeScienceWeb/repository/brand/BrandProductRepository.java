@@ -90,4 +90,6 @@ public interface BrandProductRepository extends JpaRepository<BrandProduct, Long
 	
 	List<BrandProduct> findAllByBrand_TypeOrderByBrandProductIndexAsc(Brand.BrandType type);
 	
+	List<BrandProduct> findTop8ByBrandAndIdNotOrderByBrandProductIndexAsc(Brand brand, Long id);
+	
 }

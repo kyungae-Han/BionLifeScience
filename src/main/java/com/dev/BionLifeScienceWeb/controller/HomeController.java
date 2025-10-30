@@ -285,6 +285,14 @@ public class HomeController {
 	    }
 
 	    model.addAttribute("product", product);
+	    
+	    List<BrandProduct> relatedProducts = new ArrayList<>();
+	    
+	    if (product != null && product.getBrand() != null) {
+	        relatedProducts = brandProductRepository.findTop8ByBrandAndIdNotOrderByBrandProductIndexAsc(product.getBrand(), id);
+	    }
+
+	    model.addAttribute("relatedProducts", relatedProducts);
 
 	    return "front/brand/brandProductDetail";
 	}
