@@ -35,6 +35,8 @@ button[type=button]{
 
 .history-caption button{background:none; border:0; color:#fff; text-align: center;}
 
+#js-open-contact.nav-btn {border:1px solid #eee; border-radius: 25px;}
+
 
 /*-------------------------------
     page tilte
