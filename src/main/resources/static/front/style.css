@@ -16053,7 +16053,7 @@ label.checkbox {
 		position: relative;
 		height: auto;
 		z-index: 999;
-		margin: 0 auto 30px;
+		margin: 0 auto;
 		padding: 0 13rem;
 		height: 100%;
 		box-sizing: border-box;
@@ -20662,7 +20662,6 @@ body:not(.stretched) #wrapper {
 
 
 /* 메뉴 디버깅용 css */
-
 /* .debug-open {
   opacity: 1 !important;
   visibility: visible !important;

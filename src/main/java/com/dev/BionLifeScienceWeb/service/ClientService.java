@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -136,4 +137,26 @@ public class ClientService {
 			return clientRepository.findAllByJoindateBetween(pageable, first, second);
 		}
 	}
+	
+	@Transactional
+    public void deleteClient(Long id) {
+        Client client = clientRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Client not found"));
+
+        // 파일 삭제 (물리 경로 기준)
+        if (client.getFileroad() != null && !client.getFileroad().isEmpty()) {
+            try {
+                // 실제 static 디렉토리 경로 계산
+                String projectRoot = new File("").getAbsolutePath();
+                String realPath = projectRoot + "/src/main/resources/static" + client.getFileroad();
+                File file = new File(realPath);
+                if (file.exists()) file.delete();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        clientRepository.delete(client);
+    }
+	
 }
