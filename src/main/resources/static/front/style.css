@@ -2741,8 +2741,6 @@ body:not(.top-search-open) .top-search-parent #hamburger-menu-trigger {
 	.menu-link{padding: 14px 0;}
 }
 
-.menu-link div {padding: 0;}
-
 .menu-link span {
   display: none;
 }
@@ -16055,7 +16053,7 @@ label.checkbox {
 		position: relative;
 		height: auto;
 		z-index: 999;
-		margin: 0 auto;
+		margin: 0 auto 30px;
 		padding: 0 13rem;
 		height: 100%;
 		box-sizing: border-box;
@@ -16092,11 +16090,12 @@ label.checkbox {
 
 .mega-grid .col li {
   margin: 0;
-  padding: 4px 8px;
-  line-height: 1.4;
+  padding: 5px 8px;
+  line-height: 1.5;
   list-style: none;
   white-space: nowrap;
 }
+
 
 .depth-4 {width: 100%;}
 
@@ -16106,9 +16105,19 @@ label.checkbox {
 	color: #fff;
 	}
 
-.product-mega-wrap .inner .menu-link{display:block; padding: clamp(8px, 1.2vw, 10px) clamp(8px, 2.2vw, 12px) !important; white-space:nowrap;}
+.product-mega-wrap .inner .menu-link {
+  display: flex;                    
+  align-items: center;
+  justify-content: flex-start;
+  padding: clamp(8px, 1.2vw, 10px) clamp(8px, 2.2vw, 12px) !important;
+  white-space: nowrap;
+  border-left: 2px solid transparent;
+  color: #fff;
+  text-decoration: none;
+  text-align: left;
+}
 
-.product-mega-wrap .inner .menu-link > div{display:inline-flex; gap:6px; align-items:center; overflow:hidden; text-overflow:ellipsis;}
+.product-mega-wrap .inner .menu-link > div{display:flex; gap:6px; align-items:center; overflow:hidden; text-overflow:ellipsis;}
 
 .menu-link.is-active{font-weight:700; color:#fff;}
 
@@ -16205,6 +16214,7 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
   word-break: break-word;
   max-width: 100%;
 }
+
 
 /* 항목 강조(은은하게) */
  nav .menu-link,
@@ -20659,5 +20669,5 @@ body:not(.stretched) #wrapper {
   pointer-events: auto !important;
   transform: translateX(-50%) !important;
   display: block !important;
-} */
-
+}
+ */
