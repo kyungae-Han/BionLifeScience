@@ -129,34 +129,6 @@
 	<th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
 	
 	
-
-	<script>
-/* 		document.addEventListener("DOMContentLoaded", function () {
-		  setTimeout(() => {
-		    const header = document.querySelector("#header.full-header");
-		    if (!header) return;
-
-		    function checkScroll() {
-		      const threshold = document.body.classList.contains("brand-page") ? 100 : 366;
-		      if (window.scrollY > threshold) {
-		        header.classList.add("scrolled");
-		        header.classList.remove("bg-active");
-		      } else if (window.scrollY > 5) {
-		        header.classList.add("bg-active");
-		        header.classList.remove("scrolled");
-		      } else {
-		        header.classList.remove("scrolled");
-		      }
-		    }
-
-		    window.addEventListener("scroll", checkScroll);
-		    checkScroll();
-		  }, 200);
-		});
- */
-	</script>
-	
-	
 	<script>
 document.addEventListener("DOMContentLoaded", function () {
   const tabs = document.querySelectorAll(".category-tabs .tab-btn");

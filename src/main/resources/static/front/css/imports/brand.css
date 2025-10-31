@@ -170,7 +170,7 @@
 }
 
 
-.brand-body-container {width: 100%; margin: 0 auto 200px;}
+.brand-body-container {width: 100%; margin: 50px auto 200px; max-width:1280px;}
 .brand-body-container div {
   max-width: 1280px;
   margin: 0 auto;   
@@ -264,12 +264,6 @@
 	justify-content: center;
 }
 
-
-@media(max-width:998px){
-	.product-grid{
-		grid-template-columns: repeat(2, 1fr);
-	}
-}
 
 @media(max-width:414px){
 	.product-grid{
@@ -465,7 +459,7 @@
 
 
 
-@media (max-width: 991px) {
+@media (max-width: 998px) {
     .brand-body-container {margin-bottom: 95px !important;}
     .product-container {padding: 0 17px;}
     
@@ -506,19 +500,6 @@
     scroll-snap-align: start;
   }
 
-/*   .category-tabs button {
-    padding: 8px 14px;
-    font-size: 0.9rem;
-    background: #f8f8f8;
-    border-radius: 6px;
-    border: 1px solid #ddd;
-    white-space: nowrap;
-  }
-
-  .category-tabs button.active {
-    background: #fff;
-    font-weight: 600;
-  } */
 
   /* 상품 2열 정렬 */
   .product-grid {
