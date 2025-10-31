@@ -1,10 +1,6 @@
 package com.dev.BionLifeScienceWeb.service.program.brand;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -15,11 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dev.BionLifeScienceWeb.model.brand.BrandProduct;
+import com.dev.BionLifeScienceWeb.model.brand.BrandProductImage;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProductInfo;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProductSpec;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandBigSortRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandMiddleSortRepository;
-import com.dev.BionLifeScienceWeb.repository.brand.BrandProductFileRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductImageRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductInfoRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductRepository;
@@ -42,9 +38,8 @@ public class BrandExcelUploadService {
 	private final BrandSmallSortRepository brandSmallSortRepository;
 	private final BrandProductSpecRepository brandProductSpecRepository;
 	private final BrandProductInfoRepository brandProductInfoRepository;
-	private final BrandProductImageRepository brandProductImageRepository;
-	private final BrandProductFileRepository brandProductFileRepository;
 	private final BrandProductService brandProductService;
+	private final BrandProductImageRepository brandProductImageRepository;
 
 
 @Transactional
@@ -58,29 +53,29 @@ public void uploadExcel(MultipartFile file) throws IOException {
             Row row = productSheet.getRow(i);
             if (row == null) continue;
 
-            String codeValue = getCellString(row.getCell(0));
+            String codeValue = getCellString(row.getCell(6));
             if (codeValue == null || codeValue.isBlank()) {
-                System.out.println("⚠️ [" + i + "행] 상품코드 비어 있음 → 건너뜀");
                 continue;
             }
 
-            // ✅ 이미 존재하는 상품이면 skip
-            if (brandProductRepository.existsByBrandProductCode(codeValue)) {
-                System.out.println("⚠️ [" + codeValue + "] 이미 등록된 상품 → 건너뜀");
-                continue;
-            }
 
             BrandProduct product = new BrandProduct();
             product.setBrandProductCode(codeValue);
+            Long brandIdValue = getCellLong(row.getCell(0));
             product.setSubject(getCellString(row.getCell(1)));
             product.setContent(getCellString(row.getCell(2)));
             product.setProductSubContent(getCellString(row.getCell(3)));
+            product.setTableImagePath(getCellString(row.getCell(4)));
+            product.setTableImageRoad(getCellString(row.getCell(5)));
+            product.setTableImageName(getCellString(row.getCell(6)));
+            product.setSpecImagePath(getCellString(row.getCell(7)));
+            product.setSpecImageRoad(getCellString(row.getCell(8)));
+            product.setSpecImageName(getCellString(row.getCell(9)));
             product.setSign(false);
 
-            Long smallValue   = getCellLong(row.getCell(4));
-            Long middleValue  = getCellLong(row.getCell(5));
-            Long bigValue     = getCellLong(row.getCell(6));
-            Long brandIdValue = getCellLong(row.getCell(7));
+            Long smallValue   = getCellLong(row.getCell(11));
+            Long middleValue  = getCellLong(row.getCell(12));
+            Long bigValue     = getCellLong(row.getCell(13));
             
             if (brandIdValue != null) {
                 brandRepository.findById(brandIdValue).ifPresent(product::setBrand);
@@ -100,10 +95,21 @@ public void uploadExcel(MultipartFile file) throws IOException {
             }
             
             brandProductService.excelInsert(product);
+            
+            
+            if (product.getTableImageRoad() != null && !product.getTableImageRoad().equals("-")) {
+                BrandProductImage img = new BrandProductImage();
+                img.setProduct(product);
+                img.setProductImagePath(product.getTableImagePath());
+                img.setProductImageRoad(product.getTableImageRoad());
+                img.setProductImageName(product.getTableImageName());
+                brandProductImageRepository.save(img);
+            }
+            
             System.out.println("✅ 신규 상품 등록 완료: " + codeValue);
         }
 
-        // 2️⃣ ProductInfo Sheet → 추가정보
+        
         Sheet productInfoSheet = workbook.getSheetAt(6);
         for (int i = 1; i < productInfoSheet.getPhysicalNumberOfRows(); i++) {
             Row row = productInfoSheet.getRow(i);
@@ -119,7 +125,6 @@ public void uploadExcel(MultipartFile file) throws IOException {
 
             // 이미 등록된 정보면 skip
             if (brandProductInfoRepository.existsByProductAndProductInfoText(product, textValue)) {
-                System.out.println("⚠️ [" + codeValue + "] 동일한 ProductInfo 존재 → 건너뜀");
                 continue;
             }
 
@@ -129,7 +134,6 @@ public void uploadExcel(MultipartFile file) throws IOException {
             brandProductInfoRepository.save(info);
         }
 
-        // 3️⃣ ProductSpec Sheet → 스펙정보
         Sheet productSpecSheet = workbook.getSheetAt(5);
         for (int i = 1; i < productSpecSheet.getPhysicalNumberOfRows(); i++) {
             Row row = productSpecSheet.getRow(i);
@@ -147,7 +151,6 @@ public void uploadExcel(MultipartFile file) throws IOException {
             // 이미 같은 스펙 내용이 있으면 skip
             if (brandProductSpecRepository.existsByProductAndProductSpecSubjectAndProductSpecContent(
                     product, subjectValue, contentValue)) {
-                System.out.println("⚠️ [" + codeValue + "] 동일한 Spec 존재 → 건너뜀");
                 continue;
             }
 
@@ -166,41 +169,40 @@ public void uploadAddExcel(MultipartFile file) throws IOException {
 
     try (Workbook workbook = new XSSFWorkbook(file.getInputStream())) {
 
-        // 1️⃣ Product Sheet에서 신규 상품 추가
         Sheet productSheet = workbook.getSheetAt(4);
         for (int i = 1; i < productSheet.getPhysicalNumberOfRows(); i++) {
             Row row = productSheet.getRow(i);
             if (row == null) continue;
 
-            String codeValue = getCellString(row.getCell(0));
+            String codeValue = getCellString(row.getCell(6));
             if (codeValue == null || codeValue.isBlank()) {
-                System.out.println("⚠️ [" + i + "행] 상품코드 비어 있음 → 건너뜀");
                 continue;
             }
 
-            // ✅ 이미 등록된 상품이면 skip
-            if (brandProductRepository.existsByBrandProductCode(codeValue)) {
-                System.out.println("⚠️ [" + codeValue + "] 이미 등록된 상품 → 건너뜀");
-                continue;
-            }
 
             BrandProduct product = new BrandProduct();
             product.setBrandProductCode(codeValue);
-            product.setSubject(getCellString(row.getCell(1)));
-            product.setContent(getCellString(row.getCell(2)));
+            Long brandIdValue = getCellLong(row.getCell(0)); //BRAND_ID
+            product.setSubject(getCellString(row.getCell(1))); //간략설명
+            product.setContent(getCellString(row.getCell(2))); //설명
             product.setProductSubContent(getCellString(row.getCell(3)));
+            product.setTableImagePath(getCellString(row.getCell(4)));
+            product.setTableImageRoad(getCellString(row.getCell(5)));
+            product.setTableImageName(getCellString(row.getCell(6)));
+            product.setSpecImagePath(getCellString(row.getCell(7)));
+            product.setSpecImageRoad(getCellString(row.getCell(8)));
+            product.setSpecImageName(getCellString(row.getCell(9)));
             product.setSign(false);
 
-            Long smallValue   = getCellLong(row.getCell(4));
-            Long middleValue  = getCellLong(row.getCell(5));
-            Long bigValue     = getCellLong(row.getCell(6));
-            Long brandIdValue = getCellLong(row.getCell(7));
+            Long smallValue   = getCellLong(row.getCell(11));
+            Long middleValue  = getCellLong(row.getCell(12));
+            Long bigValue     = getCellLong(row.getCell(13));
+            
 
             if (brandIdValue != null) {
                 brandRepository.findById(brandIdValue).ifPresent(product::setBrand);
             } else {
-                System.out.println("⚠️ [" + i + "행] 브랜드 ID가 비어있어 건너뜀");
-                continue; // 또는 product.setBrand(null); 로 처리 가능
+                continue;
             }
 
             if (smallValue != null) {
@@ -214,6 +216,16 @@ public void uploadAddExcel(MultipartFile file) throws IOException {
             }
 
             brandProductService.excelInsert(product);
+            
+            if (product.getTableImageRoad() != null && !product.getTableImageRoad().equals("-")) {
+                BrandProductImage img = new BrandProductImage();
+                img.setProduct(product);
+                img.setProductImagePath(product.getTableImagePath());
+                img.setProductImageRoad(product.getTableImageRoad());
+                img.setProductImageName(product.getTableImageName());
+                brandProductImageRepository.save(img);
+            }
+            
             System.out.println("✅ 신규 상품 추가 완료: " + codeValue);
         }
 
@@ -232,7 +244,6 @@ public void uploadAddExcel(MultipartFile file) throws IOException {
 
             // ✅ 이미 동일 ProductInfo 존재하면 skip
             if (brandProductInfoRepository.existsByProductAndProductInfoText(product, textValue)) {
-                System.out.println("⚠️ [" + codeValue + "] 동일한 ProductInfo 존재 → 건너뜀");
                 continue;
             }
 
@@ -293,15 +304,22 @@ public void uploadAddExcel(MultipartFile file) throws IOException {
 	// ✅ 셀을 안전하게 Long 값으로 변환
 	private Long getCellLong(Cell cell) {
 	    if (cell == null) return null;
-	    try {
-	        cell.setCellType(org.apache.poi.ss.usermodel.CellType.STRING);
-	        String value = cell.getStringCellValue().trim();
-	        if (value.isEmpty()) return null;
-	        if (value.endsWith(".0")) value = value.substring(0, value.length() - 2);
-	        return Long.parseLong(value);
-	    } catch (Exception e) {
-	        System.out.println("⚠️ getCellLong 변환 오류: " + e.getMessage());
-	        return null;
+
+	    switch (cell.getCellType()) {
+	        case STRING:
+	            String str = cell.getStringCellValue().trim();
+	            if (str.isEmpty()) return null;
+	            try {
+	                return Long.parseLong(str);
+	            } catch (NumberFormatException e) {
+	                return null;
+	            }
+
+	        case NUMERIC:
+	            return (long) cell.getNumericCellValue();
+
+	        default:
+	            return null;
 	    }
 	}
 

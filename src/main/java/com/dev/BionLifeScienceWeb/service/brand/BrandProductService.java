@@ -52,12 +52,11 @@ public class BrandProductService {
 	public void excelInsert(
 			BrandProduct product
 			) {
-		product.setTableImagePath("-");
-		product.setTableImageRoad("-");
-		product.setTableImageName("-");
-		product.setSpecImageName("-");
-		product.setSpecImagePath("-");
-		product.setSpecImageRoad("-");
+				/*
+				 * product.setTableImagePath("-"); product.setTableImageRoad("-");
+				 * product.setTableImageName("-"); product.setSpecImageName("-");
+				 * product.setSpecImagePath("-"); product.setSpecImageRoad("-");
+				 */
 		int index = 1;
 		if(brandProductRepository.findFirstIndex().isPresent()) {
 			index = brandProductRepository.findFirstIndex().get() + 1;

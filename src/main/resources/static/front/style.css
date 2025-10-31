@@ -4064,26 +4064,13 @@ body:not(.stretched) .slider-parallax .slider-inner {
   position: absolute;
   inset: 0;
   width: 100%;
-  height: 100%;
   z-index: 0;
   overflow: hidden;
-}
-
-#slider .swiper-slide-bg video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  vertical-align: top;
-  z-index: 0;
 }
 
 
 #slider .swiper-slide-bg .bg-inner {
   position: absolute;
-  inset: 0;
   width: 100%;
   height: 100%;
   background-size: cover;
@@ -4092,10 +4079,10 @@ body:not(.stretched) .slider-parallax .slider-inner {
   z-index: 0;
 }
 
-#slider .container {
+/* #slider .container {
   position: relative;
   z-index: 2;
-}
+} */
 
 .swiper-slide [data-caption-animate] {
   -webkit-backface-visibility: hidden;

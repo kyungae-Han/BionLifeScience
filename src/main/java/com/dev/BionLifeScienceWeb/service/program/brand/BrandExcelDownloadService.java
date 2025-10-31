@@ -82,17 +82,17 @@ public class BrandExcelDownloadService {
 				"소분류 ID", "소분류 이름"
 				};
 		String productHeaderNames[] = new String[] {
-				"BRAND_PRODUCT_CODE", "BRAND_PRODUCT_SUBJECT", "BRAND_PRODUCT_CONTENT",
-                "BRAND_PRODUCT_SUB_CONTENT",
-                "BRAND_TABLE_IMAGE_PATH", "BRAND_TABLE_IMAGE_ROAD", "BRAND_TABLE_IMAGE_NAME",
-                "BRAND_SPEC_IMAGE_PATH", "BRAND_SPEC_IMAGE_ROAD", "BRAND_SPEC_IMAGE_NAME",
-                "BRAND_PRODUCT_SIGN", "소분류 ID", "중분류 ID", "대분류 ID", "브랜드 ID", "BRAND_PRODUCT_INDEX"
+				"BRAND_ID", "PRODUCT_NAEM",
+                "간략설명", "상세설명",
+                "IMAGE_PATH", "ROAD_IMAGE", "FILE_NAME",
+                "SPEC_IMAGE_PATH", "SPEC_IMAGE_ROAD", "SPEC_IMAGE_NAME",
+                "PRODUCT_SIGN", "소분류 ID", "중분류 ID", "대분류 ID"
 				};
 		String productInfoHeaderNames[] = new String[] { 
 				"PRODUCT_CODE", "PRODUCT_INFO_TEXT" 
 				};
 		String productSpecHeaderNames[] = new String[] { 
-				"PRODUCT_CODE", "PRODUCT_SPEC_SUBJECT", "PRODUCT_SPEC_CONTENT" 
+				"PRODUCT_CODE", "PRODUCT_SPEC_SUBJECT", "PRODUCT_SPEC_CONTENT",""
 				};
 		
 		
@@ -288,7 +288,6 @@ public class BrandExcelDownloadService {
 			productInfoBodyRow = productInfo.createRow(productInfoRowCount++);
 			for (int i = 0; i < productInfoBodyDatass[x].length; i++) {
 				productInfoBodyCell = productInfoBodyRow.createCell(cellNumbber);
-				productSpecBodyCell.setCellValue(productSpecs.get(x).getProduct().getBrandProductCode());
 				productInfoBodyCell.setCellStyle(bodyXssfCellStyle);
 				
 				productInfoBodyCell = productInfoBodyRow.createCell(cellNumbber+1);
@@ -364,11 +363,11 @@ public class BrandExcelDownloadService {
 				"소분류 ID", "소분류 이름"
 				};
 		String productHeaderNames[] = new String[] {
-				"BRAND_PRODUCT_CODE", "BRAND_PRODUCT_SUBJECT", "BRAND_PRODUCT_CONTENT",
-                "BRAND_PRODUCT_SUB_CONTENT",
-                "BRAND_TABLE_IMAGE_PATH", "BRAND_TABLE_IMAGE_ROAD", "BRAND_TABLE_IMAGE_NAME",
-                "BRAND_SPEC_IMAGE_PATH", "BRAND_SPEC_IMAGE_ROAD", "BRAND_SPEC_IMAGE_NAME",
-                "BRAND_PRODUCT_SIGN", "소분류 ID", "중분류 ID", "대분류 ID", "브랜드 ID", "BRAND_PRODUCT_INDEX"
+				"BRAND_ID", "PRODUCT_NAEM",
+                "간략설명", "상세설명",
+                "IMAGE_PATH", "ROAD_IMAGE", "FILE_NAME",
+                "SPEC_IMAGE_PATH", "SPEC_IMAGE_ROAD", "SPEC_IMAGE_NAME",
+                "PRODUCT_SIGN", "소분류 ID", "중분류 ID", "대분류 ID"
 				};
 		String productInfoHeaderNames[] = new String[] { 
 				"PRODUCT_CODE", "PRODUCT_INFO_TEXT" 
