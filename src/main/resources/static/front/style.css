@@ -32,6 +32,10 @@ button[type=button]{background: none; border:0;}
 }
 
 
+/* common footer container 간격조정 */
+.product-container {padding-bottom: 120px;}
+
+
 /*-----------------------------------------------------
  	부트스트랩 공통 
  -----------------------------------------------------*/
@@ -2341,7 +2345,7 @@ img.lazy:not([src]) {
 .section {
   position: relative;
   width: 100%;
-  margin: 60px 0;
+  margin: 0 auto;
   padding: 60px 0;
   background-color: #f9f9f9;
   overflow: hidden;
@@ -3958,7 +3962,7 @@ body:not(.stretched) .slider-parallax .slider-inner {
 
 
 /* 기본 패럴랙스 스타일 (PC 기준 유지) */
-.slider-parallax .slider-inner,
+/* .slider-parallax .slider-inner,
 .slider-parallax .slider-caption {
   will-change: transform;
   -webkit-transform: translate3d(0, 0, 0);
@@ -3967,7 +3971,9 @@ body:not(.stretched) .slider-parallax .slider-inner {
   transition: transform 0s linear;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-}
+} */
+
+
 
 /* 📱 모바일에서는 패럴랙스 완전히 비활성화 */
 @media (max-width: 991.98px) {
@@ -4052,20 +4058,23 @@ body:not(.stretched) .slider-parallax .slider-inner {
 	#slider .swiper-slide {height: 100vh;}
 }
 
-.swiper_wrapper .swiper-container {
-  position: relative;
-  width: 100%;
-  margin: 0;
-  overflow: hidden;
-}
-
 
 #slider .swiper-slide-bg {
   position: absolute;
   inset: 0;
   width: 100%;
+  height: 100%;
   z-index: 0;
   overflow: hidden;
+}
+
+#slider .swiper-slide-bg video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  z-index: 0;
 }
 
 
@@ -4079,10 +4088,10 @@ body:not(.stretched) .slider-parallax .slider-inner {
   z-index: 0;
 }
 
-/* #slider .container {
+#slider .container {
   position: relative;
   z-index: 2;
-} */
+}
 
 .swiper-slide [data-caption-animate] {
   -webkit-backface-visibility: hidden;
@@ -4903,7 +4912,7 @@ body:not(.has-plugin-html5video) .video-wrap video {
 }
 
 .content-wrap.list-inner{
-	padding: 120px 0;
+	padding: 180px 0 0;
 }
 
 #content .container {
@@ -12177,10 +12186,6 @@ fieldset[disabled] .sm-form-control {
   opacity: 1;
 }
 
-.sm-form-control {
-  height: auto;
-}
-
 .form-control {
   border-radius: 3px;
 }
@@ -13114,7 +13119,7 @@ body:not(.device-touch) #gotoTop {
 #footer {
   position: relative;
   background-color: #eee;
-  margin: 120px auto 0;
+  margin: 0 auto;
 }
 
 #footer .logo-wrap {
@@ -16664,7 +16669,7 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
   width: min(1240px, 92%);
   margin: 0 auto;
   position: relative;
-  padding-bottom: 64px;         
+  padding: 64px 0;         
 }
 
 /* 헤더 & 탭 */
@@ -16693,7 +16698,7 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
 .news-more {
   position: absolute;
   left: 125px;     
-  top: 7px;    
+  top: 76px;    
   transform: none;
   height: auto;
 }

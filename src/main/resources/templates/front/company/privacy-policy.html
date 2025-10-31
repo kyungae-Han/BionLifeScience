@@ -197,54 +197,6 @@ table th, table td {
     
   }
 }
-
-
-/* ------------------------------------------------------------
-   📱 초소형 (예: 480px 이하)
------------------------------------------------------------- */
-@media (max-width: 375px) {
-
-
-	html, body {
-	  width: auto !important;        /* ✅ 100% 고정 해제 */
-	  min-width: 325px;              /* ✅ 최소폭 확보 */
-	  margin: 0;
-	  padding: 0;
-	  overflow-x: auto !important;   /* ✅ 가로 스크롤 허용 */
-	  overflow-y: auto !important;
-	  word-break: keep-all;
-	  box-sizing: border-box;
-	}
-
-
-  .policy-box {
-    width: 100%;
-    max-width: none;             /* ✅ 100% 제한 해제 */
-    overflow-x: auto;            /* ✅ 가로 스크롤 허용 */
-    overflow-y: auto;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    box-sizing: border-box;
-  }
-
-  /* ✅ 표는 한 줄로 자연스럽게 넘치게 */
-  .policy-box table {
-    display: table;              /* ✅ block 대신 원래 형태로 */
-    width: auto;                 /* ✅ 100% 제거 */
-    min-width: 375px;            /* ✅ 최소 폭 확보 */
-  }
-
-  /* ✅ 문단이 잘리지 않게 자동 확장 허용 */
-  .policy-box p,
-  .policy-box div,
-  .policy-box section {
-    width: auto;
-    min-width: 375px;
-    max-width: none;
-    word-break: keep-all;        /* ✅ 단어단위로 유지 */
-    white-space: normal;
-  }
-}
 </style>
 <body>
 			<div class="policy-box policy-body__top">
