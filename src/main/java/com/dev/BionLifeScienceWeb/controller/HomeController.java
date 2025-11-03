@@ -339,7 +339,7 @@ public class HomeController {
 	}
 
 	
-	@GetMapping("/brands")
+	@GetMapping("/brandList")
 	public String brandOverview(Model model) {
 		
 	    model.addAttribute("partnerBrands",
@@ -400,7 +400,7 @@ public class HomeController {
 	
 	
 	
-	@GetMapping("/brand/own/{id}")
+	@GetMapping("/brandList/own/{id}")
 	public String ownBrandDetail(@PathVariable Long id, Model model) {
 	    Brand brand = brandRepository.findById(id)
 	            .orElseThrow(UrlNotFoundException::new);
