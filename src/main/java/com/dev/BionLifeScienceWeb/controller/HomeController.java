@@ -349,7 +349,7 @@ public class HomeController {
 	}
 	
 	
-	@GetMapping("/brand/{id}/products")
+	@GetMapping("/brandList/{id}/products")
 	@ResponseBody
 	public Map<String, Object> brandProductsAjax(@PathVariable Long id) {
 	    Brand brand = brandRepository.findById(id)
