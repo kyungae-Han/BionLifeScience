@@ -471,14 +471,14 @@ public class AdminController {
 	}
 	
 	@PostMapping("/emailInsert")
-	public String emailInsert(
-			CompanyEmail companyEmail,
-			Model model
-			) {
-		companyEmailRepository.save(companyEmail);
-		model.addAttribute("email", companyEmailRepository.findAll());
-		model.addAttribute("company",companyInfoRepository.findById(1L).get());
-		return "admin/siteManager :: #emailForm";
+	public String emailInsert(@RequestParam("email") String email, Model model) {
+	    CompanyEmail companyEmail = new CompanyEmail();
+	    companyEmail.setEmail(email);
+	    companyEmailRepository.save(companyEmail);
+
+	    model.addAttribute("email", companyEmailRepository.findAll());
+	    model.addAttribute("company", companyInfoRepository.findById(1L).get());
+	    return "admin/siteManager :: #emailForm";
 	}
 	
 	@RequestMapping(value = "/deleteEmail",
