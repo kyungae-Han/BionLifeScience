@@ -207,6 +207,25 @@ public class HomeController {
 	}
 	
 	
+    @GetMapping("/contact")
+    public void contactRedirect(HttpServletResponse response) throws IOException {
+        response.setContentType("text/html; charset=UTF-8");
+        response.getWriter().write("""
+            <script>
+        		alert('잘못된 접근입니다.');
+                window.location.href = '/index';
+            </script>
+        """);
+    }
+
+    // ✅ 모달에서 불러올 실제 HTML
+    @GetMapping("/contact-body")
+    public String contactBody() {
+        return "front/customer/contact";
+    }
+	
+	
+	
 	@GetMapping("/productOverall")
 	public String productOverall(
 			Model model
