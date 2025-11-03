@@ -20,7 +20,7 @@
 		<section id="content">
 			<div class="search-container notice-search-form">
 				<div class="search_module">
-					<form class="search" th:action="@{/notice}" method="get">
+					<form class="search" th:action="@{/noticeList}" method="get">
 					  <input class="search_bar__input" type="text" name="searchText" th:value="${searchText}" placeholder="검색어를 입력하세요.">
 					  <button type="submit"><i class="bi bi-search"></i></button>
 					</form>
