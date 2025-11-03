@@ -84,7 +84,7 @@
 										        <li class="menu-item"
 										            th:each="b:${ownBrands}"
 										            th:attr="data-id=${'brand-' + b.id}">
-										          <a class="menu-link" th:href="@{|/brandProductSorted/brand/${b.id}|}">
+										          <a class="menu-link" th:href="@{|/brandList/own/${b.id}|}">
 										            <div><i class="icon-stack"></i> [[${b.name}]]</div>
 										          </a>
 										        </li>
