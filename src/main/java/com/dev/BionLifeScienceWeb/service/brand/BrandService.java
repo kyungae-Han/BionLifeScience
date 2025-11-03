@@ -227,8 +227,12 @@ public class BrandService {
 	    brand.setBrandFooterImageRoad(webRoad + "/" + fileName);              // 웹 접근 경로
 	    brand.setBrandFooterImageName(fileName);
 	}
-
-
+	
+	
+	public Brand findById(Long id) {
+        return brandRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("브랜드를 찾을 수 없습니다. id=" + id));
+    }
 
 }
 

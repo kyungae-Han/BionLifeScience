@@ -836,6 +836,16 @@ public class BrandController {
 		    return sb.toString();
 		}
 	
+	
+	
+	@GetMapping("/brand/own/{id}")
+	public String brandOwnDetail(@PathVariable Long id, Model model) {
+	    Brand brand = brandService.findById(id);
+	    model.addAttribute("brand", brand);
+	    return "front/brand/ownBrandDetail"; // 실제 템플릿 경로
+	}
+
+	
 }
 
 
