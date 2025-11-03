@@ -397,11 +397,9 @@ public class HomeController {
 	    result.put("categories", bigSortResult);
 	    return result;
 	}
-
-
-
-
-
+	
+	
+	
 	@GetMapping("/brand/own/{id}")
 	public String ownBrandDetail(@PathVariable Long id, Model model) {
 	    Brand brand = brandRepository.findById(id)
@@ -440,7 +438,7 @@ public class HomeController {
 
 	    return "front/brand/ownBrandDetail";
 	}
-	
+
 
 	@GetMapping("/notice")
 	public String notice(@RequestParam(defaultValue = "1") int page,

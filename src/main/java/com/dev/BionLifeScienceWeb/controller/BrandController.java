@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dev.BionLifeScienceWeb.controller.HomeController.UrlNotFoundException;
 import com.dev.BionLifeScienceWeb.controller.api.SummernoteImageProcessor;
 import com.dev.BionLifeScienceWeb.exception.DeleteViolationException;
 import com.dev.BionLifeScienceWeb.model.brand.Brand;
@@ -835,17 +836,6 @@ public class BrandController {
 		    sb.insert(0, "<script>");
 		    return sb.toString();
 		}
-	
-	
-	
-	@GetMapping("/brand/own/{id}")
-	public String brandOwnDetail(@PathVariable Long id, Model model) {
-	    Brand brand = brandService.findById(id);
-	    model.addAttribute("brand", brand);
-	    return "front/brand/ownBrandDetail"; // 실제 템플릿 경로
-	}
-
-	
 }
 
 
