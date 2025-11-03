@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.dev.BionLifeScienceWeb.controller.HomeController.UrlNotFoundException;
 import com.dev.BionLifeScienceWeb.controller.api.SummernoteImageProcessor;
 import com.dev.BionLifeScienceWeb.exception.DeleteViolationException;
 import com.dev.BionLifeScienceWeb.model.brand.Brand;
@@ -481,9 +480,6 @@ public class BrandController {
 		            .orElseThrow(() -> new IllegalArgumentException("브랜드는 필수입니다."))
 		    );
 	   
-	   
-		BrandProduct p = brandProductService.productInsert(productOverviewImage, productSpecImage, product);
-
 		if (spec != null && spec.length > 0) {
 		    for (String s : spec) {
 		        if (s != null && !s.trim().isEmpty()) { // 빈 값 필터링
