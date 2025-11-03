@@ -460,7 +460,7 @@
 
 
 @media (max-width: 998px) {
-    .brand-body-container {margin-bottom: 95px !important;}
+    .brand-body-container {margin-bottom: 95px !important; padding: 0 15px;}
     .product-container {padding: 0 17px;}
     
     
