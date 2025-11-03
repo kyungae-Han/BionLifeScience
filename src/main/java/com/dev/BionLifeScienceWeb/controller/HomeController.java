@@ -440,7 +440,7 @@ public class HomeController {
 	}
 
 
-	@GetMapping("/notice")
+	@GetMapping("/noticeList")
 	public String notice(@RequestParam(defaultValue = "1") int page,
 	                     @RequestParam(required = false) String searchText,
 	                     Model model) {
