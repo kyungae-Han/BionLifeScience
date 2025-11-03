@@ -52,15 +52,14 @@ spring:
       maxRequestSize: -1
   mail:
     host: smtps.hiworks.com
-    port: 587
-    username: 'admin@bionlifescience.com'
-    password: 'jQWtWhTyOKrc4Xm9GBLg'
+    port: 465
+    username: admin@bionlifescience.com
+    password: "jQWtWhTyOKrc4Xm9GBLg"
     properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+      mail.smtp.ssl.trust: smtps.hiworks.com
+      mail.smtp.starttls.enable: false
   upload.path: src/main/resources/static/administration
   upload.env: local
 
@@ -95,16 +94,15 @@ spring:
       maxFileSize: 1000MB
       maxRequestSize: -1
   mail:
-    host:  smtps.hiworks.com
-    port: 587
-    username: 'admin@bionlifescience.com'
-    password: 'jQWtWhTyOKrc4Xm9GBLg'
+    host: smtps.hiworks.com
+    port: 465
+    username: admin@bionlifescience.com
+    password: "jQWtWhTyOKrc4Xm9GBLg"
     properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+      mail.smtp.ssl.trust: smtps.hiworks.com
+      mail.smtp.starttls.enable: false
   upload.path: /home/hosting_users/bionls/tomcat/webapps
   upload.env: prod
 
