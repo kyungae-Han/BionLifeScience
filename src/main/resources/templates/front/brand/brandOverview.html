@@ -230,7 +230,7 @@ function unlockBodyScroll() {
     productList.innerHTML = `<p class="text-muted text-center my-4">Loading...</p>`;
 
     // ✅ 데이터 요청
-    fetch(`/brand/${brandId}/products`)
+    fetch(`/brandList/${brandId}/products`)
     .then(res => res.json())
     .then(data => {
       // ✅ 브랜드 정보 표시
