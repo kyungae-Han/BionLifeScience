@@ -46,12 +46,12 @@
 				    </tr>
 				
 				    <!-- 목록 없을 때 -->
-				    <tr th:if="${#lists.isEmpty(notices)}">
+				    <tr th:if="${#lists.isEmpty(noticeList)}">
 				      <td colspan="3" class="text-center">게시물이 없습니다.</td>
 				    </tr>
 				
 				    <!-- 일반 목록 -->
-				    <tr th:each="n, stat : ${notices}">
+				    <tr th:each="n, stat : ${noticeList}">
 				      <!-- 전체 건수 기준 내림차순 번호 -->
 				      <td th:text="${page.totalElements - (page.number * page.size) - stat.index}"></td>
 				      <td class="table__subject">
@@ -65,13 +65,13 @@
 			<div class="pagination">
 			  <!-- 이전 -->
 			  <a class="page-prev-btn nav-btn" th:if="${page.hasPrevious()}"
-			     th:href="@{/notice(page=${page.number}, searchText=${param.searchText})}">이전</a>
+			     th:href="@{/noticeList(page=${page.number}, searchText=${param.searchText})}">이전</a>
 			
 			  <!-- 가운데 숫자들(현재 기준 -4 ~ +5 범위) -->
 			  <a th:each="i : ${#numbers.sequence(
                     T(java.lang.Math).max(1, nowPage - 4),
                     T(java.lang.Math).min(page.totalPages, nowPage + 5))}"
-				     th:href="@{/notice(page=${i - 1}, searchText=${param.searchText})}"
+				     th:href="@{/noticeList(page=${i - 1}, searchText=${param.searchText})}"
 				     th:text="${i}"
 				     th:classappend="${i == nowPage} ? 'active'"></a>
 

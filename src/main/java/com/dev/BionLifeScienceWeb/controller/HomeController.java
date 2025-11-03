@@ -445,30 +445,33 @@ public class HomeController {
 	                     @RequestParam(required = false) String searchText,
 	                     Model model) {
 
-	    int size = 10; // 한 페이지 10개
-	    Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "id"));
+		 if (page < 1) page = 1;
 
-	    Page<Notice> p;
+	        int size = 10; // 한 페이지당 게시글 수
+	        Pageable pageable = PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "id"));
 
-	    if (searchText != null && !searchText.isBlank()) {
-	    	
-	    	
-	        p = noticeRepository
-	                .findBySubjectContainingIgnoreCaseOrContentContainingIgnoreCase(
-	                        searchText, searchText, pageable);
-	        model.addAttribute("pinned", List.of()); 
-	    } else {
-	        // 📌 중요공지(고정) 따로 뽑기
-	        List<Notice> pinned = noticeRepository.findTop5BySignOrderByDateDesc(true);
-	        model.addAttribute("pinned", pinned);
+	        Page<Notice> p;
 
-	        // 일반 목록(고정 제외)만 페이징
-	        p = noticeRepository.findBySignFalse(pageable);
-	    }
+	        // 🔹 2️⃣ 검색어가 존재할 때만 검색 실행
+	        if (searchText != null && !searchText.trim().isEmpty()) {
+	            p = noticeRepository.findBySubjectContainingIgnoreCaseOrContentContainingIgnoreCase(
+	                    searchText.trim(), searchText.trim(), pageable);
+
+	            // 검색 중엔 고정공지 제외
+	            model.addAttribute("pinned", List.of());
+
+	        } else {
+	            // 🔹 3️⃣ 고정공지 5개 가져오기 (sign=true)
+	            List<Notice> pinned = noticeRepository.findTop5BySignOrderByDateDesc(true);
+	            model.addAttribute("pinned", pinned);
+
+	            // 🔹 4️일반 공지 (sign=false)
+	            p = noticeRepository.findBySignFalse(pageable);
+	        }
 	    
 
 	    model.addAttribute("page", p);             
-	    model.addAttribute("notices", p.getContent()); 
+	    model.addAttribute("noticeList", p.getContent()); 
 	    model.addAttribute("nowPage", page);         
 	    model.addAttribute("size", size);
 	    model.addAttribute("searchText", searchText);
