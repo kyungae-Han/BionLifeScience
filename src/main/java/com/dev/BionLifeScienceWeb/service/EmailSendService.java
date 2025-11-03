@@ -1,5 +1,7 @@
 package com.dev.BionLifeScienceWeb.service;
 
+import java.io.UnsupportedEncodingException;
+
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -24,15 +26,15 @@ public class EmailSendService implements EmailSendable{
              MimeMessage mimeMessage = javaMailSender.createMimeMessage();
              MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
-             helper.setTo(to);                                 // 수신자
-             helper.setFrom("info@bionlifescience.com");       // SMTP 인증 계정
+             helper.setTo(to);                                
+             helper.setFrom("admin@bionlifescience.com", "Bion Life Science");  
              helper.setReplyTo(replyTo); 
-             helper.setSubject(subject);                       // 제목
-             helper.setText(message, true);                    // 본문 (true = HTML 지원)
+             helper.setSubject(subject);                       
+             helper.setText(message, true);                   
 
              javaMailSender.send(mimeMessage);
 
-         } catch (MessagingException e) {
+         } catch (MessagingException | UnsupportedEncodingException e) {
              throw new RuntimeException("메일 전송 실패", e);
          }
      }
