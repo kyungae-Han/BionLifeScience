@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +29,11 @@ public class ClientController {
 	private final CompanyEmailRepository companyEmailRepository;
 	private final ClientService clientService;
 	private final EmailService emailService;
+	
+    @GetMapping("/contact")
+    public String contactPage() {
+        return "front/contact"; // 문의 폼 페이지
+    }
 	
 	@PostMapping("/clientInsert")
 	public String clientInsert(
