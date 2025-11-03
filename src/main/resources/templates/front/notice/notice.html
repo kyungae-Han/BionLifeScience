@@ -71,7 +71,7 @@
 			  <a th:each="i : ${#numbers.sequence(
                     T(java.lang.Math).max(1, nowPage - 4),
                     T(java.lang.Math).min(page.totalPages, nowPage + 5))}"
-				     th:href="@{/noticeList(page=${i - 1}, searchText=${param.searchText})}"
+				     th:href="@{/noticeList(page=${i}, searchText=${param.searchText})}"
 				     th:text="${i}"
 				     th:classappend="${i == nowPage} ? 'active'"></a>
 
