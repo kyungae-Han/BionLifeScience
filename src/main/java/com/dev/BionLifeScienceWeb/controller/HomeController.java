@@ -472,7 +472,7 @@ public class HomeController {
 
 	    model.addAttribute("page", p);             
 	    model.addAttribute("noticeList", p.getContent()); 
-	    model.addAttribute("nowPage", page);         
+	    model.addAttribute("nowPage", p.getNumber() + 1);         
 	    model.addAttribute("size", size);
 	    model.addAttribute("searchText", searchText);
 

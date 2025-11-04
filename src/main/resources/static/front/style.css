@@ -20417,6 +20417,8 @@ margin-bottom: 1.25rem; /* 텍스트와 간격 */
 }
 
 
+.notice-body, .references-body {margin-bottom: 125px;}
+
 /* 메뉴 디버깅용 css */
 /* .debug-open {
   opacity: 1 !important;
