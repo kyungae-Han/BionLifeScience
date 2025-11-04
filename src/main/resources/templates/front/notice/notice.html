@@ -68,7 +68,7 @@
 				  </tfoot>
 				</table>
 			</div>	
-			<div class="pagination" th:if="${page.totalPages > 0}">
+			<div class="pagination">
 			  <!-- 이전 -->
 			  <a class="page-prev-btn nav-btn"
 			     th:if="${page.hasPrevious()}"
@@ -78,6 +78,7 @@
 			  <a th:each="i : ${#numbers.sequence(
 			        T(java.lang.Math).max(1, nowPage - 4),
 			        T(java.lang.Math).min(page.totalPages, nowPage + 5))}"
+			     th:if="${i > 0}"
 			     th:href="@{/noticeList(page=${i}, searchText=${param.searchText})}"
 			     th:text="${i}"
 			     th:classappend="${i == nowPage} ? 'active'"></a>
