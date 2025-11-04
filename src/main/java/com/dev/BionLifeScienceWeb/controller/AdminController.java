@@ -26,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,6 +56,7 @@ import com.dev.BionLifeScienceWeb.repository.NoticeRepository;
 import com.dev.BionLifeScienceWeb.repository.NoticeSubjectRepository;
 import com.dev.BionLifeScienceWeb.service.ClientService;
 import com.dev.BionLifeScienceWeb.service.CompanyInfoService;
+import com.dev.BionLifeScienceWeb.service.MemberService;
 import com.dev.BionLifeScienceWeb.service.NoticeService;
 import com.dev.BionLifeScienceWeb.utils.PasswordEncoding;
 
@@ -78,6 +80,7 @@ public class AdminController {
 	private final ClientService clientService;
 	private final CompanyInfoService companyInfoService;
 	private final NoticeService noticeService;
+	private final MemberService memberService;
 	
 	
 	private final MemberRepository memberRepository;
@@ -516,6 +519,21 @@ public class AdminController {
 	}
 	
 	
+	
+	@GetMapping("/memberEdit/{id}")
+	public String memberEdit(@PathVariable Long id, Model model) {
+	    Member member = memberRepository.findById(id).orElseThrow(() ->
+	        new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+	    model.addAttribute("member", member);
+	    return "admin/memberInsert"; // 같은 폼 재사용
+	}
+	
+	@PostMapping("/memberUpdate")
+	public String memberUpdate(@ModelAttribute Member member) {
+	    memberService.updateMember(member);
+	    return "redirect:/admin/memberList";
+	}
+
 	
 	@GetMapping("/passwordForm")
 	public String passwordForm() {

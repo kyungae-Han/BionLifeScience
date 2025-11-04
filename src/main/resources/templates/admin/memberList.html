@@ -38,6 +38,8 @@
 	                  <td th:text="${m.role == 'ROLE_ADMIN' ? '관리자' : '일반회원'}"></td>
 	                  <td th:text="${m.enabled ? '활성' : '비활성'}"></td>
 	                  <td>
+	                  <a th:href="@{'/admin/memberEdit/' + ${m.id}}"
+     						class="btn btn-primary btn-xs">수정</a>
 	                    <a th:href="@{'/admin/memberDelete/' + ${m.id}}"
 	                       class="btn btn-danger btn-xs"
 	                       onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>

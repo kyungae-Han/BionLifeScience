@@ -40,7 +40,26 @@ public class MemberService implements UserDetailsService {
 	        }
 	        return new MemberAccount(member.get());
 	    }
+	    
+	    public Member updateMember(Member member) {
+	        Member dbMember = memberRepository.findById(member.getId())
+	            .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
 
+	        // 🔹 비밀번호 입력이 있을 경우만 암호화 후 업데이트
+	        if (member.getPassword() != null && !member.getPassword().isEmpty()) {
+	            dbMember.setPassword(passwordEncoder().encode(member.getPassword()));
+	        }
+
+	        dbMember.setName(member.getName());
+	        dbMember.setEmail(member.getEmail());
+	        dbMember.setPhone(member.getPhone());
+	        dbMember.setRole(member.getRole());
+	        dbMember.setEnabled(true);
+
+	        return memberRepository.save(dbMember);
+	    }
+
+	    
 	    /** ✅ 관리자 전용 등록 */
 	    public Member insertAdmin(Member member) {
 	        String encodedPassword = passwordEncoder().encode(member.getPassword());
