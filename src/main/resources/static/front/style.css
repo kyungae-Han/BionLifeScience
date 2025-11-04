@@ -13158,11 +13158,6 @@ body:not(.device-touch) #gotoTop {
 }
 
 
-#footer .container .f-left > * {
-	line-height: 2rem;
-	letter-spacing: 1px;
-}
-
 
 #footer .container .f-right{
 	margin-top:0;
@@ -13172,11 +13167,6 @@ body:not(.device-touch) #gotoTop {
 #footer .container .f-right .f-mail { display: flex; flex-direction: row; font-size:1.2rem !important;}
 #footer .container .f-right .f-mail .email-text {letter-spacing: 1px;}
 #footer .container .f-right .f-mail .bi {padding-top: 5px; font-size: 1rem !important;}
-
-@media(max-width:1024px), (max-width: 991px), (max-width: 768px), (max-width:478px){
-	#footer .container .f-right .f-mail {justify-content: center;}
-	#footer .container .f-left .copyrights_block {font-size: 1rem; line-height: 1.5rem;}
-}
 
 #footer .container .f-right .copyrights-call > *{
 	font-size: 1.5rem;
@@ -13215,6 +13205,15 @@ body:not(.device-touch) #gotoTop {
 		margin-right: 8px;
 		color: #fff;
 	}
+}
+
+
+@media(max-width:1024px), (max-width: 991px), (max-width: 768px), (max-width:478px){
+	#footer .container {position:relative; padding: 45px 25px 125px;}
+	#footer .container .f-left h3 {padding-bottom:25px;}
+	#footer .container .f-left .copyrights_block {width: 100%; font-size: 0.85rem; line-height: 2rem; position: absolute; left:50%; transform:translateX(-50%); bottom: 34px;}
+	#footer .container .f-right .f-mail {justify-content: center;}
+	#footer .container .f-right .copyrights-call > * {font-size:1rem;}
 }
 
 
@@ -13267,10 +13266,6 @@ p.copyrights_block {margin-top:25px; font-size: 0.8em;}
 	
 	#footer .sub-head {font-size: 1.5rem;}
 	
-	
-	#footer .container .f-left {
-		font-size:0.9rem;
-	}
 	
 	#footer .container .f-right{
 		width: 100%;
