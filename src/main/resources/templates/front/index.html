@@ -203,10 +203,10 @@
 	  <div class="news-track is-active" id="noticeTrack">
 	  	<div class="news-card" th:each="i:${notice}">
 	  		<a th:href="@{'/noticeDetail/' + ${i.id}}">
-		  		<p class="meta notice"><i class="icon-time"></i> 공지일 : [[${i.date}]]</p>
+		  		<p class="meta notice"><i class="icon-time"></i> 공지일 : [[${#dates.format(i.date, 'yyyy-MM-dd')}]]</p>
 		  		<h3 class="headline" th:text="${i.subject}">
 		            이곳은 공지사항의 제목이 들어가는 곳 입니다..
-		           </h3>
+	           </h3>
 		  		<div class="card-link">
 		           <p><strong># 공지사항주제 :</strong> [[${i.noticeSubject.text}]]</p>
 		  		</div>
