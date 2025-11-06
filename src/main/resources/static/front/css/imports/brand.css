@@ -252,31 +252,6 @@
   font-weight: 600;
 }
 
-.product-grid{
-    display: grid;
-	max-width: 1280px;
-	margin: 0 auto;
-	box-sizing: border-box;
-	width: 100%;
-	overflow: hidden;
-	justify-content: center;
-}
-
-@media(min-width:1280px){
-	.product-grid{
-		grid-template-columns: repeat(4, 1fr);
-		gap: 40px; /* 카드 사이 간격 */
-	}
-}
-
-
-@media(max-width:414px){
-	.product-grid{
-		grid-template-columns: repeat(1, 1fr);
-	}
-}
-
-
 .grid-inner {width: 100%; max-width: 100%; box-sizing: border-box;}
 
 .sorted-entry {width: 100%;} 
