@@ -89,8 +89,8 @@ public class BrandProductFileService {
                 	fileFolder = new File(absolutePath + path + "/" + new_file_name.replaceAll("\\s+", ""));
                 	f.setProductFilePath(absolutePath + path + "/" + new_file_name.replaceAll("\\s+", ""));
 				}else if(env.equals("prod")) {
-					fileFolder = new File(path + "/" + new_file_name.replaceAll("\\s+", ""));
-					f.setProductFilePath(path + "/" + new_file_name.replaceAll("\\s+", ""));
+				    fileFolder = new File(new File(commonPath).getAbsolutePath() + "/brandproduct/" + productCode + "/files/" + new_file_name.replaceAll("\\s+", ""));
+				    f.setProductFilePath(new File(commonPath).getAbsolutePath() + "/brandproduct/" + productCode + "/files/" + new_file_name.replaceAll("\\s+", ""));
 				}
                 
                 file.transferTo(fileFolder);
