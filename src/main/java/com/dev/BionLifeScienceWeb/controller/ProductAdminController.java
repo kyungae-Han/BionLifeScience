@@ -279,9 +279,6 @@ public class ProductAdminController {
 			productSpecRepository.save(sp);
 		}
 		if(!productFile.isEmpty() && !productFile.get(0).isEmpty()) {
-			System.out.println("123123123123123123");
-			System.out.println(productFile.get(0).getBytes());
-			System.out.println(productFile.get(0).getSize());
 			productFileService.fileUpload(
 				productFile, 
 				p.getId(), 

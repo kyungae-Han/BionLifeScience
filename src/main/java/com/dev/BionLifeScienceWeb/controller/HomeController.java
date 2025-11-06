@@ -413,9 +413,6 @@ public class HomeController {
 	        }
 	    }
 	    
-	    System.out.println("Products size = " + brand.getProducts().size());
-	    System.out.println("Products class = " + brand.getProducts().getClass());
-
 	    List<BrandProduct> products = brand.getProducts();
 
 	    // ✅ 이 부분 추가

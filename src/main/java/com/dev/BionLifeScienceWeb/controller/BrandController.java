@@ -450,16 +450,6 @@ public class BrandController {
 	        List<MultipartFile> productFile
 	) throws IllegalStateException, IOException {
 
-	    System.out.println("✅ [brandProductInsert 호출됨] ----------");
-	    System.out.println("브랜드 ID: " + product.getBrandId());
-	    System.out.println("대분류 ID: " + product.getBrandBigSortId());
-	    System.out.println("중분류 ID: " + product.getBrandMiddleSortId());
-	    System.out.println("소분류 ID: " + product.getBrandSmallSortId());
-	    System.out.println("파일(overview): " + (productOverviewImage != null ? productOverviewImage.getOriginalFilename() : "없음"));
-	    System.out.println("파일(spec): " + (productSpecImage != null ? productSpecImage.getOriginalFilename() : "없음"));
-	    System.out.println("파일(slides): " + (slides != null ? slides.size() : 0));
-	    System.out.println("파일(productFile): " + (productFile != null ? productFile.size() : 0));
-	    System.out.println("-----------------------------------------");
 
 	    // 브랜드 및 분류 필수 세팅
 	    if (product.getBrandId() == null || product.getBrandBigSortId() == null) {
@@ -487,7 +477,6 @@ public class BrandController {
 	        String randomCode = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10);
 	        String datePart = java.time.LocalDate.now().toString(); // yyyy-MM-dd
 	        product.setBrandProductCode(randomCode + "_" + datePart);
-	        System.out.println("✅ 생성된 BRAND_PRODUCT_CODE: " + product.getBrandProductCode());
 	    }
 
 	    // ✅ 핵심: 이미지/스펙/오버뷰 파일은 서비스 로직으로 처리
@@ -496,8 +485,6 @@ public class BrandController {
 	            productSpecImage,
 	            product
 	    );
-
-	    System.out.println("✅ productInsert 완료 - 새 ID: " + savedProduct.getId());
 
 	    // ✅ 파일 업로드 처리
 	    if (productFile != null && !productFile.isEmpty() && productFile.stream().anyMatch(f -> !f.isEmpty())) {
@@ -854,7 +841,6 @@ public class BrandController {
 		            sb.append("alert('" + msg + "');");
 		        }
 		    } catch (Exception e) {
-		        System.out.println("❌ 스펙 삭제 오류: " + e.getMessage());
 		        sb.append("alert('삭제 중 오류가 발생했습니다.');");
 		    }
 
