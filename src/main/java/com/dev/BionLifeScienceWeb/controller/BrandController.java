@@ -3,6 +3,7 @@ package com.dev.BionLifeScienceWeb.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -356,6 +357,8 @@ public class BrandController {
 		return sb.toString();
 	}
 	
+	
+	
 	@RequestMapping(value = "/brandProductManager",
 		    method = {RequestMethod.GET, RequestMethod.POST}
 	)
@@ -416,6 +419,8 @@ public class BrandController {
 		    return "admin/brand/brandProductManager";
 	}
 	
+	
+	
 	@GetMapping("/brandProductInsertForm")
 	public String brandProductInsertForm(Model model) {
 
@@ -430,100 +435,117 @@ public class BrandController {
 		return "admin/brand/brandProductInsertForm";
 	}
 
+	
+	
 	@PostMapping("/brandProductInsert")
 	@ResponseBody
 	public String brandProductInsert(
-			BrandProduct product, 
-			String[] spec, 
-			String[] infoQ, 
-			String[] infoA,
-			MultipartFile productOverviewImage, 
-			MultipartFile productSpecImage, 
-			List<MultipartFile> slides,
-			List<MultipartFile> productFile
-
+	        BrandProduct product,
+	        String[] spec,
+	        String[] infoQ,
+	        String[] infoA,
+	        MultipartFile productOverviewImage,
+	        MultipartFile productSpecImage,
+	        List<MultipartFile> slides,
+	        List<MultipartFile> productFile
 	) throws IllegalStateException, IOException {
-		
-		if (product.getBrandId() == null || product.getBrandBigSortId() == null) {
+
+	    System.out.println("✅ [brandProductInsert 호출됨] ----------");
+	    System.out.println("브랜드 ID: " + product.getBrandId());
+	    System.out.println("대분류 ID: " + product.getBrandBigSortId());
+	    System.out.println("중분류 ID: " + product.getBrandMiddleSortId());
+	    System.out.println("소분류 ID: " + product.getBrandSmallSortId());
+	    System.out.println("파일(overview): " + (productOverviewImage != null ? productOverviewImage.getOriginalFilename() : "없음"));
+	    System.out.println("파일(spec): " + (productSpecImage != null ? productSpecImage.getOriginalFilename() : "없음"));
+	    System.out.println("파일(slides): " + (slides != null ? slides.size() : 0));
+	    System.out.println("파일(productFile): " + (productFile != null ? productFile.size() : 0));
+	    System.out.println("-----------------------------------------");
+
+	    // 브랜드 및 분류 필수 세팅
+	    if (product.getBrandId() == null || product.getBrandBigSortId() == null) {
 	        throw new IllegalArgumentException("브랜드와 대분류는 반드시 선택해야 합니다.");
 	    }
 
-		
-	   if (product.getBrandSmallSortId() != null) {
-	        product.setSmallSort(
-	            brandSmallSortRepository.findById(product.getBrandSmallSortId())
-	                .orElse(null)
-	        );
-	    } else {
-	        product.setSmallSort(null);
+	    // 소/중/대분류, 브랜드 설정
+	    product.setBrand(
+	        brandRepository.findById(product.getBrandId())
+	            .orElseThrow(() -> new IllegalArgumentException("브랜드는 필수입니다."))
+	    );
+	    product.setBigSort(
+	        brandBigSortRepository.findById(product.getBrandBigSortId())
+	            .orElseThrow(() -> new IllegalArgumentException("대분류는 필수입니다."))
+	    );
+	    product.setMiddleSort(product.getBrandMiddleSortId() != null
+	        ? brandMiddleSortRepository.findById(product.getBrandMiddleSortId()).orElse(null)
+	        : null);
+	    product.setSmallSort(product.getBrandSmallSortId() != null
+	        ? brandSmallSortRepository.findById(product.getBrandSmallSortId()).orElse(null)
+	        : null);
+
+	    // BRAND_PRODUCT_CODE 생성
+	    if (product.getBrandProductCode() == null || product.getBrandProductCode().isBlank()) {
+	        String randomCode = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10);
+	        String datePart = java.time.LocalDate.now().toString(); // yyyy-MM-dd
+	        product.setBrandProductCode(randomCode + "_" + datePart);
+	        System.out.println("✅ 생성된 BRAND_PRODUCT_CODE: " + product.getBrandProductCode());
 	    }
 
-	    // ✅ 중분류도 선택일 경우만 세팅
-	    if (product.getBrandMiddleSortId() != null) {
-	        product.setMiddleSort(
-	            brandMiddleSortRepository.findById(product.getBrandMiddleSortId())
-	                .orElse(null)
-	        );
-	    } else {
-	        product.setMiddleSort(null);
+	    // ✅ 핵심: 이미지/스펙/오버뷰 파일은 서비스 로직으로 처리
+	    BrandProduct savedProduct = brandProductService.productInsert(
+	            productOverviewImage,
+	            productSpecImage,
+	            product
+	    );
+
+	    System.out.println("✅ productInsert 완료 - 새 ID: " + savedProduct.getId());
+
+	    // ✅ 파일 업로드 처리
+	    if (productFile != null && !productFile.isEmpty() && productFile.stream().anyMatch(f -> !f.isEmpty())) {
+	        brandProductFileRepository.deleteAllByProductId(savedProduct.getId());
+	        brandProductFileService.fileUpload(productFile, savedProduct.getId(), savedProduct.getBrandProductCode());
 	    }
-   
-	   
-	   product.setBigSort(
-		        brandBigSortRepository.findById(product.getBrandBigSortId())
-		            .orElseThrow(() -> new IllegalArgumentException("대분류는 필수입니다."))
-		    );
-	   
-	   
-	   product.setBrand(
-		        brandRepository.findById(product.getBrandId())
-		            .orElseThrow(() -> new IllegalArgumentException("브랜드는 필수입니다."))
-		    );
-	   
-		if (spec != null && spec.length > 0) {
-		    for (String s : spec) {
-		        if (s != null && !s.trim().isEmpty()) { // 빈 값 필터링
-		            BrandProductInfo in = new BrandProductInfo();
-		            in.setProduct(product);
-		            in.setProductInfoText(s.trim());
-		            brandProductInfoRepository.save(in);
-		        }
-		    }
-		}
-		
-		if (infoQ != null && infoQ.length > 0) {
-		    for (int a = 0; a < infoQ.length; a++) {
-		        if ((infoQ[a] != null && !infoQ[a].trim().isEmpty()) ||
-		            (infoA[a] != null && !infoA[a].trim().isEmpty())) {
-		            BrandProductSpec sp = new BrandProductSpec();
-		            sp.setProductSpecSubject(infoQ[a] != null ? infoQ[a].trim() : "");
-		            sp.setProductSpecContent(infoA[a] != null ? infoA[a].trim() : "");
-		            sp.setProduct(product);
-		            brandProductSpecRepository.save(sp);
-		        }
-		    }
-		}
-		
-		
-		if (productFile != null && !productFile.isEmpty() && productFile.stream().anyMatch(f -> !f.isEmpty())) {
-		    brandProductFileRepository.deleteAllByProductId(product.getId());
-		    brandProductFileService.fileUpload(productFile, product.getId(), product.getBrandProductCode());
-		}
 
-		if (slides != null && !slides.isEmpty() && slides.stream().anyMatch(f -> !f.isEmpty())) {
-		    brandProductImageRepository.deleteAllByProductId(product.getId());
-		    brandProductImageService.fileUpload(slides, product.getId(), product.getBrandProductCode());
-		}
-		StringBuffer sb = new StringBuffer();
-		String msg = "제품이 등록 되었습니다.";
+	    if (slides != null && !slides.isEmpty() && slides.stream().anyMatch(f -> !f.isEmpty())) {
+	        brandProductImageRepository.deleteAllByProductId(savedProduct.getId());
+	        brandProductImageService.fileUpload(slides, savedProduct.getId(), savedProduct.getBrandProductCode());
+	    }
 
-		sb.append("alert('" + msg + "');");
-		sb.append("location.href='/admin/brandProductManager'");
-		sb.append("</script>");
-		sb.insert(0, "<script>");
+	    // ✅ 제품 스펙/정보 저장 시에도 savedProduct 사용 (DB 연결 정확)
+	    if (spec != null && spec.length > 0) {
+	        for (String s : spec) {
+	            if (s != null && !s.trim().isEmpty()) {
+	                BrandProductInfo in = new BrandProductInfo();
+	                in.setProduct(savedProduct);
+	                in.setProductInfoText(s.trim());
+	                brandProductInfoRepository.save(in);
+	            }
+	        }
+	    }
 
-		return sb.toString();
+	    if (infoQ != null && infoQ.length > 0) {
+	        for (int a = 0; a < infoQ.length; a++) {
+	            if ((infoQ[a] != null && !infoQ[a].trim().isEmpty()) ||
+	                (infoA[a] != null && !infoA[a].trim().isEmpty())) {
+	                BrandProductSpec sp = new BrandProductSpec();
+	                sp.setProductSpecSubject(infoQ[a] != null ? infoQ[a].trim() : "");
+	                sp.setProductSpecContent(infoA[a] != null ? infoA[a].trim() : "");
+	                sp.setProduct(savedProduct);
+	                brandProductSpecRepository.save(sp);
+	            }
+	        }
+	    }
+
+	    // ✅ 등록 완료 메시지
+	    String msg = "제품이 등록되었습니다.";
+	    StringBuffer sb = new StringBuffer();
+	    sb.append("<script>");
+	    sb.append("alert('" + msg + "');");
+	    sb.append("location.href='/admin/brandProductManager'");
+	    sb.append("</script>");
+
+	    return sb.toString();
 	}
+
 	
 	@GetMapping("/brandProductInsert")
 	public String redirectInsertToForm() {
