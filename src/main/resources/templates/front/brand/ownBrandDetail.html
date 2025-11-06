@@ -88,35 +88,55 @@
 	
 			
 			
-			<div class="row">
-			  <div class="no-data" style="display:none;">데이터가 없습니다.</div>
+			<div class="row justify-content-center gx-4 gy-5">
+			  <div class="col-12 col-md-11 col-lg-10">
+			    
+			    <div class="no-data" style="display:none;">데이터가 없습니다.</div>
 			
-			  <div class="product-card entry sorted-entry col-lg-4 col-6"
-			       th:each="product : ${products}"
-			       th:attr="data-big-id=${product.bigSort?.id},
-			                data-middle-id=${product.middleSort != null ? product.middleSort.id : ''},
-			                data-small-id=${product.smallSort != null ? product.smallSort.id : ''}">
-			    <div class="grid-inner">
-			      <div class="entry-image mb-2">
-			        <a th:href="@{|/brandProductDetail/${product.id}|}">
-			          <img th:src="${product.firstImageRoad}" alt="Product Image">
-			        </a>
+			    <!-- ✅ products 전체를 감싸는 하나의 row -->
+			    <div class="row">
+			
+			      <!-- ✅ 반복문은 개별 col 단위에만 적용 -->
+			      <div class="col-lg-3 col-6"
+			           th:each="product : ${products}"
+			           th:attr="data-big-id=${product.bigSort?.id},
+			                    data-middle-id=${product.middleSort != null ? product.middleSort.id : ''},
+			                    data-small-id=${product.smallSort != null ? product.smallSort.id : ''}">
+			        
+			        <div class="product-card entry sorted-entry h-100">
+			          <div class="grid-inner">
+			            <div class="entry-image mb-2">
+			              <a th:href="@{|/brandProductDetail/${product.id}|}">
+			                <img th:src="${product.firstImageRoad}" alt="Product Image">
+			              </a>
+			            </div>
+			
+			            <div class="entry-title">
+			              <h2>
+			                <a th:href="@{|/brandProductDetail/${product.id}|}" 
+			                   th:text="${product.subject}">Screw Caps and Tubes</a>
+			              </h2>
+			            </div>
+			
+			            <div class="entry-content mt-1">
+			              <p th:text="${product.content}">
+			                간단한 제품에 대한 설명이 들어가는 영역입니다.
+			              </p>
+			            </div>
+			
+			            <div class="entry-meta" 
+			                 th:if="${product.specs != null and !product.specs.isEmpty()}">
+			              <ul>
+			                <li th:each="spec : ${product.specs}">
+			                  # [[${spec.productSpecContent}]]
+			                </li>
+			              </ul>
+			            </div>
+			          </div>
+			        </div>
 			      </div>
-			      <div class="entry-title">
-			        <h2>
-			          <a th:href="@{|/brandProductDetail/${product.id}|}" th:text="${product.subject}">Screw Caps and Tubes</a>
-			        </h2>
-			      </div>
-			      <div class="entry-content mt-1">
-			        <p th:text="${product.content}">간단한 제품에 대한 설명이 들어가는 영역입니다.</p>
-			      </div>
-			      <div class="entry-meta" th:if="${product.specs != null and !product.specs.isEmpty()}">
-			        <ul>
-			          <li th:each="spec : ${product.specs}">
-			            # [[${spec.productSpecContent}]]
-			          </li>
-			        </ul>
-			      </div>
+			      <!-- /each -->
+			
 			    </div>
 			  </div>
 			</div>

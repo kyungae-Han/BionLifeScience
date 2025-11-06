@@ -395,9 +395,4 @@ SETTINGS
 	padding-left:5px;
 }
 
-@media(min-width:960px){
-	.sorted-entry{
-		height:490px;
-	}
-}
 

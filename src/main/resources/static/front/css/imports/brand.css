@@ -375,17 +375,15 @@
 
 @media(max-width:768px){
 	
-	.brand-section-desc {padding: 0 25px}
-	
-	#brandPrev {
-		left: 0 !important;
-	}
+.brand-section-desc {padding: 0 25px}
 
-	#brandNext {
-		right: 0 !important;
-	}
-	
-	.row > *  {width: 50%; margin-bottom: 20px;}
+#brandPrev {
+	left: 0 !important;
+}
+
+#brandNext {
+	right: 0 !important;
+}
 }
 
 #brandModal .brand-category-bar {
