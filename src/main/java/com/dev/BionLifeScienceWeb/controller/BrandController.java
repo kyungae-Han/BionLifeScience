@@ -560,8 +560,16 @@ public class BrandController {
 			Model model
 			) {
 		
-		   BrandProduct product = brandProductRepository.findById(id)
-			        .orElseThrow(() -> new IllegalArgumentException("해당 제품이 존재하지 않습니다. id=" + id));
+	   BrandProduct product = brandProductRepository.findById(id)
+		        .orElseThrow(() -> new IllegalArgumentException("해당 제품이 존재하지 않습니다. id=" + id));
+	   
+	   
+	   if (product.getProductSubContent() != null) {
+	        product.setProductSubContent(
+	            product.getProductSubContent().replace("<br>", "\n")
+	        );
+	    }
+	   
 
 		model.addAttribute("brand",brandRepository.findAll());
 		

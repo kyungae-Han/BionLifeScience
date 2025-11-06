@@ -426,7 +426,9 @@ public class BrandProductService {
 		
 		String subContent = product.getProductSubContent();
 		if (subContent != null) {
-		    subContent = subContent.replace("\n", "<br>");
+			if(!subContent.contains("<br>")) {
+				subContent = subContent.replace("\n", "<br>");
+			}
 		}
 		product.setProductSubContent(subContent);
 
