@@ -264,6 +264,14 @@
 	justify-content: center;
 }
 
+@media(min-width:1280px){
+	.product-grid{
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 40px; /* 카드 사이 간격 */
+	}
+}
+
 
 @media(max-width:414px){
 	.product-grid{
@@ -503,7 +511,7 @@
 
   /* 상품 2열 정렬 */
   .product-grid {
-    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
     gap: 16px !important;
     width: 100%;
     padding: 0 10px;
