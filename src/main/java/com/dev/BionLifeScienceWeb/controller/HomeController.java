@@ -283,6 +283,15 @@ public class HomeController {
 	    if (product.getBrand() != null) {
 	        model.addAttribute("brand", product.getBrand());
 	    }
+	    
+	    if (product.getFiles() != null) {
+	        product.getFiles().forEach(f -> {
+	            if (f.getProductFileRoad() != null && f.getProductFileRoad().contains("/upload/")) {
+	                f.setProductFileRoad(f.getProductFileRoad().replace("/upload/", "/administration/"));
+	            }
+	        });
+	    }
+
 
 	    model.addAttribute("product", product);
 	    

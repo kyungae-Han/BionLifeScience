@@ -40,13 +40,18 @@ public class BrandProductFileService {
 			String productCode
 			) throws IllegalStateException, IOException {
 		
-        String absolutePath = new File("").getAbsolutePath() + "\\";
+		String absolutePath = new File("").getAbsolutePath() + "\\";
         String path = commonPath +  "/brandproduct/" + productCode + "/files";
-        String road = "/upload/brandproduct/" + productCode + "/slide";
+        String road = "/upload/brandproduct/" + productCode + "/files";
+        
         File fileFolder = new File(path);
         if(fileFolder.exists() && fileFolder.isDirectory()) {
         	FileUtils.cleanDirectory(fileFolder);
+        }else {
+        	fileFolder.mkdirs();
         }
+        
+        
         int leftLimit = 48; // numeral '0'
 		int rightLimit = 122; // letter 'z'
 		int targetStringLength = 10;
@@ -76,18 +81,20 @@ public class BrandProductFileService {
         			return "NONE";
         		} 
         		
-        		String encodedFileName = URLEncoder.encode(file.getOriginalFilename(), StandardCharsets.UTF_8).replaceAll("\\+", "%20");
-                String new_file_name = generatedString +  "_" + encodedFileName;
+        		//String encodedFileName = URLEncoder.encode(file.getOriginalFilename(), StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+        		 String new_file_name = generatedString +  "_" + file.getOriginalFilename();
+        		 
+        		 
                 if(env.equals("local")) {
-                	fileFolder = new File(absolutePath + path + "/" + new_file_name);
-                	f.setProductFilePath(absolutePath + path + "/" + new_file_name);
+                	fileFolder = new File(absolutePath + path + "/" + new_file_name.replaceAll("\\s+", ""));
+                	f.setProductFilePath(absolutePath + path + "/" + new_file_name.replaceAll("\\s+", ""));
 				}else if(env.equals("prod")) {
-					fileFolder = new File(path + "/" + new_file_name);
-					f.setProductFilePath(path + "/" + new_file_name);
+					fileFolder = new File(path + "/" + new_file_name.replaceAll("\\s+", ""));
+					f.setProductFilePath(path + "/" + new_file_name.replaceAll("\\s+", ""));
 				}
                 
                 file.transferTo(fileFolder);
-                f.setProductFileRoad(road + "/" + new_file_name );
+                f.setProductFileRoad(road + "/" + new_file_name.replaceAll("\\s+", ""));
                 f.setProductFileName(file.getOriginalFilename());
                 f.setProductFileDate(new Date());
                 brandProductFileRepository.save(f);
