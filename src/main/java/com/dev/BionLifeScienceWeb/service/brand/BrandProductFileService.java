@@ -2,6 +2,8 @@ package com.dev.BionLifeScienceWeb.service.brand;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -73,7 +75,9 @@ public class BrandProductFileService {
         		if (ObjectUtils.isEmpty(contentType)) {
         			return "NONE";
         		} 
-                String new_file_name = generatedString +  "_" + file.getOriginalFilename();
+        		
+        		String encodedFileName = URLEncoder.encode(file.getOriginalFilename(), StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+                String new_file_name = generatedString +  "_" + encodedFileName;
                 if(env.equals("local")) {
                 	fileFolder = new File(absolutePath + path + "/" + new_file_name);
                 	f.setProductFilePath(absolutePath + path + "/" + new_file_name);
