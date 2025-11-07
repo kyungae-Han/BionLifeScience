@@ -16561,8 +16561,8 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
 /* 카드 */
 .pro-track .portfolio-item{
   scroll-snap-align:start;
-  flex: 0 0 clamp(320px, 28vw, 345px); /* 카드 폭 */
-  background:var(--pro-card-bg);
+  flex: 0 0 clamp(320px, 28vw, 345px);
+  background:var(--bs-gray-200);
   border-radius:var(--pro-radius);
   overflow:hidden;
   box-shadow:var(--pro-shadow);
@@ -16573,11 +16573,10 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
 @media (max-width: 991.98px){
   .pro-track .portfolio-item{
     flex: 0 0 100%;
-    scroll-snap-align: start; /* center 원하면 center */
+    scroll-snap-align: start;
   }
 }
 
-/* 3) 데스크톱: 3장 보기 (gap은 --pro-gap 사용, 미정이면 16px) */
 @media (min-width: 992px){
   .pro-track .portfolio-item{
     flex: 0 0 calc((100% - 2*var(--pro-gap, 16px)) / 3);
