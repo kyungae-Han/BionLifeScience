@@ -4922,11 +4922,12 @@ body:not(.has-plugin-html5video) .video-wrap video {
 }
 
 #content p {
-  line-height: 1.4;
+  font-size: 95%;
+  line-height: 1.7;
   margin-bottom:0px;
   overflow:hidden;
   text-overflow:ellipsis;
-  white-space:nowrap;
+  white-space:wrap;
 }
 
 .content-wrap {
@@ -5745,15 +5746,16 @@ Portfolio - Item Title
   margin-bottom: -5px;
 }
 
+.entry-meta {margin-bottom:20px;}
 .entry-meta li {
-  font-size: 90%;
-  margin: 0 10px 10px 0;
+  font-size: 80%;
+  margin: 0 10px 0 0;
+  padding: 0 0 7px 0;
   color: #999;
   overflow:hidden;
   text-overflow:ellipsis;
-  white-space:nowrap;
+  white-space:wrap;
 }
-
 .entry-meta ul.flex-column li {
   margin-left: 0;
 }
@@ -5910,7 +5912,7 @@ body:not(.device-touch) .entry-link {
 .more-link {
   display: inline-block;
   border-bottom: 1px solid #fe5000;
-  padding: 0 2px;
+  padding: 10px 2px 0;
   font-family: "Noto Sans KR", sans-serif;
   font-style: italic;
 }
