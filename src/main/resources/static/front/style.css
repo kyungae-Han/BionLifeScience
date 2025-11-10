@@ -3042,7 +3042,6 @@ nav .menu-item.current:hover > .menu-link{
 .sub-menu-container,
 .mega-menu-content {
   position: relative;
-  padding-left: 15px;
   border-top: 1px solid #eee;
   list-style: none;
   margin-bottom: 0;
@@ -3362,7 +3361,12 @@ nav .menu-item.current:hover > .menu-link{
 @media(max-width:991px){
 	
 	 .mobile-primary-menu.open {top: 0 !important;}
-	 .mobile-primary-menu.open ul {list-style: none;}
+ 	 .mobile-primary-menu.open ul {
+		  list-style: none;
+		  max-height: calc(100vh - 80px); 
+		  overflow-y: auto;
+	      -webkit-overflow-scrolling: touch;
+  	 }
 	
 	.is-mobile .header-misc {
 	    position: relative !important;
