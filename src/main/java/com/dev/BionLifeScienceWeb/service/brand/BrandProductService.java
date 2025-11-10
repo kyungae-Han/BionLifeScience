@@ -9,8 +9,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,15 +24,18 @@ import org.zeroturnaround.zip.ZipUtil;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProduct;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProductFile;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProductImage;
+import com.dev.BionLifeScienceWeb.model.brand.BrandProductInfo;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProductSpec;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductFileRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductImageRepository;
+import com.dev.BionLifeScienceWeb.repository.brand.BrandProductInfoRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductSpecRepository;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -42,6 +47,7 @@ public class BrandProductService {
 	private final BrandProductFileRepository brandProductFileRepository;
 	private final BrandProductImageRepository brandProductImageRepository;
 	private final BrandProductSpecRepository brandProductSpecRepository;
+	private final BrandProductInfoRepository brandProductInfoRepository;
 	
 	@Value("${spring.upload.env}")
 	private String env;
@@ -537,6 +543,44 @@ public class BrandProductService {
 	    if (product.getSpecs() != null && !product.getSpecs().isEmpty()) {
 	        saveSpecsWithOrder(product.getId(), product.getSpecs());
 	    }
+	    
+	    
+	    if (product.getInfos() != null) {
+	        List<BrandProductInfo> existingInfos = brandProductInfoRepository.findAllByProduct(saved);
+
+	        Set<Long> incomingIds = product.getInfos().stream()
+	                .map(BrandProductInfo::getId)
+	                .filter(Objects::nonNull)
+	                .collect(Collectors.toSet());
+
+	        // 3️⃣ DB에 있는데 요청에는 없는 항목 → 삭제
+	        for (BrandProductInfo existing : existingInfos) {
+	            if (existing.getId() != null && !incomingIds.contains(existing.getId())) {
+	                brandProductInfoRepository.delete(existing);
+	            }
+	        }
+
+	        // 4️⃣ 요청 리스트 처리 (추가 / 수정)
+	        for (BrandProductInfo info : product.getInfos()) {
+	            // 새 항목 (id 없음)
+	            if (info.getId() == null) {
+	                if (info.getProductInfoText() != null && !info.getProductInfoText().isBlank()) {
+	                    info.setProduct(saved);
+	                    brandProductInfoRepository.save(info);
+	                }
+	            } 
+	            // 기존 항목 (id 있음 → 수정)
+	            else {
+	                BrandProductInfo existing = brandProductInfoRepository.findById(info.getId())
+	                        .orElse(null);
+	                if (existing != null) {
+	                    existing.setProductInfoText(info.getProductInfoText());
+	                    brandProductInfoRepository.save(existing);
+	                }
+	            }
+	        }
+	    }
+	    
 
 	    brandProductRepository.save(saved);
 

@@ -27,4 +27,5 @@ public class BrandProductInfo {
 	
 	@Column(name="BRAND_PRODUCT_INFO_TEXT")
 	private String productInfoText;
+	
 }
