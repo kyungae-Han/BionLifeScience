@@ -98,12 +98,11 @@
 			
 			      <!-- ✅ 반복문은 개별 col 단위에만 적용 -->
 			      <div class="col-lg-3 col-6"
-			           th:each="product : ${products}"
-			           th:attr="data-big-id=${product.bigSort?.id},
-			                    data-middle-id=${product.middleSort != null ? product.middleSort.id : ''},
-			                    data-small-id=${product.smallSort != null ? product.smallSort.id : ''}">
-			        
-			        <div class="product-card entry sorted-entry h-100">
+			           th:each="product : ${products}">
+			        <div class="product-card entry sorted-entry h-100"
+			        th:attr="data-big-id=${product.bigSort?.id},
+			                 data-middle-id=${product.middleSort != null ? product.middleSort.id : ''},
+			                 data-small-id=${product.smallSort != null ? product.smallSort.id : ''}">
 			          <div class="grid-inner">
 			            <div class="entry-image mb-2">
 			              <a th:href="@{|/brandProductDetail/${product.id}|}">
