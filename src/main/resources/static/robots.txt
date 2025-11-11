@@ -1,6 +1,7 @@
 User-agent: *
 Disallow: /brandProductSorted/
-Disaloow: /brandProductSorted/brand/40
-Disaloow: /brandProductSorted/brand/47
+Disalow: /brandProductSorted/brand/40
+Disalow: /brandProductSorted/brand/47
+Disalow: /test/
 Allow: /
 Sitemap: https://bionlifescience.com/sitemap.xml
