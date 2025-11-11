@@ -492,7 +492,7 @@ window.scwEvents = window.scwEvents || {};
 			   const diff = windowH - wrapperH;
 			   if( diff > 0 ) {
 			     // 여백이 실제로 필요할 때만 추가
-			     $footer.css({ 'margin-top': diff + 127 + 'px' });
+			     $footer.css({ 'margin-top': diff + 129 + 'px' });
 			   }
 			 }
 		}
