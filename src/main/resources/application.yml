@@ -95,9 +95,10 @@ spring:
       maxRequestSize: -1
   mail:
     host: smtp.hiworks.com
-    port: 587
+    port: 465
     username: admin@bionlifescience.com
     password: "jQWtWhTyOKrc4Xm9GBLg"
+    protocol: smtps
     properties:
       mail.smtp.auth: true
       mail.smtp.ssl.enable: true
