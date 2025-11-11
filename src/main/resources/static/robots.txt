@@ -3,5 +3,6 @@ Disallow: /brandProductSorted/
 Disalow: /brandProductSorted/brand/40
 Disalow: /brandProductSorted/brand/47
 Disalow: /test/
+Disalow: /memberLoginForm/
 Allow: /
 Sitemap: https://bionlifescience.com/sitemap.xml
