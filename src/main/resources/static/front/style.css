@@ -2505,6 +2505,7 @@ html[xmlns] .slider-wrap {
   -webkit-transition: all 1s ease;
   -o-transition: all 1s ease;
   transition: all 1s ease;
+  height: auto !important;
 }
 
 /* ----------------------------------------------------------------
