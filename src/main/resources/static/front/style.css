@@ -2501,7 +2501,7 @@ html[xmlns] .slider-wrap {
 }
 
 .flex-viewport {
-  max-height: 2000px;
+  max-height: 1000px;
   -webkit-transition: all 1s ease;
   -o-transition: all 1s ease;
   transition: all 1s ease;
@@ -3043,7 +3043,6 @@ nav .menu-item.current:hover > .menu-link{
 .sub-menu-container,
 .mega-menu-content {
   position: relative;
-  padding-left: 15px;
   border-top: 1px solid #eee;
   list-style: none;
   margin-bottom: 0;
@@ -16567,7 +16566,7 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
 }
 
 /* 컨테이너 */
-#productsItems .pro-container{ width:min(1240px, 92%); margin:0 auto; }
+#productsItems .pro-container{width:min(1280px, 100%);margin:0 auto;padding: 0 25px;}
 
 /* 헤더 */
 #productsItems .pro-head{ text-align:left; margin: clamp(8px,3vw,16px) 0 12px; }
@@ -16614,7 +16613,7 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
 
 @media (min-width: 992px){
   .pro-track .portfolio-item{
-    flex: 0 0 calc((100% - 2*var(--pro-gap, 16px)) / 4);
+    flex: 0 0 calc((100% - 2*var(--pro-gap, 30px)) / 4.07);
   }
 }
 
@@ -16680,7 +16679,7 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
 
 /* 데스크탑에서 카드 여백 맞춤 */
 @media (min-width:1280px){
-  .pro-track{ padding-bottom:48px; gap: 40px;}
+  .pro-track{ padding-bottom:48px;}
 }
 
 :root{
