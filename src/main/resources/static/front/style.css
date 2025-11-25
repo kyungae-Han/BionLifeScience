@@ -20298,6 +20298,17 @@ margin-bottom: 1.25rem; /* 텍스트와 간격 */
 
 .notice-body, .references-body {margin-bottom: 125px;}
 
+
+/*연관상품 텍스트 맞춤*/
+.portfolio-item {display: flex; flex-direction: column; justify-content: flex-start; height:460px;}
+.portfolio-desc p {
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* 2줄 또는 3줄 설정 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+
 /* 메뉴 디버깅용 css */
 /* .debug-open {
   opacity: 1 !important;
