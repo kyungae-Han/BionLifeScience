@@ -20308,6 +20308,10 @@ margin-bottom: 1.25rem; /* 텍스트와 간격 */
     overflow: hidden;
 }
 
+@media(max-width:991px){
+	.portfolio-item {height: auto;}
+}
+
 
 /* 메뉴 디버깅용 css */
 /* .debug-open {
