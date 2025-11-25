@@ -20308,8 +20308,10 @@ margin-bottom: 1.25rem; /* 텍스트와 간격 */
 
 
 /*연관상품 텍스트 맞춤*/
-#brand-page .portfolio-item {display: flex; flex-direction: column; justify-content: flex-start; height:460px;}
-#brand-page .portfolio-desc p {
+#brand-page .portfolio-item,
+#brandPorductDetail .portfolio-item {display: flex; flex-direction: column; justify-content: flex-start; height:460px;}
+#brand-page .portfolio-desc p,
+#brandPorductDetail .portfoli-desc p {
     display: -webkit-box;
     -webkit-line-clamp: 4; /* 2줄 또는 3줄 설정 */
     -webkit-box-orient: vertical;
