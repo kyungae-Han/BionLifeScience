@@ -741,8 +741,16 @@ a {
 }
 
 a:hover {
-  color: var(--bs-orange);
+  color: inherit;
 }
+
+#top-search a:hover,
+#top-cart a:hover,
+.menu-link:hover{
+	color: var(--bs-orange);
+}
+
+
 
 a img {
   border: none;
@@ -5775,10 +5783,10 @@ Portfolio - Item Title
 
 .entry-meta:not(.no-separator) li::before {
   content: "\205E";
-  width: 5px;
+  /* width: 5px; */
   text-align: center;
   display: inline-block;
-  margin-right: 15px;
+  /* margin-right: 15px; */
   opacity: 0.5;
 }
 
@@ -20300,8 +20308,8 @@ margin-bottom: 1.25rem; /* 텍스트와 간격 */
 
 
 /*연관상품 텍스트 맞춤*/
-.portfolio-item {display: flex; flex-direction: column; justify-content: flex-start; height:460px;}
-.portfolio-desc p {
+#brand-page .portfolio-item {display: flex; flex-direction: column; justify-content: flex-start; height:460px;}
+#brand-page .portfolio-desc p {
     display: -webkit-box;
     -webkit-line-clamp: 4; /* 2줄 또는 3줄 설정 */
     -webkit-box-orient: vertical;
@@ -20311,6 +20319,7 @@ margin-bottom: 1.25rem; /* 텍스트와 간격 */
 @media(max-width:991px){
 	.portfolio-item {height: auto;}
 }
+
 
 
 /* 메뉴 디버깅용 css */
