@@ -20319,7 +20319,8 @@ margin-bottom: 1.25rem; /* 텍스트와 간격 */
 }
 
 @media(max-width:991px){
-	.portfolio-item {height: auto;}
+	#brand-page .portfolio-item,
+	#brandPorductDetail .portfolio-item {height: auto;}
 }
 
 
