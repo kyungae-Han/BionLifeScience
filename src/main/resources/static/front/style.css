@@ -4165,10 +4165,8 @@ body:not(.stretched) .slider-parallax .slider-inner {
 
 #slider .swiper-pagination  {
 	position: absolute;
-	left: 50%;
-	bottom: 20px;
+	bottom: 22px !important;
 	z-index: 100;
-	transform: translateX(-50%);
 	width: max-content
 }
 
@@ -4179,7 +4177,7 @@ body:not(.stretched) .slider-parallax .slider-inner {
 	height: 29px;
 	margin: 0;
 	background-color: transparent;
-	transition: all .3s
+	transition: all .3s ease;
 }
 
 #slider .swiper-pagination span.swiper-pagination-bullet-active {
@@ -4588,8 +4586,9 @@ body:not(.has-plugin-html5video) .video-wrap video {
     	top: 50%;
     }
     
-    #slider .swiper-pagination {
-    	bottom: 54px;
+     #slider .swiper-pagination {
+    	left: 50% !important;
+    	transform: translateX(-50%) !important;
     }
     
     #slider .slide-number {

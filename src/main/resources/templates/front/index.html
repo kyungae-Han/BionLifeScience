@@ -23,8 +23,8 @@
 
             <!-- 비디오(.mp4) -->
             <video th:if="${#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4')}"
-                   autoplay muted loop playsinline>
-              <source th:src="@{${b.webroad}}" type="video/mp4" />
+                   autoplay muted loop playsinline preload="metadata">
+              <source th:src="@{${b.webroad}}" type="video/mp4" media="(min-width: 768px)" />
             </video>
 
             <!-- 이미지(그 외) -->
@@ -39,8 +39,8 @@
 
             <!-- 비디오(.mp4) -->
             <video th:if="${#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4')}"
-                   autoplay muted loop playsinline>
-              <source th:src="@{${b.mobileroad}}" type="video/mp4" />
+                   autoplay muted loop playsinline preload="metadata">
+              <source th:src="@{${b.mobileroad}}" type="video/mp4" media="(max-width: 768px)" />
             </video>
 
             <!-- 이미지(그 외) -->
@@ -104,7 +104,7 @@
      <div class="history-wrap" id="business-history">
 
       <!-- 비디오 -->
-      <video autoplay muted loop playsinline
+      <video autoplay muted loop playsinline preload="metadata"
        style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;">
        <source th:src="@{/front/images/history-content.mp4}" type="video/mp4">
       </video>
