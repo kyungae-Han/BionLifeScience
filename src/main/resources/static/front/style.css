@@ -3934,6 +3934,16 @@ body:not(.top-search-open)
 	Slider
 -----------------------------------------------------------------*/
 
+.swiper-slide-bg.is-mobile { display:none; }
+.swiper-slide-bg.is-desktop { display:block; }
+
+@media (max-width:768px){
+  .swiper-slide-bg.is-mobile { display:block; }
+  .swiper-slide-bg.is-desktop { display:none; }
+}
+
+
+
 .slider-element .container,
 .slider-element .container-fluid {
   position: relative;
