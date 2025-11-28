@@ -84,7 +84,6 @@
 }
  
  
- 
 
 /* Visual 영역 */
 .brand-visual {
@@ -97,6 +96,12 @@
   align-items: center;
   justify-content: flex-start;
 }
+
+
+@media(max-width:998px){
+	.brand-visual {margin-top: 100px;}
+}
+
 .brand-visual-overlay {
   background: rgba(0, 0, 0, 0.3); /* 필요시 어두운 overlay */
   width: 100%;
