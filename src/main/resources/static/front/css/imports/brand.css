@@ -573,3 +573,14 @@
 }
 
 .client_btn .nav-btn {border: 1px solid #eee;}
+
+
+@media(max-width: 991px){
+	.category-tabs {
+		padding-bottom: 8px;
+		overflow-x: scroll;
+		-webkit-overflow-scrolling: touch;
+	}
+	
+	.sorted-select-box.me-3 {margin-right: 0 !important;}
+}
