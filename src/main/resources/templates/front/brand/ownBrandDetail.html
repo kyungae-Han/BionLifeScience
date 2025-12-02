@@ -39,8 +39,15 @@
 		
 		<!-- 상단 카테고리 탭 -->
 		<section class="product-container">
-		 	<div class="sec-head center">
-		 		<h3 th:text="${brand.name} +' '+'PRODUCT'"></h3>
+		 	<div class="sec-head d-flex position-relative mb-4">
+		 		<h3 class="text-center w-100 mb-5" th:text="${brand.name} +' '+'PRODUCT'"></h3>
+				 <div class="position-absolute end-0 top-0 mt-4 translate-middle-y">
+				  	<select id="sortSelect" class="form-select form-select-sm" style="width: 180px">
+						<option value="recent">최근 등록순</option>
+						<option value="az">A &larr; Z</option>
+						<option value="za">Z &larr; A</option>			  	
+				  	</select>
+			  	</div>
 		 	</div>
 		
 			<div class="category-tabs">
@@ -94,7 +101,7 @@
 			    <div class="no-data" style="display:none;">데이터가 없습니다.</div>
 			
 			    <!-- ✅ products 전체를 감싸는 하나의 row -->
-			    <div class="row g-4 justify-content-start">
+			    <div class="row g-4 justify-content-start product-list">
 			
 			      <!-- ✅ 반복문은 개별 col 단위에만 적용 -->
 			      <div class="col-lg-3 col-6"
@@ -102,7 +109,10 @@
 			        <div class="product-card entry sorted-entry h-100"
 			        th:attr="data-big-id=${product.bigSort?.id},
 			                 data-middle-id=${product.middleSort != null ? product.middleSort.id : ''},
-			                 data-small-id=${product.smallSort != null ? product.smallSort.id : ''}">
+			                 data-small-id=${product.smallSort != null ? product.smallSort.id : ''},
+			                 data-regdate=${product.id},
+			                 data-name=${product.subject}">
+			                 
 			          <div class="grid-inner">
 			            <div class="entry-image mb-2">
 			              <a th:href="@{|/brandProductDetail/${product.id}|}">
@@ -125,8 +135,8 @@
 			
 			            <div class="entry-meta" 
 			                 th:if="${product.specs != null and !product.specs.isEmpty()}">
-			              <ul>
-			                <li th:each="spec : ${product.specs}">
+			              <ul class="list-unstyled w-100 ps-4 pb-4">
+			                <li class="text-wrap text-break" th:each="spec : ${product.specs}">
 			                  # [[${spec.productSpecContent}]]
 			                </li>
 			              </ul>
@@ -198,6 +208,56 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 </script>
+
+
+
+<!-- 내부 sort 스크립트  -->
+<script>
+
+// 정렬 함수 분리
+function applySort(sortType) {
+
+  const items = [...document.querySelectorAll(".product-card")];
+  const cols = items.map(item => item.closest(".col-lg-3"));
+
+  if (sortType === "recent") {
+    cols.sort((a, b) => {
+      return Number(b.querySelector('.product-card').dataset.regdate) 
+           - Number(a.querySelector('.product-card').dataset.regdate);
+    });
+  }
+
+  if (sortType === "az") {
+    cols.sort((a, b) => {
+      return a.querySelector('.product-card').dataset.name
+             .localeCompare(b.querySelector('.product-card').dataset.name);
+    });
+  }
+
+  if (sortType === "za") {
+    cols.sort((a, b) => {
+      return b.querySelector('.product-card').dataset.name
+             .localeCompare(a.querySelector('.product-card').dataset.name);
+    });
+  }
+
+  const container = document.querySelector(".product-list");
+  cols.forEach(col => container.appendChild(col));
+}
+
+
+// select 변경 시 실행
+document.getElementById("sortSelect").addEventListener("change", function() {
+  applySort(this.value);
+});
+
+
+// ⭐ 페이지 로딩 시 자동으로 recent 정렬 실행
+document.addEventListener("DOMContentLoaded", function () {
+  applySort("recent");
+});
+</script>
+
 
 
 </body>
