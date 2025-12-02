@@ -112,7 +112,9 @@
 			                 data-middle-id=${product.middleSort != null ? product.middleSort.id : ''},
 			                 data-small-id=${product.smallSort != null ? product.smallSort.id : ''},
 			                 data-regdate=${product.id},
-			                 data-name=${product.subject}">
+			                 data-name=${product.subject},
+			                 data-sort-name=${product.subject.replace('[BIOTREAT]', '').trim()}
+			                 ">
 			                 
 			          <div class="grid-inner">
 			            <div class="entry-image mb-2">
@@ -230,15 +232,15 @@ function applySort(sortType) {
 
   if (sortType === "az") {
     cols.sort((a, b) => {
-      return a.querySelector('.product-card').dataset.name
-             .localeCompare(b.querySelector('.product-card').dataset.name);
+      return a.querySelector('.product-card').dataset.sortName
+             .localeCompare(b.querySelector('.product-card').dataset.sortName);
     });
   }
 
   if (sortType === "za") {
     cols.sort((a, b) => {
-      return b.querySelector('.product-card').dataset.name
-             .localeCompare(a.querySelector('.product-card').dataset.name);
+      return b.querySelector('.product-card').dataset.sortName
+             .localeCompare(a.querySelector('.product-card').dataset.sortName);
     });
   }
 
