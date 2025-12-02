@@ -4034,7 +4034,10 @@ body:not(.stretched) .slider-parallax .slider-inner {
     backface-visibility: visible !important;
   }
   
-  .slider-parallax .slider-caption {height: 55% !important;}
+  .slider-parallax .slider-caption {
+	  height: auto;
+	  top: 137px
+  }
 }
 
 
@@ -4166,9 +4169,9 @@ body:not(.stretched) .slider-parallax .slider-inner {
 
 #slider .swiper-pagination  {
 	position: absolute;
-	bottom: 22px !important;
+	bottom: 22px;
 	z-index: 100;
-	width: max-content
+	width: max-content;
 }
 
 #slider .swiper-pagination span {
@@ -4197,7 +4200,7 @@ body:not(.stretched) .slider-parallax .slider-inner {
 	height: 45px;
 	border: 1px solid rgba(255, 255, 255, .3);
 	border-radius: 50%;
-	transition: all .3s
+	transition: all .3s ease;
 }
 
 #slider .swiper-pagination span.swiper-pagination-bullet-active:before {
@@ -4216,7 +4219,7 @@ body:not(.stretched) .slider-parallax .slider-inner {
 	width: 7px;
 	height: 7px;
 	border-radius: 50%;
-	background: #fff
+	background: #fff;
 }
 
 
@@ -4287,7 +4290,7 @@ body:not(.has-plugin-html5video) .video-wrap video {
   position: relative;
   display: -ms-flexbox;
   display: flex;
-  height: 80% !important;
+  height: 100%;
   flex-flow: row;
   justify-content: left;
   align-items:center;
