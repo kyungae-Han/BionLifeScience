@@ -6,6 +6,18 @@
 <link rel="stylesheet" th:href="@{/front/css/imports/brand.css}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+<style>
+.text-ellipsis-3 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;   /* 표시할 최대 줄 수 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.hashtags {border-top: 1px solid #e1e1e1;}
+.hashtags li:first-child {padding-top:14px;}
+</style>
+
 
 <body class="stretched brand-page">
 
@@ -34,18 +46,16 @@
 			<div th:utext="${brand.desc}"></div>
 		</section>
 		
-		
-		
-		
 		<!-- 상단 카테고리 탭 -->
 		<section class="product-container">
 		 	<div class="sec-head">
-		 		<h3 class="text-center w-100 pb-3" th:text="${brand.name} +' '+'PRODUCT'"></h3>
+		 		<h3 class="text-center w-100 pb-4" th:text="${brand.name} +' '+'PRODUCT'"></h3>
+		 		<p class="text-center pb-4" th:utext="'좋은 제품은 혁신을 이끄는 실무자의 성과를 높이고,<br>'+'<span class=&quot;fw-bold fs-5&quot;>'+${brand.name}+'</span>'+'은 좋은 제품을 만듭니다.'">당사의 다양한 제품을 만나보세요. </p>
 		 	</div>
 		
 			<div class="category-tabs">
 			  <!-- BigSort 탭 -->
-			  <ul class="pb-1" th:if="${sort == 'brand'}">
+			  <ul class="pb-5" th:if="${sort == 'brand'}">
 			   <li>
 			      <button type="button"
 			              class="tab-btn active"
@@ -87,8 +97,10 @@
 			</div>
 	
 	
-			<div class="d-flex justify-content-end top-0 mt-4 me-3 translate-middle-y sorted-select-box">
-			  	<select id="sortSelect" class="form-select form-select-sm" style="width: 180px">
+			<div class="d-flex justify-content-between top-0 translate-middle-y sorted-select-box mb-4">
+				<span class="fw-bold" th:text="'총'+${products.size()}+'개'"></span>
+			  	<select id="sortSelect" class="form-select form-select-sm rounded-1 w-35 px-3" style="width: 180px; height:42px; line-height: 1.5;">
+			  	    <option value="" disabled selected>정렬</option>
 					<option value="recent">최근 등록순</option>
 					<option value="az">A &rarr; Z</option>
 					<option value="za">Z &rarr; A</option>			  	
@@ -107,7 +119,7 @@
 			      <!-- ✅ 반복문은 개별 col 단위에만 적용 -->
 			      <div class="col-lg-3 col-6"
 			           th:each="product : ${products}">
-			        <div class="product-card entry sorted-entry h-100"
+			        <div class="product-card sorted-entry h-100 card shadow-sm border-0 rounded-4" style="padding-bottom: 0;"
 			        th:attr="data-big-id=${product.bigSort?.id},
 			                 data-middle-id=${product.middleSort != null ? product.middleSort.id : ''},
 			                 data-small-id=${product.smallSort != null ? product.smallSort.id : ''},
@@ -117,10 +129,14 @@
 			                 ">
 			                 
 			          <div class="grid-inner">
-			            <div class="entry-image mb-2">
+			            <div class="entry-image mb-2 position-relative">
 			              <a th:href="@{|/brandProductDetail/${product.id}|}">
 			                <img th:src="${product.firstImageRoad}" alt="Product Image">
 			              </a>
+			              
+			              <span class="badge bg-primary position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill"
+						      th:text="${product.bigSort.name}">
+						</span>
 			            </div>
 			
 			            <div class="entry-title">
@@ -130,7 +146,7 @@
 			              </h2>
 			            </div>
 			
-			            <div class="entry-content mt-1">
+			            <div class="entry-content ps-1 text-ellipsis-3">
 			              <p th:text="${product.content}">
 			                간단한 제품에 대한 설명이 들어가는 영역입니다.
 			              </p>
@@ -138,7 +154,7 @@
 			
 			            <div class="entry-meta" 
 			                 th:if="${product.specs != null and !product.specs.isEmpty()}">
-			              <ul class="list-unstyled w-100 ps-4 pb-4">
+			              <ul class="list-unstyled w-100 ps-4 pb-4 hashtags">
 			                <li class="text-wrap text-break" th:each="spec : ${product.specs}">
 			                  # [[${spec.productSpecContent}]]
 			                </li>
