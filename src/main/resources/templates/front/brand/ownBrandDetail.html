@@ -140,13 +140,12 @@
 			            </div>
 			
 			            <div class="entry-title">
-			              <h2>
-			                <a th:href="@{|/brandProductDetail/${product.id}|}" 
-			                   th:text="${product.subject}">Screw Caps and Tubes</a>
-			              </h2>
+			              <h3 th:text="${product.subject}">
+			                   Screw Caps and Tubes
+			              </h3>
 			            </div>
 			
-			            <div class="entry-content ps-1 text-ellipsis-3">
+			            <div class="entry-content ps-1 text-ellipsis-3 fs-3">
 			              <p th:text="${product.content}">
 			                간단한 제품에 대한 설명이 들어가는 영역입니다.
 			              </p>
@@ -154,7 +153,7 @@
 			
 			            <div class="entry-meta" 
 			                 th:if="${product.specs != null and !product.specs.isEmpty()}">
-			              <ul class="list-unstyled w-100 ps-4 pb-4 hashtags">
+			              <ul class="list-unstyled w-100 ps-4 pb-4 hashtags fs-6">
 			                <li class="text-wrap text-break" th:each="spec : ${product.specs}">
 			                  # [[${spec.productSpecContent}]]
 			                </li>

@@ -5821,7 +5821,7 @@ Portfolio - Item Title
 }
 
 .entry-content {
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .single-post .entry-content {
@@ -17203,22 +17203,14 @@ h4 {
 	}
 }
 
+@media(min-width:1024px){
+	.entry-title h3 {font-size: 1.1rem;}
+}
+
 @media(max-width:600px) {
-.entry-title h2 a{
-	  font-size:14px;
-	  letter-spacing:-1px;
-	}
-
-.entry-meta li{
-		font-size:12px !important;
-		letter-spacing:-1px;
-		margin:0px 0px 10px 0px;
-	}
-
-.entry-content p{
-		font-size:12px;
-	}
-
+.entry-title h3 {font-size:1.1rem; letter-spacing:-1px;}
+.entry-content p{font-size:1rem;}
+.entry-meta li{font-size:12px !important; letter-spacing:-1px;}
 }
 
 @media (max-width: 575.98px) {
