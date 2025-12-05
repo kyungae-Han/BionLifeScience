@@ -252,7 +252,7 @@
 
 /* active 상태 */
 .category-tabs button.active {
-  background: var(--bs-orange);
+  background: var(--bs-blue);
   color: #fff;
   font-weight: 600;
 }
