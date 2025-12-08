@@ -30,7 +30,14 @@
 	.brand-page #header:hover .gnb-menu,
 	.brand-page #header:hover .header-misc a,
 	.brand-page #header:hover .slash {color: #333 !important; opacity: 1;}
-	
+
+	.brand-page #header .gnb-menu:hover,
+	.brand-page #header.scrolled .gnb-menu:hover,
+	.brand-page #header .header-misc a:hover{
+	    color: var(--accent) !important;
+	    opacity: 1;
+	}
+
 
 	.brand-page #header.full-header {
 	  transition: all 0.3s ease;
