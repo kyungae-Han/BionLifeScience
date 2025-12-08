@@ -26,6 +26,10 @@
 	.brand-page #header.scrolled .header-misc a,
 	.brand-page #header.scrolled .slash{color:#333 !important; opacity: 1;}
 	
+	.brand-page #header:hover a.menu-link,
+	.brand-page #header:hover .header-misc a,
+	.brand-page #header:hover .slash {color: #333 !important; opacity: 1;}
+	
 
 	.brand-page #header.full-header {
 	  transition: all 0.3s ease;
