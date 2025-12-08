@@ -173,7 +173,7 @@
 			            </div>
 			            <div class="entry-meta" 
 			                 th:if="${product.specs != null and !product.specs.isEmpty()}">
-			              <ul class="list-unstyled w-100 hashtags fs-6 flex-column">
+			              <ul class="list-unstyled w-100 mb-3 hashtags fs-6 flex-column">
 			                <li class="text-wrap text-break w-100"
 							    th:each="spec : ${product.specs}"
 							    th:if="${spec.productSpecSubject != '제조사' and spec.productSpecSubject != '제조자' and spec.productSpecSubject != '특징'}">
