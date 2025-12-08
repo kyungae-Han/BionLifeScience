@@ -27,6 +27,16 @@
 
 .obtain .badge {background-color: #b9d4fc; color: #555 !important;}
 
+.spec-label {width:24%; white-space: nowrap;}
+
+.spec-value {
+    display: inline-block;
+    white-space: normal;
+    word-break: break-word;        
+    overflow-wrap: break-word;   
+    flex: 1;                      
+}
+
 </style>
 
 
@@ -163,23 +173,24 @@
 			            </div>
 			            <div class="entry-meta" 
 			                 th:if="${product.specs != null and !product.specs.isEmpty()}">
-			              <ul class="list-unstyled w-100 ps-4 pb-4 hashtags fs-6">
-			                <li class="text-wrap text-break"
+			              <ul class="list-unstyled w-100 hashtags fs-6 flex-column">
+			                <li class="text-wrap text-break w-100"
 							    th:each="spec : ${product.specs}"
 							    th:if="${spec.productSpecSubject != '제조사' and spec.productSpecSubject != '제조자' and spec.productSpecSubject != '특징'}">
 							
-							    <span class="fw-semibold" th:text="${
-							        spec.productSpecSubject == '품목코드' or spec.productSpecSubject == '품번코드'  ? 'Model'
-							      : spec.productSpecSubject == '패킹단위' ? 'Packing'
-							      : spec.productSpecSubject == '제조국' ? 'Origin'
-							      : spec.productSpecSubject == '재질' ? 'Material'
-							      : spec.productSpecSubject == '무게' ? 'Weight'
-							      : spec.productSpecSubject == '부피' ? 'Volume'
-							      : spec.productSpecSubject
-							    }"></span>
-							    
-							    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-							    <span th:text="${spec.productSpecContent}"></span>
+								<div class="d-flex flex-start">
+								    <span class="fw-semibold spec-label me-3" th:text="${
+								        spec.productSpecSubject == '품목코드' or spec.productSpecSubject == '품번코드'  ? 'Model'
+								      : spec.productSpecSubject == '패킹단위' ? 'Packing'
+								      : spec.productSpecSubject == '제조국' ? 'Origin'
+								      : spec.productSpecSubject == '재질' ? 'Material'
+								      : spec.productSpecSubject == '무게' ? 'Weight'
+								      : spec.productSpecSubject == '부피' ? 'Volume'
+								      : spec.productSpecSubject
+								    }"></span>
+								    
+								    <span class="spec-value"  th:utext="${spec.productSpecContent.replaceAll(',', ',<br>')}"></span>
+							    </div>
 							</li>
 			              </ul>
 			              

@@ -6,6 +6,23 @@
 </head>
 <link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
 
+
+<style>
+	/* 썸네일 이미지의 1px 라인 제거 */
+.flex-control-nav.flex-control-thumbs img {
+    display: block !important;
+    border: none !important;
+    outline: none !important;
+    line-height: 0 !important;
+}
+
+/* 썸네일 li 자체도 줄 간격 제거 */
+.flex-control-nav.flex-control-thumbs li {
+    line-height: 0 !important;
+}
+
+</style>
+
 <body class="stretched" id="brandPorductDetail">
 
 	<div id="wrapper" class="clearfix">
@@ -30,8 +47,8 @@
 							</div>
 						</div>
 					</div>
-					<div class="row gutter-40 col-mb-80 justify-content-center">
-						<div class="postcontent col-lg-10 order-lg-last">
+					<div class="row col-mb-80 justify-content-start">
+						<div class="postcontent col-lg-12 order-lg-last">
 
 							<div class="single-product">
 								<div class="product">
@@ -43,11 +60,11 @@
 													data-thumbs="true">
 													<div class="flexslider">
 														<div class="slider-wrap" data-lightbox="gallery">
-															<div class="slide" th:each="e:${product.images}"
+															<div class="slide flex-control-nav flex-control-thumbs" th:each="e:${product.images}"
 																th:data-thumb="${e.productImageRoad}">
 																<a th:href="@{${e.productImageRoad}}" title="제품 사진"
-																	data-lightbox="gallery-item"><img
-																	th:src="${e.productImageRoad}" alt="#"></a>
+																	data-lightbox="gallery-item">
+																	<img class="0" th:src="${e.productImageRoad}" alt="#"></a>
 															</div>
 														</div>
 													</div>

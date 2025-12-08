@@ -5795,14 +5795,13 @@ Portfolio - Item Title
   margin-bottom: 5px;
 }
 
-.entry-meta:not(.no-separator) li::before {
+/* .entry-meta:not(.no-separator) li::before {
   content: "\205E";
-  /* width: 5px; */
   text-align: center;
   display: inline-block;
-  /* margin-right: 15px; */
   opacity: 0.5;
-}
+}*/
+
 
 .entry-meta i {
   position: relative;
