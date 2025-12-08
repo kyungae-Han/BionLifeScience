@@ -19,14 +19,15 @@
 	
 		
 	/*브랜드페이지 상단 메뉴 글자색 이벤트 추가*/
-	.brand-page #header a.menu-link,
+	.brand-page #header .menu-container .gnb-menu,
 	.brand-page #header .header-misc a,
 	.slash{color:#f5f5f5; transition: color .25s ease; opacity:0.8;}
-	.brand-page #header.scrolled a.menu-link,
+	
+	.brand-page #header.scrolled .gnb-menu,
 	.brand-page #header.scrolled .header-misc a,
 	.brand-page #header.scrolled .slash{color:#333 !important; opacity: 1;}
 	
-	.brand-page #header:hover a.menu-link,
+	.brand-page #header:hover .gnb-menu,
 	.brand-page #header:hover .header-misc a,
 	.brand-page #header:hover .slash {color: #333 !important; opacity: 1;}
 	
