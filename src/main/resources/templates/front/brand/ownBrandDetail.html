@@ -16,6 +16,15 @@
 }
 .hashtags {border-top: 1px solid #e1e1e1;}
 .hashtags li:first-child {padding-top:14px;}
+
+
+.obtain span {
+    white-space: normal; 
+    display: inline-block;
+    max-width: 100%;
+    line-height: 1.3;
+}
+
 </style>
 
 
@@ -50,7 +59,7 @@
 		<section class="product-container">
 		 	<div class="sec-head">
 		 		<h3 class="text-center w-100 pb-4" th:text="${brand.name} +' '+'PRODUCT'"></h3>
-		 		<p class="text-center pb-4" th:utext="'좋은 제품은 혁신을 이끄는 실무자의 성과를 높이고,<br>'+'<span class=&quot;fw-bold fs-5&quot;>'+${brand.name}+'</span>'+'은 좋은 제품을 만듭니다.'">당사의 다양한 제품을 만나보세요. </p>
+		 		<p class="text-center pb-4" th:utext="'최고의 품질이 만드는 새로운 기준<br>'+'<span class=&quot;fw-bold fs-5&quot;>'+${brand.name}+'</span>'+'의 다양한 제품을 만나보세요.'">당사의 다양한 제품을 만나보세요. </p>
 		 	</div>
 		
 			<div class="category-tabs">
@@ -145,19 +154,37 @@
 			              </h3>
 			            </div>
 			
-			            <div class="entry-content ps-1 text-ellipsis-3 fs-3">
+			            <div class="entry-content text-ellipsis-3 fs-6">
 			              <p th:text="${product.content}">
 			                간단한 제품에 대한 설명이 들어가는 영역입니다.
 			              </p>
 			            </div>
-			
 			            <div class="entry-meta" 
 			                 th:if="${product.specs != null and !product.specs.isEmpty()}">
 			              <ul class="list-unstyled w-100 ps-4 pb-4 hashtags fs-6">
-			                <li class="text-wrap text-break" th:each="spec : ${product.specs}">
-			                  # [[${spec.productSpecContent}]]
-			                </li>
+			                <li class="text-wrap text-break"
+							    th:each="spec : ${product.specs}"
+							    th:if="${spec.productSpecSubject != '제조사' and spec.productSpecSubject != '제조자' and spec.productSpecSubject != '특징'}">
+							
+							    <span class="fw-semibold" th:text="${
+							        spec.productSpecSubject == '품목코드' or spec.productSpecSubject == '품번코드'  ? 'Model'
+							      : spec.productSpecSubject == '패킹단위' ? 'Packing'
+							      : spec.productSpecSubject == '제조국' ? 'Origin'
+							      : spec.productSpecSubject == '재질' ? 'Material'
+							      : spec.productSpecSubject == '무게' ? 'Weight'
+							      : spec.productSpecSubject == '부피' ? 'Volume'
+							      : spec.productSpecSubject
+							    }"></span>
+							    
+							    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+							    <span th:text="${spec.productSpecContent}"></span>
+							</li>
 			              </ul>
+			              
+							<div class="obtain" th:each="specObtain : ${product.specs}"
+							   th:if="${specObtain.productSpecSubject == '특징'}">
+							   <span class="badge rounded-pill text-bg-success fw-normal px-3 py-2" th:text="${specObtain.productSpecContent}"></span>
+							</div>				              
 			            </div>
 			          </div>
 			        </div>

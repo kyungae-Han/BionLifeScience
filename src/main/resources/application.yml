@@ -25,7 +25,7 @@ spring:
       on-profile: test
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://183.111.199.216:3306/bionls?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mariadb://183.111.199.216:3306/bionls?useUnicode=true&characterEncoding=utf8mb4&serverTimezone=Asia/Seoul
     username: bionls
     password: bion2272!@
 #    url: jdbc:mariadb://127.0.0.1:3306/bionls?useUnicode=true&characterEncoding=utf8
@@ -71,7 +71,7 @@ spring:
       on-profile: prod
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/bionls?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mariadb://localhost:3306/bionls?useUnicode=true&characterEncoding=utf8mb4&serverTimezone=Asia/Seoul
     username: bionls
     password: bion2272!@
     hikari:

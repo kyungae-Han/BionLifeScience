@@ -220,6 +220,13 @@ skin
   padding: var(--timelineCardPadding, 1.5rem 1.5rem 1.25rem);
 }
 
+
+@media(max-width:991px){
+	.card{
+	  padding: var(--timelineCardPadding, 0.5rem 0.5rem 0.5rem);
+	}
+}
+
 .card__content{
   margin-top: var(--cardContentMarginTop, .5rem);
 }
