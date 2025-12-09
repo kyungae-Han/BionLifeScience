@@ -43,7 +43,7 @@
 
 /* 이미지 영역 반드시 고정 높이 */
 .related-img-box {
-    height: 220px;       /* 원하는 높이 */
+    width: 100%;       /* 원하는 높이 */
     overflow: hidden;
     border-radius: 8px;
 }
@@ -267,7 +267,7 @@
 							        </div>
 							
 							        <!-- 버튼 -->
-							        <div class="mt-auto px-3 pb-3">
+							        <div class="mt-auto pt-3 px-3 pb-3">
 							            <a th:href="@{|/brandProductDetail/${p.id}|}" class="btn btn-custom-gray w-100 rounded-3 py-2 fw-normal text-center">
 							                상세보기
 							            </a>
