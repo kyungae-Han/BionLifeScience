@@ -21,6 +21,58 @@
     line-height: 0 !important;
 }
 
+.description-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.btn-custom-gray {
+	background-color: #0a1e4e !important;
+}
+
+.btn-custom-gray:hover {
+	background-color: #fff !important;
+}
+
+
+.portfolio-item {height: 480px;}
+
+/* 이미지 영역 반드시 고정 높이 */
+.related-img-box {
+    height: 220px;       /* 원하는 높이 */
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.related-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* 설명 2줄 고정 */
+.description-clamp {
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 44px; /* 글자 높이 고정 */
+}
+
+.title-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;    
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5;         
+}
+
 </style>
 
 <body class="stretched" id="brandPorductDetail">
@@ -191,42 +243,38 @@
 					<div class="clearfix mt-10" style="max-width:1180px; margin:0 auto;">
 					  <div class="line"></div>
 					  <div class="mt-5 mb-5 bg-white">
-					    <h6 class="m-b-2 sec-head fs-2 fw-semibold mb-4">연관된 상품</h6>
+					    <h6 class="m-b-2 sec-head fs-3 fw-semibold mb-4 text-start">연관된 상품</h6>
 					
 					    <div class="owl-carousel product-carousel carousel-widget"
 					         data-margin="30" data-pagi="false" data-autoplay="5000"
 					         data-items-xs="1" data-items-md="2" data-items-lg="3"
 					         data-items-xl="4">
-					
-					      <div class="portfolio-item bg-light" th:each="p : ${relatedProducts}">
-					        <div class="portfolio-image">
-					          <a th:href="@{|/brandProductDetail/${p.id}|}">
-					            <img th:src="${p.tableImageRoad}" alt="상품이미지" class="img-fluid rounded-6" />
-					          </a>
-					          <div class="bg-overlay rounded-6">
-					            <div class="bg-overlay-content dark"
-					                 data-hover-animate="fadeIn" data-hover-speed="350">
-					              <a th:href="@{|/brandProductDetail/${p.id}|}"
-					                 class="overlay-trigger-icon bg-light text-dark"
-					                 data-hover-animate="fadeInDownSmall"
-					                 data-hover-animate-out="fadeInUpSmall"
-					                 data-hover-speed="350">
-					                 <i class="icon-line-plus"></i>
-					              </a>
-					            </div>
-					            <div class="bg-overlay-bg dark rounded-7" data-hover-animate="fadeIn"
-					                 data-hover-speed="350"></div>
-					          </div>
-					        </div>
-					
-					        <div class="portfolio-desc">
-					          <h4 class="p-2">
-					            <a th:href="@{|/brandProductDetail/${p.id}|}" 
-					               th:text="${p.subject}">상품명</a>
-					          </h4>
-				               <p class="text-wrap small mb-0 p-2 fs-6 fw-normal h-100 text-truncate" th:text="${p.content}">고정형 튜브, 50ml, 멸균포장</p>
-					        </div>
-					      </div>
+					         
+					         
+					         
+					         <div class="portfolio-item bg-light" th:each="p : ${relatedProducts}">
+							    <div class="card h-100 d-flex flex-column">
+							
+							        <!-- ✨ 높이 고정 이미지 컨테이너 적용 -->
+							        <div class="related-img-box">
+							            <img th:src="${p.tableImageRoad}" alt="상품이미지">
+							        </div>
+							
+							        <!-- 내용 -->
+							        <div class="portfolio-desc px-3 pt-3">
+							            <h4 class="fs-6 title-clamp" th:text="${p.subject}"></h4>
+							            <p class="description-clamp small" th:text="${p.content}"></p>
+							        </div>
+							
+							        <!-- 버튼 -->
+							        <div class="mt-auto px-3 pb-3">
+							            <a th:href="@{|/brandProductDetail/${p.id}|}" class="btn btn-custom-gray w-100 rounded-3 py-2 fw-normal text-center">
+							                상세보기
+							            </a>
+							        </div>
+							    </div>
+							</div>
+
 					
 					    </div>
 					  </div>
