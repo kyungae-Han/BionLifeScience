@@ -9,18 +9,21 @@
 
 <style>
 
+:root {
+    --primary: 210 100% 15%;
+}
 
 .flex-control-nav.flex-control-thumbs {
     display: flex !important;
-    gap: 2px !important;
+    gap: 8px !important;
     justify-content: left;
     padding: 10px 0;
 }
 
 .flex-control-nav.flex-control-thumbs img {
-    border: 1px solid #ddd !important;
+    border: 1px solid var(--bs-gray-500) !important;
     border-radius: 6px !important;
-    padding: 1px !important;
+    padding: 10px !important;
     background: #fff;
     width: 70px !important;
     height: 70px !important;
@@ -84,7 +87,15 @@
 
 #brandPorductDetail table {border-bottom: 1px solid var(--bs-gray-400) !important;}
 
-.iconlist li:last-child{margin-bottom:30px !important;}
+.iconlist {
+   background-color: hsl(var(--primary) / 0.05);
+   border-color: hsl(var(--primary) / 0.20); 
+   border-width: 1px;
+   border-style: solid;
+   border-radius: 0.75rem;
+   margin-bottom: 10px !important;
+}
+
 .iconlist span {font-size:0.9rem; font-weight: 500;}
 
 .bnt-light {background-color: #fff; color: #292929;}
@@ -159,15 +170,21 @@
 													            <th style="width:90px;" class="text-muted" th:text="${s.productSpecSubject}">Source</th>
 													            <td class="text-start" th:text="${s.productSpecContent}">E.coli</td>
 													        </tr>
+														     <tr class="w-100" th:each="i:${product.infos}" th:if="${ i != null}">
+														     	<td class="text-start"><i class="icon-caret-right"></i></td>
+													        	<td class="text-start" th:text="${i.productInfoText}"></td>
+													        </tr>
 													    </tbody>
 													</table>
 												</div>
 											</div>
-											<ul class="iconlist">
-												<li class="mb-1 bg-light pt-2 pb-2 rounded-2" th:each="i:${product.infos}"><i class="icon-caret-right"></i>
-												<span th:text="${i.productInfoText}"></span></li>
-											</ul>
 											
+											
+											<div class="iconlist rounded-2 p-3">
+												<p>제품 문의 및 기술 상담</p>
+												<p class="fw-semibold text-dark fs-5"><i class="bi bi-telephone me-2 fs-6"></i>031-572-2272</p>
+											</div>
+						
 											<a href="#" class="btn w-100 btn-custom-blue" id="js-open-contact">견적 문의하기</a>
 											<div class="d-flex justify-content-center mt-1">
 												 <a class="btn bnt-light w-50 mt-1 me-1"
