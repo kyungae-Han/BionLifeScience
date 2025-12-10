@@ -100,7 +100,6 @@
 
 .bnt-light {background-color: #fff; color: #292929;}
 .bnt-light:hover {background-color: #0a1e4e !important; color: #fff;}
-
 </style>
 
 <body class="stretched" id="brandPorductDetail">
@@ -240,9 +239,12 @@
 																				관리자<span><a href="#" title="#"
 																					th:text="${f.productFileDate}">2023.01.01</a></span>
 																			</div>
-																			<p>
-																				<a th:href="${f.productFileRoad}" download
-  																					th:text="${f.productFileName}">카달로그 다운로드.</a>
+																			<p class="btn mb-3 btn-custom-blue">
+																			    <a style="color:#fff;"
+																			       th:href="${f.productFileRoad}"
+																			       th:download="${f.productFileName}">
+																			        카탈로그 다운로드
+																			    </a>
 																			</p>
 																		</div>
 																		<div class="clear"></div>
