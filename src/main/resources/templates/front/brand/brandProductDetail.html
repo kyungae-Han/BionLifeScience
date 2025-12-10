@@ -111,6 +111,12 @@
 
 a.btn-custom-blue:hover {color: #292929 !important;}
 
+@media(max-width:991px){
+	.comment-content a {margin-bottom:10px; width: 100%;}
+	.comment-wrap {padding:0 !important;}
+	.comment-author {margin-top:10px;}
+}
+
 </style>
 
 <body class="stretched" id="brandPorductDetail">
@@ -245,7 +251,7 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 																<li class="comment even thread-even depth-1"
 																	th:each="f:${product.files}" id="li-comment-1">
 																	<div id="comment-1" class="comment-wrap clearfix">
-																		<div class="comment-content clearfix position-relative w-100 d-flex justify-content-between align-items-center">
+																		<div class="comment-content clearfix position-relative w-100 d-flex flex-column flex-md-row align-items-center">
 																			<div class="comment-author me-3 w-100">
 																				관리자<span th:text="${f.productFileDate}">2023.01.01</span>
 																				<p class="mb-3 fw-normal" th:text="'파일명: ' + ${f.productFileName}"></p>
