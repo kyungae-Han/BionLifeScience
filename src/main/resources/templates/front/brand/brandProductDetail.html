@@ -8,18 +8,34 @@
 
 
 <style>
-	/* 썸네일 이미지의 1px 라인 제거 */
-.flex-control-nav.flex-control-thumbs img {
-    display: block !important;
-    border: none !important;
-    outline: none !important;
-    line-height: 0 !important;
+
+
+.flex-control-nav.flex-control-thumbs {
+    display: flex !important;
+    gap: 2px !important;
+    justify-content: left;
+    padding: 10px 0;
 }
 
-/* 썸네일 li 자체도 줄 간격 제거 */
-.flex-control-nav.flex-control-thumbs li {
-    line-height: 0 !important;
+.flex-control-nav.flex-control-thumbs img {
+    border: 1px solid #ddd !important;
+    border-radius: 6px !important;
+    padding: 1px !important;
+    background: #fff;
+    width: 70px !important;
+    height: 70px !important;
+    object-fit: cover !important;
 }
+
+.flexslider .slide img {
+    margin: 0 auto !important;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 6px;
+    background: #fff;
+    display: block;
+}
+
 
 .description-clamp {
   display: -webkit-box;
@@ -30,28 +46,20 @@
 }
 
 
-.btn-custom-gray {
+.btn-custom-blue {
 	background-color: #0a1e4e !important;
 }
 
-.btn-custom-gray:hover {
+.btn-custom-blue:hover {
 	background-color: #fff !important;
 }
 
 
-.portfolio-item {height: 480px;}
+.portfolio-item {height: 500px; margin-bottom: 30px;}
 
 /* 이미지 영역 반드시 고정 높이 */
 .related-img-box {
-    width: 100%;       /* 원하는 높이 */
-    overflow: hidden;
     border-radius: 8px;
-}
-
-.related-img-box img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
 }
 
 /* 설명 2줄 고정 */
@@ -61,7 +69,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-height: 44px; /* 글자 높이 고정 */
+    min-height: 44px;
 }
 
 .title-clamp {
@@ -70,8 +78,17 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.5;         
+    line-height: 1.5; 
+    font-size: 1.1rem;
 }
+
+#brandPorductDetail table {border-bottom: 1px solid var(--bs-gray-400) !important;}
+
+.iconlist li:last-child{margin-bottom:30px !important;}
+.iconlist span {font-size:0.9rem; font-weight: 500;}
+
+.bnt-light {background-color: #fff; color: #292929;}
+.bnt-light:hover {background-color: #0a1e4e !important; color: #fff;}
 
 </style>
 
@@ -84,7 +101,9 @@
 		<section id="snb" class="clearfix">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><a href="/index">메인</a></li>
-				<li class="breadcrumb-item active" aria-current="page">상세페이지</li>
+				<li class="breadcrumb-item" aria-current="page">상세페이지</li>
+				<li class="breadcrumb-item active" th:text="${brand.name}">Brand Name</li>
+				<li class="breadcrumb-item active" th:text="${product.subject}">Screw Caps and Tubes</li>
 			</ol>
 		</section>
 		<section id="content">
@@ -112,38 +131,55 @@
 													data-thumbs="true">
 													<div class="flexslider">
 														<div class="slider-wrap" data-lightbox="gallery">
-															<div class="slide flex-control-nav flex-control-thumbs" th:each="e:${product.images}"
+															<div class="slide big-img-cnt" th:each="e:${product.images}"
 																th:data-thumb="${e.productImageRoad}">
-																<a th:href="@{${e.productImageRoad}}" title="제품 사진"
+																<a class="d-flex justify-content-center" th:href="@{${e.productImageRoad}}" title="제품 사진"
 																	data-lightbox="gallery-item">
-																	<img class="0" th:src="${e.productImageRoad}" alt="#"></a>
+																	<img class="p-3 img-center" th:src="${e.productImageRoad}" alt="#"></a>
 															</div>
 														</div>
 													</div>
 												</div>
-												<div class="sale-flash badge bg-danger p-2"
-										     th:text="${product.bigSort != null ? product.bigSort.name : '기타'}">
-										    Category
-										</div>
 											</div>
 										</div>
 
 										<div class="col-md-6 product-desc">
-											<ul class="iconlist">
-												<li class="mb-1" th:each="i:${product.infos}"><i class="icon-caret-right"></i>
-													<span th:text="${i.productInfoText}"></span></li>
-											</ul>
-											<div class="card product-meta mt-3">
+										
+											<div class="mb-3">
+										        <span class="badge bg-danger p-2"
+										              th:text="${product.bigSort != null ? product.bigSort.name : '기타'}">
+										        </span>
+										    </div>
+										
+											<div class="product-meta">
 												<div class="card-body">
-													<th:block th:each="s:${product.specs}">
-														<span class="posted_in">[[${s.productSpecSubject}]]
-															: <a href="javascript:void();" rel="tag"
-															th:text="${s.productSpecContent}">제조자</a>
-														</span><br>
-													</th:block>
+													<table class="table align-middle">
+													    <tbody>
+													        <tr th:each="s : ${product.specs}" th:if="${s != null}">
+													            <th style="width:90px;" class="text-muted" th:text="${s.productSpecSubject}">Source</th>
+													            <td class="text-start" th:text="${s.productSpecContent}">E.coli</td>
+													        </tr>
+													    </tbody>
+													</table>
 												</div>
 											</div>
+											<ul class="iconlist">
+												<li class="mb-1 bg-light pt-2 pb-2 rounded-2" th:each="i:${product.infos}"><i class="icon-caret-right"></i>
+												<span th:text="${i.productInfoText}"></span></li>
+											</ul>
+											
+											<a href="#" class="btn w-100 btn-custom-blue" id="js-open-contact">견적 문의하기</a>
+											<div class="d-flex justify-content-center mt-1">
+												 <a class="btn bnt-light w-50 mt-1 me-1"
+													   th:href="${product.files.size() > 0 ? product.files[0].productFileRoad : '#'}"
+													   th:download="${product.files.size() > 0 ? product.files[0].productFileName : null}">
+													   카탈로그 다운로드
+													</a>
+												<a class="btn bnt-light w-50 mt-1 ms-1" href="#">기술자료 요청</a>
+											</div>
 										</div>
+										
+										
 										<div class="w-100"></div>
 
 										<div class="col-12 mt-10">
@@ -160,7 +196,6 @@
 												</ul>
 
 												<div class="tab-container">
-
 													<div class="tab-content clearfix text-left" id="tabs-1"
 														style="text-align: center;">
 														<!-- <img width="1200px" style="margin: 0 auto;"
@@ -174,8 +209,8 @@
 																특허받은 설계로 스왑을 담고 있는 꽉 잠긴 Screw Caps and Tubes을 개봉하면 뚜껑부분에 스왑이
 																꼽혀서 나오며 또한 <strong></strong>작은 힘으로도 뚜껑과 스왑을 쉽게 분리</strong>할 수 있습니다.
 															</div>
-
 													</div>
+													
 													<div class="tab-content clearfix" id="tabs-3">
 
 														<div id="reviews" class="clearfix">
@@ -251,24 +286,21 @@
 					         data-items-xl="4">
 					         
 					         
-					         
-					         <div class="portfolio-item bg-light" th:each="p : ${relatedProducts}">
-							    <div class="card h-100 d-flex flex-column">
+					         <div class="portfolio-item" th:each="p : ${relatedProducts}">
+							    <div class="card h-100">
 							
-							        <!-- ✨ 높이 고정 이미지 컨테이너 적용 -->
-							        <div class="related-img-box">
-							            <img th:src="${p.tableImageRoad}" alt="상품이미지">
-							        </div>
+							        <img class="related-img-box" th:src="${p.tableImageRoad}" alt="상품이미지">
 							
 							        <!-- 내용 -->
 							        <div class="portfolio-desc px-3 pt-3">
-							            <h4 class="fs-6 title-clamp" th:text="${p.subject}"></h4>
+							        	<h6 class="mb-0 mt-3" th:text="${brand.name}"></h6>
+							            <h4 class="title-clamp mb-3" th:text="${p.subject}"></h4>
 							            <p class="description-clamp small" th:text="${p.content}"></p>
 							        </div>
 							
 							        <!-- 버튼 -->
 							        <div class="mt-auto pt-3 px-3 pb-3">
-							            <a th:href="@{|/brandProductDetail/${p.id}|}" class="btn btn-custom-gray w-100 rounded-3 py-2 fw-normal text-center">
+							            <a th:href="@{|/brandProductDetail/${p.id}|}" class="btn btn-custom-blue w-100 rounded-3 py-2 fw-normal text-center">
 							                상세보기
 							            </a>
 							        </div>
@@ -286,6 +318,6 @@
 		<th:block th:replace="~{/fragments/front/common :: footerSrc}"></th:block>
 	</div>
 	<th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
-
+	
 </body>
 </html>
