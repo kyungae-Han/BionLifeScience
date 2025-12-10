@@ -100,6 +100,17 @@
 
 .bnt-light {background-color: #fff; color: #292929;}
 .bnt-light:hover {background-color: #0a1e4e !important; color: #fff;}
+
+
+.commentlist li {
+  position: relative;
+  margin: 0 !important;
+  border: 1px solid var(--bs-gray-300);
+  border-radius: 5px;
+}
+
+a.btn-custom-blue:hover {color: #292929 !important;}
+
 </style>
 
 <body class="stretched" id="brandPorductDetail">
@@ -234,18 +245,18 @@
 																<li class="comment even thread-even depth-1"
 																	th:each="f:${product.files}" id="li-comment-1">
 																	<div id="comment-1" class="comment-wrap clearfix">
-																		<div class="comment-content clearfix">
-																			<div class="comment-author">
-																				관리자<span><a href="#" title="#"
-																					th:text="${f.productFileDate}">2023.01.01</a></span>
+																		<div class="comment-content clearfix position-relative w-100 d-flex justify-content-between align-items-center">
+																			<div class="comment-author me-3 w-100">
+																				관리자<span th:text="${f.productFileDate}">2023.01.01</span>
+																					<p class="mb-3" th:text="${f.productFileName}"></p>
 																			</div>
-																			<p class="btn mb-3 btn-custom-blue">
-																			    <a style="color:#fff;"
-																			       th:href="${f.productFileRoad}"
-																			       th:download="${f.productFileName}">
-																			        카탈로그 다운로드
-																			    </a>
-																			</p>
+																			
+																			
+																		    <a class="btn btn-custom-blue px-3 py-2 me-3" style="color:#fff; white-space: nowrap;"
+																		       th:href="${f.productFileRoad}"
+																		       th:download="${f.productFileName}">
+																		        카탈로그 다운로드
+																		    </a>
 																		</div>
 																		<div class="clear"></div>
 																	</div>
