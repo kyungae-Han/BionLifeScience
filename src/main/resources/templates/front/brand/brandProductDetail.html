@@ -212,9 +212,10 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 												 <a class="btn bnt-light w-50 mt-1 me-1"
 													   th:href="${product.files.size() > 0 ? product.files[0].productFileRoad : '#'}"
 													   th:download="${product.files.size() > 0 ? product.files[0].productFileName : null}">
+													   <i class="bi bi-chevron-bar-down"></i>
 													   카탈로그 다운로드
 													</a>
-												<a class="btn bnt-light w-50 mt-1 ms-1" href="#">기술자료 요청</a>
+												<a class="btn bnt-light w-50 mt-1 ms-1" href="#"><i class="bi bi-card-text me-1"></i>기술자료 요청</a>
 											</div>
 										</div>
 										
@@ -226,12 +227,12 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 												<ul class="tab-nav clearfix">
 													<li><a href="#tabs-1"><i
 															class="icon-align-justify2"></i> <span
-															class="d-none d-md-inline-block"> Product Overview</span></a></li>
+															class="d-none d-md-inline-block"> 상품상세정보</span></a></li>
 													<li><a href="#tabs-2"><i class="icon-info-sign"></i>
 															<span class="d-none d-md-inline-block">
-																Specification</span></a></li>
+																상품스펙</span></a></li>
 													<li><a href="#tabs-3"><i class="icon-star3"></i> <span
-															class="d-none d-md-inline-block"> Catalog</span></a></li>
+															class="d-none d-md-inline-block">자료다운로드</span></a></li>
 												</ul>
 
 												<div class="tab-container">
@@ -251,8 +252,10 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 													</div>
 													
 													<div class="tab-content clearfix" id="tabs-3">
-
-														<div id="reviews" class="clearfix">
+														<div th:if="${product.files == null or #lists.isEmpty(product.files)}" class="text-center text-muted py-4 fw-semibold">
+														    카탈로그 정보가 없습니다.
+														</div>
+														<div th:unless="${product.files == null or #lists.isEmpty(product.files)}"  id="reviews" class="clearfix">
 															<ol class="commentlist clearfix b-b-n">
 																<li class="comment even thread-even depth-1"
 																	th:each="f:${product.files}" id="li-comment-1">

@@ -20345,6 +20345,11 @@ margin-bottom: 1.25rem; /* 텍스트와 간격 */
 }
 
 
+/*btn 커스텀*/
+.btn-custom-color {background-color: var(--depth-bg) !important;}
+.btn-custom-color:hover {background-color: #fff !important;}
+
+
 /* 메뉴 디버깅용 css */
 /* .debug-open {
   opacity: 1 !important;

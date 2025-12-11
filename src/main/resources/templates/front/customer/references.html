@@ -6,6 +6,25 @@
 </head>
 <link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
 
+<style>
+@media (max-width:991px) {
+  .btn-vertical {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    letter-spacing: 4px;
+    line-height:1.2;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    width: 40px !important;
+    height: 120px !important;
+    padding: 0 !important;
+  }
+}
+</style>
+
 <body class="stretched">
 
 	<div id="wrapper" class="clearfix">
@@ -25,11 +44,10 @@
 		     <table class="table table-bordered table-hover text-center align-middle">
 		      <thead>
 		       <tr>
-		        <th scope="col" style="width:120px;">미리보기</th>
-		        <th scope="col">파일명</th>
+		        <th scope="col" style="width:5%;">미리보기</th>
+		        <th scope="col" style="width:70%">파일명</th>
 		        <th scope="col">등록일</th>
-		        <th scope="col">확장자</th>
-		        <th scope="col" style="width:150px;">다운로드</th>
+		        <th scope="col" style="width:3%;">다운로드</th>
 		       </tr>
 		      </thead>
 		      <tbody>
@@ -42,17 +60,14 @@
 		        </td>
 		
 		        <!-- 파일 제목 -->
-		        <td th:text="${f.filesubject}">파일제목</td>
+		        <td class="text-start ps-2" th:text="${f.filesubject}">파일제목</td>
 		
 		        <!-- 등록일 -->
 		        <td th:text="${#dates.format(f.filedate, 'yyyy-MM-dd')}">2023-07-05</td>
 		
-		        <!-- 확장자 -->
-		        <td th:text="${f.fileextension}">.png</td>
-		
 		        <!-- 다운로드 버튼 -->
 		        <td>
-		         <a th:href="@{${f.fileroad}}" download class="btn btn-sm btn-primary">
+		         <a th:href="@{${f.fileroad}}" download class="btn btn-sm btn-custom-color btn-vertical">
 		          <i class="icon-download"></i> 다운로드
 		         </a>
 		        </td>
