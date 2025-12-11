@@ -313,22 +313,33 @@ button[type=button]{background: none; border:0;}
 
 #snb {
 	position: relative;
-	padding:2rem 0;	
 	border-bottom:1px solid #eee;
 }
 
 #snb .breadcrumb {
-  position: absolute !important;
-  width: auto !important;
-  top: 50% !important;
-  left: 210px !important;
-  right: auto !important;
-  margin: 0 !important;
-  background-color: transparent !important;
-  padding: 0 !important;
+  position: absolute;
+  width: auto;
+  top: 50%;
+  left: 210px;
+  right: auto;
+  margin: 0;
+  background-color: transparent;
+  padding: 15px 0;
   font-size: 90%;
   transform: translateY(-50%);
 }
+
+@media (max-width: 991px){
+  #snb .breadcrumb {
+    left: 0 !important;
+    top: auto !important;
+    transform: none !important;
+    position: relative !important;
+    margin-top: 80px;
+     padding: 15px 0 0;
+  }
+}
+
 
 .transparent-header + .page-title-parallax .breadcrumb {
   margin-top: 35px !important;
@@ -4970,6 +4981,12 @@ body:not(.has-plugin-html5video) .video-wrap video {
 	padding: 180px 0 0;
 }
 
+@media(max-width:991px){
+	.content-wrap.list-inner{
+		padding : 100px 0 0;
+	}
+}
+
 #content .container {
   position: relative;
 }
@@ -5777,7 +5794,6 @@ Portfolio - Item Title
   margin-bottom: -5px;
 }
 
-.entry-meta {margin-bottom:20px;}
 .entry-meta li {
   font-size: 80%;
   margin: 0 10px 0 0;
@@ -5800,8 +5816,7 @@ Portfolio - Item Title
   text-align: center;
   display: inline-block;
   opacity: 0.5;
-}*/
-
+} */
 
 .entry-meta i {
   position: relative;
@@ -19928,7 +19943,7 @@ body:not(.stretched) #wrapper {
 
 
 .product-card .entry-title h2 {text-align: left; font-weight: 800;}
-.product-card .entry-meta {padding: 7px 0;}
+.product-card .entry-meta {padding: 7px 0 1rem;}
 .product-card .entry-meta li {font-size: 85% !important; padding: 0; margin: 0;}
 .entry-meta li::before {
 	content: '' !important;
@@ -20313,12 +20328,13 @@ margin-bottom: 1.25rem; /* 텍스트와 간격 */
 
 
 /*연관상품 텍스트 맞춤*/
-#brand-page .portfolio-item,
-#brandPorductDetail .portfolio-item {display: flex; flex-direction: column; justify-content: flex-start; height:460px;}
+#brand-page .portfolio-item{display: flex; flex-direction: column; justify-content: flex-start; height:460px;}
+/* #brandPorductDetail .portfolio-item {display: flex; flex-direction: column; justify-content: flex-start; height:460px;} */
+
 #brand-page .portfolio-desc p,
 #brandPorductDetail .portfolio-desc p {
     display: -webkit-box;
-    -webkit-line-clamp: 4; /* 2줄 또는 3줄 설정 */
+    -webkit-line-clamp: 2; /* 2줄 또는 3줄 설정 */
     -webkit-box-orient: vertical;
     overflow: hidden;
 }

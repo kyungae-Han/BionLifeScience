@@ -115,6 +115,12 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 	.comment-content a {margin-bottom:10px; width: 100%;}
 	.comment-wrap {padding:0 !important;}
 	.comment-author {margin-top:10px;}
+	
+	.breadcrumb-item:last-child::before{
+		display:none !important;
+	}
+	
+	.breadcrumb-item:last-child {display:block; width:100%;}
 }
 
 </style>
@@ -125,7 +131,7 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 
 		<th:block
 			th:replace="~{/fragments/front/common :: headerSrc(false, ${menuList})}"></th:block>
-		<section id="snb" class="clearfix">
+		<section id="snb" class="clearfix p-4">
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><a href="/index">메인</a></li>
 				<li class="breadcrumb-item" aria-current="page">상세페이지</li>
