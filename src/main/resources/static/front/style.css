@@ -20344,10 +20344,20 @@ margin-bottom: 1.25rem; /* 텍스트와 간격 */
 	#brandPorductDetail .portfolio-item {height: auto;}
 }
 
-
 /*btn 커스텀*/
 .btn-custom-color {background-color: var(--depth-bg) !important;}
 .btn-custom-color:hover {background-color: #fff !important;}
+
+
+/*모바일메뉴 스크롤 안보이게*/
+.mobile-menu-scroll::-webkit-scrollbar {
+	width: 0 !important;
+    background: transparent;	
+}
+
+.mobile-menu-scroll {
+	scrollbar-width: none !important;
+}
 
 
 /* 메뉴 디버깅용 css */
