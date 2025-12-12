@@ -200,7 +200,7 @@
 			              </ul>
 			              
 							<div class="obtain" th:each="specObtain : ${product.specs}"
-							   th:if="${specObtain.productSpecSubject == '특징'}">
+							   th:if="${specObtain.productSpecSubject == '특허' or specObtain.productSpecSubject == '특징'}">
 							   <span class="badge rounded-pill fw-semibold px-3 py-2" th:text="${specObtain.productSpecContent}"></span>
 							</div>				              
 			            </div>

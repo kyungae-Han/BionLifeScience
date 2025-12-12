@@ -121,6 +121,8 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 	}
 	
 	.breadcrumb-item:last-child {display:block; width:100%;}
+	
+	.card {padding:28px !important;}
 }
 
 </style>
@@ -182,13 +184,19 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 										        <span class="badge bg-danger p-2"
 										              th:text="${product.bigSort != null ? product.bigSort.name : '기타'}">
 										        </span>
+										        
+										        <span class="badge bg-primary p-2 text-white"
+											          th:each="badge : ${product.specs}"
+											          th:if="${badge.productSpecSubject == '특허'}"
+											          th:text="${badge.productSpecContent}">
+											    </span>
 										    </div>
 										
 											<div class="product-meta">
 												<div class="card-body">
 													<table class="table align-middle">
 													    <tbody>
-													        <tr th:each="s : ${product.specs}" th:if="${s != null}">
+													        <tr th:each="s : ${product.specs}" th:if="${s != null and s.productSpecSubject != '특허'}">
 													            <th style="width:90px;" class="text-muted" th:text="${s.productSpecSubject}">Source</th>
 													            <td class="text-start" th:text="${s.productSpecContent}">E.coli</td>
 													        </tr>
@@ -337,7 +345,7 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 							        <img class="related-img-box" th:src="${p.tableImageRoad}" alt="상품이미지">
 							
 							        <!-- 내용 -->
-							        <div class="portfolio-desc px-3 pt-3">
+							        <div class="portfolio-desc px-3 pt-3 pb-3">
 							        	<h6 class="mb-0 mt-3" th:text="${brand.name}"></h6>
 							            <h4 class="title-clamp mb-3" th:text="${p.subject}"></h4>
 							            <p class="description-clamp small" th:text="${p.content}"></p>
