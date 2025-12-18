@@ -147,7 +147,7 @@
 			      <!-- ✅ 반복문은 개별 col 단위에만 적용 -->
 			      <div class="col-lg-3 col-6"
 			           th:each="product : ${products}">
-			        <div class="product-card sorted-entry h-100 card shadow-sm border-0 rounded-4" style="padding-bottom: 0;"
+			        <div class="product-card sorted-entry h-100 card shadow-sm border-0 rounded-4 position-relative" style="padding-bottom: 0;"
 			        th:attr="data-big-id=${product.bigSort?.id},
 			                 data-middle-id=${product.middleSort != null ? product.middleSort.id : ''},
 			                 data-small-id=${product.smallSort != null ? product.smallSort.id : ''},
@@ -156,7 +156,7 @@
 			                 data-sort-name=${product.subject.replace('[BIOTREAT]', '').trim()}
 			                 ">
 			                 
-			          <div class="grid-inner">
+			          <div class="grid-inner pb-4">
 			            <div class="entry-image mb-2 position-relative">
 			              <a th:href="@{|/brandProductDetail/${product.id}|}">
 			                <img th:src="${product.firstImageRoad}" alt="Product Image">
@@ -181,7 +181,7 @@
 			              <ul class="list-unstyled w-100 mb-3 hashtags fs-6 flex-column">
 			                <li class="text-wrap text-break w-100"
 							    th:each="spec : ${product.specs}"
-							    th:if="${spec.productSpecSubject != '제조사' and spec.productSpecSubject != '제조자' and spec.productSpecSubject != '특징'}">
+							    th:if="${spec.productSpecSubject != '제조사' and spec.productSpecSubject != '제조자' and spec.productSpecSubject != '특징' and spec.productSpecSubject != '특허'}">
 							
 								<div class="d-flex flex-start">
 								    <span class="fw-semibold spec-label me-3" th:text="${
@@ -198,13 +198,12 @@
 							    </div>
 							</li>
 			              </ul>
-			              
-							<div class="obtain" th:each="specObtain : ${product.specs}"
-							   th:if="${specObtain.productSpecSubject == '특허' or specObtain.productSpecSubject == '특징'}">
-							   <span class="badge rounded-pill fw-semibold px-3 py-2" th:text="${specObtain.productSpecContent}"></span>
-							</div>				              
 			            </div>
 			          </div>
+						<div class="obtain position-absolute bottom-0 mb-lg-3 me-2 mb-1" th:each="specObtain : ${product.specs}"
+						   th:if="${specObtain.productSpecSubject == '특허' or specObtain.productSpecSubject == '특징'}">
+						   <span class="badge rounded-pill fw-semibold px-3 py-2" th:text="${specObtain.productSpecContent}"></span>
+						</div>				              
 			        </div>
 			      </div>
 			      <!-- /each -->

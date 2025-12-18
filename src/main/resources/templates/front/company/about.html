@@ -245,19 +245,27 @@
 								<div tabindex="0" class="cert-viewport swiper-wrapper"
 									id="certViewport">
 									<div class="cert-track swiper-slide" id="certTrack">
-										<!-- ✅ 데이터가 없을 때 -->
-							            <th:block th:if="${#lists.isEmpty(certification)}">
-							              <div class="cert-empty">
-							                <p>등록된 인증 데이터가 없습니다.</p>
-							              </div>
-							            </th:block>
-										
-										<div class="cert" th:each="c : ${certification}"
-											th:classappend="${' pf-' + c.sort}">
-											<img th:src="${c.road}" alt="CERTIFICATION"> <span
-												th:text="${c.content}">혁신성장유형 벤처기업확인서</span>
-										</div>
-										
+									    <!-- 인증서 목록 -->
+									    <div class="d-flex flex-wrap justify-content-center gap-4"
+									         th:if="${certification != null and !#lists.isEmpty(certification)}">
+									
+									        <div class="cert"
+									             th:each="c : ${certification}"
+									             th:classappend="${' pf-' + c.sort}">
+									
+									            <img th:src="${c.road}" alt="CERTIFICATION">
+									            <span th:text="${c.content}">혁신성장유형 벤처기업확인서</span>
+									
+									        </div>
+									
+									    </div>
+									
+									    <!-- 데이터 없음 -->
+									    <div class="cert-empty-message text-center" id="certEmptyMessage"
+									         style="display:none;">
+									        <p class="d-flex jutify-content-center align-items-center w-100 text-center ps-6 pt-6">등록된 데이터가 없습니다.</p>
+									    </div>
+									
 									</div>
 								</div>
 							</div>
@@ -505,6 +513,43 @@ document.addEventListener('DOMContentLoaded', () => {
   addEventListener('resize', setStickyTop, {passive:true});
   addEventListener('scroll', setStickyTop, {passive:true});
 });
+
+
+
+//인증서 no data일때 표시
+document.addEventListener('DOMContentLoaded', () => {
+
+  const filterLinks = document.querySelectorAll('.grid-filter a');
+  const certItems   = document.querySelectorAll('#certTrack .cert');
+  const emptyMsg    = document.getElementById('certEmptyMessage');
+
+  filterLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+
+      const filter = link.dataset.filter;
+      let visibleCount = 0;
+
+      certItems.forEach(item => {
+        if (filter === '*' || item.classList.contains(filter.replace('.', ''))) {
+          item.style.display = '';
+          visibleCount++;
+        } else {
+          item.style.display = 'none';
+        }
+      });
+
+      if (visibleCount === 0) {
+        emptyMsg.style.display = 'block';
+      } else {
+        emptyMsg.style.display = 'none';
+      }
+    });
+  });
+
+});
+
 </script>
+
 </body>
 </html>
