@@ -3423,9 +3423,15 @@ nav .menu-item.current:hover > .menu-link{
 	
 	.mobile-primary-menu.open {
 		  position: relative;
+		  -webkit-overflow-scrolling: touch;
+		   scrollbar-width: none;
 	  }
 	  
-	 .top-search-form-mobile {width: 100%; position: relative; margin-bottom: 25px;} 
+	  .mobile-primary-menu.open::-webkit-scrollbar{
+	  	display: none;
+	  }
+	  
+	 .top-search-form-mobile {width: 100%; position: relative;} 
 	 .top-search-form-mobile input {border-radius: 25px;}
 	 .top-search-form-mobile .icon-line-search {position: absolute; top:0; right: 10px; font-size: 1.5rem !important;}
 }
@@ -20348,16 +20354,6 @@ margin-bottom: 1.25rem; /* 텍스트와 간격 */
 .btn-custom-color {background-color: var(--depth-bg) !important;}
 .btn-custom-color:hover {background-color: #fff !important;}
 
-
-/*모바일메뉴 스크롤 안보이게*/
-.mobile-menu-scroll::-webkit-scrollbar {
-	width: 0 !important;
-    background: transparent;	
-}
-
-.mobile-menu-scroll {
-	scrollbar-width: none !important;
-}
 
 
 /* 메뉴 디버깅용 css */
