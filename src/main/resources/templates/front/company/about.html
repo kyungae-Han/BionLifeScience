@@ -29,6 +29,13 @@
 							th:src="@{/front/images/about/about-bion.jpg}" alt="About hero" loading="lazy" decoding="async" />
 					</div>
 					
+					<div class="about-caption p-item m-lg-5 p-lg-2 pb-4 pt-4 text-center fs-lg-5 fs-6">
+						<p class="1h-lg m-lg-0 mb-4">생명과학 분야 연구, 제조 및 유통 기업인 <span class="fw-semibold d-block d-lg-inline">주식회사 바이온라이프사이언스는</span><br>
+						   창사 아래 지속적인 기술 개발을 통해 국내외 <span class="d-block d-lg-inline">다수의 특허를 보유하는 등 독보적인 기술 경쟁력을 갖춘 강소기업으로서,</span><br>
+						   우수한 기술력을 바탕으로 실험 및 연구용 <span class="d-block d-lg-inline">다양한 제품을 전문적으로 제조하고 있으며</span><br>
+						   생명과학 관련 글로벌 선도 브랜드의 유통까지 <span class="d-block d-lg-inline">사업 영역을 확대해 나가고 있습니다.</span></p>
+					</div>
+					
 					<div class="copylights" data-speed="0.28">
 						<div class="cpation-items p-item">
 							<h3 class="sec-head left"><b>MISSION</b></h3>
@@ -143,7 +150,7 @@
 					<div class="glance-nav">
 						<!-- Swiper -->
 						<div class="swiper glance-swiper">
-							<div class="swiper-wrapper left">
+							<div class="swiper-wrapper d-flex left">
 								<!-- Slide 1 -->
 								<div class="swiper-slide">
 									<article class="stat-card text-dark"
@@ -223,55 +230,66 @@
 						</div>
 					</div>
 				</section>
+
 				
 				<section id="certificates">
-					<div class="container">
-						<!-- 필터 -->
-						<div class="grid-filter-container">
-							<div class="grid-filter-wrap">
-								<ul class="grid-filter" data-container="#certTrack">
-									<li class="activeFilter"><a href="#" data-filter="*">모두보기</a></li>
-									<li><a href="#" data-filter=".pf-기업인증">기업인증</a></li>
-									<li><a href="#" data-filter=".pf-특허인증">특허인증</a></li>
-									<li><a href="#" data-filter=".pf-기타인증">기타인증</a></li>
-								</ul>
+				  <div class="container">
+				
+				    <div class="grid-filter-container">
+				      <div class="grid-filter-wrap me-lg-5 bio-history-tabs">
+				        <ul class="grid-filter bio-history-tab-nav gap-2" data-container="#certTrack">
+				          <li class="activeFilter"><a href="#" data-filter="*">모두보기</a></li>
+				          <li><a href="#" data-filter=".pf-기업인증">기업인증</a></li>
+				          <li><a href="#" data-filter=".pf-특허인증">특허인증</a></li>
+				          <li><a href="#" data-filter=".pf-기타인증">기타인증</a></li>
+				        </ul>
+				      </div>
+				    </div>
+				
+				      <!-- ✅ swiper 클래스만 추가 -->
+				      <div class="cert-wrap swiper position-relative p-0 m-0">
+				
+				        <div class="cert-nav" aria-hidden="false">
+				          <button class="cert-btn bi bi-arrow-left-circle-fill" id="certPrev" aria-label="이전"></button>
+				          <button class="cert-btn bi bi-arrow-rigth-circle-fill" id="certNext" aria-label="다음"></button>
+				        </div>
+				
+				        <!-- ✅ swiper-wrapper 추가 -->
+				        <div tabindex="0"
+				             class="cert-viewport swiper-wrapper"
+				             id="certViewport">
+				
+				          <!-- track은 유지 -->
+				          <div class="cert-track" id="certTrack">
+				
+				            <!-- ❌ flex-wrap 제거 (Swiper 계산 깨짐) -->
+				            <div class="d-flex justify-content-start gap-4 rounded-2"
+				                 th:if="${certification != null and !#lists.isEmpty(certification)}">
+				
+				              <!-- ✅ swiper-slide 유지 -->
+				              <div class="cert swiper-slide"
+				                   th:each="c : ${certification}"
+				                   th:classappend="${' pf-' + c.sort}">
+				                <img th:src="${c.road}" alt="CERTIFICATION">
+				                 <!-- /*<span th:text="${c.content}"></span>*/ -->
+				              </div>
+				
+				            </div>
+				            
+				          </div>
+				            <div class="cert-empty-message w-100 bg-white rounded-2" id="certEmptyMessage" hidden>
+							  <div class="d-flex justify-content-center align-items-center" style="min-height:200px">
+							    <p class="m-lg-0 p-lg-0 m-5 p-5 text-center">등록된 데이터가 없습니다.</p>
+							  </div>
 							</div>
-			
-							<div class="cert-wrap">
-								<div class="cert-nav" aria-hidden="false">
-									<button class="cert-btn bi bi-arrow-left-circle-fill" id="certPrev" aria-label="이전" disabled></button>
-									<button class="cert-btn bi bi-arrow-rigth-circle-fill" id="certNext" aria-label="다음" disabled></button>
-								</div>
-								<div tabindex="0" class="cert-viewport swiper-wrapper"
-									id="certViewport">
-									<div class="cert-track swiper-slide" id="certTrack">
-									    <!-- 인증서 목록 -->
-									    <div class="d-flex flex-wrap justify-content-center gap-4"
-									         th:if="${certification != null and !#lists.isEmpty(certification)}">
-									
-									        <div class="cert"
-									             th:each="c : ${certification}"
-									             th:classappend="${' pf-' + c.sort}">
-									
-									            <img th:src="${c.road}" alt="CERTIFICATION">
-									            <span th:text="${c.content}">혁신성장유형 벤처기업확인서</span>
-									
-									        </div>
-									
-									    </div>
-									
-									    <!-- 데이터 없음 -->
-									    <div class="cert-empty-message text-center" id="certEmptyMessage"
-									         style="display:none;">
-									        <p class="d-flex jutify-content-center align-items-center w-100 text-center ps-6 pt-6">등록된 데이터가 없습니다.</p>
-									    </div>
-									
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+				        </div>
+				      </div>
+				
+				  </div>
 				</section>
+								
+				
+				
 	
 		<section id="customerCenter">
 			<div class="overview-contact-us">
@@ -517,7 +535,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 //인증서 no data일때 표시
-document.addEventListener('DOMContentLoaded', () => {
+/* document.addEventListener('DOMContentLoaded', () => {
 
   const filterLinks = document.querySelectorAll('.grid-filter a');
   const certItems   = document.querySelectorAll('#certTrack .cert');
@@ -547,7 +565,48 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-});
+}); */
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+	  const filterLinks = document.querySelectorAll('.grid-filter a');
+	  const swiperEl   = document.querySelector('.cert-wrap.swiper');
+	  const swiper     = swiperEl?.swiper;
+
+	  filterLinks.forEach(link => {
+	    link.addEventListener('click', e => {
+	      e.preventDefault();
+
+	      const filterValue = link.dataset.filter;
+	      const filterClass = filterValue === '*' ? null : filterValue.replace('.', '');
+
+	      const certItems  = document.querySelectorAll('#certTrack .cert');
+	      const emptySlide = document.getElementById('certEmptyMessage');
+
+	      let visibleCount = 0;
+
+	      certItems.forEach(item => {
+	        const match = !filterClass || item.classList.contains(filterClass);
+	        item.hidden = !match;
+	        if (match) visibleCount++;
+	      });
+
+	      // ✅ no data 처리
+	      if (emptySlide) {
+	        emptySlide.hidden = visibleCount !== 0;
+	      }
+
+	      // Swiper 상태 갱신
+	      if (swiper) {
+	        swiper.update();
+	        swiper.slideTo(0);
+	      }
+	    });
+	  });
+
+	});
+
 
 </script>
 
