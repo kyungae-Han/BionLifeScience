@@ -4,6 +4,34 @@
 
 <link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
 
+
+<style>
+
+@media(min-width:1024px){
+	.cert {
+	    overflow: hidden;
+	    cursor: grab;
+	}
+	
+	.cert:hover {
+	    cursor: grabbing;
+	}
+	
+	.img-zoom {
+	    width: 100%;
+	    height: auto;
+	    transition: transform 0.25s ease;
+	    transform-origin: center center;
+	}
+	
+	/* hover 시 확대 */
+	.cert:hover .img-zoom {
+	    transform: scale(1.8);
+	}
+}
+
+</style>
+
 <body class="stretched about">
 <div id="wrapper" class="clearfix">
 
@@ -270,8 +298,10 @@
 				              <div class="cert swiper-slide"
 				                   th:each="c : ${certification}"
 				                   th:classappend="${' pf-' + c.sort}">
-				                <img th:src="${c.road}" alt="CERTIFICATION">
-				                 <!-- /*<span th:text="${c.content}"></span>*/ -->
+				                <img th:src="${c.road}" 
+				                	class="img-zoom"
+				                	onclick="window.open(this.src, '_self')"
+				                	alt="CERTIFICATION">
 				              </div>
 				
 				            </div>
@@ -510,7 +540,7 @@ document.addEventListener('DOMContentLoaded', () => {
           target.classList.add('active');
         }
       });
-    }, { threshold: 0.2 }); // 20% 보이면 발동
+    }, { threshold: 0.2 });
 
     observer.observe(target);
   }
@@ -531,41 +561,6 @@ document.addEventListener('DOMContentLoaded', () => {
   addEventListener('resize', setStickyTop, {passive:true});
   addEventListener('scroll', setStickyTop, {passive:true});
 });
-
-
-
-//인증서 no data일때 표시
-/* document.addEventListener('DOMContentLoaded', () => {
-
-  const filterLinks = document.querySelectorAll('.grid-filter a');
-  const certItems   = document.querySelectorAll('#certTrack .cert');
-  const emptyMsg    = document.getElementById('certEmptyMessage');
-
-  filterLinks.forEach(link => {
-    link.addEventListener('click', e => {
-      e.preventDefault();
-
-      const filter = link.dataset.filter;
-      let visibleCount = 0;
-
-      certItems.forEach(item => {
-        if (filter === '*' || item.classList.contains(filter.replace('.', ''))) {
-          item.style.display = '';
-          visibleCount++;
-        } else {
-          item.style.display = 'none';
-        }
-      });
-
-      if (visibleCount === 0) {
-        emptyMsg.style.display = 'block';
-      } else {
-        emptyMsg.style.display = 'none';
-      }
-    });
-  });
-
-}); */
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -606,7 +601,23 @@ document.addEventListener('DOMContentLoaded', () => {
 	  });
 
 	});
+	
+	
+document.querySelectorAll('.img-zoom').forEach(img => {
 
+    img.addEventListener('mousemove', e => {
+        const parent = img.parentElement;
+
+        // hover 상태가 아니면 무시
+        if (!parent.matches(':hover')) return;
+
+        const rect = img.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+        img.style.transformOrigin = `${x}% ${y}%`;
+    });
+});
 
 </script>
 
