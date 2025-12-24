@@ -1033,7 +1033,6 @@ button {background: none; border:0; }
 .bio-history-page {
 	position: relative;
 	border-radius: 18px;
-	padding: clamp(12px, 2vw, 18px) 0;
 	overflow: hidden;
 }
 
@@ -1184,14 +1183,14 @@ button {background: none; border:0; }
 	border: 3px solid var(--depth-bg);
 	box-shadow: 0 0 0 4px rgba(30, 127, 124, .12);
 	background: #fff;
-	opacity: 0; /* 👈 기본은 숨김 */
+	opacity: 0;
 	transition: transform .3s ease, opacity .2s ease;
 	bottom: -15px;
 }
 
 .bio-history-card.is-active::before {
 	opacity: 1;
-	animation: dot-bounce-scale .6s ease-in-out 0s 2; /* 이미 쓰는 키프레임 */
+	animation: dot-bounce-scale .6s ease-in-out 0s 2;
 }
 
 @keyframes dot-bounce-scale{
@@ -1290,7 +1289,7 @@ html.is-switching-tab, body.is-switching-tab{ overflow-anchor:none !important; }
 }
 
 /* 좌우 페이드(스크롤 힌트) */
-.bio-history-page::before, .bio-history-page::after {
+/* .bio-history-page::before, .bio-history-page::after {
 	content: '';
 	position: absolute;
 	top: 0;
@@ -1298,7 +1297,7 @@ html.is-switching-tab, body.is-switching-tab{ overflow-anchor:none !important; }
 	width: 36px;
 	pointer-events: none;
 	z-index: 1;
-}
+} */
 
 .bio-history-page::before {
 	left: 0;
@@ -3103,7 +3102,7 @@ tbody td:not(.table__subject){
 	
 	/* 가로 레일 + 카드 그리드 */
 	.bio-history-timeline__group {
-		grid-auto-columns: calc(100% - 24px);
+		grid-auto-columns: calc(100% - 24px) !important;
 	}
 	
 	.bio-history-timeline__group > * {
