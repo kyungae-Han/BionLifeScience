@@ -133,18 +133,21 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 
 		<th:block
 			th:replace="~{/fragments/front/common :: headerSrc(false, ${menuList})}"></th:block>
+		
 		<section id="snb" class="clearfix p-lg-4">
-			<ol class="breadcrumb">
+			<ol class="breadcrumb mb-0">
 				<li class="breadcrumb-item"><a href="/index">메인</a></li>
 				<li class="breadcrumb-item" aria-current="page">상세페이지</li>
 				<li class="breadcrumb-item active" th:text="${brand.name}">Brand Name</li>
 				<li class="breadcrumb-item active" th:text="${product.subject}">Screw Caps and Tubes</li>
 			</ol>
-		</section>
+		</section>	
+			
 		<section id="content">
 			<div class="content-wrap list-inner">
 				<div class="container clearfix">
-					<div class="border-top-0 m-0">
+				
+					<div class="border-top-0 mt-5 pt-5">
 						<div class="container text-center">
 
 							<div class="heading-block center">
