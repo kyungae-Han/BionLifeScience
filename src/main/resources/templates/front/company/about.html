@@ -33,9 +33,18 @@
 </style>
 
 <body class="stretched about">
-<div id="wrapper" class="clearfix">
+	<div id="wrapper" class="clearfix">
 
-	<th:block th:replace="~{/fragments/front/common :: headerSrc(false, ${menuList})}"></th:block>
+		<th:block th:replace="~{/fragments/front/common :: headerSrc(false, ${menuList})}"></th:block>
+		
+		<section id="snb" class="clearfix p-lg-4">
+				<ol class="breadcrumb mb-0">
+					<li class="breadcrumb-item"><a href="/index">메인</a></li>
+					<li class="breadcrumb-item active">회사소개</li>
+				</ol>
+		</section>
+	
+	
 		<div id="page-title">
 				<h1 class="sec-head">회사 소개</h1>
 		</div>
