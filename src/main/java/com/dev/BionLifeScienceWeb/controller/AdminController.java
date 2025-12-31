@@ -9,19 +9,18 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -35,7 +34,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dev.BionLifeScienceWeb.controller.api.SummernoteImageProcessor;
@@ -63,6 +61,8 @@ import com.dev.BionLifeScienceWeb.service.NoticeService;
 import com.dev.BionLifeScienceWeb.utils.PasswordEncoding;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import lombok.RequiredArgsConstructor;
 
@@ -480,17 +480,76 @@ public class AdminController {
 			@PathVariable Long id
 			) {
 		
-		noticeRepository.deleteById(id);
-		StringBuffer sb = new StringBuffer();
-		String msg = "공지사항이 삭제 되었습니다.";
-
-		sb.append("alert('" + msg + "');");
-		sb.append("location.href='/admin/noticeManager'");
-		sb.append("</script>");
-		sb.insert(0, "<script>");
-
-		return sb.toString();
 		
+		Notice notice = noticeRepository.findById(id).orElse(null);
+		if(notice != null) {
+			deleteNoticeImages(notice);
+			noticeRepository.deleteById(id);
+		}
+		
+		String msg = "공지사항이 삭제 되었습니다.";
+		return "<script>alert('"+ msg +"'); location.href='/admin/noticeManager'</script>";
+		
+	}
+	
+	
+	
+	private void deleteNoticeImages(Notice notice) {
+		Set<String> targets = new HashSet<>();
+		
+		if(notice.getImageUrl() != null) {
+			targets.add(notice.getImageUrl());
+		}
+		
+		Document doc = Jsoup.parse(notice.getContent() == null ? "" : notice.getContent());
+		
+		for(Element img : doc.select("img[src]")) {
+			targets.add(img.attr("src"));
+		}
+		
+		Path base = Paths.get(System.getProperty("user.dir"), "upload", "front", "images")
+				.toAbsolutePath().normalize();
+		
+		for(String src : targets) {
+			String rel = toUploadRelativePath(src);
+			if(rel == null) continue;
+			
+			if(!rel.startsWith("notice/")) continue;
+			
+			Path filePath = base.resolve(rel).normalize();
+			if(!filePath.startsWith(base)) continue;
+			
+			try {
+				Files.deleteIfExists(filePath);
+				deleteEmptyParents(filePath.getParent(), base.resolve("notice"));
+			}catch(Exception ignore) {
+				
+			}
+		}
+	}
+	
+	private String toUploadRelativePath(String src) {
+		if(src == null) return null;
+		
+		src = src.replaceAll("https?://[^/]+", "");
+		int q = src.indexOf('?');
+		
+		if(q >= 0) src.substring(0, q);
+		
+		if(!src.startsWith("/upload")) return null;
+		
+		return src.substring("/upload".length());
+	}
+	
+	private void deleteEmptyParents(Path dir, Path stopDir) throws IOException {
+		while(dir != null && dir.startsWith(stopDir)) {
+			try(var stream = Files.list(dir)) {
+				if(stream.findAny().isPresent()) break;
+			}
+			
+			Files.deleteIfExists(dir);
+			dir = dir.getParent();
+		}
 	}
 	
 	

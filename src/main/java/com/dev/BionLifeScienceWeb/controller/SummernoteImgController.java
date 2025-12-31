@@ -4,9 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -16,23 +17,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class SummernoteImgController{
 	
-		@Value("{spring.upload.path}")
-		private String uploadPath;
-		
-	
-	 	@GetMapping("/upload/notice/{fileName:.+}")
-		public ResponseEntity<Resource> getNoticeImage(@PathVariable String fileName) throws IOException {
-		    Path baseDir = Paths.get(System.getProperty("user.dir"), "upload", "front", "images", "notice")
+	 	@GetMapping("/upload/notice/editor/{dateDir}/{fileName:.+}")
+		public ResponseEntity<Resource> getNoticeImage(
+				@PathVariable String dateDir,
+				@PathVariable String fileName) throws IOException {
+		    Path baseDir = Paths.get(System.getProperty("user.dir"), "upload", "front", "images", "notice","editor")
 		            .toAbsolutePath().normalize();
 
-		    Path filePath = baseDir.resolve(fileName).normalize();
+		    Path filePath = baseDir.resolve(dateDir).resolve(fileName).normalize();
 
 		    // 경로 조작 방지 + 존재 확인
 		    if (!filePath.startsWith(baseDir) || !Files.exists(filePath)) {
@@ -59,21 +57,29 @@ public class SummernoteImgController{
 		@PostMapping("/admin/notice/image")
 		public Map<String, String> uploadNoticeImage(@RequestParam("file") MultipartFile file) throws IOException {
 			
+			String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+			
 			String original = file.getOriginalFilename() == null ? "file" : file.getOriginalFilename();
 			original = Paths.get(original).getFileName().toString();
 			
-			String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+			String fileName = System.currentTimeMillis() + "_" + original;
 
 		    // 저장 경로 (서버 내부)
-		    Path saveDir  = Paths.get(System.getProperty("user.dir"), "upload", "front", "images", "notice");
+		    Path saveDir  = Paths.get(System.getProperty("user.dir"), "upload", "front", "images", "notice","editor" ,today);
 		    Files.createDirectories(saveDir);
 
-		    Path savePath = saveDir.resolve(fileName);
+		    Path savePath = saveDir.resolve(fileName).normalize();
+		    
+		    if(!savePath.startsWith(saveDir.normalize())) {
+		    	throw new IOException("Invalid file path");
+		    }
+		    
 		    file.transferTo(savePath.toFile());
 
 		    // 상품등록처럼 상대경로만 주기
-		    String url = "/upload/notice/" + fileName;
+		    String url = "/upload/notice/editor/"+ today + "/" + fileName;
 
 		    return Map.of("url", url);
 		}
+		
 }
