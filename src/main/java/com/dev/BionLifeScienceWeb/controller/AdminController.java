@@ -514,7 +514,7 @@ public class AdminController {
 			String rel = toUploadRelativePath(src);
 			if(rel == null) continue;
 			
-			if(!rel.startsWith("notice/")) continue;
+			if(!rel.startsWith("notice/editor")) continue;
 			
 			Path filePath = base.resolve(rel).normalize();
 			if(!filePath.startsWith(base)) continue;
@@ -534,11 +534,12 @@ public class AdminController {
 		src = src.replaceAll("https?://[^/]+", "");
 		int q = src.indexOf('?');
 		
-		if(q >= 0) src.substring(0, q);
+		if(q >= 0) src = src.substring(0, q);
 		
-		if(!src.startsWith("/upload")) return null;
+		final String prefix = "/upload/";
+		if(!src.startsWith(prefix)) return null;
 		
-		return src.substring("/upload".length());
+		return src.substring(prefix.length());
 	}
 	
 	private void deleteEmptyParents(Path dir, Path stopDir) throws IOException {
