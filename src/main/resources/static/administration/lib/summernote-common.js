@@ -160,17 +160,14 @@
   w.initSummernoteEditor = function (editorSelector, options) {
 	
 	const $editor = $(editorSelector);
-	const dataUploadUrl = $editor.data('uploadUrl');
 	
     const opt = $.extend(true, {
       height: 570,
       lang: 'ko-KR',
       placeholder: '',
-      uploadUrl: null
+      uploadUrl: '/admin/notice/image'
     }, options || {});
 
-	opt.uploadUrl = opt.uploadUrl || dataUploadUrl;
-	
 	
 	if (!opt.uploadUrl) {
 	   throw new Error('uploadUrl이 없습니다. options.uploadUrl 또는 data-upload-url을 지정하세요.');
