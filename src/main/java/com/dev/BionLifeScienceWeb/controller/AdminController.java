@@ -14,12 +14,14 @@ import java.util.Map;
 
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -68,7 +70,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
-	
 	private final SummernoteImageProcessor imageProcessor;
 	private final HistorySubjectRepository historySubjectRepository;
 	private final HistoryContentRepository historyContentRepository;
@@ -85,6 +86,8 @@ public class AdminController {
 	
 	private final MemberRepository memberRepository;
 	private final PasswordEncoding passwordEncoder;
+	
+	//******************************어드민메인
 	
 	@RequestMapping(
 		    value = {"/index", "", "/clientManager"},
@@ -139,6 +142,8 @@ public class AdminController {
 		return "admin/index";
 	}
 	
+	
+	//******************************사용자관리
 	@GetMapping("/clientDetail/{id}")
 	public String clientDetail(
 			@PathVariable Long id,
@@ -176,14 +181,70 @@ public class AdminController {
 		}
 	}
 	
+	
+	//******************************어드민 로그인
 	@GetMapping("/memberLoginForm")
 	public String memberLoginForm() {
 		
 		return "admin/login";
 	}
 	
+	@GetMapping("/memberEdit/{id}")
+	public String memberEdit(@PathVariable Long id, Model model) {
+	    Member member = memberRepository.findById(id).orElseThrow(() ->
+	        new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
+	    model.addAttribute("member", member);
+	    return "admin/memberInsert"; // 같은 폼 재사용
+	}
+	
+	@PostMapping("/memberUpdate")
+	public String memberUpdate(@ModelAttribute Member member) {
+	    memberService.updateMember(member);
+	    return "redirect:/admin/memberList";
+	}
+
+	
+	@GetMapping("/passwordForm")
+	public String passwordForm() {
+	    return "admin/passwordForm";
+	}
+
+	@PostMapping("/passwordUpdate")
+	public String updatePassword(@RequestParam String oldPwd,
+	                             @RequestParam String newPwd) {
+
+	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	    Object principal = authentication.getPrincipal();
+
+	    Member member = null;
+
+	    if (principal instanceof MemberAccount) {
+	        member = ((MemberAccount) principal).getMember();
+	    } else if (principal instanceof Member) {
+	        // 혹시 Member 자체로 로드되었을 경우 fallback
+	        member = (Member) principal;
+	    } else {
+	        return "redirect:/memberLoginForm?error=principal";
+	    }
+
+	    Member dbMember = memberRepository.findById(member.getId()).orElse(null);
+	    if (dbMember == null) {
+	        return "redirect:/admin/passwordForm?error=db";
+	    }
+
+	    if (!passwordEncoder.matches(oldPwd, dbMember.getPassword())) {
+	        return "redirect:/admin/passwordForm?error=wrong";
+	    }
+
+	    dbMember.setPassword(passwordEncoder.encode(newPwd));
+	    memberRepository.save(dbMember);
+
+	    SecurityContextHolder.clearContext();
+	    return "redirect:/memberLoginForm?passwordChanged";
+	}
 	
 	
+	//******************************연혁관리
 	@GetMapping("/historyManager")
 	public String historyManager(
 			Model model
@@ -261,6 +322,11 @@ public class AdminController {
 		return "admin/historyManager :: #history-subject-wrap";
 	}
 	
+	
+	
+	
+	//******************************공지사항관리
+	
 	@PostMapping("/noticeSubjectInsert")
 	public String noticeSubjectInsert(
 			NoticeSubject noticeSubject,
@@ -312,24 +378,6 @@ public class AdminController {
 		model.addAttribute("endPage", endPage);
 		
 		return "admin/noticeManager";
-	}
-	
-	@PostMapping("/notice/image")
-	@ResponseBody
-	public Map<String, String> uploadNoticeImage(@RequestParam("file") MultipartFile file) throws IOException {
-		String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-
-	    // 저장 경로 (서버 내부)
-	    Path saveDir  = Paths.get(System.getProperty("user.dir"), "upload", "front", "images", "notice");
-	    Files.createDirectories(saveDir);
-
-	    Path savePath = saveDir.resolve(fileName);
-	    file.transferTo(savePath.toFile());
-
-	    // 상품등록처럼 상대경로만 주기
-	    String url = "/upload/notice/" + fileName;
-
-	    return Map.of("url", url);
 	}
 	
 	@PostMapping("/noticeUpdate")
@@ -415,16 +463,18 @@ public class AdminController {
 		
 	}
 	
+	
 	private String extractFirstImageUrl(String html) {
 	    var doc = Jsoup.parse(html == null ? "" : html);
 	    var img = doc.selectFirst("img[src]");
 	    return (img != null) ? img.attr("src") : null;
 	}
 	
+	
+	
 	@RequestMapping(value = "/noticeDelete/{id}",
 		    method = {RequestMethod.GET, RequestMethod.POST}
 	)
-	
 	@ResponseBody
 	public String noticeDelete(
 			@PathVariable Long id
@@ -443,6 +493,8 @@ public class AdminController {
 		
 	}
 	
+	
+	//******************************사이트관리
 	@GetMapping("/siteManager")
 	public String siteManager(
 			Model model
@@ -473,6 +525,8 @@ public class AdminController {
 		return "admin/siteManager :: #companyInfoForm";
 	}
 	
+	
+	//******************************회사 이메일관리
 	@PostMapping("/emailInsert")
 	public String emailInsert(@RequestParam("email") String email, Model model) {
 	    CompanyEmail companyEmail = new CompanyEmail();
@@ -517,63 +571,6 @@ public class AdminController {
 		
 		return "admin/siteManager :: #companyEmailCheck";
 	}
-	
-	
-	
-	@GetMapping("/memberEdit/{id}")
-	public String memberEdit(@PathVariable Long id, Model model) {
-	    Member member = memberRepository.findById(id).orElseThrow(() ->
-	        new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
-	    model.addAttribute("member", member);
-	    return "admin/memberInsert"; // 같은 폼 재사용
-	}
-	
-	@PostMapping("/memberUpdate")
-	public String memberUpdate(@ModelAttribute Member member) {
-	    memberService.updateMember(member);
-	    return "redirect:/admin/memberList";
-	}
-
-	
-	@GetMapping("/passwordForm")
-	public String passwordForm() {
-	    return "admin/passwordForm";
-	}
-
-	@PostMapping("/passwordUpdate")
-	public String updatePassword(@RequestParam String oldPwd,
-	                             @RequestParam String newPwd) {
-
-	    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	    Object principal = authentication.getPrincipal();
-
-	    Member member = null;
-
-	    if (principal instanceof MemberAccount) {
-	        member = ((MemberAccount) principal).getMember();
-	    } else if (principal instanceof Member) {
-	        // 혹시 Member 자체로 로드되었을 경우 fallback
-	        member = (Member) principal;
-	    } else {
-	        return "redirect:/memberLoginForm?error=principal";
-	    }
-
-	    Member dbMember = memberRepository.findById(member.getId()).orElse(null);
-	    if (dbMember == null) {
-	        return "redirect:/admin/passwordForm?error=db";
-	    }
-
-	    if (!passwordEncoder.matches(oldPwd, dbMember.getPassword())) {
-	        return "redirect:/admin/passwordForm?error=wrong";
-	    }
-
-	    dbMember.setPassword(passwordEncoder.encode(newPwd));
-	    memberRepository.save(dbMember);
-
-	    SecurityContextHolder.clearContext();
-	    return "redirect:/memberLoginForm?passwordChanged";
-	}
-	
 
 }
 

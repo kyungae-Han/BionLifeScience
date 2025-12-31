@@ -15,13 +15,12 @@ import lombok.RequiredArgsConstructor;
 
 
 @Controller
-@RequestMapping("/noticeDetail")
 @RequiredArgsConstructor
 public class NoticeDetailController {
 
     private final NoticeRepository noticeRepository;
 
-    @GetMapping("/{id}")
+    @GetMapping("/noticeDetail/{id}")
     public String detail(@PathVariable Long id, Model model) {
         var n = noticeRepository.findOneWithSubject(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
@@ -47,4 +46,5 @@ public class NoticeDetailController {
 
         return "front/notice/noticeDetail";
     }
+	
 }
