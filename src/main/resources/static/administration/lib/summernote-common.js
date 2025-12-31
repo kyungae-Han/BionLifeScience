@@ -158,15 +158,24 @@
   // 3) 에디터 초기화 함수 (페이지에서 호출)
   // =========================
   w.initSummernoteEditor = function (editorSelector, options) {
+	
+	const $editor = $(editorSelector);
+	const dataUploadUrl = $editor.data('uploadUrl');
+	
     const opt = $.extend(true, {
       height: 570,
       lang: 'ko-KR',
       placeholder: '',
-      uploadUrl: '/admin/notice/image'
+      uploadUrl: null
     }, options || {});
 
-    const $editor = $(editorSelector);
-
+	opt.uploadUrl = opt.uploadUrl || dataUploadUrl;
+	
+	
+	if (!opt.uploadUrl) {
+	   throw new Error('uploadUrl이 없습니다. options.uploadUrl 또는 data-upload-url을 지정하세요.');
+	 }
+	
     // 중복 초기화 방지
     if ($editor.data('summernote')) {
       $editor.summernote('destroy');

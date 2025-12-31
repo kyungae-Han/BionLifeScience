@@ -52,10 +52,10 @@ public class SummernoteImgController{
 		            .contentType(mediaType)
 		            .body(resource);
 		}
-		
-		
-		@PostMapping("/admin/notice/image")
-		public Map<String, String> uploadNoticeImage(@RequestParam("file") MultipartFile file) throws IOException {
+	 	
+	 	
+	 	@PostMapping("/admin/notice/image")
+		public Map<String, String> uploadBrandImagge(@RequestParam("file") MultipartFile file) throws IOException {
 			
 			String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 			
@@ -81,5 +81,6 @@ public class SummernoteImgController{
 
 		    return Map.of("url", url);
 		}
+		
 		
 }

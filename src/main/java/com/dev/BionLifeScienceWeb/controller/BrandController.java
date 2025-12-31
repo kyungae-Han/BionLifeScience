@@ -792,9 +792,7 @@ public class BrandController {
 		
 		Brand saved = brandRepository.findById(brand.getId()).orElse(null);
 		if (saved == null) {
-			
-		    // 원하는 처리: 리다이렉트/메시지/로그 등
-		    return "redirect:/admin/brandForm"; // 컨트롤러라면
+		    return "redirect:/admin/brandForm";
 		}
 		
 		
@@ -848,6 +846,7 @@ public class BrandController {
 		    sb.insert(0, "<script>");
 		    return sb.toString();
 		}
+	
 }
 
 
