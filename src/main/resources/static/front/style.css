@@ -16630,7 +16630,9 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
   --pro-radius: var(--bs-border-radius-xl, 1rem);
   --pro-shadow: 0 10px 30px rgba(var(--bs-black-rgb, 0,0,0), .08);
   --pro-shadow-lg: 0 18px 50px rgba(var(--bs-black-rgb, 0,0,0), .14);
+  --pro-gap: 24px;
 }
+
 
 /* 컨테이너 */
 #productsItems .pro-container{width:min(1280px, 100%);margin:0 auto;padding: 0 25px;}
@@ -16654,8 +16656,15 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
   overflow-x:auto;
   scroll-snap-type:x mandatory;
   -webkit-overflow-scrolling:touch;
-  padding: 8px 0 36px;   /* 아래 여백: 프로그레스 자리 */
+  padding: 8px 0 36px;
 }
+
+@media(min-width: 1024px){
+	.pro-track {
+	   padding-left: 4px !important;
+	}
+}
+
 
 .pro-track::-webkit-scrollbar{ display:none; }
 
@@ -16725,7 +16734,7 @@ body.js-nav nav.primary-menu:has(.menu-item.brand:hover)   ~ #brands-items{
 }
 
 /* 트랙은 더 이상 바닥 여백 불필요 */
-#productsItems .pro-track{ padding-bottom: 0 !important; }
+#productsItems .pro-track{ padding-bottom: 8px !important; }
 
 /* 컨트롤을 일반 흐름으로 (absolute 해제) */
 #productsItems .pro-controls{
