@@ -60,6 +60,12 @@
 
 .portfolio-item {height: 500px; margin-bottom: 30px;}
 
+/* 태블릿: 2장 */
+@media (min-width: 750px) and (max-width: 1199.98px){
+  .portfolio-item {height: 540px;}
+}
+
+
 /* 이미지 영역 반드시 고정 높이 */
 .related-img-box {
     border-radius: 8px;
@@ -349,8 +355,10 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 							
 							        <!-- 내용 -->
 							        <div class="portfolio-desc px-3 pt-3 pb-3">
-							        	<h6 class="mb-0 mt-3" th:text="${brand.name}"></h6>
-							            <h4 class="title-clamp mb-3" th:text="${p.subject}"></h4>
+							        		<div class="desc-title">
+								        		<h6 class="mb-0 mt-3" th:text="${brand.name}"></h6>
+								            <h4 class="title-clamp mb-3" th:text="${p.subject}"></h4>
+							            </div>
 							            <p class="description-clamp small" th:text="${p.content}"></p>
 							        </div>
 							
