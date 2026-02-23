@@ -3,10 +3,6 @@
 
 <head th:replace="~{fragments/admin/common :: headMenu}">
 
-
-</head>
-</head>
-
 <body>
 	<section id="container">
 		<th:block th:replace="~{fragments/admin/common :: headMenu}"></th:block>
@@ -76,6 +72,15 @@
 											<span class="help-block"># MOBILE용 이미지를 업로드 해 주세요.</span>
 											<span class="help-block"># MOBILE용 이미지 미등록시 WEB용 이미지로 대체됩니다.</span>
 											<span class="help-block"># 최적화된 사이즈는 460px * 700px 입니다.</span>
+										</div>
+										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
+											<label class="control-label">링크등록</label>
+											<input 
+												type="text"
+												class="form-control"
+												name="linkUrl"
+												placeholder="hppts://example.com" />
+											<span class="help-block"># 배너 클릭 시 이동할 링크를 입력하세요. (미입력시 이동 없음)</span>
 										</div>
 										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
 											<button type="submit" class="btn btn-theme">등록</button>
@@ -149,7 +154,7 @@
 												      muted
 												      playsinline
 												      preload="auto"
-												      poster="/administration/images/video-placeholder.jpg"
+												      poster="/administration/img/instagram.jpg"
 												      style="display:block;height:auto;border-radius:6px;overflow:hidden;">
 												      <source th:src="${b.webroad}" type="video/mp4" />
 												    </video>
@@ -182,7 +187,7 @@
 												      muted
 												      playsinline
 												      preload="auto"
-												      poster="/administration/images/video-placeholder.jpg"
+												      poster="/administration/img/instagram.jpg"
 												      style="display:block;height:auto;border-radius:6px;overflow:hidden;">
 												      <source th:src="${b.mobileroad}" type="video/mp4" />
 												    </video>
@@ -207,9 +212,9 @@
 <div class="modal fade" id="bannerEditModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" style="display:flex; justify-content: flex-start; position: relative; padding: 20px 20px;">
         <h4 class="modal-title">배너 수정</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); color: #fff;">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -227,6 +232,17 @@
             <label>Content</label>
             <textarea class="form-control" name="content" id="editBannerContent" required></textarea>
           </div>
+
+		<div class="form-group" style="margin-top:20px;">
+			<label class="control-label">링크등록</label>
+			<input 
+				type="text"
+				class="form-control"
+				name="linkUrl"
+				id="editBannerLinkUrl"
+				placeholder="hppts://example.com" />
+			<span class="help-block"># 배너 클릭 시 이동할 링크를 입력하세요. (미입력시 이동 없음)</span>
+		</div>
 
           <div class="row">
             <div class="col-md-6">
@@ -308,6 +324,7 @@
 	        $('#editBannerId').val(banner.id);
 	        $('#editBannerSubject').val(banner.subject);
 	        $('#editBannerContent').val(banner.content);
+	        $('#editBannerLinkUrl').val(banner.linkUrl);
 
 	        // 미리보기 초기화
 	        $('#previewWeb').empty();

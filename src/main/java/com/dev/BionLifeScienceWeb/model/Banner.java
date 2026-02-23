@@ -21,6 +21,9 @@ public class Banner {
 	@Column(name="BANNER_SUBJECT")
 	private String subject;
 	
+	@Column(name = "BANNER_LINK_URL", length = 1000)
+	private String linkUrl;
+	
 	@Column(name="BANNER_CONTENT")
 	private String content;
 	

@@ -4,6 +4,17 @@
 <head th:replace="~{/fragments/front/common :: headSrc('바이온라이프사이언스 홈')}">
 </head>
 
+<style>
+.swiper-slide { position: relative; }
+
+.banner-link-overlay{
+  position: absolute;
+  inset: 0;              /* top/right/bottom/left:0 */
+  z-index: 5;
+  display: block;
+}
+</style>
+
 <body class="stretched">
  <div id="wrapper" class="clearfix">
   <th:block th:replace="~{/fragments/front/common :: headerSrc(false, ${menuList})}"></th:block>
@@ -17,6 +28,12 @@
 
         <!-- 슬라이드 시작 -->
         <div class="swiper-slide" th:each="b : ${ba}">
+        
+         <!-- 링크 있을 때만 전체 클릭 오버레이 -->
+		  <a class="banner-link-overlay"
+		     th:if="${!#strings.isEmpty(b.linkUrl)}"
+		     th:href="${b.linkUrl}"
+		     target="_blank" rel="noopener"></a>
 
           <!-- 📌 배경(데스크톱용) -->
           <div class="swiper-slide-bg is-desktop" th:if="${!#strings.isEmpty(b.webroad)}">
