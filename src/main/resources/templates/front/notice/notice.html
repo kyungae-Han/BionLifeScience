@@ -42,7 +42,7 @@
 				      <td class="table__subject">
 				        <a th:href="@{'/noticeDetail/' + ${n.id}}" th:text="${n.subject}"></a>
 				      </td>
-				      <td th:text="${#dates.format(n.date, 'YYYY-MM-dd')}"></td>
+				      <td th:text="${#dates.format(n.date, 'yyyy-MM-dd')}"></td>
 				    </tr>
 				
 				    <!-- 목록 없을 때 -->
@@ -57,7 +57,7 @@
 				      <td class="table__subject">
 				        <a th:href="@{'/noticeDetail/' + ${n.id}}" th:text="${n.subject}"></a>
 				      </td>
-				      <td th:text="${#dates.format(n.date, 'YYYY-MM-dd')}"></td>
+				      <td th:text="${#dates.format(n.date, 'yyyy-MM-dd')}"></td>
 				    </tr>
 				  </tbody>
 				  <tfoot>
