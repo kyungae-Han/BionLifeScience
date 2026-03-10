@@ -132,6 +132,12 @@
   align-items: center;
 }
 
+
+.brand-visual-overlay.event{
+	background: rgba(0, 0, 0, 0.1);
+}
+
+
 .brand-visual-overlay .inner {
 	position: relative;
 	width: 100%;
