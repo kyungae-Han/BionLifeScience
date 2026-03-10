@@ -3,7 +3,7 @@ spring:
   application:
     name: BionLifeScienceWeb
   profiles:
-    active: prod
+    active: test
   thymeleaf:
     cache: false
 server:

@@ -44,6 +44,9 @@ public class Banner {
 	
 	@Column(name="BANNER_MOBILE_ROAD")
 	private String mobileroad;
+	
+	@Column(name = "banner_index", nullable = false)
+	private Integer bannerIndex = 0;
 }
 
 

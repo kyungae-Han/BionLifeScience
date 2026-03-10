@@ -82,6 +82,16 @@
 												placeholder="hppts://example.com" />
 											<span class="help-block"># 배너 클릭 시 이동할 링크를 입력하세요. (미입력시 이동 없음)</span>
 										</div>
+										
+										
+										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
+											<label class="control-label">정렬순서</label>
+											 <input 
+											 type="number" 
+											 class="form-control"
+											 name="bannerIndex">
+										</div>
+										
 										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
 											<button type="submit" class="btn btn-theme">등록</button>
 										</div>
@@ -108,6 +118,7 @@
 										<li th:each="b:${banners}">
 											<div class="task-title">
 												<div class="admin-banner-wrap">
+													<div>배너정렬 순서 : <span th:text="${b.bannerIndex}"></span></div>
 													<h3 th:utext="${b.subject}">제목영역</h3>
 													<p th:utext="${b.content}">컨텐츠 영역</p>
 													<div class="pull-right hidden-phone">
@@ -242,6 +253,14 @@
 				id="editBannerLinkUrl"
 				placeholder="hppts://example.com" />
 			<span class="help-block"># 배너 클릭 시 이동할 링크를 입력하세요. (미입력시 이동 없음)</span>
+		</div>
+		
+		<div class="form-group" style="margin-top:20px;">
+			<label class="control-label">정렬순서</label>
+			 <input 
+			 type="number" 
+			 class="form-control"
+			 name="bannerIndex">
 		</div>
 
           <div class="row">

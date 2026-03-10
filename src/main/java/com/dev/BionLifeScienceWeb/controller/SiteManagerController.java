@@ -42,7 +42,7 @@ public class SiteManagerController {
 			) {
 		
 		
-		List<Banner> banners = bannerRepository.findAll();
+		List<Banner> banners = bannerRepository.findAllByOrderByBannerIndexAscIdDesc();
 
 	    for (Banner b : banners) {
 	        if (b.getWebroad() != null) {

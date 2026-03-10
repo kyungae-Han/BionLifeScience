@@ -159,7 +159,8 @@ public class BannerService {
 	    // 텍스트 수정
 	    existing.setSubject(banner.getSubject());
 	    existing.setContent(banner.getContent());
-	    existing.setSubject(banner.getLinkUrl());
+	    existing.setLinkUrl(banner.getLinkUrl());
+	    existing.setBannerIndex(banner.getBannerIndex());
 
 	    bannerRepository.save(existing);
 	    return "updated";

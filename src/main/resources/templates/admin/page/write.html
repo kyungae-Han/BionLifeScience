@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/admin/common :: headMenu}">
+
+</head>
+
+
+<body>
+	<section id="container">
+
+		<th:block th:replace="~{fragments/admin/common :: headMenu}"></th:block>
+
+		<th:block th:replace="~{fragments/admin/common :: sideMenu('pageManager')}"></th:block>
+
+		<section id="main-content">
+			<section class="wrapper">
+				<div class="row mt">
+					<div class="col-lg-10">
+						<h4>
+							<i class="fa fa-angle-right"></i> 이벤트 페이지 관리
+						</h4>
+						<span class="alsert-messate">* 새로운 이벤트 페이지를 등록할 수 있습니다..</span><br>
+						<div class="form-panel">
+
+							<form role="form" action="/admin/pageManager" class="form-horizontal style-form" method="POST" enctype="multipart/form-data">
+								<input type="hidden" name="pageContentId" th:value="${page.pageContentId}">
+								<div class="form-group has-success">
+									<label class="col-sm-2 control-label">페이지 그룹</label>
+									<div class="col-sm-8">
+										<select name="pageGroup.pageGroupId" class="form-control">
+											<option value="">선택하세요.</option>
+											<option th:each="group: ${groupList}"
+													th:value="${group.pageGroupId}"
+													th:text="${group.groupName + ' (' + group.basePath + ')'}"
+							                        th:selected="${page.pageGroup != null and page.pageGroup.pageGroupId == group.pageGroupId}">
+							                </option>
+										</select>
+										<div class="col-sm-2">
+									        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pageGroupModal">
+									            그룹추가
+									        </button>
+									    </div>
+									</div>
+								</div>	
+								
+							  <div class="form-group">
+							        <label class="col-sm-2 control-label">페이지명</label>
+							        <div class="col-sm-10">
+							            <input type="text" name="pageName" class="form-control"
+							                   th:value="${page.pageName}" required>
+							        </div>
+							    </div>
+							
+							    <div class="form-group">
+							        <label class="col-sm-2 control-label">서브 페이지명</label>
+							        <div class="col-sm-10">
+							            <input type="text" name="pageSubName" class="form-control"
+							                   th:value="${page.pageSubName}">
+							        </div>
+							    </div>
+							
+							    <div class="form-group">
+							        <label class="col-sm-2 control-label">상단 요약문구</label>
+							        <div class="col-sm-10">
+							            <input type="text" name="pageContent" class="form-control"
+							                   th:value="${page.pageContent}">
+							        </div>
+							    </div>
+							
+							    <div class="form-group">
+							        <label class="col-sm-2 control-label">slug</label>
+							        <div class="col-sm-10">
+							            <input type="text" name="slug" class="form-control"
+							                   th:value="${page.slug}" required>
+							        </div>
+							    </div>
+							
+							    <div class="form-group">
+							        <label class="col-sm-2 control-label">페이지 타입</label>
+							        <div class="col-sm-10">
+							            <input type="text" name="pageType" class="form-control"
+							                   th:value="${page.pageType != null ? page.pageType : 'PAGE'}">
+							        </div>
+							    </div>
+							
+							    <div class="form-group">
+							        <label class="col-sm-2 control-label">정렬순서</label>
+							        <div class="col-sm-10">
+							            <input type="number" name="pageIndex" class="form-control"
+							                   th:value="${page.pageIndex != null ? page.pageIndex : 0}">
+							        </div>
+							    </div>
+							
+							    <div class="form-group">
+							        <label class="col-sm-2 control-label">사용여부</label>
+							        <div class="col-sm-10">
+							            <select name="useYn" class="form-control">
+							                <option value="Y" th:selected="${page.useYn == null or page.useYn == 'Y'}">Y</option>
+							                <option value="N" th:selected="${page.useYn == 'N'}">N</option>
+							            </select>
+							        </div>
+							    </div>
+							
+							    <div class="form-group">
+							        <label class="col-sm-2 control-label">비주얼 이미지</label>
+							        <div class="col-sm-10">
+							            <input type="file" name="visualFile" class="form-control" accept=".jpg,.jpeg,.png">
+							
+							            <div th:if="${page.pageVisualRoad != null and !#strings.isEmpty(page.pageVisualRoad)}" style="margin-top:10px;">
+							                <img th:src="@{${page.pageVisualRoad}}" alt="visual" style="max-width:300px;">
+							            </div>
+							        </div>
+							    </div>
+							
+							    <div class="form-group">
+								    <label class="col-sm-2 control-label">상세 설명</label>
+								    <div class="col-sm-10">
+								        <textarea name="pageDesc"
+								                  id="pageDesc"
+								                  class="form-control"
+								                  rows="15"
+								                  th:text="${page.pageDesc}"></textarea>
+								    </div>
+								</div>
+							
+							    <div class="form-group">
+							        <div class="col-sm-12 text-right">
+							            <a href="/admin/pageManager" class="btn btn-default">목록</a>
+							            <button type="submit" class="btn btn-danger">등록</button>
+							        </div>
+							    </div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+	</section>
+	
+	<div class="modal fade" id="pageGroupModal" tabindex="-1" role="dialog" aria-hidden="true">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	
+	            <form id="pageGroupForm">
+	                <div class="modal-header">
+	                    <h4 class="modal-title">페이지 그룹 추가</h4>
+	                </div>
+	
+	                <div class="modal-body">
+	                    <div class="form-group">
+	                        <label>그룹명</label>
+	                        <input type="text" name="groupName" class="form-control" required>
+	                    </div>
+	
+	                    <div class="form-group">
+	                        <label>URL 경로</label>
+	                        <input type="text" name="basePath" class="form-control" required placeholder="예: optics">
+	                    </div>
+	
+	                    <div class="form-group">
+	                        <label>설명</label>
+	                        <input type="text" name="groupDesc" class="form-control">
+	                    </div>
+	
+	                    <div class="form-group">
+	                        <label>정렬순서</label>
+	                        <input type="number" name="groupIndex" class="form-control" value="0">
+	                    </div>
+	
+	                    <div class="form-group">
+	                        <label>사용여부</label>
+	                        <select name="useYn" class="form-control">
+	                            <option value="Y">Y</option>
+	                            <option value="N">N</option>
+	                        </select>
+	                    </div>
+	                </div>
+	
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+	                    <button type="button" class="btn btn-primary" onclick="savePageGroup()">저장</button>
+	                </div>
+	            </form>
+	
+	        </div>
+	    </div>
+	</div>
+	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
+	<script src="/administration/lib/jquery-ui-1.9.2.custom.min.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-daterangepicker/date.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-daterangepicker/moment.min.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+	<script src="/administration/lib/advanced-form-components.js"></script>
+	
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+	<script th:src="@{/administration/lib/summernote-common.js}"></script>
+	
+	<script>
+		$('#pageDesc').summernote({
+		    height: 500,
+		    lang: 'ko-KR',
+		    callbacks: {
+		        onImageUpload: function(files) {
+		            for (let i = 0; i < files.length; i++) {
+		                uploadPageEditorImage(files[i], this);
+		            }
+		        }
+		    }
+		});
+	
+		function uploadPageEditorImage(file, editor) {
+		    let formData = new FormData();
+		    formData.append("file", file);
+	
+		    $.ajax({
+		        url: "/admin/pageManager/image",
+		        type: "POST",
+		        data: formData,
+		        contentType: false,
+		        processData: false,
+		        success: function(data) {
+		            $(editor).summernote('insertImage', data.url);
+		        },
+		        error: function() {
+		            alert("이미지 업로드 실패");
+		        }
+		    });
+		}
+	</script>
+	
+	<script>
+		function savePageGroup() {
+		    $.ajax({
+		        url: '/admin/pageGroup/save',
+		        type: 'POST',
+		        data: $('#pageGroupForm').serialize(),
+		        success: function(res) {
+		            alert('그룹이 등록되었습니다.');
+		            location.reload();
+		        },
+		        error: function(xhr) {
+		            alert('그룹 등록 실패');
+		        }
+		    });
+		}
+		</script>
+</body>
+
+</html>

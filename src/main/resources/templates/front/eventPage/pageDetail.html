@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org" class="brand-page">
+
+<head th:replace="~{/fragments/front/common :: headSrc('바이온라이프사이언스 기업소개')}">
+</head>
+<link rel="stylesheet" th:href="@{/front/css/imports/brand.css}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+<body class="stretched event-page">
+
+	<div id="wrapper" class="clearfix">
+
+		<th:block
+			th:replace="~{/fragments/front/common :: headerSrc(false, ${menuList})}"></th:block>
+		
+		<section id="brand-visual" class="brand-visual"
+         th:style="'background-image: url(' + ${page.pageVisualRoad} + ');'">
+		  <div class="brand-visual-overlay">
+		  	<div class="inner">
+			    <div class="brand-visual-text dark">
+				      <h1 th:text="${page.pageName}">Brand Title</h1>
+				      <p class="sec-sub" th:text="${page.pageContent}">Brand Description</p>
+				      <ol class="brand_breadcrumb">
+				        <li><a href="/index">Home</a></li>
+				        <li th:text="${page.pageName}">Brand Name</li>
+				      </ol>
+			    </div>
+		    </div>
+		  </div>
+		</section>
+		
+		
+
+
+
+
+
+
+
+
+		<th:block th:replace="~{/fragments/front/common :: footerSrc}"></th:block>
+	</div>
+	<th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
+
+
+</body>
+</html>

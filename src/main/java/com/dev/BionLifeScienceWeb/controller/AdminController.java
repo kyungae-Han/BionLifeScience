@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.core.io.InputStreamResource;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dev.BionLifeScienceWeb.controller.api.SummernoteImageProcessor;
@@ -46,6 +48,8 @@ import com.dev.BionLifeScienceWeb.model.Member;
 import com.dev.BionLifeScienceWeb.model.MemberAccount;
 import com.dev.BionLifeScienceWeb.model.Notice;
 import com.dev.BionLifeScienceWeb.model.NoticeSubject;
+import com.dev.BionLifeScienceWeb.model.page.PageContent;
+import com.dev.BionLifeScienceWeb.model.page.PageGroup;
 import com.dev.BionLifeScienceWeb.repository.ClientRepository;
 import com.dev.BionLifeScienceWeb.repository.CompanyEmailRepository;
 import com.dev.BionLifeScienceWeb.repository.CompanyInfoRepository;
@@ -58,6 +62,8 @@ import com.dev.BionLifeScienceWeb.service.ClientService;
 import com.dev.BionLifeScienceWeb.service.CompanyInfoService;
 import com.dev.BionLifeScienceWeb.service.MemberService;
 import com.dev.BionLifeScienceWeb.service.NoticeService;
+import com.dev.BionLifeScienceWeb.service.page.PageContentAdminService;
+import com.dev.BionLifeScienceWeb.service.page.PageGroupAdminService;
 import com.dev.BionLifeScienceWeb.utils.PasswordEncoding;
 
 import org.jsoup.Jsoup;
@@ -82,6 +88,8 @@ public class AdminController {
 	private final CompanyInfoService companyInfoService;
 	private final NoticeService noticeService;
 	private final MemberService memberService;
+	private final PageContentAdminService pageContentAdminService;
+	private final PageGroupAdminService pageGroupAdminService;
 	
 	
 	private final MemberRepository memberRepository;
@@ -631,6 +639,84 @@ public class AdminController {
 		
 		return "admin/siteManager :: #companyEmailCheck";
 	}
+	
+	
+
+	
+	//****************************************이벤트 Page등록
+	 	@GetMapping("/pageManager")
+	    public String list(@RequestParam(required = false) Long groupId, Model model) {
+	        model.addAttribute("groupId", groupId);
+	        model.addAttribute("groupList", pageContentAdminService.getGroupList());
+	        model.addAttribute("pageList", pageContentAdminService.getList(groupId));
+	        return "admin/page/list";
+	    }
+
+	  	@GetMapping("/pageManager/form")
+	    public String form(@RequestParam(required = false) Long id, Model model) {
+	        System.out.println("pageManager form 진입");
+
+	        PageContent page;
+	        if (id != null) {
+	            page = pageContentAdminService.getDetail(id);
+	        } else {
+	            page = new PageContent();
+	            page.setPageGroup(new PageGroup());
+	            page.setUseYn("Y");
+	            page.setPageType("PAGE");
+	            page.setPageIndex(0);
+	        }
+
+	        model.addAttribute("page", page);
+	        model.addAttribute("groupList", pageContentAdminService.getGroupList());
+	        return "admin/page/write";
+	    }
+	  	
+	  	
+	  	@GetMapping("/pageManager/form/{id}")
+	  	public String editForm(@PathVariable Long id, Model model) {
+	  	    PageContent page = pageContentAdminService.getDetail(id);
+
+	  	    model.addAttribute("page", page);
+	  	    model.addAttribute("groupList", pageContentAdminService.getGroupList());
+	  	    return "admin/page/write";
+	  	}
+
+	  	@PostMapping("/pageManager")
+	  	public String save(@ModelAttribute("page") PageContent page,
+	  	                   @RequestParam(required = false) MultipartFile visualFile,
+	  	                   RedirectAttributes redirectAttributes) {
+	  	    try {
+	  	        Long savedId = pageContentAdminService.save(page, visualFile);
+	  	        redirectAttributes.addFlashAttribute("message", "저장되었습니다.");
+	  	        return "redirect:/admin/pageManager/form/" + savedId;
+	  	    } catch (Exception e) {
+	  	        e.printStackTrace();
+	  	        redirectAttributes.addFlashAttribute("message", e.getMessage());
+
+	  	        if (page.getPageContentId() != null) {
+	  	            return "redirect:/admin/pageManager/form/" + page.getPageContentId();
+	  	        }
+	  	        return "redirect:/admin/pageManager/form";
+	  	    }
+	  	}
+	    
+	    @PostMapping("/pageGroup/save")
+	    @ResponseBody
+	    public Map<String, Object> save(@ModelAttribute PageGroup pageGroup) {
+	        Long pageGroupId = pageGroupAdminService.save(pageGroup);
+	        return Map.of(
+	                "result", true,
+	                "pageGroupId", pageGroupId
+	        );
+	    }
+
+	    @PostMapping("/pageManager/delete")
+	    public String delete(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+	        pageContentAdminService.delete(id);
+	        redirectAttributes.addFlashAttribute("message", "삭제되었습니다.");
+	        return "redirect:/admin/page/list";
+	    }
 
 }
 
