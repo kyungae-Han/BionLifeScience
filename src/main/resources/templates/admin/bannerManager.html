@@ -260,7 +260,8 @@
 			 <input 
 			 type="number" 
 			 class="form-control"
-			 name="bannerIndex">
+			 name="bannerIndex"
+			 id="editBannerIndex">
 		</div>
 
           <div class="row">
@@ -344,6 +345,7 @@
 	        $('#editBannerSubject').val(banner.subject);
 	        $('#editBannerContent').val(banner.content);
 	        $('#editBannerLinkUrl').val(banner.linkUrl);
+	        $('#editBannerIndex').val(banner.bannerIndex)
 
 	        // 미리보기 초기화
 	        $('#previewWeb').empty();
@@ -397,7 +399,6 @@
 	  });
 
 	
-	  
 	 
 	</script>
 </body>
