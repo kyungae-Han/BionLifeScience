@@ -122,13 +122,25 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 	.comment-wrap {padding:0 !important;}
 	.comment-author {margin-top:10px;}
 	
+	.breadcrumb {
+	    white-space: nowrap !important;
+	}
+	
 	.breadcrumb-item:last-child::before{
 		display:none !important;
 	}
 	
 	.breadcrumb-item:last-child {display:block; width:100%; padding-left: 0;}
 	
+	
+	
 	.card {padding:28px !important;}
+}
+
+@media (max-width: 768px) {
+    .breadcrumb {
+        white-space: nowrap !important;
+    }
 }
 
 </style>
@@ -144,7 +156,7 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 			<ol class="breadcrumb mb-0">
 				<li class="breadcrumb-item"><a href="/index">메인</a></li>
 				<li class="breadcrumb-item" aria-current="page">상세페이지</li>
-				<li class="breadcrumb-item active" th:text="${brand.name}">Brand Name</li>
+				<li class="breadcrumb-item active" th:utext="${brand.name}" style="white-space: nowrap;">Brand Name</li>
 				<li class="breadcrumb-item active" th:text="${product.subject}">Screw Caps and Tubes</li>
 			</ol>
 		</section>	
