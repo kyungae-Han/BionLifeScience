@@ -356,7 +356,7 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 							        <!-- 내용 -->
 							        <div class="portfolio-desc px-3 pt-3 pb-3">
 							        		<div class="desc-title">
-								        		<h6 class="mb-0 mt-3" th:text="${brand.name}"></h6>
+								        		<h6 class="mb-0 mt-3" th:utext="${brand.name}"></h6>
 								            <h4 class="title-clamp mb-3" th:text="${p.subject}"></h4>
 							            </div>
 							            <p class="description-clamp small" th:text="${p.content}"></p>
