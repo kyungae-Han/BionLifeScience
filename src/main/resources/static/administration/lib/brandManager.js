@@ -24,6 +24,8 @@ $(function() {
 	});
 
 });
+
+
 function brandDelete(id){
 	var result = confirm("삭제 하시겠습니까?");
 	if(result){

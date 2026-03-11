@@ -25,36 +25,49 @@ public class SummernoteImageProcessor {
         if (desc == null || !desc.contains("data:image")) return desc;
 
         Pattern pattern = Pattern.compile(
-            "<img[^>]*src=['\"]data:image/(png|jpg|jpeg);base64,([^'\"]+)['\"][^>]*>"
+            "<img[^>]*src=[\"']data:image/([a-zA-Z0-9+]+);base64,([^\"']+)[\"'][^>]*>",
+            Pattern.CASE_INSENSITIVE | Pattern.DOTALL
         );
         Matcher matcher = pattern.matcher(desc);
 
         String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-        String uploadDir = commonPath + "/" + type + "/editor/" + today;
-        String webPath   = "/upload/" + type + "/editor/" + today;
+
+        String uploadDir;
+        String webPath;
+
+        uploadDir = commonPath + "/" + type + "/editor/" + today;
+        webPath = "/upload/" + type + "/editor/" + today;
 
         File dir = new File(uploadDir);
         if (!dir.exists()) dir.mkdirs();
 
+        StringBuffer sb = new StringBuffer();
+
         while (matcher.find()) {
-            String ext = matcher.group(1);
-            String base64 = matcher.group(2);
+            String ext = matcher.group(1).toLowerCase();
+            String base64 = matcher.group(2).replaceAll("\\s+", "");
 
             byte[] decoded = Base64.getDecoder().decode(base64);
+
+            if ("jpeg".equals(ext)) ext = "jpg";
+
             String fileName = UUID.randomUUID() + "." + ext;
             File target = new File(dir, fileName);
+
             try (FileOutputStream fos = new FileOutputStream(target)) {
                 fos.write(decoded);
             }
 
             String oldTag = matcher.group(0);
             String newTag = oldTag.replaceFirst(
-                "src=['\"][^'\"]+['\"]",
+                "src=[\"'][^\"']+[\"']",
                 "src='" + webPath + "/" + fileName + "'"
             );
-            desc = desc.replace(oldTag, newTag);
+
+            matcher.appendReplacement(sb, Matcher.quoteReplacement(newTag));
         }
 
-        return desc;
+        matcher.appendTail(sb);
+        return sb.toString();
     }
 }

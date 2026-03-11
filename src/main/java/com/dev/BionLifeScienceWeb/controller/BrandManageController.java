@@ -37,6 +37,7 @@ import com.dev.BionLifeScienceWeb.repository.brand.BrandSmallSortRepository;
 import com.dev.BionLifeScienceWeb.service.brand.BrandProductFileService;
 import com.dev.BionLifeScienceWeb.service.brand.BrandProductImageService;
 import com.dev.BionLifeScienceWeb.service.brand.BrandProductService;
+import com.dev.BionLifeScienceWeb.service.brand.BrandService;
 import com.dev.BionLifeScienceWeb.service.program.brand.BrandCheckService;
 import com.dev.BionLifeScienceWeb.service.program.brand.BrandExcelDownloadService;
 import com.dev.BionLifeScienceWeb.service.program.brand.BrandExcelUploadService;
@@ -64,6 +65,7 @@ public class BrandManageController {
 	private final BrandZipService brandZipService;
 	private final BrandCheckService brandExcelCheckService;
 	private final BrandProductImageService brandProductImageService;
+	private final BrandService brandService;
 	
 	
 	@GetMapping("/addExcelDownload")
@@ -424,7 +426,7 @@ public class BrandManageController {
 	}
 	
 	
-    @GetMapping("/admin/brandForm")
+    @GetMapping("/brandForm")
     public String brandForm(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -436,7 +438,7 @@ public class BrandManageController {
         return "admin/brandForm";
     }
 
-	@GetMapping("/admin/brandForm/{id}")
+	@GetMapping("/brandForm/{id}")
 	public String brandEdit(@PathVariable Long id, Model model, RedirectAttributes ra) {
 
 	    return brandRepository.findById(id)
@@ -449,6 +451,13 @@ public class BrandManageController {
 	            ra.addFlashAttribute("error", "해당 브랜드가 존재하지 않습니다: " + id);
 	            return "redirect:/admin/brandForm";
 	        });
+	}
+	
+
+	@PostMapping("/editor/image")
+	@ResponseBody
+	public java.util.Map<String, String> uploadEditorImage(@RequestParam("file") MultipartFile file) throws IOException {
+	    return java.util.Map.of("url", brandService.uploadEditorImage(file));
 	}
 
 }

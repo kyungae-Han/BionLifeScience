@@ -17,6 +17,8 @@ server:
         name: SID
         http-only: true
         secure: true
+  tomcat:
+    max-http-form-post-size: 1000MB		 				
 # 개발 환경
 --- 
 spring:
@@ -48,8 +50,8 @@ spring:
         dialect: org.hibernate.dialect.MariaDBDialect
   servlet:
     multipart:
-      maxFileSize: 1000MB
-      maxRequestSize: -1
+      max-file-size: 1000MB
+      max-request-size: -1
   mail:
     host: smtps.hiworks.com
     port: 465
@@ -62,6 +64,7 @@ spring:
       mail.smtp.starttls.enable: false
   upload.path: src/main/resources/static/administration
   upload.env: local
+
 
 # 배포 환경
 --- 
@@ -91,8 +94,8 @@ spring:
         dialect: org.hibernate.dialect.MariaDBDialect
   servlet:
     multipart:
-      maxFileSize: 1000MB
-      maxRequestSize: -1
+      max-file-size: 1000MB
+      max-request-size: -1
   mail:
     host: smtp.hiworks.com
     port: 465

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dev.BionLifeScienceWeb.controller.api.SummernoteImageProcessor;
 import com.dev.BionLifeScienceWeb.model.brand.Brand;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandRepository;
 
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class BrandService {
 
 	private final BrandRepository brandRepository;
+	private final SummernoteImageProcessor summernoteImageProcessor;
 	
 	@Value("${spring.upload.env}")
 	private String env;
@@ -140,6 +142,14 @@ public class BrandService {
         if (brandRepository.findFirstIndex().isPresent()) {
             index = brandRepository.findFirstIndex().get() + 1;
         }
+        
+        
+        if (brand.getDesc() != null && !brand.getDesc().isBlank()) {
+            System.out.println("before base64 = " + brand.getDesc().contains("data:image"));
+            brand.setDesc(summernoteImageProcessor.processEditorImages(brand.getDesc(), "brand"));
+            System.out.println("after base64 = " + brand.getDesc().contains("data:image"));
+        }
+        
         brand.setBrandIndex(index);
 
         // 로고 파일 처리
@@ -166,11 +176,19 @@ public class BrandService {
 		brandRepository.findById(brand.getId()).ifPresent(b -> {
 	        b.setName(brand.getName());
 	        b.setContent(brand.getContent());
-	        b.setDesc(brand.getDesc());
 	        b.setType(brand.getType());
 
 	        try {
 	            // 로고 파일 있으면 교체
+	        	
+		        	if (brand.getDesc() != null && !brand.getDesc().isBlank()) {
+		        	    System.out.println("before base64 = " + brand.getDesc().contains("data:image"));
+		        	    b.setDesc(summernoteImageProcessor.processEditorImages(brand.getDesc(), "brand"));
+		        	    System.out.println("after base64 = " + b.getDesc().contains("data:image"));
+		        	} else {
+		        	    b.setDesc(brand.getDesc());
+		        	}
+	        	
 	            if (brandImage != null && !brandImage.isEmpty()) {
 	                applyLogo(b, brandImage);
 	            }
@@ -233,6 +251,7 @@ public class BrandService {
         return brandRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("브랜드를 찾을 수 없습니다. id=" + id));
     }
+	
 
 }
 
