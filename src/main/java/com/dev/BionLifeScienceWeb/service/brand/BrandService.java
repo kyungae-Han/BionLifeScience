@@ -36,20 +36,22 @@ public class BrandService {
 	}
 	
 	public String uploadEditorImage(MultipartFile file) throws IOException {
-        
-		String today = today();
-        String dirPath = commonPath + "/brand/editor/" + today;
-        String webPath = "/administration/brand/editor/" + today;
+	    String today = today();
 
-        File dir = new File(dirPath);
-        if (!dir.exists()) dir.mkdirs();
+	    String dirPath;
+	    String webPath = "/administration/brand/editor/" + today;
 
-        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        File dest = new File(dir, fileName);
-        file.transferTo(dest);
+	    dirPath = commonPath + "/brand/editor/" + today;
 
-        return webPath + "/" + fileName;
-    }
+	    File dir = new File(dirPath);
+	    if (!dir.exists()) dir.mkdirs();
+
+	    String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+	    File dest = new File(dir, fileName);
+	    file.transferTo(dest);
+
+	    return webPath + "/" + fileName;
+	}
 	
 	public void applyLogo(Brand brand, MultipartFile brandImage) throws IOException {
 		if (brandImage == null || brandImage.isEmpty()) return;
