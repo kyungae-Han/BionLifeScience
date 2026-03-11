@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.dev.BionLifeScienceWeb.model.page.PageContent;
 import com.dev.BionLifeScienceWeb.model.page.PageGroup;
+import com.dev.BionLifeScienceWeb.repository.brand.BrandRepository;
 import com.dev.BionLifeScienceWeb.repository.page.PageContentRepository;
 import com.dev.BionLifeScienceWeb.repository.page.PageGroupRepository;
 
@@ -24,6 +25,7 @@ public class DynamicPageController {
 
     private final PageContentRepository pageContentRepository;
     private final PageGroupRepository pageGroupRepository;
+    private final BrandRepository brandRepository;
 
 
     @GetMapping("/{basePath:[^.]+}")
@@ -37,6 +39,11 @@ public class DynamicPageController {
     	        PageContent page = pageOpt.get();
     	        model.addAttribute("group", page.getPageGroup());
     	        model.addAttribute("page", page);
+    	        
+    	        brandRepository.findByName(page.getPageName())
+    	        .ifPresent(brand -> model.addAttribute("brandId", brand.getId()));
+    	        
+    	        
     	        return "front/eventPage/pageDetail";
     	    }
     	
@@ -49,6 +56,8 @@ public class DynamicPageController {
 
     	    model.addAttribute("group", group);
     	    model.addAttribute("pageList", pageList);
+    	    
+    	    
     	    return "front/eventPage/eventList";
     }
     

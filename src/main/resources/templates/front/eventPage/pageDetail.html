@@ -35,6 +35,15 @@
 			<div th:utext="${page.pageDesc}"></div>
 		</section>
 
+		<section class="brand-body-container">
+		    <div class="text-center mt-4" th:if="${brandId != null}">
+		        <a th:href="@{/brandList/own/{id}(id=${brandId})}+'#brandProdcutListItem'"
+		           class="btn btn-primary"
+		           style="border-radius:30px;font-weight:600;">
+		            <span th:text="${page.pageName}"></span> 관련 제품 더보기
+		        </a>
+		    </div>
+		</section>
 
 		<th:block th:replace="~{/fragments/front/common :: footerSrc}"></th:block>
 	</div>
