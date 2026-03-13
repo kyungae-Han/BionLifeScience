@@ -208,40 +208,17 @@
 	<script th:src="@{/administration/lib/summernote-common.js}"></script>
 	
 	<script>
-		$('#pageDesc').summernote({
-		    height: 500,
-		    lang: 'ko-KR',
-		    callbacks: {
-		        onImageUpload: function(files) {
-		            for (let i = 0; i < files.length; i++) {
-		                uploadPageEditorImage(files[i], this);
-		            }
-		        }
-		    }
-		});
+	 $(function () {
+	    initSummernoteEditor('#pageDesc', {
+	      height: 500,
+	      placeholder: '브랜드 상세 설명(선택)',
+	      uploadUrl: '/admin/pageManager/image'
+	    });
+	  });
 	
-		function uploadPageEditorImage(file, editor) {
-		    let formData = new FormData();
-		    formData.append("file", file);
-	
-		    $.ajax({
-		        url: "/admin/pageManager/image",
-		        type: "POST",
-		        data: formData,
-		        contentType: false,
-		        processData: false,
-		        success: function(data) {
-		            $(editor).summernote('insertImage', data.url);
-		        },
-		        error: function() {
-		            alert("이미지 업로드 실패");
-		        }
-		    });
-		}
-	</script>
-	
-	<script>
 		function savePageGroup() {
+			$('#pageDesc').val($('#pageDesc').summernote('code'));
+			
 		    $.ajax({
 		        url: '/admin/pageGroup/save',
 		        type: 'POST',
@@ -255,7 +232,7 @@
 		        }
 		    });
 		}
-		</script>
+	</script>
 </body>
 
 </html>
