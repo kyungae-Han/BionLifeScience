@@ -1,8 +1,28 @@
+# =====================================================
+# robots.txt — bionlifescience.com
+# 최종 수정: 2026-03-23
+# =====================================================
+ 
 User-agent: *
-Disallow: /brandProductSorted/
-Disalow: /brandProductSorted/brand/40
-Disalow: /brandProductSorted/brand/47
-Disalow: /test/
-Disalow: /memberLoginForm/
+ 
+# ✅ 색인 허용 (SEO 핵심 페이지)
 Allow: /
-Sitemap: https://bionlifescience.com/sitemap.xml
+Allow: /brandList/
+Allow: /brandList/own/
+Allow: /brandProductDetail/
+Allow: /brandProductSorted/
+Allow: /rnd
+Allow: /about
+Allow: /noticeList
+Allow: /noticeDetail/
+Allow: /references
+ 
+# 🚫 색인 차단 (노출 불필요 / 관리용 페이지)
+Disallow: /admin
+Disallow: /administration/
+Disallow: /memberLoginForm/
+Disallow: /test/
+ 
+# 🚫 불필요한 파라미터 URL 중복 색인 방지
+Disallow: /*?*page=
+Disallow: /*?*sort=
