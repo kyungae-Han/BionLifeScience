@@ -41,6 +41,30 @@ public class ClientController {
 		"^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,}$"
 	);
 
+	// 허용 도메인 확장자 (검증된 TLD만 허용)
+	private static final List<String> ALLOWED_TLDS = List.of(
+		// 글로벌 일반
+		"com", "net", "org", "edu", "gov", "int", "biz", "info",
+		// 한국
+		"kr", "co.kr", "or.kr", "ne.kr", "re.kr", "pe.kr", "go.kr", "ac.kr", "mil.kr",
+		// 미국
+		"us", "gov", "edu", "mil",
+		// 영국
+		"uk", "co.uk", "org.uk", "ac.uk", "gov.uk",
+		// 일본
+		"jp", "co.jp", "or.jp", "ne.jp", "ac.jp", "go.jp",
+		// 중국
+		"cn", "com.cn", "net.cn", "org.cn",
+		// 독일/프랑스/유럽
+		"de", "fr", "eu", "it", "es", "nl", "be", "at", "ch",
+		// 아시아/태평양
+		"au", "com.au", "nz", "sg", "hk", "com.hk", "tw", "com.tw", "in", "co.in",
+		// 캐나다/브라질
+		"ca", "br", "com.br",
+		// 기타 주요
+		"io", "co", "me", "cc", "tv"
+	);
+
 	// 전화번호 형식 검증 패턴 (숫자, 하이픈, 공백, 괄호, +만 허용)
 	private static final Pattern PHONE_PATTERN = Pattern.compile(
 		"^[0-9+\\-()\\s]{7,20}$"
@@ -87,8 +111,16 @@ public class ClientController {
 		}
 
 		// 이메일 형식 검증
-		if (!EMAIL_PATTERN.matcher(client.getEmail().trim()).matches()) {
+		String emailTrimmed = client.getEmail().trim().toLowerCase();
+		if (!EMAIL_PATTERN.matcher(emailTrimmed).matches()) {
 			writeAlert(response, "올바른 이메일 형식을 입력해 주세요.");
+			return;
+		}
+
+		// 도메인 확장자 검증 (허용된 TLD만 가능)
+		if (!isAllowedEmailDomain(emailTrimmed)) {
+			log.warn("[보안] 허용되지 않은 이메일 도메인 - IP: {}, 이메일: {}", clientIp, emailTrimmed);
+			writeAlert(response, "허용되지 않은 이메일 도메인입니다. 일반적인 이메일 주소를 사용해 주세요.");
 			return;
 		}
 
@@ -178,6 +210,18 @@ public class ClientController {
 
 	private boolean isBlank(String value) {
 		return value == null || value.trim().isEmpty();
+	}
+
+	private boolean isAllowedEmailDomain(String email) {
+		int atIndex = email.lastIndexOf('@');
+		if (atIndex < 0) return false;
+		String domain = email.substring(atIndex + 1);
+		for (String tld : ALLOWED_TLDS) {
+			if (domain.endsWith("." + tld) || domain.equals(tld)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean containsHtmlTags(String value) {
