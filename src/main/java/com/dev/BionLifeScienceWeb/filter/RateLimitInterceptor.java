@@ -46,7 +46,7 @@ public class RateLimitInterceptor implements HandlerInterceptor {
         if (info.count.get() > MAX_REQUESTS) {
             log.warn("[속도 제한] IP {}에서 {}분 내 {}회 초과 요청 감지", clientIp, TIME_WINDOW_MS / 60000, info.count.get());
             response.setContentType("text/html; charset=UTF-8");
-            response.setStatus(HttpServletResponse.SC_TOO_MANY_REQUESTS);
+            response.setStatus(429);
             response.getWriter().write("""
                 <script>
                     alert('잠시 후 다시 시도해 주세요. 짧은 시간 내 너무 많은 요청이 감지되었습니다.');

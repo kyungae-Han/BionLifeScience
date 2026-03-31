@@ -55,8 +55,8 @@ spring:
   mail:
     host: smtps.hiworks.com
     port: 465
-    username: admin@bionlifescience.com
-    password: "jQWtWhTyOKrc4Xm9GBLg"
+    username: ${HIWORKS_MAIL_USERNAME}
+    password: ${HIWORKS_MAIL_PASSWORD}
     properties:
       mail.smtp.auth: true
       mail.smtp.ssl.enable: true
@@ -76,7 +76,7 @@ spring:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/bionls?useUnicode=true&characterEncoding=utf8mb4&serverTimezone=Asia/Seoul
     username: bionls
-    password: bion2272!@
+    password: ${DB_PASSWORD}
     hikari:
       connectionTimeout: 30000
       maximumPoolSize: 10
@@ -99,8 +99,8 @@ spring:
   mail:
     host: smtp.hiworks.com
     port: 465
-    username: admin@bionlifescience.com
-    password: "jQWtWhTyOKrc4Xm9GBLg"
+    username: ${HIWORKS_MAIL_USERNAME}
+    password: ${HIWORKS_MAIL_PASSWORD}
     protocol: smtps
     properties:
       mail.smtp.auth: true

@@ -89,7 +89,7 @@
 										            th:each="b:${ownBrands}"
 										            th:attr="data-id=${'brand-' + b.id}">
 										          <a class="menu-link" th:href="@{|/brandList/own/${b.id}|}">
-										            <div><i class="icon-stack"></i><div th:utext="${b.name"></div></div>
+										            <div><i class="icon-stack"></i><div th:text="${b.name}"></div></div>
 										          </a>
 										        </li>
 										        <!-- /OWN -->
@@ -242,7 +242,7 @@
 						            th:each="b : ${ownBrands}"
 						            th:attr="data-id=${'brand-' + b.id}">
 						          <a class="menu-link" th:href="@{|/brandList/own/${b.id}|}">
-						            <div><i class="icon-stack"></i><div th:utext="${b.name"></div></div>
+						            <div><i class="icon-stack"></i><div th:text="${b.name}"></div></div>
 						          </a>
 						        </li>
 						
