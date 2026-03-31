@@ -117,30 +117,51 @@
 </div>
 
 
-<div id="brandPageContactModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:9999;">
-  <!-- 패널: flex + 최대높이 -->
+<div id="brandPageContactModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:9999; align-items:center; justify-content:center;">
   <div style="
     width:90%; max-width:900px; margin:40px auto; background:#fff;
-    border-radius:10px; overflow:hidden;
+    border-radius:14px; overflow:hidden;
     display:flex; flex-direction:column;
-    max-height:calc(100dvh - 80px); /* 뷰포트 - 상하 마진(40*2) */
+    max-height:calc(100dvh - 80px);
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
   ">
-    <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid #eee; flex:0 0 auto; position:relative;">
-      <strong>고객문의</strong>
-      <button type="button" class="modal-close"><i class="bi bi-x-lg"></i></button>
+    <div style="
+      display:flex; justify-content:space-between; align-items:center;
+      padding:18px 24px; border-bottom:1px solid #e5e7eb; flex:0 0 auto;
+      background: linear-gradient(135deg, #1a73e8 0%, #0d47a1 100%);
+    ">
+      <strong style="color:#fff; font-size:17px; letter-spacing:-0.3px;">
+        <i class="bi bi-envelope-paper" style="margin-right:8px;"></i>고객문의
+      </strong>
+      <button type="button" class="modal-close" style="
+        background:rgba(255,255,255,.2); border:none; border-radius:50%;
+        width:34px; height:34px; display:flex; align-items:center; justify-content:center;
+        cursor:pointer; transition:background .2s;
+      " onmouseover="this.style.background='rgba(255,255,255,.35)'"
+         onmouseout="this.style.background='rgba(255,255,255,.2)'">
+        <i class="bi bi-x-lg" style="color:#fff; font-size:16px;"></i>
+      </button>
     </div>
 
-    <!-- 모달 바디: 실제 스크롤 영역 -->
     <div class="modal-body" style="
       flex:1 1 auto; min-height:0;
       overflow:auto; overscroll-behavior:contain;
       -webkit-overflow-scrolling:touch;
-      padding:16px;
+      padding:24px;
     ">
-      <p>Loading...</p>
+      <div style="text-align:center; padding:40px 0; color:#888;">
+        <i class="bi bi-arrow-repeat" style="font-size:24px; animation:spin 1s linear infinite;"></i>
+        <p style="margin-top:12px;">로딩 중...</p>
+      </div>
     </div>
   </div>
 </div>
+<style>
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #brandPageContactModal .modal-body::-webkit-scrollbar { width: 6px; }
+  #brandPageContactModal .modal-body::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+  #brandPageContactModal .modal-body::-webkit-scrollbar-track { background: transparent; }
+</style>
 
 
   <th:block th:replace="~{/fragments/front/common :: footerSrc}"></th:block>
@@ -415,12 +436,8 @@ document.addEventListener('DOMContentLoaded', () => {
     openModal();
   });
 
-  // 닫기(버튼/배경/ESC)
+  // 닫기(X 버튼만 — 배경 클릭/ESC로 닫히지 않음)
   if (closeBtn) closeBtn.addEventListener('click', closeModal);
-  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
-  });
 
   // 새로고침 시 상태 복원
   if (sessionStorage.getItem(STORAGE_KEY) === 'true') openModal();

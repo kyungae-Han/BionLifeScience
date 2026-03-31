@@ -72,6 +72,46 @@ $(function(){
 		});
 	});
 	
+	// ── 허용 TLD 관리 ──
+	$('#tldInsertBtn').on('click', function(){
+		var tld = $('#tldInput').val().trim();
+		if(!tld){ alert('TLD를 입력해 주세요.'); return; }
+		$.ajax({
+			type:'POST', url:'/admin/tldInsert',
+			data:{ tld: tld }
+		}).done(function(){ alert('추가되었습니다.'); location.reload(); })
+		  .fail(function(xhr){ alert(xhr.responseText || '오류가 발생했습니다.'); });
+	});
+
+	$('#tldDelBtn').on('click', function(){
+		var ids = $('#tldDelSelect').val();
+		if(!ids || ids.length === 0){ alert('삭제할 TLD를 선택해 주세요.'); return; }
+		$.ajax({
+			type:'POST', url:'/admin/deleteTld',
+			data:{ ids: ids }
+		}).done(function(){ alert('삭제되었습니다.'); location.reload(); });
+	});
+
+	// ── 허용 이메일 주소 관리 ──
+	$('#allowedEmailInsertBtn').on('click', function(){
+		var email = $('#allowedEmailInput').val().trim();
+		if(!email){ alert('이메일을 입력해 주세요.'); return; }
+		$.ajax({
+			type:'POST', url:'/admin/allowedEmailInsert',
+			data:{ email: email }
+		}).done(function(){ alert('추가되었습니다.'); location.reload(); })
+		  .fail(function(xhr){ alert(xhr.responseText || '오류가 발생했습니다.'); });
+	});
+
+	$('#allowedEmailDelBtn').on('click', function(){
+		var ids = $('#allowedEmailDelSelect').val();
+		if(!ids || ids.length === 0){ alert('삭제할 이메일을 선택해 주세요.'); return; }
+		$.ajax({
+			type:'POST', url:'/admin/deleteAllowedEmail',
+			data:{ ids: ids }
+		}).done(function(){ alert('삭제되었습니다.'); location.reload(); });
+	});
+
 	$('#emailStatusBtn').attr('disabled', true);
 	$('#companyEmailCheck').on('change', function(){
 		$('#emailStatusBtn').attr('disabled', false);

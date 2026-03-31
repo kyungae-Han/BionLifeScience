@@ -39,6 +39,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dev.BionLifeScienceWeb.controller.api.SummernoteImageProcessor;
+import com.dev.BionLifeScienceWeb.model.AllowedEmailAddress;
+import com.dev.BionLifeScienceWeb.model.AllowedEmailTld;
 import com.dev.BionLifeScienceWeb.model.Client;
 import com.dev.BionLifeScienceWeb.model.CompanyEmail;
 import com.dev.BionLifeScienceWeb.model.CompanyInfo;
@@ -50,6 +52,8 @@ import com.dev.BionLifeScienceWeb.model.Notice;
 import com.dev.BionLifeScienceWeb.model.NoticeSubject;
 import com.dev.BionLifeScienceWeb.model.page.PageContent;
 import com.dev.BionLifeScienceWeb.model.page.PageGroup;
+import com.dev.BionLifeScienceWeb.repository.AllowedEmailAddressRepository;
+import com.dev.BionLifeScienceWeb.repository.AllowedEmailTldRepository;
 import com.dev.BionLifeScienceWeb.repository.ClientRepository;
 import com.dev.BionLifeScienceWeb.repository.CompanyEmailRepository;
 import com.dev.BionLifeScienceWeb.repository.CompanyInfoRepository;
@@ -77,6 +81,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminController {
 	private final SummernoteImageProcessor imageProcessor;
+	private final AllowedEmailTldRepository allowedEmailTldRepository;
+	private final AllowedEmailAddressRepository allowedEmailAddressRepository;
 	private final HistorySubjectRepository historySubjectRepository;
 	private final HistoryContentRepository historyContentRepository;
 	private final CompanyInfoRepository companyInfoRepository;
@@ -573,6 +579,8 @@ public class AdminController {
 			model.addAttribute("company",new CompanyInfo());
 		}
 		model.addAttribute("email",companyEmailRepository.findAll());
+		model.addAttribute("tldList", allowedEmailTldRepository.findAll());
+		model.addAttribute("allowedEmailList", allowedEmailAddressRepository.findAll());
 		return "admin/siteManager";
 	}
 	
@@ -621,7 +629,53 @@ public class AdminController {
 		model.addAttribute("company",companyInfoRepository.findById(1L).get());
 		return "admin/siteManager :: #emailForm";
 	}
-	
+
+	//******************************허용 TLD 관리
+	@PostMapping("/tldInsert")
+	@ResponseBody
+	public ResponseEntity<String> tldInsert(@RequestParam("tld") String tld) {
+		String cleaned = tld.trim().toLowerCase().replaceAll("^\\.*", "");
+		if (cleaned.isEmpty()) {
+			return ResponseEntity.badRequest().body("TLD를 입력해 주세요.");
+		}
+		AllowedEmailTld entity = new AllowedEmailTld();
+		entity.setTld(cleaned);
+		allowedEmailTldRepository.save(entity);
+		return ResponseEntity.ok("추가되었습니다.");
+	}
+
+	@PostMapping("/deleteTld")
+	@ResponseBody
+	public ResponseEntity<String> deleteTld(@RequestParam("ids[]") Long[] ids) {
+		for (Long id : ids) {
+			allowedEmailTldRepository.deleteById(id);
+		}
+		return ResponseEntity.ok("삭제되었습니다.");
+	}
+
+	//******************************허용 이메일 주소 관리
+	@PostMapping("/allowedEmailInsert")
+	@ResponseBody
+	public ResponseEntity<String> allowedEmailInsert(@RequestParam("email") String email) {
+		String cleaned = email.trim().toLowerCase();
+		if (cleaned.isEmpty()) {
+			return ResponseEntity.badRequest().body("이메일을 입력해 주세요.");
+		}
+		AllowedEmailAddress entity = new AllowedEmailAddress();
+		entity.setEmail(cleaned);
+		allowedEmailAddressRepository.save(entity);
+		return ResponseEntity.ok("추가되었습니다.");
+	}
+
+	@PostMapping("/deleteAllowedEmail")
+	@ResponseBody
+	public ResponseEntity<String> deleteAllowedEmail(@RequestParam("ids[]") Long[] ids) {
+		for (Long id : ids) {
+			allowedEmailAddressRepository.deleteById(id);
+		}
+		return ResponseEntity.ok("삭제되었습니다.");
+	}
+
 	@RequestMapping(value = "/changeEmailStatus",
 		    method = {RequestMethod.GET, RequestMethod.POST}
 	)

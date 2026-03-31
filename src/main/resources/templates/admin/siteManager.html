@@ -141,6 +141,59 @@
 						</div>
 					</div>
 				</div>
+				<div class="row mt">
+					<div class="col-lg-8">
+						<h4><i class="fa fa-angle-right"></i> 허용 도메인 확장자 (TLD) 관리</h4>
+						<div class="form-panel">
+							<div class="form">
+								<div class="form-group">
+									<label class="control-label col-lg-2">TLD 추가</label>
+									<div class="col-lg-10">
+										<input class="form-control" id="tldInput" type="text" placeholder="예: com, co.kr, jp" />
+										<button class="btn btn-theme" type="button" id="tldInsertBtn" style="margin-top:10px;">추가</button>
+										<p class="help-block">* 고객문의 시 허용할 이메일 도메인 확장자를 관리합니다.</p>
+										<p class="help-block">* 예: com, net, co.kr, jp 등</p>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-lg-2">등록된 TLD</label>
+									<div class="col-lg-10">
+										<select class="form-control" multiple="multiple" id="tldDelSelect" style="min-height:100px;">
+											<option th:each="t : ${tldList}" th:text="${t.tld}" th:value="${t.id}"></option>
+										</select>
+										<button class="btn btn-danger" id="tldDelBtn" type="button" style="margin-top:10px;">선택 삭제</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row mt">
+					<div class="col-lg-8">
+						<h4><i class="fa fa-angle-right"></i> 허용 이메일 주소 관리</h4>
+						<div class="form-panel">
+							<div class="form">
+								<div class="form-group">
+									<label class="control-label col-lg-2">이메일 추가</label>
+									<div class="col-lg-10">
+										<input class="form-control" id="allowedEmailInput" type="email" placeholder="예: partner@example.com" />
+										<button class="btn btn-theme" type="button" id="allowedEmailInsertBtn" style="margin-top:10px;">추가</button>
+										<p class="help-block">* TLD가 차단되어 있어도 여기에 등록된 이메일은 문의가 가능합니다.</p>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-lg-2">등록된 이메일</label>
+									<div class="col-lg-10">
+										<select class="form-control" multiple="multiple" id="allowedEmailDelSelect" style="min-height:100px;">
+											<option th:each="ae : ${allowedEmailList}" th:text="${ae.email}" th:value="${ae.id}"></option>
+										</select>
+										<button class="btn btn-danger" id="allowedEmailDelBtn" type="button" style="margin-top:10px;">선택 삭제</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</section>
 		</section>
 	</section>

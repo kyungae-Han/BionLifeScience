@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dev.BionLifeScienceWeb.model.AllowedEmailTld;
 import com.dev.BionLifeScienceWeb.model.Client;
 import com.dev.BionLifeScienceWeb.model.CompanyEmail;
+import com.dev.BionLifeScienceWeb.repository.AllowedEmailAddressRepository;
+import com.dev.BionLifeScienceWeb.repository.AllowedEmailTldRepository;
 import com.dev.BionLifeScienceWeb.repository.CompanyEmailRepository;
 import com.dev.BionLifeScienceWeb.service.ClientService;
 import com.dev.BionLifeScienceWeb.service.EmailService;
@@ -33,36 +36,14 @@ public class ClientController {
 	private static final Logger log = LoggerFactory.getLogger(ClientController.class);
 
 	private final CompanyEmailRepository companyEmailRepository;
+	private final AllowedEmailTldRepository allowedEmailTldRepository;
+	private final AllowedEmailAddressRepository allowedEmailAddressRepository;
 	private final ClientService clientService;
 	private final EmailService emailService;
 
 	// 이메일 형식 검증 패턴
 	private static final Pattern EMAIL_PATTERN = Pattern.compile(
 		"^[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,}$"
-	);
-
-	// 허용 도메인 확장자 (검증된 TLD만 허용)
-	private static final List<String> ALLOWED_TLDS = List.of(
-		// 글로벌 일반
-		"com", "net", "org", "edu", "gov", "int", "biz", "info",
-		// 한국
-		"kr", "co.kr", "or.kr", "ne.kr", "re.kr", "pe.kr", "go.kr", "ac.kr", "mil.kr",
-		// 미국
-		"us", "gov", "edu", "mil",
-		// 영국
-		"uk", "co.uk", "org.uk", "ac.uk", "gov.uk",
-		// 일본
-		"jp", "co.jp", "or.jp", "ne.jp", "ac.jp", "go.jp",
-		// 중국
-		"cn", "com.cn", "net.cn", "org.cn",
-		// 독일/프랑스/유럽
-		"de", "fr", "eu", "it", "es", "nl", "be", "at", "ch",
-		// 아시아/태평양
-		"au", "com.au", "nz", "sg", "hk", "com.hk", "tw", "com.tw", "in", "co.in",
-		// 캐나다/브라질
-		"ca", "br", "com.br",
-		// 기타 주요
-		"io", "co", "me", "cc", "tv"
 	);
 
 	// 전화번호 형식 검증 패턴 (숫자, 하이픈, 공백, 괄호, +만 허용)
@@ -213,11 +194,20 @@ public class ClientController {
 	}
 
 	private boolean isAllowedEmailDomain(String email) {
+		// 1. 허용 이메일 주소에 등록되어 있으면 무조건 통과
+		if (allowedEmailAddressRepository.existsByEmailIgnoreCase(email)) {
+			return true;
+		}
+		// 2. TLD 화이트리스트 체크
 		int atIndex = email.lastIndexOf('@');
 		if (atIndex < 0) return false;
 		String domain = email.substring(atIndex + 1);
-		for (String tld : ALLOWED_TLDS) {
-			if (domain.endsWith("." + tld) || domain.equals(tld)) {
+		List<AllowedEmailTld> tldList = allowedEmailTldRepository.findAll();
+		if (tldList.isEmpty()) {
+			return true; // TLD가 하나도 등록 안 되어있으면 제한 없음
+		}
+		for (AllowedEmailTld tld : tldList) {
+			if (domain.endsWith("." + tld.getTld()) || domain.equals(tld.getTld())) {
 				return true;
 			}
 		}
