@@ -1,13 +1,15 @@
 package com.dev.BionLifeScienceWeb.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.charset.StandardCharsets;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,15 +29,20 @@ public class ClientDownloadController {
             @RequestParam String filename
     ) throws IOException {
 
-        String filePath = commonPath + "/clientfiles/" + date + "/" + filename;
-        File file = new File(filePath);
+        Path baseDir = Paths.get(commonPath, "clientfiles").toAbsolutePath().normalize();
+        Path filePath = baseDir.resolve(date).resolve(filename).normalize();
 
-        if (!file.exists()) {
+        if (!filePath.startsWith(baseDir) || !Files.exists(filePath) || !Files.isRegularFile(filePath)) {
             return ResponseEntity.notFound().build();
         }
 
-        Resource resource = new FileSystemResource(file);
-        String encodedName = URLEncoder.encode(filename, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+        Resource resource = new UrlResource(filePath.toUri());
+        if (!resource.exists() || !resource.isReadable()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String downloadName = filePath.getFileName().toString();
+        String encodedName = URLEncoder.encode(downloadName, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
