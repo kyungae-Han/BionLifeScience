@@ -47,7 +47,7 @@
             <!-- 이미지(그 외) -->
             <div th:if="${!(#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4'))}"
             	 class="bg-inner"
-                 th:style="'background-image:url(' + @{${b.webroad}(v=${#dates.createNow().time})} + ');'">
+                 th:style="'background-image:url(' + @{${b.webroad}} + ');'">
             </div>
           </div>
 
@@ -63,7 +63,7 @@
             <!-- 이미지(그 외) -->
             <div th:if="${!(#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4'))}"
             	 class="bg-inner"
-                 th:style="'background-image:url(' + @{${b.mobileroad}(v=${#dates.createNow().time})} + ');'">
+                 th:style="'background-image:url(' + @{${b.mobileroad}} + ');'">
             </div>
           </div>
 
