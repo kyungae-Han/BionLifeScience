@@ -31,6 +31,7 @@ import com.dev.BionLifeScienceWeb.model.HistorySubject;
 import com.dev.BionLifeScienceWeb.model.Notice;
 import com.dev.BionLifeScienceWeb.model.ReferenceFile;
 import com.dev.BionLifeScienceWeb.model.brand.Brand;
+import com.dev.BionLifeScienceWeb.util.SeoText;
 import com.dev.BionLifeScienceWeb.model.brand.BrandBigSort;
 import com.dev.BionLifeScienceWeb.model.brand.BrandMiddleSort;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProduct;
@@ -165,13 +166,19 @@ public class HomeController {
         
         model.addAttribute("list", subject);
 
-        return "front/company/about";
+        model.addAttribute("metaDescription",
+		        "바이온라이프사이언스는 생명과학 연구용 기자재와 소모품을 공급하는 기업입니다. 자체 브랜드 BIOTREAT를 비롯해 검증된 제품으로 연구 현장을 지원합니다.");
+
+		return "front/company/about";
     }
 	
 	@GetMapping("/rnd")
     public String overview(Model model) {
 
-        return "front/business/rnd";
+        model.addAttribute("metaDescription",
+		        "바이온라이프사이언스의 연구개발 역량과 사업 분야를 소개합니다. 생명과학 실험 환경에 맞춘 제품 개발과 기술 지원을 수행합니다.");
+
+		return "front/business/rnd";
     }
 	
 	@GetMapping("/history")
@@ -188,6 +195,9 @@ public class HomeController {
 		
 		model.addAttribute("list",subject);
 		
+		model.addAttribute("metaDescription",
+		        "바이온라이프사이언스의 설립부터 현재까지의 주요 연혁과 성장 과정을 소개합니다.");
+
 		return "front/company/history";
 	}
 	
@@ -197,6 +207,9 @@ public class HomeController {
 			) {
 		
 		model.addAttribute("certification", certificationRepository.findAll());
+		model.addAttribute("metaDescription",
+		        "바이온라이프사이언스가 보유한 품질 인증서와 시험성적서를 확인하실 수 있습니다.");
+
 		return "front/company/certifications";
 	}
 	
@@ -204,6 +217,9 @@ public class HomeController {
 	public String address(
 			Model model
 			) {
+		model.addAttribute("metaDescription",
+		        "바이온라이프사이언스 오시는 길과 연락처 안내입니다. 방문 전 연락 주시면 안내해 드립니다.");
+
 		return "front/company/address";
 	}
 	
@@ -231,6 +247,9 @@ public class HomeController {
 	public String productOverall(
 			Model model
 			) {
+		model.addAttribute("metaDescription",
+		        "바이온라이프사이언스가 취급하는 생명과학 실험용 기자재와 소모품 전체를 한눈에 확인하실 수 있습니다.");
+
 		return "front/product/productOverall";
 	}
 	
@@ -295,6 +314,9 @@ public class HomeController {
 
 
 	    model.addAttribute("product", product);
+	    model.addAttribute("metaDescription",
+	            SeoText.description(product.getSubject(), product.getContent(),
+	                    "BION Life Science 취급 제품 정보"));
 	    
 	    List<BrandProduct> relatedProducts = new ArrayList<>();
 	    
@@ -355,7 +377,10 @@ public class HomeController {
 	    model.addAttribute("partnerBrands",
 	        brandRepository.findAllByTypeOrderByNameAsc(Brand.BrandType.PARTNER));
 
-	    return "front/brand/brandOverview";
+	    model.addAttribute("metaDescription",
+		        "바이온라이프사이언스가 취급하는 국내외 생명과학 브랜드와 자체 브랜드 BIOTREAT 제품을 소개합니다.");
+
+		return "front/brand/brandOverview";
 	}
 	
 	
@@ -443,6 +468,10 @@ public class HomeController {
 	    model.addAttribute("sort", "brand");
 	    model.addAttribute("id", id);
 
+	    model.addAttribute("metaDescription",
+	            SeoText.description(brand.getName(), brand.getDesc(),
+	                    "BION Life Science 자사브랜드"));
+
 	    return "front/brand/ownBrandDetail";
 	}
 
@@ -483,7 +512,10 @@ public class HomeController {
 	    model.addAttribute("size", size);
 	    model.addAttribute("searchText", searchText);
 
-	    return "front/notice/notice";
+	    model.addAttribute("metaDescription",
+		        "바이온라이프사이언스의 공지사항과 신제품·세미나 소식을 안내합니다.");
+
+		return "front/notice/notice";
 	}
 
 
@@ -494,6 +526,9 @@ public class HomeController {
 			) {
 		
 		model.addAttribute("file",referenceFileRepository.findAll());
+		model.addAttribute("metaDescription",
+		        "제품 카탈로그, 시험성적서 등 바이온라이프사이언스가 제공하는 참고자료를 내려받으실 수 있습니다.");
+
 		return "front/customer/references";
 	}
 	

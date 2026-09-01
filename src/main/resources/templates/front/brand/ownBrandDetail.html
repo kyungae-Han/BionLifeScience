@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="ko" xmlns:th="http://www.thymeleaf.org" class="brand-page">
 
-<head th:replace="~{/fragments/front/common :: headSrc('바이온라이프사이언스 기업소개')}">
+<head th:replace="~{/fragments/front/common :: headSrc(${brand != null ? brand.name + ' | BION Life Science' : '자사브랜드 | BION Life Science'})}">
 </head>
 <link rel="stylesheet" th:href="@{/front/css/imports/brand.css}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">

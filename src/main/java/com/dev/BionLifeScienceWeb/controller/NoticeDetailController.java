@@ -13,6 +13,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import lombok.RequiredArgsConstructor;
 
+import com.dev.BionLifeScienceWeb.util.SeoText;
+
 
 @Controller
 @RequiredArgsConstructor
@@ -40,6 +42,10 @@ public class NoticeDetailController {
             next = noticeRepository
                   .findTopByNoticeSubject_IdAndIdGreaterThanOrderByIdAsc(subjectId, id);
         }
+
+        model.addAttribute("metaDescription",
+                SeoText.description(cur.getSubject(), cur.getContent(),
+                        "BION Life Science 공지사항"));
 
         model.addAttribute("prevNotice", prev.orElse(null));
         model.addAttribute("nextNotice", next.orElse(null));

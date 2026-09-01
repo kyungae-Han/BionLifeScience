@@ -26,3 +26,7 @@ Disallow: /test/
 # 🚫 불필요한 파라미터 URL 중복 색인 방지
 Disallow: /*?*page=
 Disallow: /*?*sort=
+# =====================================================
+# 사이트맵
+# =====================================================
+Sitemap: https://bionlifescience.com/sitemap.xml
