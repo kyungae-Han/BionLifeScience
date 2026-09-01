@@ -19,6 +19,18 @@ server:
         secure: true
   tomcat:
     max-http-form-post-size: 1000MB		 				
+
+# SEO 설정 (전 프로필 공통)
+app:
+  # canonical / og:url / sitemap.xml 의 절대 URL 기준
+  base-url: https://bionlifescience.com
+  verification:
+    # 네이버 서치어드바이저 > 사이트 소유확인
+    naver: 9514eb1c8c3941a3324eca020991e321ced120e2
+    # 구글 서치콘솔 > 소유권 확인 > HTML 태그 에서 발급받은 content 값만 붙여넣기
+    # (비워두면 meta 태그가 아예 출력되지 않음)
+    google: ""
+
 # 개발 환경
 --- 
 spring:

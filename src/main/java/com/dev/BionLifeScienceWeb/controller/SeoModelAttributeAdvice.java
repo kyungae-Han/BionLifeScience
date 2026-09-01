@@ -19,6 +19,24 @@ public class SeoModelAttributeAdvice {
 	@Value("${app.base-url:https://bionlifescience.com}")
 	private String baseUrl;
 
+	/** 네이버 서치어드바이저 소유확인 코드. application.yml 의 app.verification.naver */
+	@Value("${app.verification.naver:}")
+	private String naverVerification;
+
+	/** 구글 서치콘솔 소유확인 코드. application.yml 의 app.verification.google */
+	@Value("${app.verification.google:}")
+	private String googleVerification;
+
+	@ModelAttribute("naverVerification")
+	public String naverVerification() {
+		return naverVerification;
+	}
+
+	@ModelAttribute("googleVerification")
+	public String googleVerification() {
+		return googleVerification;
+	}
+
 	@ModelAttribute("canonicalUrl")
 	public String canonicalUrl(HttpServletRequest request) {
 		String uri = request.getRequestURI();

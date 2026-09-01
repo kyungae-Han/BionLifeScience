@@ -19,7 +19,14 @@
 <meta property="og:image" content="https://bionlifescience.com/front/image/logo/logo_one.png">
 <meta property="og:site_name" content="BION Life Science">
 <meta property="og:locale" content="ko_KR">
-<meta name="naver-site-verification" content="9514eb1c8c3941a3324eca020991e321ced120e2" />
+<!-- 검색엔진 사이트 소유확인. 값은 application.yml 의 app.verification.* 에서 관리 -->
+<meta name="naver-site-verification"
+      th:if="${naverVerification != null and !naverVerification.isEmpty()}"
+      th:content="${naverVerification}"
+      content="9514eb1c8c3941a3324eca020991e321ced120e2" />
+<meta name="google-site-verification"
+      th:if="${googleVerification != null and !googleVerification.isEmpty()}"
+      th:content="${googleVerification}" />
 
 
 <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700|Poppins:300,400,500,600,700|PT+Serif:400,400i&display=swap" rel="stylesheet" type="text/css" />
