@@ -1,0 +1,26 @@
+# 로컬 개발용 PostgreSQL.
+#   docker compose up -d     # 시작
+#   docker compose down      # 정지 (데이터는 남음)
+#   docker compose down -v   # 정지 + 데이터 삭제
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: rankradar-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: rankradar
+      POSTGRES_PASSWORD: rankradar
+      POSTGRES_DB: rankradar
+      TZ: Asia/Seoul
+    ports:
+      - "5432:5432"
+    volumes:
+      - rankradar-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rankradar"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  rankradar-pgdata:

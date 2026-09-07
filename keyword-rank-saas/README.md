@@ -23,19 +23,85 @@ Next.js 15 (App Router) 풀스택 · TypeScript · Prisma · PostgreSQL.
 
 ---
 
-## 2. 로컬 실행
+## 2. 로컬에서 실행하기
+
+준비물은 **Node 20.6 이상** 하나뿐입니다 (`node -v` 로 확인). DB 는 아래 A/B 중 하나만 고르면 됩니다.
+
+### 2-1. DB 준비 — A안: 도커 (권장, 설치·삭제가 깔끔)
 
 ```bash
-cp .env.example .env      # 값 채우기 (아래 3번 참고)
-npm install
-npx prisma migrate dev    # 또는 prisma/sql/001_init.sql 직접 실행
-npm run db:seed           # (선택) 데모 데이터 30일치 생성
-npm run dev               # http://localhost:3000
+docker compose up -d          # PostgreSQL 16 이 localhost:5432 에 뜬다
 ```
 
-시드 계정: `demo@rankradar.test` / `demo1234`
+`docker-compose.yml` 이 들어있어 계정·DB(`rankradar` / `rankradar`)까지 자동 생성됩니다.
+나중에 정리할 땐 `docker compose down -v` (데이터까지 삭제).
 
----
+### 2-1. DB 준비 — B안: 클라우드 무료 DB (도커 설치가 부담될 때)
+
+[Neon](https://neon.tech) 또는 [Supabase](https://supabase.com) 에서 무료 PostgreSQL 을
+만들고 접속 문자열만 복사해 옵니다. 설치할 게 전혀 없습니다.
+
+### 2-2. 환경변수 파일 만들기
+
+```bash
+cp .env.example .env          # Windows PowerShell: copy .env.example .env
+```
+
+`.env` 를 열어 `AUTH_SECRET` 과 `CRON_SECRET` 을 **랜덤 값으로 바꿉니다.**
+(`AUTH_SECRET` 이 32자 미만이면 로그인 시 에러가 납니다.)
+
+```bash
+# 운영체제 상관없이 동작하는 생성 방법
+node -e "console.log(require('crypto').randomBytes(48).toString('base64'))"   # AUTH_SECRET
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"      # CRON_SECRET
+```
+
+A안(도커)을 골랐다면 `DATABASE_URL` 은 `.env.example` 값 그대로 두면 되고,
+B안(클라우드)이면 발급받은 접속 문자열로 바꿉니다.
+
+검색엔진 API 키는 **지금 비워둬도 됩니다.** 키가 없는 엔진은 데모 데이터로 동작합니다.
+
+### 2-3. 설치 · DB 스키마 · 실행
+
+```bash
+npm install
+npm run db:push     # 스키마를 DB에 반영 (첫 실행 시)
+npm run db:seed     # 데모 조직/키워드 + 30일치 순위 이력 생성
+npm run dev         # http://localhost:3000
+```
+
+브라우저에서 <http://localhost:3000> 을 열고 **로그인**에 아래 계정을 넣으면
+데이터가 채워진 대시보드가 바로 보입니다.
+
+```
+demo@rankradar.test / demo1234
+```
+
+> 처음부터 다시 만들고 싶으면 `npm run db:reset` (DB 를 비우고 시드까지 다시 실행).
+
+### 2-4. 자주 막히는 곳
+
+| 증상 | 원인 / 해결 |
+|---|---|
+| `AUTH_SECRET 환경변수가 없거나 32자 미만입니다` | `.env` 의 `AUTH_SECRET` 을 위 명령으로 만든 긴 값으로 교체 |
+| `Can't reach database server at localhost:5432` | 도커가 안 떠 있음 → `docker compose up -d` 후 `docker compose ps` 로 상태 확인 |
+| `Environment variable not found: DATABASE_URL` | `.env` 파일이 없음(이름이 `.env.example` 그대로이거나 `.env.txt` 로 저장됨) |
+| 포트 3000 이 이미 사용 중 | `npm run dev -- -p 3001` 처럼 포트 지정 |
+| `--env-file` 관련 에러 | Node 20.6 미만. Node 20 LTS 이상으로 업그레이드 |
+| 순위가 전부 그럴듯한 가짜 값 | 정상입니다. API 키를 안 넣은 상태(데모 모드). 설정 화면에서 엔진별 상태 확인 |
+
+### 2-5. 실제 검색 순위로 바꾸기
+
+`.env` 에 키를 넣고 `npm run dev` 를 다시 시작하면 됩니다. 하나만 넣어도 그 엔진만
+실제 순위로 바뀌고 나머지는 데모로 남습니다. 발급처는 아래 3번 표 참고.
+
+```bash
+NAVER_CLIENT_ID="..."         # 네이버 웹문서·블로그
+NAVER_CLIENT_SECRET="..."
+KAKAO_REST_API_KEY="..."      # 다음
+GOOGLE_API_KEY="..."          # 구글
+GOOGLE_SEARCH_ENGINE_ID="..."
+```
 
 ## 3. 환경변수
 
@@ -119,6 +185,7 @@ curl -H "Authorization: Bearer $CRON_SECRET" https://<도메인>/api/cron/collec
 ## 7. 주요 디렉터리
 
 ```
+docker-compose.yml     로컬 개발용 PostgreSQL
 prisma/
   schema.prisma        데이터 모델
   sql/001_init.sql     전체 DDL (직접 실행용)
