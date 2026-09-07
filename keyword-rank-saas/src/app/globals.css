@@ -1,0 +1,247 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────────
+   디자인 토큰
+   데이터 시각화 팔레트(검증된 기본값)를 그대로 사용한다.
+   시리즈 색은 "검색영역"이라는 개체에 고정되며 순위/필터로 바뀌지 않는다.
+   ────────────────────────────────────────────────────────────── */
+:root {
+  color-scheme: light;
+
+  --plane: #f9f9f7;
+  --surface: #fcfcfb;
+  --surface-2: #f3f2ee;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --line: #e1e0d9;
+  --axis: #c3c2b7;
+  --ring: rgba(11, 11, 11, 0.1);
+
+  --accent: #2a78d6;
+  --accent-ink: #ffffff;
+  --accent-soft: #e8f1fd;
+
+  --series-1: #2a78d6; /* 네이버 웹문서 */
+  --series-2: #eb6834; /* 네이버 블로그 */
+  --series-3: #1baf7a; /* 구글 */
+  --series-4: #eda100; /* 다음 웹문서 */
+
+  --good: #0ca30c;
+  --good-text: #006300;
+  --warning: #fab219;
+  --critical: #d03b3b;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --plane: #0d0d0d;
+    --surface: #1a1a19;
+    --surface-2: #232321;
+    --ink: #ffffff;
+    --ink-2: #c3c2b7;
+    --muted: #898781;
+    --line: #2c2c2a;
+    --axis: #383835;
+    --ring: rgba(255, 255, 255, 0.1);
+
+    --accent: #3987e5;
+    --accent-ink: #0b0b0b;
+    --accent-soft: #16233a;
+
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+
+    --good: #0ca30c;
+    --good-text: #0ca30c;
+    --warning: #fab219;
+    --critical: #d03b3b;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --plane: #0d0d0d;
+  --surface: #1a1a19;
+  --surface-2: #232321;
+  --ink: #ffffff;
+  --ink-2: #c3c2b7;
+  --muted: #898781;
+  --line: #2c2c2a;
+  --axis: #383835;
+  --ring: rgba(255, 255, 255, 0.1);
+
+  --accent: #3987e5;
+  --accent-ink: #0b0b0b;
+  --accent-soft: #16233a;
+
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+
+  --good: #0ca30c;
+  --good-text: #0ca30c;
+  --warning: #fab219;
+  --critical: #d03b3b;
+}
+
+/* Tailwind 유틸리티(bg-surface, text-ink ...)가 위 변수를 따라가도록 매핑 */
+@theme inline {
+  --color-plane: var(--plane);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-axis: var(--axis);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-good: var(--good);
+  --color-good-text: var(--good-text);
+  --color-warning: var(--warning);
+  --color-critical: var(--critical);
+  --font-sans: system-ui, -apple-system, "Segoe UI", "Apple SD Gothic Neo",
+    "Noto Sans KR", sans-serif;
+}
+
+* {
+  border-color: var(--line);
+}
+
+html,
+body {
+  background: var(--plane);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── 공통 컴포넌트 ─────────────────────────────────────────── */
+@layer components {
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    height: 38px;
+    padding: 0 14px;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 0.12s ease, border-color 0.12s ease;
+  }
+  .btn:hover:not(:disabled) {
+    background: var(--surface-2);
+  }
+  .btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--accent-ink);
+  }
+  .btn-primary:hover:not(:disabled) {
+    filter: brightness(1.06);
+    background: var(--accent);
+  }
+  .btn-sm {
+    height: 32px;
+    padding: 0 10px;
+    font-size: 13px;
+  }
+  .btn-danger {
+    color: var(--critical);
+  }
+
+  .field {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 9px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 14px;
+  }
+  textarea.field {
+    height: auto;
+    padding: 10px 12px;
+    line-height: 1.6;
+  }
+  .field:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -1px;
+  }
+  .label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-2);
+    margin-bottom: 6px;
+  }
+  .hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 26px;
+    padding: 0 10px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-2);
+    background: var(--surface);
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .table th {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  .table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--line);
+    vertical-align: middle;
+  }
+  .table tbody tr:hover {
+    background: var(--surface-2);
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+}

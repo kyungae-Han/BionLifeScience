@@ -1,0 +1,156 @@
+// 키워드 검색순위 추적 SaaS - 데이터 모델
+// 멀티테넌트: 모든 업무 데이터는 Organization(테넌트) 하위에 귀속된다.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// 요금제 등급
+enum PlanTier {
+  FREE
+  PRO
+  BUSINESS
+}
+
+/// 조직 내 권한
+enum MemberRole {
+  OWNER // 결제/조직삭제 포함 전체 권한
+  ADMIN // 프로젝트/키워드 관리
+  MEMBER // 조회 전용
+}
+
+/// 순위를 수집할 검색 영역
+enum SearchEngine {
+  NAVER_WEB // 네이버 웹문서
+  NAVER_BLOG // 네이버 블로그
+  GOOGLE // 구글 웹검색
+  DAUM_WEB // 다음(카카오) 웹문서
+}
+
+/// 순위 수집 방식 (실 API 호출인지 데모 데이터인지)
+enum RankSource {
+  API
+  DEMO
+}
+
+/// 수집 배치 실행 상태
+enum RunStatus {
+  RUNNING
+  SUCCESS
+  FAILED
+}
+
+/// 테넌트(고객사)
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  plan      PlanTier @default(FREE)
+  planSince DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users    User[]
+  projects Project[]
+  runs     CollectRun[]
+
+  @@map("organization")
+}
+
+/// 조직 소속 사용자 (로그인 주체)
+model User {
+  id           String     @id @default(cuid())
+  orgId        String
+  email        String     @unique
+  passwordHash String
+  name         String
+  role         MemberRole @default(MEMBER)
+  active       Boolean    @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  org Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+
+  @@index([orgId])
+  @@map("app_user")
+}
+
+/// 추적 대상 사이트 1개 = 프로젝트 1개
+model Project {
+  id           String   @id @default(cuid())
+  orgId        String
+  name         String
+  targetDomain String // 순위 판정 기준 도메인 (예: bionlifescience.com)
+  memo         String?
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  org      Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  keywords Keyword[]
+
+  @@index([orgId])
+  @@map("project")
+}
+
+/// 추적 키워드
+model Keyword {
+  id        String         @id @default(cuid())
+  projectId String
+  text      String
+  engines   SearchEngine[] // 이 키워드에서 수집할 검색 영역
+  active    Boolean        @default(true)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+
+  project   Project        @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  snapshots RankSnapshot[]
+
+  @@unique([projectId, text])
+  @@index([projectId])
+  @@map("keyword")
+}
+
+/// 특정 날짜/검색영역의 순위 스냅샷 (키워드+엔진+날짜 당 1건)
+model RankSnapshot {
+  id         String       @id @default(cuid())
+  keywordId  String
+  engine     SearchEngine
+  checkedOn  DateTime     @db.Date // 수집 기준일
+  checkedAt  DateTime     @default(now()) // 실제 수집 시각
+  rank       Int? // null = 조회 범위 내 미노출
+  foundUrl   String?
+  foundTitle String?
+  source     RankSource   @default(API)
+
+  keyword Keyword @relation(fields: [keywordId], references: [id], onDelete: Cascade)
+
+  @@unique([keywordId, engine, checkedOn])
+  @@index([keywordId, checkedOn])
+  @@map("rank_snapshot")
+}
+
+/// 일괄 수집 배치 실행 이력
+model CollectRun {
+  id         String    @id @default(cuid())
+  orgId      String?
+  status     RunStatus @default(RUNNING)
+  triggeredBy String   @default("cron") // cron | manual:{userId}
+  totalCount Int       @default(0)
+  okCount    Int       @default(0)
+  failCount  Int       @default(0)
+  message    String?
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+
+  org Organization? @relation(fields: [orgId], references: [id], onDelete: SetNull)
+
+  @@index([orgId, startedAt])
+  @@map("collect_run")
+}
