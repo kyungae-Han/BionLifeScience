@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/admin/common :: headMenu}">
+</head>
+
+<body>
+	<section id="container">
+
+		<th:block th:replace="~{fragments/admin/common :: headMenu}"></th:block>
+
+		<th:block th:replace="~{fragments/admin/common :: sideMenu('enName')}"></th:block>
+
+		<section id="main-content">
+			<section class="wrapper">
+				<div class="row mt">
+					<div class="col-lg-11">
+						<h4><i class="fa fa-angle-right"></i> 영문명 관리</h4>
+						<span class="alsert-messate">
+							* 사이트 오른쪽 위 ENG 를 눌렀을 때 보일 이름입니다. 비워 두면 그 자리에는 한글 이름이 그대로 나갑니다.
+						</span><br>
+
+						<div class="form-panel">
+							<div style="margin-bottom:12px;">
+								<input type="text" id="filter" class="form-control" style="max-width:320px;"
+									   placeholder="한글명으로 걸러보기">
+							</div>
+
+							<form role="form" action="/admin/enNameManager" method="POST" class="style-form">
+
+								<h5 style="margin-top:10px;"><b>브랜드</b></h5>
+								<table class="table table-bordered">
+									<thead>
+									<tr>
+										<th style="width:70px;">ID</th>
+										<th style="width:35%;">한글명</th>
+										<th>영문명</th>
+									</tr>
+									</thead>
+									<tbody>
+										<tr th:if="${#lists.isEmpty(brands)}"><td colspan="3">등록된 브랜드가 없습니다.</td></tr>
+										<tr th:each="b : ${brands}" class="en-row">
+											<td th:text="${b.id}"></td>
+											<td class="ko-name" th:text="${b.name}"></td>
+											<td><input type="text" class="form-control"
+													   th:name="'brand.' + ${b.id}" th:value="${b.nameEn}"
+													   placeholder="Brand name in English"></td>
+										</tr>
+									</tbody>
+								</table>
+
+								<h5 style="margin-top:24px;"><b>대분류</b></h5>
+								<table class="table table-bordered">
+									<thead>
+									<tr>
+										<th style="width:70px;">ID</th>
+										<th style="width:35%;">한글명</th>
+										<th>영문명</th>
+									</tr>
+									</thead>
+									<tbody>
+										<tr th:if="${#lists.isEmpty(bigSorts)}"><td colspan="3">등록된 대분류가 없습니다.</td></tr>
+										<tr th:each="s : ${bigSorts}" class="en-row">
+											<td th:text="${s.id}"></td>
+											<td class="ko-name" th:text="${s.name}"></td>
+											<td><input type="text" class="form-control"
+													   th:name="'bigSort.' + ${s.id}" th:value="${s.nameEn}"></td>
+										</tr>
+									</tbody>
+								</table>
+
+								<h5 style="margin-top:24px;"><b>중분류</b></h5>
+								<table class="table table-bordered">
+									<thead>
+									<tr>
+										<th style="width:70px;">ID</th>
+										<th style="width:35%;">한글명</th>
+										<th>영문명</th>
+									</tr>
+									</thead>
+									<tbody>
+										<tr th:if="${#lists.isEmpty(middleSorts)}"><td colspan="3">등록된 중분류가 없습니다.</td></tr>
+										<tr th:each="s : ${middleSorts}" class="en-row">
+											<td th:text="${s.id}"></td>
+											<td class="ko-name" th:text="${s.name}"></td>
+											<td><input type="text" class="form-control"
+													   th:name="'middleSort.' + ${s.id}" th:value="${s.nameEn}"></td>
+										</tr>
+									</tbody>
+								</table>
+
+								<h5 style="margin-top:24px;"><b>소분류</b></h5>
+								<table class="table table-bordered">
+									<thead>
+									<tr>
+										<th style="width:70px;">ID</th>
+										<th style="width:35%;">한글명</th>
+										<th>영문명</th>
+									</tr>
+									</thead>
+									<tbody>
+										<tr th:if="${#lists.isEmpty(smallSorts)}"><td colspan="3">등록된 소분류가 없습니다.</td></tr>
+										<tr th:each="s : ${smallSorts}" class="en-row">
+											<td th:text="${s.id}"></td>
+											<td class="ko-name" th:text="${s.name}"></td>
+											<td><input type="text" class="form-control"
+													   th:name="'smallSort.' + ${s.id}" th:value="${s.nameEn}"></td>
+										</tr>
+									</tbody>
+								</table>
+
+								<h5 style="margin-top:24px;"><b>제품</b></h5>
+								<table class="table table-bordered">
+									<thead>
+									<tr>
+										<th style="width:70px;">ID</th>
+										<th style="width:35%;">한글 제품명</th>
+										<th>영문 제품명</th>
+									</tr>
+									</thead>
+									<tbody>
+										<tr th:if="${#lists.isEmpty(products)}"><td colspan="3">등록된 제품이 없습니다.</td></tr>
+										<tr th:each="p : ${products}" class="en-row">
+											<td th:text="${p.id}"></td>
+											<td class="ko-name" th:text="${p.subject}"></td>
+											<td><input type="text" class="form-control"
+													   th:name="'product.' + ${p.id}" th:value="${p.subjectEn}"></td>
+										</tr>
+									</tbody>
+								</table>
+
+								<div style="margin:20px 0 40px;">
+									<button class="btn btn-theme" type="submit">저장</button>
+									<span class="help-block">* 화면에 있는 모든 칸을 한 번에 저장합니다.</span>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+	</section>
+
+	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
+	<script th:inline="javascript">
+		var message = /*[[${message}]]*/ null;
+		if (message) { alert(message); }
+
+		// 항목이 많아지면 한글명으로 걸러 찾는다
+		document.getElementById('filter').addEventListener('input', function () {
+			var word = this.value.trim().toLowerCase();
+			document.querySelectorAll('tr.en-row').forEach(function (row) {
+				var ko = (row.querySelector('.ko-name').textContent || '').toLowerCase();
+				row.style.display = (word === '' || ko.indexOf(word) >= 0) ? '' : 'none';
+			});
+		});
+	</script>
+</body>
+
+</html>

@@ -6,6 +6,12 @@ spring:
     active: prod
   thymeleaf:
     cache: false
+  # 화면 문구 번역. messages.properties(한글) / messages_en.properties(영문)
+  messages:
+    basename: messages
+    encoding: UTF-8
+    # 서버 로케일을 따라가지 않게 한다. 영문이 없으면 한글로 떨어진다
+    fallback-to-system-locale: false
 server:
   port: 8080
   servlet:

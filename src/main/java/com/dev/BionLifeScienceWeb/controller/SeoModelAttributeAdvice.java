@@ -43,6 +43,36 @@ public class SeoModelAttributeAdvice {
 		return googleVerification;
 	}
 
+	/**
+	 * 언어 전환 링크의 앞부분. 보던 화면과 검색조건을 그대로 두고 lang 만 바꾸기 위한 것이다.
+	 * "/brandList?page=2&" 처럼 항상 파라미터를 이어 붙일 수 있는 모양으로 돌려준다.
+	 */
+	@ModelAttribute("langSwitchBase")
+	public String langSwitchBase(HttpServletRequest request) {
+		String uri = request.getRequestURI();
+		if (uri == null || uri.isEmpty()) {
+			uri = "/";
+		}
+
+		String query = request.getQueryString();
+		if (query == null || query.isBlank()) {
+			return uri + "?";
+		}
+
+		// 이미 붙어 있는 lang 은 빼고 다시 붙인다. 두 번 붙으면 앞의 값이 이긴다.
+		StringBuilder kept = new StringBuilder();
+		for (String pair : query.split("&")) {
+			if (pair.isEmpty() || pair.equals("lang") || pair.startsWith("lang=")) {
+				continue;
+			}
+			if (kept.length() > 0) {
+				kept.append('&');
+			}
+			kept.append(pair);
+		}
+		return kept.length() == 0 ? uri + "?" : uri + "?" + kept + "&";
+	}
+
 	@ModelAttribute("canonicalUrl")
 	public String canonicalUrl(HttpServletRequest request) {
 		String uri = request.getRequestURI();

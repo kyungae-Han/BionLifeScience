@@ -25,6 +25,10 @@ public class BrandMiddleSort {
 	@Column(name="BRAND_MIDDLESORT_NAME")
 	private String name;
 	
+	/** 영문 화면용. 비어 있으면 한글이 그대로 나간다 */
+	@Column(name="BRAND_MIDDLESORT_NAME_EN")
+	private String nameEn;
+	
 	@Transient
 	private Long brandBigSortId;
 	

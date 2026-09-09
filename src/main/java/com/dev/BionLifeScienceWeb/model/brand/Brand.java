@@ -30,8 +30,15 @@ public class Brand {
 	@Column(name="BRAND_NAME")
 	private String name;
 	
+	/** 영문 화면에서 쓰는 이름. 비어 있으면 한글 이름이 그대로 나간다 */
+	@Column(name="BRAND_NAME_EN")
+	private String nameEn;
+	
 	@Column(name="BRAND_CONTENT")
 	private String content;
+	
+	@Column(name="BRAND_CONTENT_EN")
+	private String contentEn;
 	
 	@Column(name="BRAND_IMAGE_PATH", nullable=false, length=255)
 	private String imagePath;
@@ -78,6 +85,10 @@ public class Brand {
 	@Lob
 	@Column(name = "BRAND_DESC", columnDefinition="LONGTEXT")
 	private String desc;
+	
+	@Lob
+	@Column(name = "BRAND_DESC_EN", columnDefinition="LONGTEXT")
+	private String descEn;
 	
 	@OneToMany(mappedBy = "brand", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
 	@com.fasterxml.jackson.annotation.JsonIgnore

@@ -10,11 +10,11 @@
 
 
 <link rel="canonical" th:href="${canonicalUrl}" href="https://bionlifescience.com/" />
-<meta name="description" th:content="${metaDescription} ?: 'BION Life Science — 연구자와 함께 성장하는 바이온의 브랜드 포털'" content="BION Life Science — 연구자와 함께 성장하는 바이온의 브랜드 포털" />
+<meta name="description" th:content="${metaDescription} ?: #{site.description}" content="BION Life Science — 연구자와 함께 성장하는 바이온의 브랜드 포털" />
 
 <meta property="og:type" content="website">
 <meta property="og:title" th:content="${title}" content="바이온라이프사이언스">
-<meta property="og:description" th:content="${metaDescription} ?: 'BION Life Science — 연구자와 함께 성장하는 바이온의 브랜드 포털'" content="BION Life Science — 연구자와 함께 성장하는 바이온의 브랜드 포털">
+<meta property="og:description" th:content="${metaDescription} ?: #{site.description}" content="BION Life Science — 연구자와 함께 성장하는 바이온의 브랜드 포털">
 <meta property="og:url" th:content="${canonicalUrl}" content="https://bionlifescience.com/">
 <meta property="og:image" content="https://bionlifescience.com/front/image/logo/logo_one.png">
 <meta property="og:site_name" content="BION Life Science">
@@ -82,7 +82,7 @@
 										<div class="header-misc search-wrap-mobile" id="search-wrap">
 											<form class="top-search-form-mobile" action="/searchAll" method="get" id="top-search-form">
 												<div>
-													<input type="text" name="searchWord" class="form-control" required="required" placeholder="검색어를 입력 하세요." autocomplete="off"> <span class="search-btn" id="search-btn"><i
+													<input type="text" name="searchWord" class="form-control" required="required" th:placeholder="#{nav.search.placeholder}" placeholder="검색어를 입력 하세요." autocomplete="off"> <span class="search-btn" id="search-btn"><i
 														class="icon-line-search"></i></span>
 												</div>
 											</form>
@@ -90,7 +90,7 @@
 										  <ul class="pe-1 h-100 mobile-menu-scroll">
 										    <li class="menu-item">
 										      <a class="menu-link" href="#">
-										        <div>제품</div>
+										        <div th:text="#{nav.product}">제품</div>
 										      </a>
 										      <ul class="mega-menu-content">
 										
@@ -99,7 +99,7 @@
 										            th:each="b:${ownBrands}"
 										            th:attr="data-id=${'brand-' + b.id}">
 										          <a class="menu-link" th:href="@{|/brandList/own/${b.id}|}">
-										            <div><i class="icon-stack"></i><div th:text="${b.name}"></div></div>
+										            <div><i class="icon-stack"></i><div th:text="${@enText.pick(b.name, b.nameEn)}"></div></div>
 										          </a>
 										        </li>
 										        <!-- /OWN -->
@@ -107,20 +107,20 @@
 										        <!-- PARTNER 그룹 (취급브랜드) -->
 										        <li class="menu-item">
 										          <a class="menu-link" href="/brandList">
-										            <div><i class="icon-stack"></i> 취급브랜드</div>
+										            <div><i class="icon-stack"></i> <span th:text="#{nav.brand.partner}">취급브랜드</span></div>
 										          </a>
 										
 										          <ul class="sub-menu-container sub-menu-items">
 										            <li class="menu-item"
 										                th:each="pb : ${partnerBrands}"
 													    th:attr="data-id=${'brand-' + pb.id}, data-parent='partner', 
-													             data-name=${pb.name}, data-desc=${pb.desc}, data-image=${pb.imageRoad}">
+													             data-name=${@enText.pick(pb.name, pb.nameEn)}, data-desc=${@enText.pick(pb.desc, pb.descEn)}, data-image=${pb.imageRoad}">
 													  <a class="menu-link brand-link" href="javascript:void(0);" 
 														   th:data-id="${pb.id}"
-														   th:data-name="${pb.name}"
+														   th:data-name="${@enText.pick(pb.name, pb.nameEn)}"
 														   th:data-page="${pageType}"
 														   th:data-url="@{'/brand/' + ${pb.id} + '/products'}">
-													    <div th:text="${pb.name}">Brand Name</div>
+													    <div th:text="${@enText.pick(pb.name, pb.nameEn)}">Brand Name</div>
 													  </a>
 																				
 										              <ul class="sub-menu-container">
@@ -128,7 +128,7 @@
 										                    th:each="bb : ${menuList.brandBigSortList}"
 										                    th:if="${bb.brand.id == pb.id}">
 										                  <a class="menu-link" th:href="@{|/brandProductSorted/main/${bb.id}|}">
-										                    <div th:text="${bb.name}">BigSort</div>
+										                    <div th:text="${@enText.pick(bb.name, bb.nameEn)}">BigSort</div>
 										                  </a>
 										
 										                  <ul class="sub-menu-container">
@@ -136,7 +136,7 @@
 										                        th:each="bm:${menuList.brandMiddleSortList}"
 										                        th:if="${bm.bigSort.id == bb.id}">
 										                      <a class="menu-link" th:href="@{|/brandProductSorted/middle/${bm.id}|}">
-										                        <div th:text="${bm.name}">MiddleSort</div>
+										                        <div th:text="${@enText.pick(bm.name, bm.nameEn)}">MiddleSort</div>
 										                      </a>
 										
 										                      <ul class="sub-menu-container left-container">
@@ -144,7 +144,7 @@
 										                            th:each="bs:${menuList.brandSmallSortList}"
 										                            th:if="${bs.middleSort.id == bm.id}">
 										                          <a class="menu-link" th:href="@{|/brandProductSorted/sub/${bs.id}|}">
-										                            <div th:text="${bs.name}">SmallSort</div>
+										                            <div th:text="${@enText.pick(bs.name, bs.nameEn)}">SmallSort</div>
 										                          </a>
 										
 										                          <ul class="sub-menu-container">
@@ -152,7 +152,7 @@
 										                                th:each="bp:${menuList.brandProductList}"
 										                                th:if="${bp.smallSort.id == bs.id}">
 										                              <a class="menu-link" th:href="@{|/brandProductDetail/${bp.id}|}">
-										                                <div th:text="${bp.subject}">Product</div>
+										                                <div th:text="${@enText.pick(bp.subject, bp.subjectEn)}">Product</div>
 										                              </a>
 										                            </li>
 										                          </ul>
@@ -181,10 +181,10 @@
 										    </li>
 										
 										    <li class="menu-item"><a class="menu-link" href="/rnd"><div>R&D</div></a></li>
-										    <li class="menu-item"><a class="menu-link" href="/references"><div>자료실</div></a></li>
-										    <li class="menu-item"><a class="menu-link" id="js-open-contact"><div>고객지원</div></a></li>
-										    <li class="menu-item customer__center"><a class="menu-link" href="/noticeList"><div>공지사항</div></a></li>
-										    <li class="menu-item"><a class="menu-link" href="/about"><div>회사소개</div></a></li>
+										    <li class="menu-item"><a class="menu-link" href="/references"><div th:text="#{nav.reference}">자료실</div></a></li>
+										    <li class="menu-item"><a class="menu-link" id="js-open-contact"><div th:text="#{nav.support}">고객지원</div></a></li>
+										    <li class="menu-item customer__center"><a class="menu-link" href="/noticeList"><div th:text="#{nav.notice}">공지사항</div></a></li>
+										    <li class="menu-item"><a class="menu-link" href="/about"><div th:text="#{nav.about}">회사소개</div></a></li>
 										    
 										  </ul>
 									  </div>
@@ -193,19 +193,19 @@
 								<div class="nav is-desktop">
 									<ul class="menu-container">
 										<li class="menu-item gnb-li brand"><a class="menu-link" href="#">
-												<div class="gnb-menu">제품</div>
+												<div class="gnb-menu" th:text="#{nav.product}">제품</div>
 										</a></li>
 										<li class="menu-item gnb-li"><a class="menu-link" href="/rnd">
 												<div class="gnb-menu">R&D</div>
 										</a></li>
 										<li class="menu-item gnb-li"><a class="menu-link" href="/references">
-												<div class="gnb-menu">자료실</div>
+												<div class="gnb-menu" th:text="#{nav.reference}">자료실</div>
 										</a></li>
 										<li class="menu-item gnb-li"><a class="menu-link" id="js-open-contact">
-												<div class="gnb-menu">고객지원</div>
+												<div class="gnb-menu" th:text="#{nav.support}">고객지원</div>
 										</a></li>
 										<li class="menu-item gnb-li"><a class="menu-link" href="/about">
-												<div class="gnb-menu">회사소개</div>
+												<div class="gnb-menu" th:text="#{nav.about}">회사소개</div>
 										</a></li>
 									</ul>
 								</div>
@@ -214,15 +214,19 @@
 							
 							<div class="header-misc primary-menu search-wrap-desktop" id="search-wrap">
 								<div id="top-search" class="header-misc-icon">
-									<a href="#" id="top-search-trigger"><i class="icon-line-search"></i><i class="icon-line-cross"></i>검색</a>
+									<a href="#" id="top-search-trigger"><i class="icon-line-search"></i><i class="icon-line-cross"></i><span th:text="#{nav.search}">검색</span></a>
 								</div>
 								<div id="top-cart" class="header-misc-icon d-sm-block">
-									<span><a style="font-weight: 600;" href="#">ENG </a></span> <span class="slash">&#47;</span> <span><a class="active" style="font-weight: 600;" href="#"> KOR</a></span>
+									<span><a style="font-weight: 600;" href="?lang=en"
+										   th:href="${langSwitchBase} + 'lang=en'"
+										   th:class="${#locale.language == 'en'} ? 'active' : ''">ENG </a></span> <span class="slash">&#47;</span> <span><a class="active" style="font-weight: 600;" href="?lang=ko"
+										   th:href="${langSwitchBase} + 'lang=ko'"
+										   th:class="${#locale.language != 'en'} ? 'active' : ''"> KOR</a></span>
 								</div>
 							</div>
 							<form class="top-search-form" action="/searchAll" method="get" id="top-search-form">
 								<div>
-									<input type="text" name="searchWord" class="form-control" required="required" placeholder="검색어를 입력 하세요." autocomplete="off"> <span class="search-btn" id="search-btn"><i
+									<input type="text" name="searchWord" class="form-control" required="required" th:placeholder="#{nav.search.placeholder}" placeholder="검색어를 입력 하세요." autocomplete="off"> <span class="search-btn" id="search-btn"><i
 										class="icon-line-search"></i></span>
 								</div>
 							</form>
@@ -252,14 +256,14 @@
 						            th:each="b : ${ownBrands}"
 						            th:attr="data-id=${'brand-' + b.id}">
 						          <a class="menu-link" th:href="@{|/brandList/own/${b.id}|}">
-						            <div><i class="icon-stack"></i><div th:text="${b.name}"></div></div>
+						            <div><i class="icon-stack"></i><div th:text="${@enText.pick(b.name, b.nameEn)}"></div></div>
 						          </a>
 						        </li>
 						
 						        <!-- PARTNER 그룹 -->
 						        <li class="menu-item" data-id="partner">
 						          <a class="menu-link" href="/brandList">
-						            <div><i class="icon-stack"></i> 취급브랜드</div>
+						            <div><i class="icon-stack"></i> <span th:text="#{nav.brand.partner}">취급브랜드</span></div>
 						          </a>
 						        </li>
 						        
@@ -279,13 +283,13 @@
 						        <li class="menu-item"
 						            th:each="pb : ${partnerBrands}"
 								    th:attr="data-id=${'brand-' + pb.id}, data-parent='partner', 
-								             data-name=${pb.name}, data-desc=${pb.desc}, data-image=${pb.imageRoad}">
+								             data-name=${@enText.pick(pb.name, pb.nameEn)}, data-desc=${@enText.pick(pb.desc, pb.descEn)}, data-image=${pb.imageRoad}">
 								  <a class="menu-link brand-link" href="javascript:void(0);" 
 								  					   th:data-id="${pb.id}"
-													   th:data-name="${pb.name}"
+													   th:data-name="${@enText.pick(pb.name, pb.nameEn)}"
 													   th:data-page="${pageType}"
 													   th:data-url="@{'/brand/' + ${pb.id} + '/products'}">
-						            <div th:text="${pb.name}">Partner Brand</div>
+						            <div th:text="${@enText.pick(pb.name, pb.nameEn)}">Partner Brand</div>
 						          </a>
 						        </li>
 						        
@@ -294,7 +298,7 @@
 								    th:if="${bb.brand.type.name() == 'GENERIC'}"
 								    th:attr="data-id=${'big-' + bb.id}, data-parent=${'brand-' + bb.brand.id}">
 								  <a class="menu-link" th:href="@{|/brandProductSorted/main/${bb.id}|}">
-								    <div th:text="${bb.name}">BigSort</div>
+								    <div th:text="${@enText.pick(bb.name, bb.nameEn)}">BigSort</div>
 								  </a>
 								</li>
 						
@@ -304,7 +308,7 @@
 						            th:if="${bb.brand.type.name() == 'OWN'}"
 						            th:attr="data-id=${'big-' + bb.id}, data-parent=${'brand-' + bb.brand.id}">
 						          <a class="menu-link" th:href="@{|/brandProductSorted/main/${bb.id}|}">
-						            <div th:text="${bb.name}">BigSort</div>
+						            <div th:text="${@enText.pick(bb.name, bb.nameEn)}">BigSort</div>
 						          </a>
 						        </li>
 						      </ul>
@@ -317,7 +321,7 @@
 						            th:if="${bb.brand.type.name() == 'PARTNER'}"
 						            th:attr="data-id=${'big-' + bb.id}, data-parent=${'brand-' + bb.brand.id}">
 						          <a class="menu-link" th:href="@{|/brandProductSorted/main/${bb.id}|}">
-						            <div th:text="${bb.name}">BigSort</div>
+						            <div th:text="${@enText.pick(bb.name, bb.nameEn)}">BigSort</div>
 						          </a>
 						        </li>
 						        
@@ -326,7 +330,7 @@
 						            th:if="${bm.bigSort.brand.type.name() == 'GENERIC'}"
 						            th:attr="data-id=${'mid-' + bm.id}, data-parent=${'big-' + bm.bigSort.id}">
 						          <a class="menu-link" th:href="@{|/brandProductSorted/middle/${bm.id}|}">
-						            <div th:text="${bm.name}">Middle</div>
+						            <div th:text="${@enText.pick(bm.name, bm.nameEn)}">Middle</div>
 						          </a>
 						        </li>
 						        <!-- OWN: MiddleSort -->
@@ -335,7 +339,7 @@
 						            th:if="${bm.bigSort.brand.type.name() == 'OWN'}"
 						            th:attr="data-id=${'mid-' + bm.id}, data-parent=${'big-' + bm.bigSort.id}">
 						          <a class="menu-link" th:href="@{|/brandProductSorted/middle/${bm.id}|}">
-						            <div th:text="${bm.name}">Middle</div>
+						            <div th:text="${@enText.pick(bm.name, bm.nameEn)}">Middle</div>
 						          </a>
 						        </li>
 						      </ul>
@@ -348,7 +352,7 @@
 						            th:if="${bm.bigSort.brand.type.name() == 'PARTNER'}"
 						            th:attr="data-id=${'mid-' + bm.id}, data-parent=${'big-' + bm.bigSort.id}">
 						          <a class="menu-link" th:href="@{|/brandProductSorted/middle/${bm.id}|}">
-						            <div th:text="${bm.name}">Middle</div>
+						            <div th:text="${@enText.pick(bm.name, bm.nameEn)}">Middle</div>
 						          </a>
 						        </li>
 						        
@@ -357,7 +361,7 @@
 						            th:if="${bs.middleSort.bigSort.brand.type.name() == 'GENERIC'}"
 						            th:attr="data-id=${'small-' + bs.id}, data-parent=${'mid-' + bs.middleSort.id}">
 						          <a class="menu-link" th:href="@{|/brandProductSorted/sub/${bs.id}|}">
-						            <div th:text="${bs.name}">Small</div>
+						            <div th:text="${@enText.pick(bs.name, bs.nameEn)}">Small</div>
 						          </a>
 						        </li>
 						        
@@ -367,7 +371,7 @@
 						            th:if="${bs.middleSort.bigSort.brand.type.name() == 'OWN'}"
 						            th:attr="data-id=${'small-' + bs.id}, data-parent=${'mid-' + bs.middleSort.id}">
 						          <a class="menu-link" th:href="@{|/brandProductSorted/sub/${bs.id}|}">
-						            <div th:text="${bs.name}">Small</div>
+						            <div th:text="${@enText.pick(bs.name, bs.nameEn)}">Small</div>
 						          </a>
 						        </li>
 						      </ul>
@@ -380,7 +384,7 @@
 						            th:if="${bs.middleSort.bigSort.brand.type.name() == 'PARTNER'}"
 						            th:attr="data-id=${'small-' + bs.id}, data-parent=${'mid-' + bs.middleSort.id}">
 						          <a class="menu-link" th:href="@{|/brandProductSorted/sub/${bs.id}|}">
-						            <div th:text="${bs.name}">Small</div>
+						            <div th:text="${@enText.pick(bs.name, bs.nameEn)}">Small</div>
 						          </a>
 						        </li>
 						      </ul>
@@ -401,8 +405,8 @@
 					  	<a href="/index" target="_blank"><img th:src="@{/front/image/logo/bion-logo-white.png}" alt="Logo"></a>
 					</div>
 					<div class="f-left">
-							<h3><b>(주)바이온라이프사이언스</b></h3>
-							<p class="address">경기도 남양주시 순화궁로 282&nbsp;&nbsp;<span class="building">에이스하이엔드타워 10층<button class="address_link" type="button" onclick="window.location.href='/address'">
+							<h3><b th:text="#{site.companyName}">(주)바이온라이프사이언스</b></h3>
+							<p class="address"><span th:text="#{footer.address}">경기도 남양주시 순화궁로 282</span>&nbsp;&nbsp;<span class="building"><span th:text="#{footer.building}">에이스하이엔드타워 10층</span><button class="address_link" type="button" onclick="window.location.href='/address'">
   								<i class="bi bi-geo-alt"></i>
 							</button></span>
 							</p>
@@ -417,10 +421,10 @@
 					</div>
 				</div>
 				<div class="copyrights-menu copyright-links">
-						<a href="#" id="mainOpenPolicy" data-url="/front/company/privacy-policy.html">개인정보처리방침</a>
-						 <a href="#" class="mainOpenTerms" data-url="/front/company/privacy.html">이용약관</a>
-						<a href="/noticeList">공지사항</a>
-						<a href="/references">자료실</a><a href="/admin">관리자로그인</a>
+						<a href="#" id="mainOpenPolicy" data-url="/front/company/privacy-policy.html" th:text="#{footer.privacy}">개인정보처리방침</a>
+						 <a href="#" class="mainOpenTerms" data-url="/front/company/privacy.html" th:text="#{footer.terms}">이용약관</a>
+						<a href="/noticeList" th:text="#{nav.notice}">공지사항</a>
+						<a href="/references" th:text="#{nav.reference}">자료실</a><a href="/admin" th:text="#{nav.admin}">관리자로그인</a>
 				</div>
 			</footer>
 		</th:block>
@@ -430,6 +434,17 @@
 
 	<th:block th:fragment="scriptSrc">
 		<div id="gotoTop" class="icon-angle-up"></div>
+		<!-- 아래 스크립트들이 화면에 찍는 문구. 언어에 따라 서버가 채운다 -->
+		<script th:inline="javascript">
+			window.I18N = {
+				brandNoName:      /*[[#{brand.modal.noName}]]*/ '브랜드명 없음',
+				brandNoDesc:      /*[[#{brand.modal.noDesc}]]*/ '브랜드 소개가 준비 중입니다.',
+				productEmpty:     /*[[#{brand.modal.empty}]]*/ '순차적으로 업데이트될 예정입니다.',
+				productLoadError: /*[[#{brand.modal.loadError}]]*/ '제품 정보를 불러오지 못했습니다.',
+				contentNotFound:  /*[[#{modal.content.notFound}]]*/ '콘텐츠를 찾지 못했습니다.',
+				contentLoadError: /*[[#{modal.content.loadError}]]*/ '불러오기에 실패했습니다.'
+			};
+		</script>
 		<script src="/front/js/jquery.js"></script>
 		<script src="/front/js/plugins.min.js"></script>
 		<script src="/front/js/functions.js"></script>
@@ -448,7 +463,7 @@
     max-height:calc(100dvh - 80px); /* 뷰포트 - 상하 마진(40*2) */
   ">
     <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid #eee; flex:0 0 auto; position:relative;">
-      <strong>고객문의</strong>
+      <strong th:text="#{modal.contact.title}">고객문의</strong>
       <button type="button" class="modal-close"><i class="bi bi-x-lg"></i></button>
     </div>
 
@@ -468,7 +483,7 @@
 <div id="mainPolicyModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:9999;">
   <div style="width:90%; max-width:900px; margin:40px auto; background:#fff; border-radius:10px; overflow:auto; padding:12px 12px 12px;">
     <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid #eee;">
-      <strong>개인정보 처리방침</strong>
+      <strong th:text="#{modal.privacy.title}">개인정보 처리방침</strong>
       <button type="button" id="mainPolicyCloseBtn"><i class="bi bi-x-lg"></i></button>
     </div>
     <iframe id="mainPolicyFrame" src="" style="width:100%; height:75vh; border:0; display:block; margin: 0 auto;"></iframe>
@@ -479,7 +494,7 @@
 <div id="mainTermsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:9999;">
   <div style="width:90%; max-width:900px; margin:40px auto; background:#fff; border-radius:10px; overflow:hidden;">
     <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 16px; border-bottom:1px solid #eee;">
-      <strong>이용약관</strong>
+      <strong th:text="#{modal.terms.title}">이용약관</strong>
       <button type="button" id="mainTermsCloseBtn"><i class="bi bi-x-lg"></i></button>
     </div>
     <iframe id="mainTermsFrame" src="" style="width:100%; height:75vh; border:0; display:block;"></iframe>
@@ -525,7 +540,7 @@
           <p id="brandGlobalModalDesc"></p>
           
           <div class="client_btn text-left mt-4">
-          		<button type="button" class="nav-btn" id="js-open-contact">다양한 제품 견적문의 하러가기 <i class="bi bi-arrow-right"></i></button>
+          		<button type="button" class="nav-btn" id="js-open-contact"><span th:text="#{modal.quote.button}">다양한 제품 견적문의 하러가기</span> <i class="bi bi-arrow-right"></i></button>
           </div>
         </div>
       </div>
@@ -603,10 +618,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const section = temp.querySelector('#openContact');
         bodyBox.innerHTML = section
           ? section.outerHTML
-          : '<p>콘텐츠를 찾지 못했습니다.</p>';
+          : '<p>' + window.I18N.contentNotFound + '</p>';
         bodyBox.dataset.loaded = '1';
       })
-      .catch(() => { bodyBox.innerHTML = '<p>불러오기에 실패했습니다.</p>'; });
+      .catch(() => { bodyBox.innerHTML = '<p>' + window.I18N.contentLoadError + '</p>'; });
   }
 
   function openModal() {
@@ -803,10 +818,10 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
 
       const brandId = link.dataset.id;
-      const brandName = link.dataset.name || '브랜드명 없음';
+      const brandName = link.dataset.name || window.I18N.brandNoName;
       const brandDesc = (link.dataset.desc && link.dataset.desc.trim() !== '')
         ? link.dataset.desc
-        : '브랜드 소개가 준비 중입니다.';
+        : window.I18N.brandNoDesc;
       const brandImg = link.dataset.image || '/front/images/logo.png';
 
       // 기본 정보 먼저 채우기
@@ -827,7 +842,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modalLogo.src = data.brandLogo || brandImg;
         modalDesc.innerHTML = (data.brandDesc && data.brandDesc.trim() !== '')
           ? data.brandDesc
-          : '브랜드 소개가 준비 중입니다.';
+          : window.I18N.brandNoDesc;
 
         // 카테고리 및 제품 렌더링
         const categories = data.categories || [];
@@ -911,7 +926,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		      const msg = document.createElement('p');
 		      msg.id = 'noProductMsg';
 		      msg.className = 'text-muted text-center my-5';
-		      msg.textContent = '순차적으로 업데이트될 예정입니다.';
+		      msg.textContent = window.I18N.productEmpty;
 		      productList.appendChild(msg);
 		    }
 		  } else if (existingMsg) {
@@ -934,7 +949,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       } catch (err) {
         console.error('브랜드 모달 로드 오류:', err);
-        productList.innerHTML = `<p class="text-danger text-center my-4">제품 정보를 불러오지 못했습니다.</p>`;
+        productList.innerHTML = `<p class="text-danger text-center my-4">${window.I18N.productLoadError}</p>`;
       }
     });
   });

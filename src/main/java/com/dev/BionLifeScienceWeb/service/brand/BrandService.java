@@ -177,7 +177,10 @@ public class BrandService {
 		
 		brandRepository.findById(brand.getId()).ifPresent(b -> {
 	        b.setName(brand.getName());
+	        b.setNameEn(brand.getNameEn());
 	        b.setContent(brand.getContent());
+	        b.setContentEn(brand.getContentEn());
+	        b.setDescEn(brand.getDescEn());
 	        b.setType(brand.getType());
 
 	        try {

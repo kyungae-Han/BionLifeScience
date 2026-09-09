@@ -529,7 +529,9 @@ public class BrandProductService {
 	    saved.setSmallSort(product.getSmallSort());
 
 	    saved.setSubject(product.getSubject());
+	    saved.setSubjectEn(product.getSubjectEn());
 	    saved.setContent(product.getContent());
+	    saved.setContentEn(product.getContentEn());
 	    
 	    String subContent = product.getProductSubContent();
 	    
@@ -537,6 +539,12 @@ public class BrandProductService {
 	        subContent = subContent.replace("\n", "<br>");
 	    }
 	    saved.setProductSubContent(subContent);
+	    
+	    String subContentEn = product.getProductSubContentEn();
+	    if (subContentEn != null) {
+	        subContentEn = subContentEn.replace("\n", "<br>");
+	    }
+	    saved.setProductSubContentEn(subContentEn);
 	    saved.setSign(product.getSign());
 	    
 	    

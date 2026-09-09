@@ -33,6 +33,10 @@ public class BrandProduct {
 	@Column(name="BRAND_PRODUCT_SUBJECT")
 	private String subject;
 	
+	/** 영문 화면용. 비어 있으면 한글이 그대로 나간다 */
+	@Column(name="BRAND_PRODUCT_SUBJECT_EN")
+	private String subjectEn;
+	
 	@Column(name="BRAND_PRODUCT_CODE")
 	@Nullable
 	private String brandProductCode;
@@ -40,8 +44,14 @@ public class BrandProduct {
 	@Column(name="BRAND_PRODUCT_CONTENT")
 	private String content;
 	
+	@Column(name="BRAND_PRODUCT_CONTENT_EN")
+	private String contentEn;
+	
 	@Column(name="BRAND_PRODUCT_SUB_CONTENT")
 	private String productSubContent;
+	
+	@Column(name="BRAND_PRODUCT_SUB_CONTENT_EN")
+	private String productSubContentEn;
 	
 	@Column(name="BRAND_TABLE_IMAGE_PATH")
 	private String tableImagePath;
