@@ -18,7 +18,6 @@
 						<h4>
 							<i class="fa fa-angle-right"></i> 디지털 명함 관리
 						</h4>
-						<span class="alsert-messate">* 명함 주소는 사내 메일 아이디를 그대로 씁니다. dh_jang → https://bionlifescience.com/dh_jang</span><br>
 
 						<div class="form-panel">
 							<form role="form" action="/admin/namecardManager" class="form-horizontal style-form"
@@ -30,8 +29,6 @@
 									<div class="col-sm-10">
 										<input type="text" name="slug" class="form-control" th:value="${card.slug}"
 											   placeholder="dh_jang" required>
-										<span class="help-block"># 메일 아이디(@ 앞부분)를 그대로 넣습니다. 영문 소문자, 숫자, -, _ 만 됩니다.</span>
-										<span class="help-block"># 점(.)은 쓸 수 없습니다. 아이디에 점이 있으면 빼거나 _ 로 바꿔 주세요.</span>
 									</div>
 								</div>
 
@@ -40,7 +37,6 @@
 									<div class="col-sm-10">
 										<label><input type="checkbox" name="useYn" value="Y"
 													  th:checked="${card.useYn == null or card.useYn == 'Y'}"> 명함 주소를 사용합니다</label>
-										<span class="help-block"># 끄면 해당 주소는 페이지 없음(404)으로 나갑니다.</span>
 									</div>
 								</div>
 
@@ -49,12 +45,10 @@
 									<div class="col-sm-5">
 										<input type="text" name="nameKo" class="form-control" th:value="${card.nameKo}"
 											   placeholder="장동훈" required>
-										<span class="help-block"># 한글</span>
 									</div>
 									<div class="col-sm-5">
 										<input type="text" name="nameEn" class="form-control" th:value="${card.nameEn}"
 											   placeholder="DongHoon Jang">
-										<span class="help-block"># 영문 (이름 성 순서)</span>
 									</div>
 								</div>
 
@@ -94,7 +88,6 @@
 									<label class="col-sm-2 control-label">휴대전화</label>
 									<div class="col-sm-10">
 										<input type="text" name="mobile" class="form-control" th:value="${card.mobile}" placeholder="010-5541-0988">
-										<span class="help-block"># 국내 표기로 넣으면 영문면의 +82 표기와 통화 링크는 자동으로 만듭니다.</span>
 									</div>
 								</div>
 
@@ -122,7 +115,6 @@
 										<textarea name="addressKo" class="form-control" rows="3"
 												  placeholder="12106 경기도 남양주시 순화궁로 282&#10;에이스하이엔드타워 1006호 (별내동)"
 												  th:text="${card.addressKo}"></textarea>
-										<span class="help-block"># 줄을 바꾸면 명함에서도 줄이 바뀝니다.</span>
 									</div>
 									<div class="col-sm-5">
 										<textarea name="addressEn" class="form-control" rows="3"
@@ -136,12 +128,10 @@
 									<div class="col-sm-5">
 										<input type="text" name="mapQueryKo" class="form-control" th:value="${card.mapQueryKo}"
 											   placeholder="경기도 남양주시 순화궁로 282">
-										<span class="help-block"># 카카오맵에서 찾을 문구. 비우면 주소 첫 줄을 씁니다.</span>
 									</div>
 									<div class="col-sm-5">
 										<input type="text" name="mapQueryEn" class="form-control" th:value="${card.mapQueryEn}"
 											   placeholder="282 Sunhwagung-ro, Namyangju-si, Gyeonggi-do, Korea">
-										<span class="help-block"># 구글지도에서 찾을 문구</span>
 									</div>
 								</div>
 
@@ -158,7 +148,6 @@
 									<div class="col-sm-10">
 										<input type="text" name="catalogUrl" class="form-control" th:value="${card.catalogUrl}"
 											   placeholder="https://optomation.dev">
-										<span class="help-block"># http:// 또는 https:// 로 시작해야 합니다.</span>
 									</div>
 									<div class="col-sm-5">
 										<input type="text" name="catalogNoteKo" class="form-control" th:value="${card.catalogNoteKo}"
@@ -176,7 +165,6 @@
 										<img th:if="${card.photoRoad}" th:src="${card.photoRoad}" width="90" height="90"
 											 style="border-radius:50%; object-fit:cover; margin-bottom:8px;">
 										<input type="file" name="photoFile" accept=".jpg,.jpeg,.png">
-										<span class="help-block"># 정사각형 480 x 480 을 권장합니다. jpg/png, 5MB 이하.</span>
 									</div>
 								</div>
 
@@ -185,8 +173,6 @@
 									<div class="col-sm-10">
 										<img th:if="${card.ogRoad}" th:src="${card.ogRoad}" width="180" style="margin-bottom:8px;">
 										<input type="file" name="ogFile" accept=".jpg,.jpeg,.png">
-										<span class="help-block"># 카카오톡·메일로 링크를 보냈을 때 뜨는 그림입니다. 1200 x 630.</span>
-										<span class="help-block"># 넣지 않으면 회사 기본 이미지가 나갑니다.</span>
 									</div>
 								</div>
 
@@ -195,10 +181,8 @@
 									<div class="col-sm-10">
 										<label><input type="checkbox" name="showDocsYn" value="Y"
 													  th:checked="${card.showDocsYn == 'Y'}"> 명함에 거래 서류 영역을 노출합니다</label>
-										<span class="help-block"># 끄면 서류가 올라가 있어도 명함에 나오지 않습니다.</span>
 										<input type="text" name="bizNo" class="form-control" th:value="${card.bizNo}"
 											   placeholder="209-81-56186" style="margin-top:8px;">
-										<span class="help-block"># 사업자등록번호</span>
 									</div>
 								</div>
 
@@ -209,7 +193,6 @@
 													  th:checked="${card.showQrYn == 'Y'}"> 명함에 QR 영역을 노출합니다</label>
 										<input type="text" name="qrUrl" class="form-control" th:value="${card.qrUrl}"
 											   placeholder="https://bionlifescience.com/brandList/own/73" style="margin-top:8px;">
-										<span class="help-block"># QR 은 이 주소로 그때그때 만듭니다. 주소만 바꾸면 QR 도 바뀝니다.</span>
 										<div th:if="${card.nameCardId != null and card.showQrYn == 'Y' and card.qrUrl != null and card.qrUrl != ''}" style="margin-top:8px;">
 											<img th:src="@{/namecard/{slug}/qr.svg(slug=${card.slug})}" width="120" height="120">
 										</div>
@@ -217,7 +200,6 @@
 											   placeholder="Photonic Lattice · 편광·위상차 실시간 가시화" style="margin-top:8px;">
 										<input type="text" name="qrCaptionEn" class="form-control" th:value="${card.qrCaptionEn}"
 											   placeholder="Photonic Lattice · real-time birefringence imaging" style="margin-top:8px;">
-										<span class="help-block"># QR 아래 문구. 줄을 바꾸면 명함에서도 줄이 바뀝니다.</span>
 									</div>
 								</div>
 
@@ -236,11 +218,7 @@
 						<div class="form-panel" th:if="${card.nameCardId != null}">
 							<h4><i class="fa fa-angle-right"></i> 거래 서류</h4>
 							<div class="alert alert-warning" style="margin-top:10px;">
-								<strong>올리기 전에 확인해 주세요.</strong><br>
-								명함은 <strong>링크를 아는 사람이면 누구나 여는 공개 페이지</strong>입니다.
-								통장사본·계좌정보·재무자료·자산목록·신분증처럼 공개되면 안 되는 서류는 올릴 수 없습니다.
-								이런 서류는 담당자에게 메일로 따로 보내주세요.<br>
-								올릴 수 있는 것은 아래 목록에 있는 <strong>PDF</strong> 서류뿐입니다 (10MB 이하).
+								명함은 링크를 아는 사람이면 누구나 여는 공개 페이지입니다. 통장사본·계좌정보·재무자료·신분증은 올릴 수 없습니다.
 							</div>
 
 							<form role="form" action="/admin/namecardManager/document" class="form-horizontal style-form"
@@ -256,7 +234,6 @@
 									</div>
 									<div class="col-sm-4">
 										<input type="file" name="docFile" accept="application/pdf,.pdf" required>
-										<span class="help-block"># PDF 만 가능합니다.</span>
 									</div>
 									<div class="col-sm-2">
 										<button type="submit" class="btn btn-theme">서류 등록</button>

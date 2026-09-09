@@ -6,8 +6,36 @@
 
 <body>
 
+    <!-- 로그인 배경. 템플릿에 딸려 오던 사진 대신 회사 색으로 칠한다 -->
+    <style>
+        #login-page {
+            min-height: 100vh;
+            background-color: #0a2036;
+            background-image:
+                radial-gradient(900px 520px at 12% 8%, rgba(111, 185, 44, .30), transparent 60%),
+                radial-gradient(760px 460px at 88% 14%, rgba(252, 207, 0, .18), transparent 55%),
+                radial-gradient(1100px 720px at 72% 92%, rgba(0, 159, 232, .38), transparent 62%),
+                linear-gradient(160deg, #0d2b45 0%, #0a2036 58%, #071726 100%);
+        }
+        #login-page .login-logo {
+            padding-top: 90px;
+            text-align: center;
+        }
+        #login-page .login-logo img {
+            width: 150px;
+            height: auto;
+        }
+        /* 로고가 위로 올라온 만큼 폼의 여백을 줄인다 */
+        #login-page .form-login {
+            margin-top: 28px;
+        }
+    </style>
+
     <div id="login-page">
         <div class="container">
+            <div class="login-logo">
+                <img src="/front/image/logo/bion-logo-white.png" alt="BiON Life Science">
+            </div>
             <form class="form-login" th:action="@{/memberLogin}" method="POST">
                 <h2 class="form-login-heading">관리자로그인</h2>
                 <div class="login-wrap">
@@ -27,11 +55,6 @@
         </div>
     </div>
     <th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
-    <script>
-        $.backstretch("/administration/img/login-bg.jpg", {
-            speed: 500
-        });
-    </script>
 </body>
 
 </html>
