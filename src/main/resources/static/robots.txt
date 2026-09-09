@@ -22,6 +22,8 @@ Disallow: /admin
 Disallow: /administration/
 Disallow: /memberLoginForm/
 Disallow: /test/
+# 디지털 명함이 쓰는 파일들 (연락처·QR·거래서류). 명함 페이지 자체는 noindex 로 막는다
+Disallow: /namecard/
  
 # 🚫 불필요한 파라미터 URL 중복 색인 방지
 Disallow: /*?*page=

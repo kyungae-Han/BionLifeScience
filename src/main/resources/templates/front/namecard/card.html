@@ -1,0 +1,172 @@
+<!-- 임직원 디지털 명함. 사이트 공통 레이아웃을 쓰지 않는 독립 화면이다.
+     공통 헤더/푸터 프래그먼트를 넣으면 style.css 가 따라 들어와 디자인이 깨진다. -->
+<!doctype html>
+<html lang="ko" data-lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title th:text="${card.nameKo} + ' ' + ${card.titleKo} + ' | ' + ${card.companyKo}">장동훈 부장 | (주)바이온라이프사이언스</title>
+<!-- 개인 휴대전화 번호가 검색에 잡히면 스팸이 붙는다. 링크로 전달되는 명함이라
+     검색 노출은 필요 없고, noindex 는 카톡·메시지의 미리보기 생성을 막지 않는다. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" th:content="|${card.companyKo} ${card.deptKo} ${card.nameKo} ${card.titleKo} 연락처|">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:type" content="profile">
+<meta property="og:title" th:content="${card.nameKo} + ' ' + ${card.titleKo} + ' | ' + ${card.companyKo}">
+<meta property="og:description" th:content="|${card.deptKo} · 탭 한 번으로 연락처를 저장하세요|">
+<!-- 미리보기는 절대 주소만 읽는다. app.base-url 이 기준이 된다 -->
+<meta property="og:url" th:content="${canonicalUrl}">
+<meta property="og:image"
+      th:content="${baseUrl} + (${card.ogRoad} ?: '/front/image/namecard/og-default.png')">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%23009fe8'/></svg>">
+<link rel="stylesheet" href="/front/css/namecard.css">
+</head>
+<body>
+<main class="wrap">
+
+  <div id="inapp" role="status">
+    <span class="ko">카카오톡 안에서는 연락처 파일 저장이 막힐 수 있습니다.</span>
+    <span class="en">Saving contacts may be blocked inside this in-app browser.</span>
+    <button type="button" id="inapp-open">
+      <span class="ko">기본 브라우저로 열기</span><span class="en">Open in browser</span>
+    </button>
+  </div>
+
+  <section class="card">
+    <div class="card-top">
+      <div class="brandbar">
+        <div>
+          <div class="logo"><svg viewBox="0 0 717.62 218.12" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="BiON">
+  <defs>
+    <linearGradient id="bionGradA" x1="341.07" y1="111.62" x2="717.62" y2="111.62" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d1cbe5"/>
+      <stop offset=".28" stop-color="#bdc7e5"/>
+      <stop offset=".66" stop-color="#009fe8"/>
+      <stop offset="1" stop-color="#008bd5"/>
+    </linearGradient>
+    <linearGradient id="bionGradB" x1="-249.6" y1="109.06" x2="417.77" y2="109.06" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6fb92c"/>
+      <stop offset=".42" stop-color="#6fb92c"/>
+      <stop offset=".73" stop-color="#fccf00"/>
+      <stop offset=".87" stop-color="#f08800"/>
+      <stop offset="1" stop-color="#ef8200"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#bionGradA)" fill-rule="evenodd" d="M529.94,8.43h59.74l80.8,127.3.06-127.3h47.07v206.31h-53.71l-86.91-134.69v134.69h-47.06V8.43h0ZM341.07,132.25h0c5.92,29.33,24.84,48.77,52.98,48.77,10.56,0,19.55-3.04,27.21-8.01,17.5-11.36,27.27-34,27.27-61.89,0-26-9.64-49.08-27.38-60.78-7.63-5.03-16.61-8.18-27.22-8.18-25.08,0-42.47,15.68-50.29,39.41h0c10.14-37.39,38.63-65.09,79.11-73.65,46,9.66,73.18,43.55,78.79,85.23,1.06,5.79,1.8,11.75,1.8,17.96,0,10.73-1.52,20.64-4.26,29.52-9.71,40.16-38.73,66.57-79.53,74.71-44.16-9.27-71.97-41.6-78.49-83.09Z"/>
+  <path fill="url(#bionGradB)" fill-rule="evenodd" d="M0,11.25v202.59c11.5,1.54,30.16,3.05,55.42,3.05,45.16,0,72.54-6.62,89.18-18.77,14.04-10.19,23.59-24.94,23.59-43.83,0-26.41-19.25-44.38-45.15-50.55v-.79c25.56-8.62,37.25-25.73,37.25-43.87s-11.17-33-27.04-40.68c-16.59-8.77-35.82-11.58-67.07-11.58C40.49,6.81,13.48,8.87,0,11.25h0ZM50.82,42.15c4.19-.78,10.51-1.43,21.73-1.43,23.16,0,36.24,8.28,36.24,23.94s-14.17,25.6-41.34,25.6h-16.62v-48.1h0ZM50.82,181.53v-58h17.51c25.57.02,45.91,8.28,45.91,28.93,0,21.73-20.48,29.92-43.76,29.92-8.66,0-14.75-.09-19.66-.85h0ZM199.85,23.33c-.07,12.96,10.43,23.27,26.64,23.27,17.05,0,27.59-10.31,27.53-23.27-.21-13.36-10.53-23.33-27.07-23.33s-27.17,10.01-27.1,23.33h0ZM201.29,214.74h51.28V64.92h-51.28v149.82h0ZM391.75,218.12h-.28c-67.22-.02-106.77-46.31-106.77-105.13h0c0-61.67,43.61-107.94,110.38-107.94,9.89,0,19.07,1.06,27.67,2.86-40.48,8.56-68.97,36.26-79.11,73.65-3.01,9.15-4.74,19.38-4.74,30.54,0,7.18.88,13.8,2.16,20.14,6.52,41.49,34.32,73.83,78.49,83.1-8.77,1.75-18.02,2.76-27.8,2.78Z"/>
+</svg></div>
+          <div class="company">
+            <span class="ko" th:text="${card.companyKo}">(주)바이온라이프사이언스</span>
+            <span class="en" th:text="${card.companyEn}">Bion Lifescience, Inc.</span>
+          </div>
+        </div>
+        <div class="langtoggle">
+          <button type="button" data-set="ko" aria-pressed="true">KOR</button>
+          <button type="button" data-set="en" aria-pressed="false">ENG</button>
+        </div>
+      </div>
+
+      <div class="person">
+        <div class="avatar"><img th:if="${card.photoRoad}" th:src="${card.photoRoad}" alt="" width="480" height="480"></div>
+        <div>
+          <div class="name">
+            <span class="ko"><th:block th:text="${card.nameKo}">장동훈</th:block><small th:text="${card.titleKo}">부장</small></span>
+            <span class="en"><th:block th:text="${card.nameEn}">DongHoon Jang</th:block><small th:text="${card.titleEn}">General Manager</small></span>
+          </div>
+          <div class="dept">
+            <span class="ko" th:text="${card.deptKo}">광학솔루션사업부</span>
+            <span class="en" th:text="${card.deptEn}">Optical Solution Business Department</span>
+          </div>
+        </div>
+      </div>
+
+      <a class="save" id="save"
+         th:href="@{/namecard/{slug}/vcard.vcf(slug=${card.slug},lang='ko')}"
+         th:attr="download=${#strings.replace(card.slug,'_','-')} + '.vcf',
+                  data-vcf=@{/namecard/{slug}/vcard.vcf(slug=${card.slug})}"
+         href="#" download="namecard.vcf" type="text/vcard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M4 20h16"/></svg>
+        <span class="ko">연락처 저장</span><span class="en">Save to contacts</span>
+      </a>
+      <button class="fallback" type="button" id="copy"
+              th:attr="data-ko=${card.copyTextKo}, data-en=${card.copyTextEn}">
+        <span class="ko">저장이 안 되면 · 연락처 복사하기</span>
+        <span class="en">Not working? · Copy contact details</span>
+      </button>
+    </div>
+
+    <nav class="quick">
+      <a th:href="'tel:' + ${card.mobileHref}" href="#">
+        <svg viewBox="0 0 24 24"><path d="M15.5 20.5A15.5 15.5 0 0 1 3.5 8.5L5.8 6.2a1 1 0 0 1 1.5.1l1.9 2.5a1 1 0 0 1-.1 1.3L8 11.2a11 11 0 0 0 4.8 4.8l1.1-1.1a1 1 0 0 1 1.3-.1l2.5 1.9a1 1 0 0 1 .1 1.5z"/></svg>
+        <span class="ko">전화</span><span class="en">Call</span>
+      </a>
+      <a th:href="'sms:' + ${card.mobileHref}" href="#">
+        <svg viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-8 8H4l2-3a8 8 0 1 1 15-5z"/></svg>
+        <span class="ko">문자</span><span class="en">Text</span>
+      </a>
+      <a th:href="'mailto:' + ${card.email}" href="#">
+        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/></svg>
+        <span class="ko">메일</span><span class="en">Email</span>
+      </a>
+      <a id="map" href="#"
+         th:href="@{https://map.kakao.com/(q=${card.mapQueryKoOrAddress})}"
+         th:attr="data-ko=@{https://map.kakao.com/(q=${card.mapQueryKoOrAddress})},
+                  data-en=@{https://www.google.com/maps/search/(api=1,query=${card.mapQueryEnOrAddress})}"
+         target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 21s7-6.3 7-11a7 7 0 1 0-14 0c0 4.7 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+        <span class="ko">지도</span><span class="en">Map</span>
+      </a>
+    </nav>
+
+    <dl class="details">
+      <div class="row" th:if="${card.mobile}"><dt><span class="ko">휴대전화</span><span class="en">Mobile</span></dt>
+        <dd><a th:href="'tel:' + ${card.mobileHref}" href="#"><span class="ko" th:text="${card.mobile}">010-5541-0988</span><span class="en" th:text="${card.mobileIntl}">+82-10-5541-0988</span></a></dd></div>
+      <div class="row" th:if="${card.tel}"><dt><span class="ko">대표전화</span><span class="en">Tel</span></dt>
+        <dd><a th:href="'tel:' + ${card.telHref}" href="#"><span class="ko" th:text="${card.tel}">031-572-1992</span><span class="en" th:text="${card.telIntl}">+82-31-572-1992</span></a></dd></div>
+      <div class="row" th:if="${card.fax}"><dt><span class="ko">팩스</span><span class="en">Fax</span></dt>
+        <dd class="plain"><span class="ko" th:text="${card.fax}">031-572-2273</span><span class="en" th:text="${card.faxIntl}">+82-31-572-2273</span></dd></div>
+      <div class="row" th:if="${card.email}"><dt><span class="ko">이메일</span><span class="en">Email</span></dt>
+        <dd><a th:href="'mailto:' + ${card.email}" th:text="${card.email}" href="#">dh_jang@bionlifescience.com</a></dd></div>
+      <div class="row" th:if="${card.addressKo}"><dt><span class="ko">주소</span><span class="en">Address</span></dt>
+        <dd class="plain">
+          <span class="ko"><th:block th:each="line,stat : ${card.addressKoLines}"><th:block th:text="${line}">12106 경기도 남양주시 순화궁로 282</th:block><br th:unless="${stat.last}"></th:block></span>
+          <span class="en"><th:block th:each="line,stat : ${card.addressEnLines}"><th:block th:text="${line}">#1006, 10th Fl., Ace High-End Tower,</th:block><br th:unless="${stat.last}"></th:block></span>
+        </dd></div>
+      <div class="row" th:if="${card.websiteUrl}"><dt><span class="ko">홈페이지</span><span class="en">Website</span></dt>
+        <dd><a th:href="${card.websiteUrl}" th:text="${card.websiteLabel}" href="#" target="_blank" rel="noopener">www.bionlifescience.com</a></dd></div>
+      <div class="row" th:if="${card.catalogUrl}"><dt><span class="ko">카탈로그</span><span class="en">Catalog</span></dt>
+        <dd><a th:href="${card.catalogUrl}" th:text="${card.catalogLabel}" href="#" target="_blank" rel="noopener">optomation.dev</a>
+          <small class="note"><span class="ko" th:text="${card.catalogNoteKo}">광학 제품 카탈로그</span><span class="en" th:text="${card.catalogNoteEn}">Optical products catalog</span></small>
+        </dd></div>
+    </dl>
+  </section>
+
+  <!-- 거래 서류. 관리자에서 "노출" 을 켜고 서류를 올린 명함에만 나온다 -->
+  <section class="docs" th:if="${card.docsVisible}">
+    <h2><span class="ko">거래 서류</span><span class="en">Business documents</span></h2>
+    <p class="bizno" th:if="${card.bizNo}"><span class="ko" th:text="'사업자등록번호 ' + ${card.bizNo}">사업자등록번호 209-81-56186</span><span class="en" th:text="'Business reg. no. ' + ${card.bizNo}">Business reg. no. 209-81-56186</span></p>
+
+    <a class="doc" th:each="doc : ${card.documents}"
+       th:href="@{/namecard/{slug}/doc/{id}(slug=${card.slug},id=${doc.nameCardDocumentId})}"
+       href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
+      <span><span class="ko"><th:block th:text="${doc.koLabel}">사업자등록증</th:block><small>PDF · 새 창에서 열림</small></span><span class="en"><th:block th:text="${doc.enLabel}">Business registration certificate</th:block><small>PDF · opens in a new tab</small></span></span>
+    </a>
+
+ </section>
+
+  <!-- QR. 관리자에 넣은 주소로 서버가 그때그때 그린다 -->
+  <section class="qr" th:if="${card.qrVisible}">
+    <a th:href="${card.qrUrl}" href="#" target="_blank" rel="noopener"><img th:src="@{/namecard/{slug}/qr.svg(slug=${card.slug})}" src="#" alt="" width="136" height="136"></a>
+    <p><span class="ko"><th:block th:each="line,stat : ${card.qrCaptionKoLines}"><th:block th:text="${line}">Photonic Lattice · 편광·위상차 실시간 가시화</th:block><br th:unless="${stat.last}"></th:block></span>
+       <span class="en"><th:block th:each="line,stat : ${card.qrCaptionEnLines}"><th:block th:text="${line}">Photonic Lattice · real-time birefringence imaging</th:block><br th:unless="${stat.last}"></th:block></span></p>
+  </section>
+
+</main>
+
+<script src="/front/js/namecard.js"></script>
+</body>
+</html>

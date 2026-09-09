@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/admin/common :: headMenu}">
+</head>
+
+<body>
+	<section id="container">
+
+		<th:block th:replace="~{fragments/admin/common :: headMenu}"></th:block>
+
+		<th:block th:replace="~{fragments/admin/common :: sideMenu('namecard')}"></th:block>
+
+		<section id="main-content">
+			<section class="wrapper">
+				<div class="row mt">
+					<div class="col-lg-10">
+						<h4>
+							<i class="fa fa-angle-right"></i> 디지털 명함 관리
+						</h4>
+						<span class="alsert-messate">* 명함 주소는 사내 메일 아이디를 그대로 씁니다. dh_jang → https://bionlifescience.com/dh_jang</span><br>
+
+						<div class="form-panel">
+							<form role="form" action="/admin/namecardManager" class="form-horizontal style-form"
+								  method="POST" enctype="multipart/form-data">
+								<input type="hidden" name="nameCardId" th:value="${card.nameCardId}">
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">명함 주소</label>
+									<div class="col-sm-10">
+										<input type="text" name="slug" class="form-control" th:value="${card.slug}"
+											   placeholder="dh_jang" required>
+										<span class="help-block"># 메일 아이디(@ 앞부분)를 그대로 넣습니다. 영문 소문자, 숫자, -, _ 만 됩니다.</span>
+										<span class="help-block"># 점(.)은 쓸 수 없습니다. 아이디에 점이 있으면 빼거나 _ 로 바꿔 주세요.</span>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">노출</label>
+									<div class="col-sm-10">
+										<label><input type="checkbox" name="useYn" value="Y"
+													  th:checked="${card.useYn == null or card.useYn == 'Y'}"> 명함 주소를 사용합니다</label>
+										<span class="help-block"># 끄면 해당 주소는 페이지 없음(404)으로 나갑니다.</span>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">이름</label>
+									<div class="col-sm-5">
+										<input type="text" name="nameKo" class="form-control" th:value="${card.nameKo}"
+											   placeholder="장동훈" required>
+										<span class="help-block"># 한글</span>
+									</div>
+									<div class="col-sm-5">
+										<input type="text" name="nameEn" class="form-control" th:value="${card.nameEn}"
+											   placeholder="DongHoon Jang">
+										<span class="help-block"># 영문 (이름 성 순서)</span>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">직함</label>
+									<div class="col-sm-5">
+										<input type="text" name="titleKo" class="form-control" th:value="${card.titleKo}" placeholder="부장">
+									</div>
+									<div class="col-sm-5">
+										<input type="text" name="titleEn" class="form-control" th:value="${card.titleEn}" placeholder="General Manager">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">부서</label>
+									<div class="col-sm-5">
+										<input type="text" name="deptKo" class="form-control" th:value="${card.deptKo}" placeholder="광학솔루션사업부">
+									</div>
+									<div class="col-sm-5">
+										<input type="text" name="deptEn" class="form-control" th:value="${card.deptEn}" placeholder="Optical Solution Business Department">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">회사명</label>
+									<div class="col-sm-5">
+										<input type="text" name="companyKo" class="form-control"
+											   th:value="${card.companyKo} ?: '(주)바이온라이프사이언스'">
+									</div>
+									<div class="col-sm-5">
+										<input type="text" name="companyEn" class="form-control"
+											   th:value="${card.companyEn} ?: 'Bion Lifescience, Inc.'">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">휴대전화</label>
+									<div class="col-sm-10">
+										<input type="text" name="mobile" class="form-control" th:value="${card.mobile}" placeholder="010-5541-0988">
+										<span class="help-block"># 국내 표기로 넣으면 영문면의 +82 표기와 통화 링크는 자동으로 만듭니다.</span>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">대표전화</label>
+									<div class="col-sm-5">
+										<input type="text" name="tel" class="form-control" th:value="${card.tel}" placeholder="031-572-1992">
+									</div>
+									<div class="col-sm-5">
+										<input type="text" name="fax" class="form-control" th:value="${card.fax}" placeholder="팩스 031-572-2273">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">이메일</label>
+									<div class="col-sm-10">
+										<input type="email" name="email" class="form-control" th:value="${card.email}"
+											   placeholder="dh_jang@bionlifescience.com">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">주소</label>
+									<div class="col-sm-5">
+										<textarea name="addressKo" class="form-control" rows="3"
+												  placeholder="12106 경기도 남양주시 순화궁로 282&#10;에이스하이엔드타워 1006호 (별내동)"
+												  th:text="${card.addressKo}"></textarea>
+										<span class="help-block"># 줄을 바꾸면 명함에서도 줄이 바뀝니다.</span>
+									</div>
+									<div class="col-sm-5">
+										<textarea name="addressEn" class="form-control" rows="3"
+												  placeholder="#1006, 10th Fl., Ace High-End Tower,&#10;282 Sunhwagung-ro, Namyangju-si,&#10;Gyeonggi-do 12106, Republic of Korea"
+												  th:text="${card.addressEn}"></textarea>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">지도 검색어</label>
+									<div class="col-sm-5">
+										<input type="text" name="mapQueryKo" class="form-control" th:value="${card.mapQueryKo}"
+											   placeholder="경기도 남양주시 순화궁로 282">
+										<span class="help-block"># 카카오맵에서 찾을 문구. 비우면 주소 첫 줄을 씁니다.</span>
+									</div>
+									<div class="col-sm-5">
+										<input type="text" name="mapQueryEn" class="form-control" th:value="${card.mapQueryEn}"
+											   placeholder="282 Sunhwagung-ro, Namyangju-si, Gyeonggi-do, Korea">
+										<span class="help-block"># 구글지도에서 찾을 문구</span>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">홈페이지</label>
+									<div class="col-sm-10">
+										<input type="text" name="websiteUrl" class="form-control" th:value="${card.websiteUrl}"
+											   placeholder="https://www.bionlifescience.com">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">카탈로그</label>
+									<div class="col-sm-10">
+										<input type="text" name="catalogUrl" class="form-control" th:value="${card.catalogUrl}"
+											   placeholder="https://optomation.dev">
+										<span class="help-block"># http:// 또는 https:// 로 시작해야 합니다.</span>
+									</div>
+									<div class="col-sm-5">
+										<input type="text" name="catalogNoteKo" class="form-control" th:value="${card.catalogNoteKo}"
+											   placeholder="광학 제품 카탈로그">
+									</div>
+									<div class="col-sm-5">
+										<input type="text" name="catalogNoteEn" class="form-control" th:value="${card.catalogNoteEn}"
+											   placeholder="Optical products catalog">
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">얼굴 사진</label>
+									<div class="col-sm-10">
+										<img th:if="${card.photoRoad}" th:src="${card.photoRoad}" width="90" height="90"
+											 style="border-radius:50%; object-fit:cover; margin-bottom:8px;">
+										<input type="file" name="photoFile" accept=".jpg,.jpeg,.png">
+										<span class="help-block"># 정사각형 480 x 480 을 권장합니다. jpg/png, 5MB 이하.</span>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">미리보기 그림</label>
+									<div class="col-sm-10">
+										<img th:if="${card.ogRoad}" th:src="${card.ogRoad}" width="180" style="margin-bottom:8px;">
+										<input type="file" name="ogFile" accept=".jpg,.jpeg,.png">
+										<span class="help-block"># 카카오톡·메일로 링크를 보냈을 때 뜨는 그림입니다. 1200 x 630.</span>
+										<span class="help-block"># 넣지 않으면 회사 기본 이미지가 나갑니다.</span>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">거래 서류 영역</label>
+									<div class="col-sm-10">
+										<label><input type="checkbox" name="showDocsYn" value="Y"
+													  th:checked="${card.showDocsYn == 'Y'}"> 명함에 거래 서류 영역을 노출합니다</label>
+										<span class="help-block"># 끄면 서류가 올라가 있어도 명함에 나오지 않습니다.</span>
+										<input type="text" name="bizNo" class="form-control" th:value="${card.bizNo}"
+											   placeholder="209-81-56186" style="margin-top:8px;">
+										<span class="help-block"># 사업자등록번호</span>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">QR 영역</label>
+									<div class="col-sm-10">
+										<label><input type="checkbox" name="showQrYn" value="Y"
+													  th:checked="${card.showQrYn == 'Y'}"> 명함에 QR 영역을 노출합니다</label>
+										<input type="text" name="qrUrl" class="form-control" th:value="${card.qrUrl}"
+											   placeholder="https://bionlifescience.com/brandList/own/73" style="margin-top:8px;">
+										<span class="help-block"># QR 은 이 주소로 그때그때 만듭니다. 주소만 바꾸면 QR 도 바뀝니다.</span>
+										<div th:if="${card.nameCardId != null and card.showQrYn == 'Y' and card.qrUrl != null and card.qrUrl != ''}" style="margin-top:8px;">
+											<img th:src="@{/namecard/{slug}/qr.svg(slug=${card.slug})}" width="120" height="120">
+										</div>
+										<input type="text" name="qrCaptionKo" class="form-control" th:value="${card.qrCaptionKo}"
+											   placeholder="Photonic Lattice · 편광·위상차 실시간 가시화" style="margin-top:8px;">
+										<input type="text" name="qrCaptionEn" class="form-control" th:value="${card.qrCaptionEn}"
+											   placeholder="Photonic Lattice · real-time birefringence imaging" style="margin-top:8px;">
+										<span class="help-block"># QR 아래 문구. 줄을 바꾸면 명함에서도 줄이 바뀝니다.</span>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<div class="col-sm-offset-2 col-sm-10">
+										<button type="submit" class="btn btn-theme">저장</button>
+										<a class="btn btn-default" href="/admin/namecardManager">목록</a>
+										<a th:if="${card.nameCardId != null}" class="btn btn-default"
+										   th:href="'/' + ${card.slug}" target="_blank" rel="noopener">명함 열어보기</a>
+									</div>
+								</div>
+							</form>
+						</div>
+
+						<!-- 거래 서류는 명함을 저장한 뒤에 올린다 -->
+						<div class="form-panel" th:if="${card.nameCardId != null}">
+							<h4><i class="fa fa-angle-right"></i> 거래 서류</h4>
+							<div class="alert alert-warning" style="margin-top:10px;">
+								<strong>올리기 전에 확인해 주세요.</strong><br>
+								명함은 <strong>링크를 아는 사람이면 누구나 여는 공개 페이지</strong>입니다.
+								통장사본·계좌정보·재무자료·자산목록·신분증처럼 공개되면 안 되는 서류는 올릴 수 없습니다.
+								이런 서류는 담당자에게 메일로 따로 보내주세요.<br>
+								올릴 수 있는 것은 아래 목록에 있는 <strong>PDF</strong> 서류뿐입니다 (10MB 이하).
+							</div>
+
+							<form role="form" action="/admin/namecardManager/document" class="form-horizontal style-form"
+								  method="POST" enctype="multipart/form-data">
+								<input type="hidden" name="nameCardId" th:value="${card.nameCardId}">
+								<div class="form-group">
+									<label class="col-sm-2 control-label">서류 종류</label>
+									<div class="col-sm-4">
+										<select name="docType" class="form-control" required>
+											<option value="">=== 종류를 선택하세요 ===</option>
+											<option th:each="type : ${docTypes}" th:value="${type.name()}" th:text="${type.koLabel}"></option>
+										</select>
+									</div>
+									<div class="col-sm-4">
+										<input type="file" name="docFile" accept="application/pdf,.pdf" required>
+										<span class="help-block"># PDF 만 가능합니다.</span>
+									</div>
+									<div class="col-sm-2">
+										<button type="submit" class="btn btn-theme">서류 등록</button>
+									</div>
+								</div>
+							</form>
+
+							<div class="table-responsive">
+								<table class="table table-bordered">
+									<thead>
+									<tr>
+										<th style="width: 200px;">종류</th>
+										<th>올린 파일명</th>
+										<th style="width: 110px;">크기</th>
+										<th style="width: 120px;">관리</th>
+									</tr>
+									</thead>
+									<tbody>
+										<tr th:if="${#lists.isEmpty(card.documents)}">
+											<td colspan="4" class="text-center">등록된 서류가 없습니다.</td>
+										</tr>
+										<tr th:each="doc : ${card.documents}">
+											<td th:text="${doc.koLabel}"></td>
+											<td th:text="${doc.fileName}"></td>
+											<td th:text="${doc.fileSize != null} ? ${#numbers.formatInteger(doc.fileSize / 1024, 0, 'COMMA')} + ' KB' : ''"></td>
+											<td>
+												<a class="btn btn-default btn-xs"
+												   th:href="@{/namecard/{slug}/doc/{id}(slug=${card.slug},id=${doc.nameCardDocumentId})}"
+												   target="_blank" rel="noopener">보기</a>
+												<button type="button" class="btn btn-danger btn-xs"
+														th:onclick="|deleteDocument('${doc.nameCardDocumentId}')|">삭제</button>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</section>
+		</section>
+	</section>
+
+	<form id="docDeleteForm" method="post" action="/admin/namecardManager/document/delete">
+		<input type="hidden" name="documentId" id="docDeleteId">
+	</form>
+
+	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
+	<script th:inline="javascript">
+		var message = /*[[${message}]]*/ null;
+		if (message) { alert(message); }
+
+		function deleteDocument(id) {
+			if (confirm('이 서류를 삭제하시겠습니까?')) {
+				document.getElementById('docDeleteId').value = id;
+				document.getElementById('docDeleteForm').submit();
+			}
+		}
+	</script>
+</body>
+
+</html>

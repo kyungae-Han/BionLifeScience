@@ -149,6 +149,13 @@
 		    <version>1.17.2</version>
 		</dependency>
 		
+		<!-- QR 생성. 명함의 QR 을 관리자 입력 주소로 그때그때 만든다 -->
+		<dependency>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.5.3</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<!-- json 변환 -->
 		<dependency>

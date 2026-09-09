@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/admin/common :: headMenu}">
+</head>
+
+<body>
+	<section id="container">
+
+		<th:block th:replace="~{fragments/admin/common :: headMenu}"></th:block>
+
+		<th:block th:replace="~{fragments/admin/common :: sideMenu('namecard')}"></th:block>
+
+		<section id="main-content">
+			<section class="wrapper">
+				<div class="btn_group">
+					<button class="btn btn-blue" type="button" style="margin-top: 10px;"
+							onclick="javascript:location.href='/admin/namecardManager/form'">명함 등록</button>
+				</div>
+				<div class="row mt">
+					<div class="col-md-12">
+						<div class="content-panel">
+							<div class="row search-section">
+								<div class="col-md-12">
+									<h6><i class="fas fa-question-circle"></i> 디지털 명함 관리</h6>
+									<p class="help-block">
+										명함 주소는 사내 메일 아이디를 그대로 씁니다. 예) dh_jang@bionlifescience.com →
+										<strong>https://bionlifescience.com/dh_jang</strong>
+									</p>
+								</div>
+							</div>
+
+							<div class="card">
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="table table-bordered table-hover align-middle mb-0">
+											<thead class="table-light">
+											<tr>
+												<th style="width: 70px;">ID</th>
+												<th style="width: 160px;">명함 주소</th>
+												<th style="width: 120px;">이름</th>
+												<th style="width: 100px;">직함</th>
+												<th>부서</th>
+												<th style="width: 140px;">휴대전화</th>
+												<th style="width: 90px;">거래서류</th>
+												<th style="width: 70px;">QR</th>
+												<th style="width: 90px;">노출</th>
+												<th style="width: 150px;">수정일</th>
+												<th style="width: 170px;">관리</th>
+											</tr>
+											</thead>
+											<tbody>
+												<tr th:if="${#lists.isEmpty(cardList)}">
+													<td colspan="11" class="text-center py-4">등록된 명함이 없습니다.</td>
+												</tr>
+												<tr th:each="card : ${cardList}">
+													<td th:text="${card.nameCardId}"></td>
+													<td>
+														<a th:href="'/' + ${card.slug}" target="_blank" rel="noopener"
+														   th:text="'/' + ${card.slug}">/dh_jang</a>
+													</td>
+													<td th:text="${card.nameKo}"></td>
+													<td th:text="${card.titleKo}"></td>
+													<td th:text="${card.deptKo}"></td>
+													<td th:text="${card.mobile}"></td>
+													<td>
+														<span th:if="${card.showDocsYn == 'Y'}">노출</span>
+														<span th:unless="${card.showDocsYn == 'Y'}">숨김</span>
+													</td>
+													<td>
+														<span th:if="${card.showQrYn == 'Y'}">노출</span>
+														<span th:unless="${card.showQrYn == 'Y'}">숨김</span>
+													</td>
+													<td>
+														<span th:if="${card.useYn == 'Y'}">사용</span>
+														<span th:unless="${card.useYn == 'Y'}">미사용</span>
+													</td>
+													<td th:text="${#temporals.format(card.updatedAt,'yyyy-MM-dd HH:mm')}"></td>
+													<td>
+														<a class="btn btn-theme btn-xs" th:href="@{/admin/namecardManager/form/{id}(id=${card.nameCardId})}">수정</a>
+														<button type="button" class="btn btn-danger btn-xs"
+																th:onclick="|deleteCard('${card.nameCardId}')|">삭제</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+	</section>
+
+	<form id="deleteForm" method="post" action="/admin/namecardManager/delete">
+		<input type="hidden" name="id" id="deleteId">
+	</form>
+
+	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
+	<script th:inline="javascript">
+		var message = /*[[${message}]]*/ null;
+		if (message) { alert(message); }
+
+		function deleteCard(id) {
+			if (confirm('이 명함을 삭제하시겠습니까? 올려 둔 거래 서류도 함께 지워집니다.')) {
+				document.getElementById('deleteId').value = id;
+				document.getElementById('deleteForm').submit();
+			}
+		}
+	</script>
+</body>
+
+</html>

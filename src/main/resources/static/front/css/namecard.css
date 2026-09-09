@@ -1,0 +1,136 @@
+/* 명함은 흰 바탕에 맞춰 디자인된 로고를 쓴다. 다크 모드에서 색을 뒤집으면
+   그라디언트 로고가 떠 보이므로, 이 페이지는 밝은 화면 하나로 고정한다. */
+:root {
+  color-scheme: light;
+  --blue: #009fe8;
+  --blue-deep: #008bd5;
+  --green: #6fb92c;
+  --yellow: #fccf00;
+  --orange: #ef8200;
+  --ink: #0f172a;
+  --muted: #64748b;
+  --line: #e8edf3;
+  --surface: #ffffff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #eef2f7;
+  background-image: radial-gradient(120% 60% at 50% 0%, #ffffff 0%, #eef2f7 70%);
+  min-height: 100dvh;
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard",
+               "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+  -webkit-text-size-adjust: 100%;
+  padding: env(safe-area-inset-top) 0 calc(env(safe-area-inset-bottom) + 2rem);
+}
+.wrap { max-width: 26rem; margin: 0 auto; padding: 0 1rem; }
+
+/* 한/영은 양쪽 모두 문서에 넣고 한쪽만 감춘다. 스크립트가 죽어도 한글면은 보인다. */
+[data-lang="ko"] .en, [data-lang="en"] .ko { display: none; }
+
+/* ── 인앱 브라우저 안내 ── */
+#inapp {
+  display: none; margin: 0.75rem 0 0; padding: 0.7rem 0.85rem;
+  background: #fff8e1; border: 1px solid #f5e2a3; border-radius: 0.7rem;
+  font-size: 0.8rem; line-height: 1.5; color: #7a5c00;
+}
+#inapp button {
+  margin-top: 0.5rem; width: 100%; padding: 0.5rem; cursor: pointer;
+  background: #fff; border: 1px solid #e3cd7d; border-radius: 0.5rem;
+  font: inherit; font-weight: 600; color: #7a5c00;
+}
+
+/* ── 카드 ── */
+.card {
+  background: var(--surface); border-radius: 1.25rem; margin-top: 1rem;
+  box-shadow: 0 1px 2px rgba(15,23,42,.06), 0 12px 32px -12px rgba(15,23,42,.18);
+  overflow: hidden;
+}
+.card-top { padding: 1.5rem 1.5rem 1.25rem; }
+
+.brandbar { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+.logo { width: 6.5rem; }
+.logo svg { display: block; width: 100%; height: auto; }
+.company { margin-top: 0.6rem; font-size: 0.78rem; font-weight: 600; color: #475569; }
+
+/* 한/영 토글 */
+.langtoggle { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; flex: none; }
+.langtoggle button {
+  padding: 0.3rem 0.6rem; border: 0; background: #fff; cursor: pointer;
+  font: inherit; font-size: 0.72rem; font-weight: 700; color: #94a3b8; letter-spacing: 0.02em;
+}
+.langtoggle button[aria-pressed="true"] { background: var(--blue); color: #fff; }
+
+/* 이름줄 + 사진 자리 */
+.person { display: flex; align-items: center; gap: 0.9rem; margin-top: 1.35rem; }
+/* 사진 자리. 나중에 이 div 안을 <img src="사진.jpg" alt=""> 로 바꾸면 끝난다. */
+.avatar {
+  width: 5.25rem; height: 5.25rem; flex: none; border-radius: 50%;
+  background: linear-gradient(140deg, var(--green), var(--yellow) 45%, var(--orange) 70%, var(--blue));
+  display: grid; place-items: center; overflow: hidden;
+}
+.avatar img { width: calc(100% - 6px); height: calc(100% - 6px); border-radius: 50%;
+              object-fit: cover; background: #f8fafc; }
+.name { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+.name small { font-size: 0.95rem; font-weight: 600; color: #475569; margin-left: 0.35rem; }
+/* 영문 직함은 두 단어라 이름 옆에 붙이면 단어가 갈라진다. 아래 줄로 내린다. */
+[data-lang="en"] .name small { display: block; margin: 0.2rem 0 0; }
+.dept { margin-top: 0.3rem; font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
+
+/* ── 연락처 저장 (이 명함의 본체) ── */
+.save {
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  margin: 1.35rem 0 0; padding: 0.95rem; width: 100%;
+  background: var(--blue); color: #fff; border-radius: 0.85rem;
+  font-size: 1rem; font-weight: 700; text-decoration: none;
+  box-shadow: 0 8px 20px -8px rgba(0,159,232,.75);
+}
+.save:active { background: var(--blue-deep); }
+.save svg { width: 1.15rem; height: 1.15rem; }
+.fallback {
+  display: block; width: 100%; margin-top: 0.55rem; padding: 0.25rem;
+  background: none; border: 0; cursor: pointer;
+  font: inherit; font-size: 0.75rem; color: #94a3b8; text-align: center;
+}
+
+/* ── 빠른 실행 ── */
+.quick { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
+.quick a {
+  display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
+  padding: 0.9rem 0.25rem; text-decoration: none; color: #475569;
+  font-size: 0.72rem; font-weight: 600;
+}
+.quick a + a { border-left: 1px solid var(--line); }
+.quick a:active { background: #f1f5f9; }
+.quick svg { width: 1.25rem; height: 1.25rem; stroke: var(--blue); fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ── 상세 ── */
+.details { border-top: 1px solid var(--line); padding: 0.35rem 1.5rem 1.35rem; }
+.row { display: flex; gap: 0.9rem; padding: 0.7rem 0; border-bottom: 1px solid #f1f5f9; align-items: baseline; }
+.row:last-child { border-bottom: 0; }
+.row dt { flex: none; width: 4.25rem; font-size: 0.72rem; font-weight: 600; color: #94a3b8; }
+.row dd { margin: 0; font-size: 0.88rem; line-height: 1.55; word-break: break-word; }
+.row a { color: var(--ink); text-decoration: none; border-bottom: 1px solid #dbeafe; }
+.row .plain { color: var(--ink); }
+.row .note { display: block; margin-top: 0.15rem; font-size: 0.72rem; color: #94a3b8; }
+
+/* ── QR ── */
+.qr { margin-top: 1rem; background: var(--surface); border-radius: 1.25rem; padding: 1.25rem; text-align: center;
+      box-shadow: 0 1px 2px rgba(15,23,42,.06), 0 12px 32px -12px rgba(15,23,42,.18); }
+.qr img { width: 8.5rem; height: 8.5rem; image-rendering: pixelated; }
+.qr p { margin: 0.5rem 0 0; font-size: 0.75rem; color: var(--muted); }
+
+/* ── 거래 서류 ── */
+.docs { margin-top: 1rem; background: var(--surface); border-radius: 1.25rem; padding: 1.1rem 1.25rem 1.25rem;
+        box-shadow: 0 1px 2px rgba(15,23,42,.06), 0 12px 32px -12px rgba(15,23,42,.18); }
+.docs h2 { margin: 0 0 0.15rem; font-size: 0.78rem; font-weight: 700; color: #94a3b8; letter-spacing: 0.02em; }
+.docs .bizno { margin: 0 0 0.85rem; font-size: 0.78rem; color: var(--muted); }
+.doc { display: flex; align-items: center; gap: 0.7rem; padding: 0.8rem 0.85rem; text-decoration: none;
+       border: 1px solid var(--line); border-radius: 0.75rem; color: var(--ink);
+       font-size: 0.88rem; font-weight: 600; }
+.doc + .doc { margin-top: 0.5rem; }
+.doc:active { background: #f8fafc; }
+.doc svg { width: 1.15rem; height: 1.15rem; flex: none; stroke: var(--blue); fill: none;
+           stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.doc small { display: block; margin-top: 0.15rem; font-size: 0.72rem; font-weight: 500; color: #94a3b8; }

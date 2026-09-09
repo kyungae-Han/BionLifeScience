@@ -27,6 +27,12 @@ public class SeoModelAttributeAdvice {
 	@Value("${app.verification.google:}")
 	private String googleVerification;
 
+	/** 절대 주소가 필요한 곳(og:image 등)에서 쓴다 */
+	@ModelAttribute("baseUrl")
+	public String baseUrl() {
+		return baseUrl;
+	}
+
 	@ModelAttribute("naverVerification")
 	public String naverVerification() {
 		return naverVerification;

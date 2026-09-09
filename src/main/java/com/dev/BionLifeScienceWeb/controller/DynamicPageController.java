@@ -16,6 +16,7 @@ import com.dev.BionLifeScienceWeb.model.page.PageGroup;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandRepository;
 import com.dev.BionLifeScienceWeb.repository.page.PageContentRepository;
 import com.dev.BionLifeScienceWeb.repository.page.PageGroupRepository;
+import com.dev.BionLifeScienceWeb.service.namecard.NameCardService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +27,7 @@ public class DynamicPageController {
     private final PageContentRepository pageContentRepository;
     private final PageGroupRepository pageGroupRepository;
     private final BrandRepository brandRepository;
+    private final NameCardService nameCardService;
 
 
     @GetMapping("/{basePath:[^.]+}")
@@ -47,8 +49,21 @@ public class DynamicPageController {
     	        return "front/eventPage/pageDetail";
     	    }
     	
-    	    PageGroup group = pageGroupRepository.findByBasePathAndUseYn(basePath, "Y")
-    	            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    	    Optional<PageGroup> groupOpt = pageGroupRepository.findByBasePathAndUseYn(basePath, "Y");
+
+    	    // 이벤트 페이지가 아니면 디지털 명함 주소인지 본다.
+    	    // 명함은 사내 메일 아이디를 그대로 쓴다 (dh_jang@... → /dh_jang).
+    	    // 이 순서라 이미 쓰던 이벤트 페이지 주소를 명함이 가로챌 일은 없다.
+    	    if (groupOpt.isEmpty()) {
+    	        return nameCardService.findVisible(basePath)
+    	                .map(card -> {
+    	                    model.addAttribute("card", card);
+    	                    return NameCardController.CARD_VIEW;
+    	                })
+    	                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    	    }
+
+    	    PageGroup group = groupOpt.get();
 
     	    List<PageContent> pageList =
     	            pageContentRepository.findByPageGroup_PageGroupIdAndUseYnOrderByPageIndexAscPageContentIdDesc(
