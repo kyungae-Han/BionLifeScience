@@ -21,7 +21,8 @@ public class EnText {
 		if (isEnglish() && en != null && !en.isBlank()) {
 			return en;
 		}
-		return ko;
+		// 빈 값은 null 로 돌려준다. 화면에서 ?: 로 대체 문구를 쓸 수 있다
+		return (ko == null || ko.isBlank()) ? null : ko;
 	}
 
 	/** 지금 화면이 영문인지. 템플릿에서 분기할 때 쓴다 */

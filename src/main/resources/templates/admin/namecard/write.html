@@ -149,6 +149,10 @@
 										<input type="text" name="catalogUrl" class="form-control" th:value="${card.catalogUrl}"
 											   placeholder="https://optomation.dev">
 									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">카탈로그 설명</label>
 									<div class="col-sm-5">
 										<input type="text" name="catalogNoteKo" class="form-control" th:value="${card.catalogNoteKo}"
 											   placeholder="광학 제품 카탈로그">
@@ -164,7 +168,16 @@
 									<div class="col-sm-10">
 										<img th:if="${card.photoRoad}" th:src="${card.photoRoad}" width="90" height="90"
 											 style="border-radius:50%; object-fit:cover; margin-bottom:8px;">
-										<input type="file" name="photoFile" accept=".jpg,.jpeg,.png">
+										<div class="fileupload fileupload-new" data-provides="fileupload">
+											<span class="btn btn-default btn-file" style="min-width:130px;">
+												<span class="fileupload-new"><i class="fa fa-paperclip"></i> 파일 선택</span>
+												<span class="fileupload-exists"><i class="fa fa-undo"></i> 변경</span>
+												<input type="file" class="default" name="photoFile" accept=".jpg,.jpeg,.png" />
+											</span>
+											<span class="fileupload-preview" style="margin-left:5px;"></span>
+											<a href="#" class="close fileupload-exists" data-dismiss="fileupload"
+											   style="float:none; margin-left:5px;"></a>
+										</div>
 									</div>
 								</div>
 
@@ -172,7 +185,28 @@
 									<label class="col-sm-2 control-label">미리보기 그림</label>
 									<div class="col-sm-10">
 										<img th:if="${card.ogRoad}" th:src="${card.ogRoad}" width="180" style="margin-bottom:8px;">
-										<input type="file" name="ogFile" accept=".jpg,.jpeg,.png">
+										<div class="fileupload fileupload-new" data-provides="fileupload">
+											<span class="btn btn-default btn-file" style="min-width:130px;">
+												<span class="fileupload-new"><i class="fa fa-paperclip"></i> 파일 선택</span>
+												<span class="fileupload-exists"><i class="fa fa-undo"></i> 변경</span>
+												<input type="file" class="default" name="ogFile" accept=".jpg,.jpeg,.png" />
+											</span>
+											<span class="fileupload-preview" style="margin-left:5px;"></span>
+											<a href="#" class="close fileupload-exists" data-dismiss="fileupload"
+											   style="float:none; margin-left:5px;"></a>
+										</div>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label class="col-sm-2 control-label">미리보기 문구</label>
+									<div class="col-sm-5">
+										<input type="text" name="ogDescKo" class="form-control" th:value="${card.ogDescKo}"
+											   placeholder="연구자와 함께 성장하는 바이온라이프사이언스">
+									</div>
+									<div class="col-sm-5">
+										<input type="text" name="ogDescEn" class="form-control" th:value="${card.ogDescEn}"
+											   placeholder="Bion Lifescience, growing together with researchers">
 									</div>
 								</div>
 
@@ -204,7 +238,7 @@
 								</div>
 
 								<div class="form-group">
-									<div class="col-sm-offset-2 col-sm-10">
+									<div class="col-sm-offset-2 col-sm-10 text-right">
 										<button type="submit" class="btn btn-theme">저장</button>
 										<a class="btn btn-default" href="/admin/namecardManager">목록</a>
 										<a th:if="${card.nameCardId != null}" class="btn btn-default"
@@ -233,9 +267,18 @@
 										</select>
 									</div>
 									<div class="col-sm-4">
-										<input type="file" name="docFile" accept="application/pdf,.pdf" required>
+										<div class="fileupload fileupload-new" data-provides="fileupload">
+											<span class="btn btn-default btn-file" style="min-width:130px;">
+												<span class="fileupload-new"><i class="fa fa-paperclip"></i> 파일 선택</span>
+												<span class="fileupload-exists"><i class="fa fa-undo"></i> 변경</span>
+												<input type="file" class="default" name="docFile" accept="application/pdf,.pdf" required />
+											</span>
+											<span class="fileupload-preview" style="margin-left:5px;"></span>
+											<a href="#" class="close fileupload-exists" data-dismiss="fileupload"
+											   style="float:none; margin-left:5px;"></a>
+										</div>
 									</div>
-									<div class="col-sm-2">
+									<div class="col-sm-2 text-right">
 										<button type="submit" class="btn btn-theme">서류 등록</button>
 									</div>
 								</div>
@@ -283,6 +326,7 @@
 	</form>
 
 	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
+	<script type="text/javascript" src="/administration/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>
 	<script th:inline="javascript">
 		var message = /*[[${message}]]*/ null;
 		if (message) { alert(message); }

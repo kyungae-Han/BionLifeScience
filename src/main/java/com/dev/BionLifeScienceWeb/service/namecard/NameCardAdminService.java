@@ -121,6 +121,8 @@ public class NameCardAdminService {
 		entity.setCatalogUrl(validateHttpUrl(form.getCatalogUrl(), "카탈로그 주소"));
 		entity.setCatalogNoteKo(trim(form.getCatalogNoteKo()));
 		entity.setCatalogNoteEn(trim(form.getCatalogNoteEn()));
+		entity.setOgDescKo(emptyToNull(form.getOgDescKo()));
+		entity.setOgDescEn(emptyToNull(form.getOgDescEn()));
 		entity.setBizNo(trim(form.getBizNo()));
 		entity.setShowDocsYn(yn(form.getShowDocsYn()));
 		entity.setShowQrYn(yn(form.getShowQrYn()));
@@ -354,6 +356,12 @@ public class NameCardAdminService {
 	/** 체크박스는 켜면 "Y" 가 오고 끄면 아무것도 오지 않는다 */
 	private String yn(String value) {
 		return "Y".equalsIgnoreCase(trim(value)) ? "Y" : "N";
+	}
+
+	/** 빈 칸은 null 로 저장한다. 화면에서 "값 없음" 을 가려내기 위해서다 */
+	private String emptyToNull(String value) {
+		String trimmed = trim(value);
+		return trimmed.isEmpty() ? null : trimmed;
 	}
 
 	private String trim(String value) {

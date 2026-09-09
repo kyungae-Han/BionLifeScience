@@ -126,6 +126,13 @@ public class NameCard {
 	@Column(name = "og_name", length = 255)
 	private String ogName;
 
+	/** 미리보기 카드에 나오는 한 줄. 비우면 회사 공통 문구가 나간다 */
+	@Column(name = "og_desc_ko", length = 300)
+	private String ogDescKo;
+
+	@Column(name = "og_desc_en", length = 300)
+	private String ogDescEn;
+
 	/** 거래 서류 영역 노출 여부 */
 	@Column(name = "show_docs_yn", nullable = false, length = 1)
 	private String showDocsYn = "N";

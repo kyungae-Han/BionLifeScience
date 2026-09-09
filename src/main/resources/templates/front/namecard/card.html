@@ -13,7 +13,7 @@
 <meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="profile">
 <meta property="og:title" th:content="${card.nameKo} + ' ' + ${card.titleKo} + ' | ' + ${card.companyKo}">
-<meta property="og:description" th:content="|${card.deptKo} · 탭 한 번으로 연락처를 저장하세요|">
+<meta property="og:description" th:content="${@enText.pick(card.deptKo, card.deptEn)} + ' · ' + (${@enText.pick(card.ogDescKo, card.ogDescEn)} ?: #{namecard.og.description})">
 <!-- 미리보기는 절대 주소만 읽는다. app.base-url 이 기준이 된다 -->
 <meta property="og:url" th:content="${canonicalUrl}">
 <meta property="og:image"
