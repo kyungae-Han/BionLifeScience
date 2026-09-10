@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/admin/common :: headMenu}">
+</head>
+
+<body>
+	<section id="container">
+
+		<th:block th:replace="~{fragments/admin/common :: headMenu}"></th:block>
+
+		<th:block th:replace="~{fragments/admin/common :: sideMenu('pageText')}"></th:block>
+
+		<section id="main-content">
+			<section class="wrapper">
+				<div class="row mt">
+					<div class="col-lg-11">
+						<h4><i class="fa fa-angle-right"></i> 페이지 문구 관리</h4>
+
+						<div class="form-panel">
+							<div style="margin-bottom:12px;">
+								<input type="text" id="filter" class="form-control" style="max-width:320px;"
+									   placeholder="문구 내용으로 걸러보기">
+							</div>
+
+							<form role="form" action="/admin/pageTextManager" method="POST" class="style-form">
+
+								<div th:each="section : ${sections}">
+									<h5 style="margin-top:24px;"><b th:text="${section.key}"></b></h5>
+									<table class="table table-bordered">
+										<thead>
+										<tr>
+											<th style="width:20%;">자리</th>
+											<th style="width:40%;">한글</th>
+											<th>영문</th>
+										</tr>
+										</thead>
+										<tbody>
+											<tr th:each="row : ${section.value}" class="text-row">
+												<td>
+													<span th:text="${row.label}"></span>
+													<span th:if="${row.htmlAllowed}"
+														  style="display:inline-block;margin-top:4px;padding:1px 6px;background:#eee;border-radius:3px;font-size:11px;">태그 포함</span>
+												</td>
+												<td>
+													<textarea class="form-control ko-text" rows="2"
+															  th:name="'ko.' + ${row.pageTextId}"
+															  th:text="${row.textKo}"></textarea>
+												</td>
+												<td>
+													<textarea class="form-control" rows="2"
+															  th:name="'en.' + ${row.pageTextId}"
+															  th:text="${row.textEn}"
+															  placeholder="비워 두면 한글이 그대로 나갑니다"></textarea>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+								<div th:if="${total == 0}">
+									등록된 문구가 없습니다. pageText.sql 을 실행해 주세요.
+								</div>
+
+								<div style="margin:20px 0 40px;">
+									<button class="btn btn-theme" type="submit">저장</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+	</section>
+
+	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
+	<script th:inline="javascript">
+		var message = /*[[${message}]]*/ null;
+		if (message) { alert(message); }
+
+		// 문구가 많으므로 한글 내용으로 걸러 찾는다
+		document.getElementById('filter').addEventListener('input', function () {
+			var word = this.value.trim().toLowerCase();
+			document.querySelectorAll('tr.text-row').forEach(function (row) {
+				var ko = (row.querySelector('.ko-text').value || '').toLowerCase();
+				row.style.display = (word === '' || ko.indexOf(word) >= 0) ? '' : 'none';
+			});
+		});
+	</script>
+</body>
+
+</html>
