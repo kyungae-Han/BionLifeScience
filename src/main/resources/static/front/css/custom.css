@@ -11,5 +11,7 @@
 html[lang="en"] #top-search > a {
   width: auto;
   padding-left: 26px;
+  /* 폭을 풀면 글자가 바로 옆 ENG/KOR 에 붙는다. 한글일 때 남던 여백만큼 오른쪽에 준다 */
+  padding-right: 24px;
   text-align: left;
 }

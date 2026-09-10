@@ -6,11 +6,13 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dev.BionLifeScienceWeb.model.NoticeSubject;
 import com.dev.BionLifeScienceWeb.model.brand.Brand;
 import com.dev.BionLifeScienceWeb.model.brand.BrandBigSort;
 import com.dev.BionLifeScienceWeb.model.brand.BrandMiddleSort;
 import com.dev.BionLifeScienceWeb.model.brand.BrandProduct;
 import com.dev.BionLifeScienceWeb.model.brand.BrandSmallSort;
+import com.dev.BionLifeScienceWeb.repository.NoticeSubjectRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandBigSortRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandMiddleSortRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductRepository;
@@ -35,6 +37,7 @@ public class EnNameService {
 	private final BrandMiddleSortRepository brandMiddleSortRepository;
 	private final BrandSmallSortRepository brandSmallSortRepository;
 	private final BrandProductRepository brandProductRepository;
+	private final NoticeSubjectRepository noticeSubjectRepository;
 
 	public List<Brand> brands() {
 		return brandRepository.findAllByOrderByBrandIndexAsc();
@@ -54,6 +57,11 @@ public class EnNameService {
 
 	public List<BrandProduct> products() {
 		return brandProductRepository.findAllByOrderByBrandProductIndexAsc();
+	}
+
+	/** 공지사항 분류. 등록 화면에 수정 기능이 없어 여기서 영문명을 넣는다 */
+	public List<NoticeSubject> noticeSubjects() {
+		return noticeSubjectRepository.findAll();
 	}
 
 	/**
@@ -88,10 +96,18 @@ public class EnNameService {
 				case "middleSort" -> changed += apply(brandMiddleSortRepository.findById(id).orElse(null), newValue);
 				case "smallSort" -> changed += apply(brandSmallSortRepository.findById(id).orElse(null), newValue);
 				case "product" -> changed += applyProduct(brandProductRepository.findById(id).orElse(null), newValue);
+				case "noticeSubject" -> changed += applyNoticeSubject(noticeSubjectRepository.findById(id).orElse(null), newValue);
 				default -> { /* 화면이 함께 보내는 다른 값(csrf 등)은 그냥 지나간다 */ }
 			}
 		}
 		return changed;
+	}
+
+	private int applyNoticeSubject(NoticeSubject subject, String value) {
+		if (subject == null) {
+			return 0;
+		}
+		return set(subject.getTextEn(), value, subject::setTextEn);
 	}
 
 	private int apply(Object entity, String value) {

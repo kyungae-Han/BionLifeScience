@@ -23,11 +23,25 @@
 											<span class="help-block"># 메인 배너의 SUBJECT 문구를 입력 해 주세요.</span>
 										</div>
 										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
+											<textarea class="form-control form-control-inline"
+											type="text"
+											name="subjectEn"
+											placeholder="Banner subject in English (optional)"></textarea>
+											<span class="help-block"># 영문 SUBJECT. 비우면 영문 화면에도 한글이 나갑니다.</span>
+										</div>
+										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
 											<textarea class="form-control form-control-inline" 
 											type="text" 
 											name="content"
 											required="required"> </textarea>
 											<span class="help-block"># 메인 배너의 CONTENT 문구를 입력 해 주세요.</span>
+										</div>
+										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
+											<textarea class="form-control form-control-inline"
+											type="text"
+											name="contentEn"
+											placeholder="Banner description in English (optional)"></textarea>
+											<span class="help-block"># 영문 CONTENT. 비우면 영문 화면에도 한글이 나갑니다.</span>
 										</div>
 										<div class="col-md-6 col-xs-11" style="margin-top:20px;">
 											<div class="fileupload fileupload-new"
@@ -240,8 +254,20 @@
           </div>
 
           <div class="form-group">
+            <label>Subject (English)</label>
+            <textarea class="form-control" name="subjectEn" id="editBannerSubjectEn"
+                      placeholder="비우면 영문 화면에도 한글이 나갑니다"></textarea>
+          </div>
+
+          <div class="form-group">
             <label>Content</label>
             <textarea class="form-control" name="content" id="editBannerContent" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Content (English)</label>
+            <textarea class="form-control" name="contentEn" id="editBannerContentEn"
+                      placeholder="비우면 영문 화면에도 한글이 나갑니다"></textarea>
           </div>
 
 		<div class="form-group" style="margin-top:20px;">
@@ -344,6 +370,8 @@
 	        $('#editBannerId').val(banner.id);
 	        $('#editBannerSubject').val(banner.subject);
 	        $('#editBannerContent').val(banner.content);
+	        $('#editBannerSubjectEn').val(banner.subjectEn);
+	        $('#editBannerContentEn').val(banner.contentEn);
 	        $('#editBannerLinkUrl').val(banner.linkUrl);
 	        $('#editBannerIndex').val(banner.bannerIndex)
 

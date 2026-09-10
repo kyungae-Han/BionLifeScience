@@ -30,6 +30,14 @@
                     </div>
 
                     <div class="form-group">
+                      <label class="control-label col-lg-2"># 제목 영문</label>
+                      <div class="col-lg-10">
+                        <input class="form-control" type="text" name="subjectEn" th:value="${notice.subjectEn}"
+                               placeholder="비우면 영문 화면에도 한글 제목이 나갑니다" />
+                      </div>
+                    </div>
+
+                    <div class="form-group">
                       <label class="control-label col-lg-2"># 공지사항분류</label>
                       <div class="col-lg-10">
                         <select class="form-control" name="subjectId">
@@ -67,6 +75,14 @@
                     </div>
 
                     <div class="form-group">
+                      <label class="control-label col-lg-2"># 공지사항 영문</label>
+                      <div class="col-lg-10">
+                        <textarea id="editorEn" name="contentEn" th:utext="${notice.contentEn}"></textarea>
+                        <span class="alsert-message">* 선택 입력입니다. 비우면 영문 화면에도 한글 본문이 나갑니다.</span>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
                       <div class="col-lg-offset-2 col-lg-10">
                         <button class="btn btn-theme" type="button" onclick="location.href='/admin/noticeManager'">확인</button>
                         <button class="btn btn-warning" type="submit">수정</button>
@@ -96,6 +112,13 @@
     placeholder: '공지사항 editor',
     uploadUrl: '/admin/notice/image',
     height: 570
+  });
+
+  // 영문 본문도 같은 편집기를 쓴다. 이미지와 표를 그대로 넣을 수 있다
+  initSummernoteEditor('#editorEn', {
+    placeholder: 'Notice body in English (optional)',
+    uploadUrl: '/admin/notice/image',
+    height: 400
   });
 </script>
 

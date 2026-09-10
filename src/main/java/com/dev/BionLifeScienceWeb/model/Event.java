@@ -24,9 +24,19 @@ public class Event {
 	@Nullable
 	private String subject;
 	
+	/** 영문 제목. 비우면 화면에서 한글이 나간다 */
+	@Column(name="EVENT_SUBJECT_EN", length = 1000)
+	@Nullable
+	private String subjectEn;
+	
 	@Column(name="EVENT_CONTENT")
 	@Nullable
 	private String content;
+	
+	/** 영문 설명. 비우면 화면에서 한글이 나간다 */
+	@Column(name="EVENT_CONTENT_EN", length = 1000)
+	@Nullable
+	private String contentEn;
 	
 	@Column(name="EVENT_LINK")
 	@Nullable

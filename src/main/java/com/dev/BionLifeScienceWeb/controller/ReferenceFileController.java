@@ -106,6 +106,7 @@ public class ReferenceFileController {
 	public String updateReferenceFile(
 	        @RequestParam("id") Long id,
 	        @RequestParam("filesubject") String filesubject,
+	        @RequestParam(value = "filesubjectEn", required = false) String filesubjectEn,
 	        @RequestParam(value = "file", required = false) MultipartFile file
 	) throws IOException {
 	    
@@ -115,6 +116,8 @@ public class ReferenceFileController {
 
 	    // 제목 수정
 	    ref.setFilesubject(filesubject);
+	    // 비어 있으면 지운다. 지우면 영문 화면에서 한글 제목이 나간다
+	    ref.setFilesubjectEn(filesubjectEn == null || filesubjectEn.isBlank() ? null : filesubjectEn.trim());
 
 	    // 파일 교체 (선택)
 	    if (file != null && !file.isEmpty()) {

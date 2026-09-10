@@ -22,6 +22,8 @@
 <link href="/administration/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
 <link rel="shortcut icon" href="/front/image/logo/favicon.ico">	
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.css" rel="stylesheet">
+<!-- 라이트 테마 덮어쓰기. 반드시 style.css 다음에 온다. -->
+<link href="/administration/css/bion-admin.css" rel="stylesheet">
 </head>
 
 <body>
@@ -72,9 +74,9 @@
 							<span>제품관리(브랜드관리)</span>
 						</a>
 							<ul class="sub">
-								<li><a href="/admin/brandManager">브랜드등록</a></li>
+								<li><a href="/admin/brandManager">브랜드관리</a></li>
 								<li><a href="/admin/brandSortManager">카테고리 관리</a></li>
-								<li><a href="/admin/brandProductManager">제품 등록</a></li>
+								<li><a href="/admin/brandProductManager">제품관리</a></li>
 							</ul>
 						</li>
 						<li class="sub-menu"><a th:classappend="${code} == 'site' ? 'active' : ''"  href="javascript:;"> <i

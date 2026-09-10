@@ -28,4 +28,8 @@ public class BrandProductInfo {
 	@Column(name="BRAND_PRODUCT_INFO_TEXT")
 	private String productInfoText;
 	
+	/** 영문 제품 정보. 비우면 화면에서 한글이 나간다 */
+	@Column(name="BRAND_PRODUCT_INFO_TEXT_EN", length = 1000)
+	private String productInfoTextEn;
+	
 }

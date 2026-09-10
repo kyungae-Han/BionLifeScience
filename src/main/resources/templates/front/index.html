@@ -71,8 +71,8 @@
           <div class="container">
             <div class="slider-caption">
               <div data-animate="fadeInUp" data-delay="200">
-                <h1 th:utext="${b.subject}"></h1>
-                <p th:utext="${b.content}"></p>
+                <h1 th:utext="${@enText.pick(b.subject, b.subjectEn)}"></h1>
+                <p th:utext="${@enText.pick(b.content, b.contentEn)}"></p>
               </div>
             </div>
           </div>
@@ -105,12 +105,12 @@
 	    <div class="promo promo-light header-stick p-5">
 		      <div class="row align-items-center" th:if="${ev != null}">
 			       <div class="col-12 col-lg">
-				        <h3 th:text="${ev.subject}">EVENT LINE BANNER SECTION</h3>
-				        <span th:text="${ev.content}">이벤트 혹은 뉴스 등 이벤트 배너로 활용할 수 있는 공간입니다.</span>
+				        <h3 th:text="${@enText.pick(ev.subject, ev.subjectEn)}">EVENT LINE BANNER SECTION</h3>
+				        <span th:text="${@enText.pick(ev.content, ev.contentEn)}">이벤트 혹은 뉴스 등 이벤트 배너로 활용할 수 있는 공간입니다.</span>
 			       </div>
 			       	<div class="col-12 col-lg-auto mt-4 mt-lg-0">
 				        <a th:href="@{${ev.link}}" class="button button-rounded button-reveal button-large button-dirtygreen"><i
-				         class="icon-arrow-right"></i><span>살펴보기</span></a>
+				         class="icon-arrow-right"></i><span th:text="${@pageText.get('index', 'index.event.button')} ?: _">살펴보기</span></a>
 			       </div>
 		     </div>
 	     </div>
@@ -129,26 +129,26 @@
       <!-- 캡션 -->
       <div class="history-caption">
        <ul>
-        <li role="button" tabindex="0" onclick="window.location.href='/about'"><i class="history-graphic"></i> <span>도전의 여정</span>
-         <h3>
+        <li role="button" tabindex="0" onclick="window.location.href='/about'"><i class="history-graphic"></i> <span th:text="${@pageText.get('index', 'index.history1.label')} ?: _">도전의 여정</span>
+         <h3 th:utext="${@pageText.get('index', 'index.history1.title')} ?: _">
           새로운 도전과<br>변화의 시작
          </h3> <i class="history-arrow"></i></li>
         <li role="button" tabindex="0" onclick="window.location.href='/about#glance-slider'">
         <i class="history-graphic"></i> 
-        <span>오늘의 성과</span>
-         <h3>
+        <span th:text="${@pageText.get('index', 'index.history2.label')} ?: _">오늘의 성과</span>
+         <h3 th:utext="${@pageText.get('index', 'index.history2.title')} ?: _">
           지속적인 성장과<br>끊임없는 노력
          </h3> <i class="history-arrow"></i>
          </li>
         <li role="button" tabindex="0" onclick="window.location.href='/rnd'"><i class="history-graphic"></i>
-		        <span>혁신의 내일</span>
-	    	     <h3>더 나은 미래를<br>향한 한 걸음</h3>
+		        <span th:text="${@pageText.get('index', 'index.history3.label')} ?: _">혁신의 내일</span>
+	    	     <h3 th:utext="${@pageText.get('index', 'index.history3.title')} ?: _">더 나은 미래를<br>향한 한 걸음</h3>
 	    	     <i class="history-arrow"></i>
          </li>
 
         <li role="button" tabindex="0" onclick="window.location.href='/about#history'">
-        <i class="history-graphic"></i> <span>타임캡슐</span>
-	         <h3>
+        <i class="history-graphic"></i> <span th:text="${@pageText.get('index', 'index.history4.label')} ?: _">타임캡슐</span>
+	         <h3 th:utext="${@pageText.get('index', 'index.history4.title')} ?: _">
 	          함께 만들어가는<br>바이온의 역사
 	         </h3> <i class="history-arrow"></i>
          </li>
@@ -163,7 +163,7 @@
 	  <header class="pro-head">
 	   <p class="eyebrow">MEETS INNOVATION</p>
 	   <h2>PRODUCTS</h2>
-	   <p class="sub">바이온 자체 브랜드의 핵심 공정과 제품 안정성을 한눈에 볼 수 있습니다.</p>
+	   <p class="sub" th:text="${@pageText.get('index', 'index.products.sub')} ?: _">바이온 자체 브랜드의 핵심 공정과 제품 안정성을 한눈에 볼 수 있습니다.</p>
 	  </header>
 	
 	  <!-- 가로 스크롤 트랙 -->
@@ -207,8 +207,8 @@
     <header class="news-head">
       <h2>News</h2>
       <nav class="news-tabs" role="tablist" aria-label="뉴스 탭">
-        <button class="tab-btn is-active" data-target="#noticeTrack" role="tab" aria-selected="true">공지사항</button>
-        <button class="tab-btn" data-target="#refsTrack" role="tab" aria-selected="false">자료(카탈로그)</button>
+        <button class="tab-btn is-active" data-target="#noticeTrack" role="tab" aria-selected="true" th:text="${@pageText.get('index', 'index.news.tab.notice')} ?: _">공지사항</button>
+        <button class="tab-btn" data-target="#refsTrack" role="tab" aria-selected="false" th:text="${@pageText.get('index', 'index.news.tab.reference')} ?: _">자료(카탈로그)</button>
         <span class="tab-ink" aria-hidden="true"></span>
       </nav>
     </header>
@@ -220,12 +220,12 @@
 	  <div class="news-track is-active" id="noticeTrack">
 	  	<div class="news-card" th:each="i:${notice}">
 	  		<a th:href="@{'/noticeDetail/' + ${i.id}}">
-		  		<p class="meta notice"><i class="icon-time"></i> 공지일 : [[${#dates.format(i.date, 'yyyy-MM-dd')}]]</p>
-		  		<h3 class="headline" th:text="${i.subject}">
+		  		<p class="meta notice"><i class="icon-time"></i> <span th:text="${@pageText.get('index', 'index.news.noticeDate')} ?: _">공지일 :</span> [[${#dates.format(i.date, 'yyyy-MM-dd')}]]</p>
+		  		<h3 class="headline" th:text="${@enText.pick(i.subject, i.subjectEn)}">
 		            이곳은 공지사항의 제목이 들어가는 곳 입니다..
 	           </h3>
 		  		<div class="card-link">
-		           <p><strong># 공지사항주제 :</strong> [[${i.noticeSubject.text}]]</p>
+		           <p><strong th:text="${@pageText.get('index', 'index.news.subjectLabel')} ?: _"># 공지사항주제 :</strong> [[${@enText.pick(i.noticeSubject.text, i.noticeSubject.textEn)}]]</p>
 		  		</div>
 	  		</a>
 	  	</div>
@@ -234,14 +234,14 @@
 	     <!-- 자료(카탈로그) -->
 	     <div class="news-track" id="refsTrack" hidden>
 	          <div class="news-card" th:each="f:${fi}">
-	           <h3 class="headline" th:text="${f.filesubject}">이곳은 카탈로그의 제목이 들어가는 곳 입니다.
+	           <h3 class="headline" th:text="${@enText.pick(f.filesubject, f.filesubjectEn)}">이곳은 카탈로그의 제목이 들어가는 곳 입니다.
 	           </h3>
 	           
 	           
 	          <div class="card-link">
-	            <p class="meta"></i> 업로드 시간 : [[${f.filedate}]]</p>
+	            <p class="meta"></i> <span th:text="${@pageText.get('index', 'index.news.uploadDate')} ?: _">업로드 시간 :</span> [[${f.filedate}]]</p>
 	  		 <p>
-	  		   <a th:href="@{${f.fileroad}}" th:download="${f.filesubject}"><span th:text="${f.filesubject}"></span> &nbsp;파일다운로드</a>
+	  		   <a th:href="@{${f.fileroad}}" th:download="${f.filesubject}"><span th:text="${@enText.pick(f.filesubject, f.filesubjectEn)}"></span> &nbsp;<span th:text="${@pageText.get('index', 'index.news.download')} ?: _">파일다운로드</span></a>
 	  		 </p>
 	          </div>
 	       </div>
@@ -256,8 +256,8 @@
     </div>
 	  <!-- 더보기 -->
 	   <div class="news-more">
-	     <a class="button button-rounded button-small button-border" href="/noticeList">공지 더보기 →</a>
-	     <a class="button button-rounded button-small button-border" href="/references">자료 더보기 →</a>
+	     <a class="button button-rounded button-small button-border" href="/noticeList" th:text="${@pageText.get('index', 'index.news.moreNotice')} ?: _">공지 더보기 →</a>
+	     <a class="button button-rounded button-small button-border" href="/references" th:text="${@pageText.get('index', 'index.news.moreReference')} ?: _">자료 더보기 →</a>
 	   </div>
   </div>
 </section>

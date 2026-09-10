@@ -4,6 +4,174 @@
 <head th:replace="~{fragments/admin/common :: headMenu}">
 </head>
 
+<style>
+/* 페이지 문구 관리 — 번역 작업대.
+   왼쪽은 화면·구역 나무, 가운데는 문구 목록, 오른쪽은 고치는 칸이다.
+   색은 bion-admin.css 의 이름을 그대로 쓴다. 여기서 색을 새로 만들지 않는다. */
+
+.pt-shell { display: flex; gap: 14px; align-items: flex-start; }
+
+.pt-tree   { flex: 0 0 208px; }
+.pt-list   { flex: 1 1 520px; min-width: 420px; }
+.pt-editor { flex: 0 0 336px; }
+
+@media (max-width: 1280px) {
+	.pt-shell  { flex-wrap: wrap; }
+	.pt-tree   { flex: 1 1 100%; }
+	.pt-editor { flex: 1 1 100%; }
+	.pt-list   { flex: 1 1 100%; min-width: 0; }
+}
+
+.pt-card {
+	background: var(--bn-surface);
+	border: 1px solid var(--bn-line);
+	border-radius: var(--bn-radius-lg);
+	box-shadow: 0 1px 2px rgba(27, 34, 48, .05);
+}
+
+.pt-card > .pt-head {
+	display: flex; align-items: center; gap: 8px;
+	padding: 11px 14px;
+	border-bottom: 1px solid var(--bn-line-3);
+	font-size: 13px; font-weight: 700; color: var(--bn-ink);
+}
+
+.pt-head .pt-count { margin-left: auto; font-weight: 500; color: var(--bn-ink-3); font-size: 12px; }
+
+/* ── 왼쪽 나무 ─────────────────────────────────────────────────────── */
+
+.pt-tree .pt-body { padding: 8px; max-height: 620px; overflow: auto; }
+
+.pt-node {
+	display: flex; align-items: center; gap: 7px;
+	padding: 7px 9px; border-radius: var(--bn-radius);
+	font-size: 13px; color: var(--bn-ink-2); cursor: pointer;
+}
+
+.pt-node:hover { background: var(--bn-surface-2); }
+
+.pt-node.on { background: var(--bn-accent-bg); color: var(--bn-accent-ink); font-weight: 700; }
+
+.pt-node .n { margin-left: auto; font-size: 11px; color: var(--bn-ink-4); }
+.pt-node.on .n { color: var(--bn-accent-ink); }
+
+.pt-node.lv-page { font-weight: 700; color: var(--bn-ink); }
+.pt-node.lv-page .code { font-weight: 500; font-size: 11px; color: var(--bn-ink-4); }
+.pt-node.lv-section { padding-left: 24px; font-size: 12.5px; }
+
+/* ── 가운데 목록 ───────────────────────────────────────────────────── */
+
+.pt-tools {
+	display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+	padding: 10px 14px; border-bottom: 1px solid var(--bn-line-3);
+}
+
+.pt-chip {
+	border: 1px solid var(--bn-line-2); background: var(--bn-surface);
+	color: var(--bn-ink-2); border-radius: 20px;
+	padding: 4px 11px; font-size: 12px; cursor: pointer;
+}
+
+.pt-chip:hover { background: var(--bn-surface-2); }
+.pt-chip.on { background: var(--bn-accent); border-color: var(--bn-accent); color: #fff; font-weight: 600; }
+
+.pt-search {
+	margin-left: auto; flex: 0 1 220px;
+	height: 30px; font-size: 12.5px;
+	border: 1px solid var(--bn-line-2); border-radius: var(--bn-radius);
+	padding: 0 10px; color: var(--bn-ink-2);
+}
+
+.pt-search:focus { outline: none; border-color: var(--bn-accent); }
+
+.pt-rows { max-height: 620px; overflow: auto; }
+
+.pt-colhead {
+	display: flex; gap: 10px; padding: 8px 14px;
+	background: var(--bn-surface-2); border-bottom: 1px solid var(--bn-line);
+	font-size: 11px; font-weight: 600; color: var(--bn-ink-3);
+	position: sticky; top: 0; z-index: 1;
+}
+
+.pt-row {
+	display: flex; gap: 10px; align-items: flex-start;
+	padding: 9px 14px; border-bottom: 1px solid var(--bn-line-3);
+	font-size: 12.5px; cursor: pointer;
+}
+
+.pt-row:hover { background: var(--bn-surface-2); }
+.pt-row.on { background: var(--bn-accent-bg); box-shadow: inset 2px 0 0 var(--bn-accent); }
+
+.pt-c1 { flex: 0 0 148px; color: var(--bn-ink-3); }
+.pt-c2 { flex: 1 1 0; min-width: 0; color: var(--bn-ink); }
+.pt-c3 { flex: 1 1 0; min-width: 0; color: var(--bn-ink-2); }
+
+.pt-c2 span, .pt-c3 span {
+	display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.pt-empty-en { color: var(--bn-ink-4); font-style: normal; }
+
+.pt-tag {
+	display: inline-block; margin-left: 5px; padding: 0 5px; border-radius: 3px;
+	background: var(--bn-surface-3); color: var(--bn-ink-3); font-size: 10px; font-weight: 600;
+}
+
+.pt-dot {
+	display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+	background: var(--bn-accent); margin-left: 5px; vertical-align: middle;
+}
+
+.pt-none { padding: 28px 14px; text-align: center; color: var(--bn-ink-4); font-size: 13px; }
+
+/* ── 오른쪽 고치는 칸 ──────────────────────────────────────────────── */
+
+.pt-editor .pt-card { position: sticky; top: 74px; }
+.pt-editor .pt-body { padding: 14px; }
+
+.pt-field { margin-bottom: 12px; }
+.pt-field > label {
+	display: block; margin-bottom: 5px;
+	font-size: 11.5px; font-weight: 600; color: var(--bn-ink-3);
+}
+
+.pt-field textarea {
+	width: 100%; min-height: 78px; resize: vertical;
+	border: 1px solid var(--bn-line-2); border-radius: var(--bn-radius);
+	padding: 8px 10px; font-size: 13px; line-height: 1.6; color: var(--bn-ink-2);
+}
+
+.pt-field textarea:focus { outline: none; border-color: var(--bn-accent); box-shadow: 0 0 0 3px rgba(254, 80, 0, .12); }
+
+.pt-where {
+	background: var(--bn-surface-2); border-radius: var(--bn-radius);
+	padding: 9px 11px; margin-bottom: 13px;
+	font-size: 12px; color: var(--bn-ink-3); line-height: 1.6;
+}
+
+.pt-where b { color: var(--bn-ink-2); font-weight: 600; }
+
+.pt-editor-foot { display: flex; gap: 8px; }
+.pt-editor-foot .btn { flex: 1 1 auto; }
+
+.pt-blank { padding: 46px 16px; text-align: center; color: var(--bn-ink-4); font-size: 13px; line-height: 1.8; }
+
+/* ── 아래 고정 저장 줄 ─────────────────────────────────────────────── */
+
+.pt-savebar {
+	position: sticky; bottom: 0; z-index: 3;
+	display: flex; align-items: center; gap: 10px;
+	margin-top: 14px; padding: 11px 16px;
+	background: var(--bn-surface);
+	border: 1px solid var(--bn-line); border-radius: var(--bn-radius-lg);
+	box-shadow: 0 -2px 10px rgba(27, 34, 48, .06);
+}
+
+.pt-savebar .msg { font-size: 12.5px; color: var(--bn-ink-3); }
+.pt-savebar .msg b { color: var(--bn-accent-ink); }
+.pt-savebar .btn { margin-left: auto; min-width: 110px; }
+</style>
+
 <body>
 	<section id="container">
 
@@ -14,79 +182,345 @@
 		<section id="main-content">
 			<section class="wrapper">
 				<div class="row mt">
-					<div class="col-lg-11">
+					<div class="col-lg-12">
 						<h4><i class="fa fa-angle-right"></i> 페이지 문구 관리</h4>
+						<p style="color:#8a92a0; font-size:12.5px; margin:-4px 0 12px;">
+							화면에 박혀 있는 글이다. 왼쪽에서 화면을 고르고, 가운데에서 문구를 고르면 오른쪽에서 고칠 수 있다.
+							영문을 비워 두면 영문 화면에서도 한글이 그대로 나간다.
+						</p>
 
-						<div class="form-panel">
-							<div style="margin-bottom:12px;">
-								<input type="text" id="filter" class="form-control" style="max-width:320px;"
-									   placeholder="문구 내용으로 걸러보기">
+						<div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+
+						<form method="post" action="/admin/pageTextManager" id="ptForm">
+
+							<div class="pt-shell">
+
+								<!-- ── 왼쪽: 화면과 구역 ─────────────────────────── -->
+								<div class="pt-tree">
+									<div class="pt-card">
+										<div class="pt-head">
+											<i class="fa fa-sitemap"></i> 화면
+											<span class="pt-count" th:text="${total} + '개'">0개</span>
+										</div>
+										<div class="pt-body">
+											<div class="pt-node lv-page on" data-page="" data-section="">
+												전체 <span class="n" th:text="${total}">0</span>
+											</div>
+											<th:block th:each="page : ${pages}">
+												<div class="pt-node lv-page" th:data-page="${page.key}" data-section="">
+													<span th:text="${pageLabels[page.key]}">화면</span>
+													<span class="code" th:text="${page.key}">code</span>
+													<span class="n" th:text="${pageCounts[page.key]}">0</span>
+												</div>
+												<div class="pt-node lv-section" th:each="section : ${page.value}"
+													th:data-page="${page.key}" th:data-section="${section.key}">
+													<span th:text="${section.key}">구역</span>
+													<span class="n" th:text="${#lists.size(section.value)}">0</span>
+												</div>
+											</th:block>
+										</div>
+									</div>
+								</div>
+
+								<!-- ── 가운데: 문구 목록 ─────────────────────────── -->
+								<div class="pt-list">
+									<div class="pt-card">
+										<div class="pt-tools">
+											<button type="button" class="pt-chip on" data-filter="all">전체</button>
+											<button type="button" class="pt-chip" data-filter="empty">
+												영문 빈칸 <span th:text="${emptyEn}">0</span>
+											</button>
+											<button type="button" class="pt-chip" data-filter="html">태그 포함</button>
+											<button type="button" class="pt-chip" data-filter="long">영문이 긴 문구</button>
+											<input type="text" class="pt-search" id="ptSearch" placeholder="문구 검색">
+										</div>
+
+										<div class="pt-colhead">
+											<span class="pt-c1">자리</span>
+											<span class="pt-c2">한글 (원문)</span>
+											<span class="pt-c3">영문</span>
+										</div>
+
+										<div class="pt-rows" id="ptRows">
+											<th:block th:each="page : ${pages}">
+												<th:block th:each="section : ${page.value}">
+													<div class="pt-row" th:each="row : ${section.value}"
+														th:id="'row-' + ${row.pageTextId}"
+														th:data-id="${row.pageTextId}"
+														th:data-page="${page.key}"
+														th:data-section="${section.key}"
+														th:data-html="${row.htmlAllowed} ? '1' : '0'"
+														th:data-key="${row.textKey}">
+
+														<span class="pt-c1">
+															<span th:text="${row.label} ?: ${row.textKey}">자리</span>
+														</span>
+														<span class="pt-c2">
+															<span class="ko-view" th:text="${row.textKo}">한글</span>
+														</span>
+														<span class="pt-c3">
+															<span class="en-view"
+																th:classappend="${#strings.isEmpty(row.textEn)} ? 'pt-empty-en' : ''"
+																th:text="${#strings.isEmpty(row.textEn)} ? '— 비어 있음' : ${row.textEn}">영문</span>
+														</span>
+
+														<!-- 값은 여기에 들고 있다가 아래 저장으로 한 번에 보낸다 -->
+														<input type="hidden" th:name="'ko.' + ${row.pageTextId}" th:value="${row.textKo}" class="ko-val">
+														<input type="hidden" th:name="'en.' + ${row.pageTextId}" th:value="${row.textEn}" class="en-val">
+													</div>
+												</th:block>
+											</th:block>
+											<div class="pt-none" id="ptNone" style="display:none;">조건에 맞는 문구가 없다.</div>
+										</div>
+									</div>
+								</div>
+
+								<!-- ── 오른쪽: 고치는 칸 ─────────────────────────── -->
+								<div class="pt-editor">
+									<div class="pt-card">
+										<div class="pt-head">
+											<i class="fa fa-pencil"></i> 문구 고치기
+											<span class="pt-count" id="ptPos"></span>
+										</div>
+
+										<div class="pt-blank" id="ptBlank">
+											가운데 목록에서 문구를 고르면<br>여기에서 고칠 수 있다.
+										</div>
+
+										<div class="pt-body" id="ptEditor" style="display:none;">
+											<div class="pt-where">
+												<b id="ptWhereLabel"></b><br>
+												<span id="ptWherePath"></span>
+											</div>
+
+											<div class="pt-field">
+												<label>한글 (원문)</label>
+												<textarea id="ptKo"></textarea>
+											</div>
+
+											<div class="pt-field">
+												<label>영문</label>
+												<textarea id="ptEn" placeholder="비워 두면 영문 화면에도 한글이 그대로 나간다"></textarea>
+											</div>
+
+											<div class="pt-editor-foot">
+												<button type="button" class="btn btn-default" id="ptPrev">← 이전</button>
+												<button type="button" class="btn btn-theme" id="ptNext">다음 →</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
 							</div>
 
-							<form role="form" action="/admin/pageTextManager" method="POST" class="style-form">
+							<div class="pt-savebar">
+								<span class="msg" id="ptDirty">고친 문구가 없다.</span>
+								<button type="submit" class="btn btn-theme">저장</button>
+							</div>
 
-								<div th:each="section : ${sections}">
-									<h5 style="margin-top:24px;"><b th:text="${section.key}"></b></h5>
-									<table class="table table-bordered">
-										<thead>
-										<tr>
-											<th style="width:20%;">자리</th>
-											<th style="width:40%;">한글</th>
-											<th>영문</th>
-										</tr>
-										</thead>
-										<tbody>
-											<tr th:each="row : ${section.value}" class="text-row">
-												<td>
-													<span th:text="${row.label}"></span>
-													<span th:if="${row.htmlAllowed}"
-														  style="display:inline-block;margin-top:4px;padding:1px 6px;background:#eee;border-radius:3px;font-size:11px;">태그 포함</span>
-												</td>
-												<td>
-													<textarea class="form-control ko-text" rows="2"
-															  th:name="'ko.' + ${row.pageTextId}"
-															  th:text="${row.textKo}"></textarea>
-												</td>
-												<td>
-													<textarea class="form-control" rows="2"
-															  th:name="'en.' + ${row.pageTextId}"
-															  th:text="${row.textEn}"
-															  placeholder="비워 두면 한글이 그대로 나갑니다"></textarea>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-
-								<div th:if="${total == 0}">
-									등록된 문구가 없습니다. pageText.sql 을 실행해 주세요.
-								</div>
-
-								<div style="margin:20px 0 40px;">
-									<button class="btn btn-theme" type="submit">저장</button>
-								</div>
-							</form>
-						</div>
+						</form>
 					</div>
 				</div>
 			</section>
 		</section>
+
+		<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
 	</section>
 
-	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
-	<script th:inline="javascript">
-		var message = /*[[${message}]]*/ null;
-		if (message) { alert(message); }
+<script>
+(function () {
+	var rows      = Array.prototype.slice.call(document.querySelectorAll('.pt-row'));
+	var nodes     = Array.prototype.slice.call(document.querySelectorAll('.pt-node'));
+	var chips     = Array.prototype.slice.call(document.querySelectorAll('.pt-chip'));
+	var search    = document.getElementById('ptSearch');
+	var noneBox   = document.getElementById('ptNone');
+	var editor    = document.getElementById('ptEditor');
+	var blank     = document.getElementById('ptBlank');
+	var koBox     = document.getElementById('ptKo');
+	var enBox     = document.getElementById('ptEn');
+	var posLabel  = document.getElementById('ptPos');
+	var dirtyMsg  = document.getElementById('ptDirty');
 
-		// 문구가 많으므로 한글 내용으로 걸러 찾는다
-		document.getElementById('filter').addEventListener('input', function () {
-			var word = this.value.trim().toLowerCase();
-			document.querySelectorAll('tr.text-row').forEach(function (row) {
-				var ko = (row.querySelector('.ko-text').value || '').toLowerCase();
-				row.style.display = (word === '' || ko.indexOf(word) >= 0) ? '' : 'none';
-			});
+	var picked = null;          // 지금 고치고 있는 줄
+	var pickedPage = '';        // 왼쪽에서 고른 화면
+	var pickedSection = '';
+	var filter = 'all';
+	var dirty = {};             // 아이디 → true
+	var saving = false;
+
+	// ── 어느 줄이 조건에 맞나 ───────────────────────────────────────
+	function matches(row) {
+		if (pickedPage && row.dataset.page !== pickedPage) return false;
+		if (pickedSection && row.dataset.section !== pickedSection) return false;
+
+		var ko = row.querySelector('.ko-val').value || '';
+		var en = row.querySelector('.en-val').value || '';
+
+		if (filter === 'empty' && en.trim() !== '') return false;
+		if (filter === 'html' && row.dataset.html !== '1') return false;
+		// 영문이 한글보다 눈에 띄게 길면 줄바꿈이 깨질 수 있다. 그것만 모아 본다
+		if (filter === 'long' && !(en.trim() !== '' && en.length > ko.length * 1.6)) return false;
+
+		var word = (search.value || '').trim().toLowerCase();
+		if (word) {
+			var hay = (ko + ' ' + en + ' ' + row.dataset.key + ' '
+					+ row.querySelector('.pt-c1').textContent).toLowerCase();
+			if (hay.indexOf(word) < 0) return false;
+		}
+		return true;
+	}
+
+	function visibleRows() {
+		return rows.filter(function (r) { return r.style.display !== 'none'; });
+	}
+
+	function apply() {
+		var shown = 0;
+		rows.forEach(function (r) {
+			var ok = matches(r);
+			r.style.display = ok ? '' : 'none';
+			if (ok) shown++;
 		});
-	</script>
-</body>
+		noneBox.style.display = shown ? 'none' : '';
+		updatePos();
+	}
 
+	function updatePos() {
+		if (!picked) { posLabel.textContent = ''; return; }
+		var list = visibleRows();
+		var at = list.indexOf(picked);
+		posLabel.textContent = at < 0 ? '' : (at + 1) + ' / ' + list.length;
+	}
+
+	// ── 줄 하나를 오른쪽에 올린다 ───────────────────────────────────
+	function pick(row) {
+		if (!row) return;
+		flush();                       // 고치던 값을 먼저 넣어 둔다
+		picked = row;
+
+		rows.forEach(function (r) { r.classList.remove('on'); });
+		row.classList.add('on');
+
+		koBox.value = row.querySelector('.ko-val').value || '';
+		enBox.value = row.querySelector('.en-val').value || '';
+
+		document.getElementById('ptWhereLabel').textContent = row.querySelector('.pt-c1').textContent.trim();
+		document.getElementById('ptWherePath').textContent =
+				row.dataset.page + ' 화면 · ' + row.dataset.section
+				+ (row.dataset.html === '1' ? ' · 태그를 쓸 수 있는 문구다' : '');
+
+		blank.style.display = 'none';
+		editor.style.display = '';
+		updatePos();
+
+		var box = document.getElementById('ptRows');
+		var top = row.offsetTop - box.offsetTop;
+		if (top < box.scrollTop || top > box.scrollTop + box.clientHeight - 60) {
+			box.scrollTop = top - 40;
+		}
+	}
+
+	/** 오른쪽에서 고친 값을 그 줄에 다시 넣는다 */
+	function flush() {
+		if (!picked) return;
+		var koVal = picked.querySelector('.ko-val');
+		var enVal = picked.querySelector('.en-val');
+		var changed = koVal.value !== koBox.value || enVal.value !== enBox.value;
+		if (!changed) return;
+
+		koVal.value = koBox.value;
+		enVal.value = enBox.value;
+
+		picked.querySelector('.ko-view').textContent = koBox.value;
+
+		var enView = picked.querySelector('.en-view');
+		if (enBox.value.trim() === '') {
+			enView.textContent = '— 비어 있음';
+			enView.classList.add('pt-empty-en');
+		} else {
+			enView.textContent = enBox.value;
+			enView.classList.remove('pt-empty-en');
+		}
+
+		if (!picked.querySelector('.pt-dot')) {
+			var dot = document.createElement('span');
+			dot.className = 'pt-dot';
+			dot.title = '아직 저장하지 않았다';
+			picked.querySelector('.pt-c1').appendChild(dot);
+		}
+
+		dirty[picked.dataset.id] = true;
+		showDirty();
+	}
+
+	function showDirty() {
+		var n = Object.keys(dirty).length;
+		dirtyMsg.innerHTML = n
+				? '고친 문구 <b>' + n + '건</b>. 저장을 눌러야 반영된다.'
+				: '고친 문구가 없다.';
+	}
+
+	function step(delta) {
+		flush();
+		var list = visibleRows();
+		var at = list.indexOf(picked);
+		if (at < 0) { pick(list[0]); return; }
+		var next = list[at + delta];
+		if (next) pick(next);
+	}
+
+	// ── 이어 붙이기 ────────────────────────────────────────────────
+	rows.forEach(function (r) {
+		r.addEventListener('click', function () { pick(r); });
+	});
+
+	nodes.forEach(function (n) {
+		n.addEventListener('click', function () {
+			nodes.forEach(function (o) { o.classList.remove('on'); });
+			n.classList.add('on');
+			pickedPage = n.dataset.page || '';
+			pickedSection = n.dataset.section || '';
+			apply();
+		});
+	});
+
+	chips.forEach(function (c) {
+		c.addEventListener('click', function () {
+			chips.forEach(function (o) { o.classList.remove('on'); });
+			c.classList.add('on');
+			filter = c.dataset.filter;
+			flush();
+			apply();
+		});
+	});
+
+	search.addEventListener('input', function () { flush(); apply(); });
+
+	koBox.addEventListener('blur', flush);
+	enBox.addEventListener('blur', flush);
+
+	document.getElementById('ptNext').addEventListener('click', function () { step(1); });
+	document.getElementById('ptPrev').addEventListener('click', function () { step(-1); });
+
+	// 영문 칸에서 Ctrl+Enter 로 다음 줄로 넘어간다
+	enBox.addEventListener('keydown', function (e) {
+		if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); step(1); }
+	});
+
+	document.getElementById('ptForm').addEventListener('submit', function () {
+		flush();
+		saving = true;
+	});
+
+	// 저장하지 않고 나가면 고친 것이 사라진다
+	window.addEventListener('beforeunload', function (e) {
+		if (saving || Object.keys(dirty).length === 0) return;
+		e.preventDefault();
+		e.returnValue = '';
+	});
+
+	apply();
+})();
+</script>
+</body>
 </html>

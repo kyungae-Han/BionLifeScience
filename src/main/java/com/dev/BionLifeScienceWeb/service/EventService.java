@@ -19,6 +19,8 @@ public class EventService {
 			eventRepository.findById(1L).ifPresent(s -> {
 				s.setSubject(event.getSubject());
 				s.setContent(event.getContent());
+				s.setSubjectEn(event.getSubjectEn());
+				s.setContentEn(event.getContentEn());
 				s.setLink(event.getLink());
 
 				eventRepository.save(s);
@@ -27,6 +29,8 @@ public class EventService {
 			Event s = new Event();
 			s.setSubject(event.getSubject());
 			s.setContent(event.getContent());
+			s.setSubjectEn(event.getSubjectEn());
+			s.setContentEn(event.getContentEn());
 			s.setLink(event.getLink());
 
 			eventRepository.save(s);

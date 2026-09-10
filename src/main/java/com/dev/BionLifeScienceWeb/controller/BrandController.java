@@ -157,13 +157,53 @@ public class BrandController {
 		return sb.toString();
 	}
 	
+	/**
+	 * 영문 입력칸은 한글칸과 같은 개수로 넘어온다. 자리에 값이 없거나 비어 있으면 null 로 둔다.
+	 * null 이면 화면에서 한글이 나간다.
+	 */
+	private String pickEn(String[] values, int index) {
+		if (values == null || values.length <= index || values[index] == null) {
+			return null;
+		}
+		String value = values[index].trim();
+		return value.isEmpty() ? null : value;
+	}
+
 	@GetMapping("/brandSortManager")
 	public String brandSortManager(
 			Model model
 			) {
 		
 		model.addAttribute("brand",brandRepository.findAll());
+
+		// 왼쪽 트리에 쓸 값이다. 브랜드 → 대분류 → 중분류 → 소분류 네 단계다.
+		// 부모별로 미리 묶어 두면 화면에서 한 번씩 꺼내 쓰기만 하면 된다
+		model.addAttribute("brandList", brandRepository.findAllByOrderByBrandIndexAsc());
+		model.addAttribute("bigsByBrand", groupBy(
+				brandBigSortRepository.findAllByOrderByBrandBigSortIndexAsc(),
+				b -> b.getBrand() == null ? null : b.getBrand().getId()));
+		model.addAttribute("middlesByBig", groupBy(
+				brandMiddleSortRepository.findAllByOrderByBrandMiddleSortIndexAsc(),
+				m -> m.getBigSort() == null ? null : m.getBigSort().getId()));
+		model.addAttribute("smallsByMiddle", groupBy(
+				brandSmallSortRepository.findAllByOrderByBrandSmallSortIndexAsc(),
+				s -> s.getMiddleSort() == null ? null : s.getMiddleSort().getId()));
+
 		return "admin/brand/brandSortManager";
+	}
+
+	/** 부모 아이디로 묶는다. 부모가 없는 줄은 버린다 (트리에 걸 자리가 없다) */
+	private <T> java.util.Map<Long, java.util.List<T>> groupBy(
+			java.util.List<T> rows, java.util.function.Function<T, Long> parentId) {
+		java.util.Map<Long, java.util.List<T>> grouped = new java.util.LinkedHashMap<>();
+		for (T row : rows) {
+			Long key = parentId.apply(row);
+			if (key == null) {
+				continue;
+			}
+			grouped.computeIfAbsent(key, k -> new java.util.ArrayList<>()).add(row);
+		}
+		return grouped;
 	}
 	
 	@RequestMapping(value = "/brandBigSortInsert",
@@ -444,6 +484,9 @@ public class BrandController {
 	        String[] spec,
 	        String[] infoQ,
 	        String[] infoA,
+	        String[] specEn,
+	        String[] infoQEn,
+	        String[] infoAEn,
 	        MultipartFile productOverviewImage,
 	        MultipartFile productSpecImage,
 	        List<MultipartFile> slides,
@@ -499,11 +542,13 @@ public class BrandController {
 
 	    // ✅ 제품 스펙/정보 저장 시에도 savedProduct 사용 (DB 연결 정확)
 	    if (spec != null && spec.length > 0) {
-	        for (String s : spec) {
+	        for (int i = 0; i < spec.length; i++) {
+	            String s = spec[i];
 	            if (s != null && !s.trim().isEmpty()) {
 	                BrandProductInfo in = new BrandProductInfo();
 	                in.setProduct(savedProduct);
 	                in.setProductInfoText(s.trim());
+	                in.setProductInfoTextEn(pickEn(specEn, i));
 	                brandProductInfoRepository.save(in);
 	            }
 	        }
@@ -516,6 +561,8 @@ public class BrandController {
 	                BrandProductSpec sp = new BrandProductSpec();
 	                sp.setProductSpecSubject(infoQ[a] != null ? infoQ[a].trim() : "");
 	                sp.setProductSpecContent(infoA[a] != null ? infoA[a].trim() : "");
+	                sp.setProductSpecSubjectEn(pickEn(infoQEn, a));
+	                sp.setProductSpecContentEn(pickEn(infoAEn, a));
 	                sp.setProduct(savedProduct);
 	                brandProductSpecRepository.save(sp);
 	            }
@@ -607,6 +654,9 @@ public class BrandController {
 	        @RequestParam(required = false) String[] spec,
 	        @RequestParam(required = false) String[] infoQ,
 	        @RequestParam(required = false) String[] infoA,
+	        @RequestParam(required = false) String[] specEn,
+	        @RequestParam(required = false) String[] infoQEn,
+	        @RequestParam(required = false) String[] infoAEn,
 	        @RequestParam(required = false) Integer[] specOrder,
 	        Model model,
 	        @PageableDefault(size = 10) Pageable pageable
@@ -651,11 +701,13 @@ public class BrandController {
 		brandProductService.productUpdate(productOverviewImage, productSpecImage, product);
 		
 		if (spec != null && spec.length > 0) {
-		    for (String s : spec) {
+		    for (int i = 0; i < spec.length; i++) {
+		        String s = spec[i];
 		        if (s != null && !s.trim().isEmpty()) { // 빈 값 필터링
 		            BrandProductInfo in = new BrandProductInfo();
 		            in.setProduct(product);
 		            in.setProductInfoText(s.trim());
+		            in.setProductInfoTextEn(pickEn(specEn, i));
 		            brandProductInfoRepository.save(in);
 		        }
 		    }
@@ -674,6 +726,8 @@ public class BrandController {
 		        BrandProductSpec sp = new BrandProductSpec();
 		        sp.setProductSpecSubject(q);
 		        sp.setProductSpecContent(a);
+		        sp.setProductSpecSubjectEn(pickEn(infoQEn, i));
+		        sp.setProductSpecContentEn(pickEn(infoAEn, i));
 
 		        // ✅ specOrder 배열이 있으면 그대로, 없으면 순차
 		        if (specOrder != null && specOrder.length > i) {

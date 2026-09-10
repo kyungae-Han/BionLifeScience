@@ -26,8 +26,16 @@ public class BrandProductSpec {
 	@Column(name="BRAND_PRODUCT_SPEC_SUBJECT")
 	private String productSpecSubject;
 	
+	/** 영문 항목명. 비우면 화면에서 한글이 나간다 */
+	@Column(name="BRAND_PRODUCT_SPEC_SUBJECT_EN", length = 1000)
+	private String productSpecSubjectEn;
+	
 	@Column(name="BRAND_PRODUCT_SPEC_CONTENT")
 	private String productSpecContent;
+	
+	/** 영문 값. 비우면 화면에서 한글이 나간다 */
+	@Column(name="BRAND_PRODUCT_SPEC_CONTENT_EN", length = 1000)
+	private String productSpecContentEn;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="BRAND_PRODUCT_ID", nullable = false)

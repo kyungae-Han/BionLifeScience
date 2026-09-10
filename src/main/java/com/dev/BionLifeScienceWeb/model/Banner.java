@@ -21,11 +21,19 @@ public class Banner {
 	@Column(name="BANNER_SUBJECT")
 	private String subject;
 	
+	/** 영문 제목. 비우면 화면에서 한글이 나간다 */
+	@Column(name="BANNER_SUBJECT_EN", length = 1000)
+	private String subjectEn;
+	
 	@Column(name = "BANNER_LINK_URL", length = 1000)
 	private String linkUrl;
 	
 	@Column(name="BANNER_CONTENT")
 	private String content;
+	
+	/** 영문 설명. 비우면 화면에서 한글이 나간다 */
+	@Column(name="BANNER_CONTENT_EN", length = 1000)
+	private String contentEn;
 	
 	@Column(name="BANNER_WEB_PATH")
 	private String webpath;

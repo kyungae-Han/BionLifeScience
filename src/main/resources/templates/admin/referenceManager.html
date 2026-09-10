@@ -32,6 +32,13 @@
 											<span class="help-block"># 파일 제목을 입력 해 주세요.</span>
 											<span class="help-block"># 실제 파일명이 아닌 사이트 접속자가 보게 되는 이름을 의미합니다.</span>
 											<span class="help-block"># 빈칸으로 입력시 실제 파일명으로 보여집니다.</span>
+											<input class="form-control form-control-inline"
+											size="16"
+											type="text"
+											name="filesubjectEn"
+											placeholder="File title in English (optional)"
+											style="margin-top:10px;">
+											<span class="help-block"># 영문 제목입니다. 비우면 영문 화면에도 한글 제목이 나갑니다.</span>
 										</div>
 										<div class="col-md-6 col-xs-11">
 											<div class="fileupload fileupload-new"
@@ -121,7 +128,7 @@
 											        class="btn btn-sm btn-warning btn-update"
 											        data-toggle="modal"
 											        data-target="#updateModal"
-											        th:attr="data-id=${f.id}, data-subject=${f.filesubject}">
+											        th:attr="data-id=${f.id}, data-subject=${f.filesubject}, data-subject-en=${f.filesubjectEn}">
 											  <i class="fa fa-edit"></i> 수정
 											</button>
 									        <button class="btn btn-sm btn-danger"
@@ -156,6 +163,12 @@
 	          <div class="mb-3">
 	            <label class="form-label">파일 제목</label>
 	            <input type="text" class="form-control" name="filesubject" id="modalFileSubject">
+	          </div>
+
+	          <div class="mb-3">
+	            <label class="form-label">파일 제목 영문</label>
+	            <input type="text" class="form-control" name="filesubjectEn" id="modalFileSubjectEn"
+	                   placeholder="비우면 영문 화면에도 한글 제목이 나갑니다">
 	          </div>
 	
 	          <div class="mb-3">
@@ -222,6 +235,7 @@
 
 	    document.getElementById('modalFileId').value = id;
 	    document.getElementById('modalFileSubject').value = subject;
+	    document.getElementById('modalFileSubjectEn').value = button.getAttribute('data-subject-en') || '';
 	  });
 	});
 	
@@ -232,6 +246,7 @@
 
 	    $("#modalFileId").val(fileId);
 	    $("#modalFileSubject").val(fileSubject);
+	    $("#modalFileSubjectEn").val($(this).data("subject-en") || '');
 	    
 	    $("#updateModal").modal("show");
 	});

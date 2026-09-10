@@ -67,7 +67,7 @@
 		        </td>
 		
 		        <!-- 파일 제목 -->
-		        <td class="text-start ps-2" th:text="${f.filesubject}">파일제목</td>
+		        <td class="text-start ps-2" th:text="${@enText.pick(f.filesubject, f.filesubjectEn)}">파일제목</td>
 		
 		        <!-- 등록일 -->
 		        <td th:text="${#dates.format(f.filedate, 'yyyy-MM-dd')}">2023-07-05</td>

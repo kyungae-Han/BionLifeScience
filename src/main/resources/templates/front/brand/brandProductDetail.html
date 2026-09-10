@@ -170,7 +170,7 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 
 							<div class="heading-block center">
 								<h2 th:text="${product.subject}">Screw Caps and Tubes</h2>
-								<p th:text="${product.content}">Screw Caps and Tubes 제품 상세 페이지 입니다</p>
+								<p th:text="${@enText.pick(product.content, product.contentEn)}">Screw Caps and Tubes 제품 상세 페이지 입니다</p>
 							</div>
 						</div>
 					</div>
@@ -209,7 +209,7 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 										        <span class="badge bg-primary p-2 text-white"
 											          th:each="badge : ${product.specs}"
 											          th:if="${badge.productSpecSubject == '특허'}"
-											          th:text="${badge.productSpecContent}">
+											          th:text="${@enText.pick(badge.productSpecContent, badge.productSpecContentEn)}">
 											    </span>
 										    </div>
 										
@@ -218,12 +218,12 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 													<table class="table align-middle">
 													    <tbody>
 													        <tr th:each="s : ${product.specs}" th:if="${s != null and s.productSpecSubject != '특허'}">
-													            <th style="width:90px;" class="text-muted" th:text="${s.productSpecSubject}">Source</th>
-													            <td class="text-start" th:text="${s.productSpecContent}">E.coli</td>
+													            <th style="width:90px;" class="text-muted" th:text="${@enText.pick(s.productSpecSubject, s.productSpecSubjectEn)}">Source</th>
+													            <td class="text-start" th:text="${@enText.pick(s.productSpecContent, s.productSpecContentEn)}">E.coli</td>
 													        </tr>
 														     <tr class="w-100" th:each="i:${product.infos}" th:if="${ i != null}">
 														     	<td class="text-start"><i class="icon-caret-right"></i></td>
-													        	<td class="text-start" th:text="${i.productInfoText}"></td>
+													        	<td class="text-start" th:text="${@enText.pick(i.productInfoText, i.productInfoTextEn)}"></td>
 													        </tr>
 													    </tbody>
 													</table>
@@ -274,7 +274,7 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 													</div>
 													<div class="tab-content clearfix text-left" id="tabs-2"
 														style="text-align: left;">
-															<div class="lh-lg" th:utext="${product.productSubContent}">
+															<div class="lh-lg" th:utext="${@enText.pick(product.productSubContent, product.productSubContentEn)}">
 																특허받은 설계로 스왑을 담고 있는 꽉 잠긴 Screw Caps and Tubes을 개봉하면 뚜껑부분에 스왑이
 																꼽혀서 나오며 또한 <strong></strong>작은 힘으로도 뚜껑과 스왑을 쉽게 분리</strong>할 수 있습니다.
 															</div>
@@ -371,7 +371,7 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 								        		<h6 class="mb-0 mt-3" th:utext="${@enText.pick(brand.name, brand.nameEn)}"></h6>
 								            <h4 class="title-clamp mb-3" th:text="${p.subject}"></h4>
 							            </div>
-							            <p class="description-clamp small" th:text="${p.content}"></p>
+							            <p class="description-clamp small" th:text="${@enText.pick(p.content, p.contentEn)}"></p>
 							        </div>
 							
 							        <!-- 버튼 -->

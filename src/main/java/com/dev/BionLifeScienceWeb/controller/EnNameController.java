@@ -32,6 +32,7 @@ public class EnNameController {
 		model.addAttribute("middleSorts", enNameService.middleSorts());
 		model.addAttribute("smallSorts", enNameService.smallSorts());
 		model.addAttribute("products", enNameService.products());
+		model.addAttribute("noticeSubjects", enNameService.noticeSubjects());
 		return "admin/enNameManager";
 	}
 

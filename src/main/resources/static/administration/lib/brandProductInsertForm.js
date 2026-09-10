@@ -77,6 +77,7 @@ $(function() {
 	$('#spec-plus-button').on('click',function(){
 		var specDiv = $('<div class="spec-wrap">'
 		+'<input type="text" name="spec" required="required" placeholder="제품 스펙을 입력 해 주세요. 예) 80mm*80mm*100mm" class="form-control" style="width:80%;">'+
+		'<input type="text" name="specEn" placeholder="English (optional)" class="form-control" style="width:80%;margin-top:4px;">'+
 		'</div>');
 		$(specDiv).appendTo('#spec-wrap');
 	});
@@ -92,6 +93,8 @@ $(function() {
 		var infoDiv = $('<div class="spec-wrap">'
 		+'<input type="text" class="form-control" name="infoQ" required="required" placeholder="주제를 입력 해 주세요. 예) 제조자" style="width:40%;margin-right:4px;">'+
 		'<input type="text" class="form-control" name="infoA" required="required" placeholder="답변을 입력 해 주세요. 예) 바이온라이프사이언스" style="width:40%;">'+
+		'<input type="text" class="form-control" name="infoQEn" placeholder="Subject in English (optional)" style="width:40%;margin-right:4px;margin-top:4px;">'+
+		'<input type="text" class="form-control" name="infoAEn" placeholder="Value in English (optional)" style="width:40%;margin-top:4px;">'+
 		'</div>');
 		$(infoDiv).appendTo('#info-wrap');
 	});

@@ -405,6 +405,11 @@ public class AdminController {
 	    String processed = imageProcessor.processEditorImages(notice.getContent(), "notice");
 	    notice.setContent(processed);
 
+	    // 영문 본문도 같은 처리를 한다. 비어 있으면 건드리지 않는다
+	    if (notice.getContentEn() != null && !notice.getContentEn().isBlank()) {
+	        notice.setContentEn(imageProcessor.processEditorImages(notice.getContentEn(), "notice"));
+	    }
+
 	    
 	    // 🔹 첫 번째 이미지 경로 추출 & 가공
 	    String firstImg = extractFirstImageUrl(processed);
@@ -453,6 +458,11 @@ public class AdminController {
 		
 		 String processedContent = imageProcessor.processEditorImages(notice.getContent(), "notice");
 		    notice.setContent(processedContent);
+
+		    // 영문 본문도 같은 처리를 한다. 비어 있으면 건드리지 않는다
+		    if (notice.getContentEn() != null && !notice.getContentEn().isBlank()) {
+		        notice.setContentEn(imageProcessor.processEditorImages(notice.getContentEn(), "notice"));
+		    }
 		   // 본문에서 첫 번째 이미지 추출
 		   String firstImg = extractFirstImageUrl(processedContent);
 		    if (firstImg != null && firstImg.length() > 500) {

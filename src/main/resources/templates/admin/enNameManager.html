@@ -4,6 +4,20 @@
 <head th:replace="~{fragments/admin/common :: headMenu}">
 </head>
 
+<style>
+/* 페이지 문구 관리와 같은 걸개 모양을 쓴다. 색 이름은 bion-admin.css 것이다 */
+.en-tools { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.en-chip {
+	border: 1px solid var(--bn-line-2); background: var(--bn-surface);
+	color: var(--bn-ink-2); border-radius: 20px;
+	padding: 4px 11px; font-size: 12px; cursor: pointer;
+}
+.en-chip:hover { background: var(--bn-surface-2); }
+.en-chip.on { background: var(--bn-accent); border-color: var(--bn-accent); color: #fff; font-weight: 600; }
+.en-tools #filter { margin-left: auto; height: 30px; font-size: 12.5px; }
+.en-group-empty { color: var(--bn-ink-4); font-size: 12.5px; padding: 8px 2px; }
+</style>
+
 <body>
 	<section id="container">
 
@@ -18,8 +32,10 @@
 						<h4><i class="fa fa-angle-right"></i> 영문명 관리</h4>
 
 						<div class="form-panel">
-							<div style="margin-bottom:12px;">
-								<input type="text" id="filter" class="form-control" style="max-width:320px;"
+							<div class="en-tools">
+								<button type="button" class="en-chip on" data-filter="all">전체</button>
+								<button type="button" class="en-chip" data-filter="empty">영문 빈칸</button>
+								<input type="text" id="filter" class="form-control" style="max-width:280px; margin:0;"
 									   placeholder="한글명으로 걸러보기">
 							</div>
 
@@ -126,6 +142,26 @@
 									</tbody>
 								</table>
 
+								<h5 style="margin-top:24px;"><b>공지사항 분류</b></h5>
+								<table class="table table-bordered">
+									<thead>
+									<tr>
+										<th style="width:70px;">ID</th>
+										<th style="width:35%;">한글 분류명</th>
+										<th>영문 분류명</th>
+									</tr>
+									</thead>
+									<tbody>
+										<tr th:if="${#lists.isEmpty(noticeSubjects)}"><td colspan="3">등록된 분류가 없습니다.</td></tr>
+										<tr th:each="s : ${noticeSubjects}" class="en-row">
+											<td th:text="${s.id}"></td>
+											<td class="ko-name" th:text="${s.text}"></td>
+											<td><input type="text" class="form-control"
+													   th:name="'noticeSubject.' + ${s.id}" th:value="${s.textEn}"></td>
+										</tr>
+									</tbody>
+								</table>
+
 								<div style="margin:20px 0 40px;">
 									<button class="btn btn-theme" type="submit">저장</button>
 								</div>
@@ -142,14 +178,35 @@
 		var message = /*[[${message}]]*/ null;
 		if (message) { alert(message); }
 
-		// 항목이 많아지면 한글명으로 걸러 찾는다
-		document.getElementById('filter').addEventListener('input', function () {
-			var word = this.value.trim().toLowerCase();
-			document.querySelectorAll('tr.en-row').forEach(function (row) {
-				var ko = (row.querySelector('.ko-name').textContent || '').toLowerCase();
-				row.style.display = (word === '' || ko.indexOf(word) >= 0) ? '' : 'none';
+		// 항목이 많아지면 한글명으로 걸러 찾는다.
+		// 영문 빈칸만 모아 보는 것이 채워 넣을 때 가장 빠르다
+		(function () {
+			var box = document.getElementById('filter');
+			var chips = Array.prototype.slice.call(document.querySelectorAll('.en-chip'));
+			var only = 'all';
+
+			function apply() {
+				var word = box.value.trim().toLowerCase();
+				document.querySelectorAll('tr.en-row').forEach(function (row) {
+					var ko = (row.querySelector('.ko-name').textContent || '').toLowerCase();
+					var input = row.querySelector('input[type="text"]');
+					var en = input ? input.value.trim() : '';
+					var ok = (word === '' || ko.indexOf(word) >= 0)
+							&& (only === 'all' || en === '');
+					row.style.display = ok ? '' : 'none';
+				});
+			}
+
+			box.addEventListener('input', apply);
+			chips.forEach(function (c) {
+				c.addEventListener('click', function () {
+					chips.forEach(function (o) { o.classList.remove('on'); });
+					c.classList.add('on');
+					only = c.dataset.filter;
+					apply();
+				});
 			});
-		});
+		})();
 	</script>
 </body>
 

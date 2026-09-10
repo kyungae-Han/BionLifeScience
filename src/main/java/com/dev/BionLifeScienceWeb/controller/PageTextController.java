@@ -29,20 +29,49 @@ public class PageTextController {
 
 	private final PageTextService pageTextService;
 
+	/**
+	 * 화면 코드에 붙일 사람이 읽을 이름.
+	 * page_text 에는 이름 칸이 없다. 화면이 늘어나면 여기에 한 줄 더 넣는다.
+	 * 없는 코드는 코드 그대로 보인다.
+	 */
+	private static final Map<String, String> PAGE_LABELS = Map.of(
+			"index", "메인 화면",
+			"rnd", "기업부설 연구소");
+
 	@GetMapping("/pageTextManager")
 	public String manager(Model model) {
 		List<PageText> rows = pageTextService.listAll();
 
-		// 화면·구역별로 묶어 보여 준다. 순서는 sort_index 를 따라간다.
-		// 화면 코드를 앞에 붙여야 다른 화면의 같은 이름 구역과 섞이지 않는다
-		Map<String, List<PageText>> sections = new LinkedHashMap<>();
+		// 화면 → 구역 → 문구 로 두 번 묶는다. 순서는 sort_index 를 따라간다.
+		// 왼쪽 나무 차림표와 가운데 목록이 같은 자료를 쓴다
+		Map<String, Map<String, List<PageText>>> pages = new LinkedHashMap<>();
+		Map<String, Integer> pageCounts = new LinkedHashMap<>();
+		int emptyEn = 0;
+
 		for (PageText row : rows) {
-			String name = (row.getSection() == null || row.getSection().isBlank()) ? "기타" : row.getSection();
-			sections.computeIfAbsent(row.getPageCode() + " · " + name, key -> new ArrayList<>()).add(row);
+			String code = row.getPageCode();
+			String section = (row.getSection() == null || row.getSection().isBlank()) ? "기타" : row.getSection();
+
+			pages.computeIfAbsent(code, key -> new LinkedHashMap<>())
+					.computeIfAbsent(section, key -> new ArrayList<>())
+					.add(row);
+			pageCounts.merge(code, 1, Integer::sum);
+
+			if (row.getTextEn() == null || row.getTextEn().isBlank()) {
+				emptyEn++;
+			}
 		}
 
-		model.addAttribute("sections", sections);
+		Map<String, String> pageLabels = new LinkedHashMap<>();
+		for (String code : pages.keySet()) {
+			pageLabels.put(code, PAGE_LABELS.getOrDefault(code, code));
+		}
+
+		model.addAttribute("pages", pages);
+		model.addAttribute("pageCounts", pageCounts);
+		model.addAttribute("pageLabels", pageLabels);
 		model.addAttribute("total", rows.size());
+		model.addAttribute("emptyEn", emptyEn);
 		return "admin/pageTextManager";
 	}
 

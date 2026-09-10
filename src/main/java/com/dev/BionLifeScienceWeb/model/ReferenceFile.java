@@ -23,6 +23,10 @@ public class ReferenceFile {
 	@Column(name="REFERENCE_FILE_SUBJECT")
 	private String filesubject;
 	
+	/** 영문 제목. 비우면 화면에서 한글이 나간다 */
+	@Column(name="REFERENCE_FILE_SUBJECT_EN", length = 1000)
+	private String filesubjectEn;
+	
 	@Column(name="REFERENCE_FILE_DATE")
 	private Date filedate;
 	

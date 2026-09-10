@@ -29,12 +29,20 @@ public class Notice {
 	@Column(name="NOTICE_SUBJECT")
 	private String subject;
 	
+	/** 영문 제목. 비우면 화면에서 한글이 나간다 */
+	@Column(name="NOTICE_SUBJECT_EN", length = 1000)
+	private String subjectEn;
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name="NOTICE_DATE")
 	private Date date;
 	
 	@Column(name="NOTICE_CONTENT")
 	private String content;
+	
+	/** 영문 본문. 비우면 화면에서 한글이 나간다 */
+	@Column(name="NOTICE_CONTENT_EN", columnDefinition = "LONGTEXT")
+	private String contentEn;
 	
 	@Column(name="NOTICE_SIGN")
 	private Boolean sign;

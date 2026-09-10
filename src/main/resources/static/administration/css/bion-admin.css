@@ -1,0 +1,583 @@
+/* =====================================================================
+   바이온 관리자 화면 — 라이트 테마 덮어쓰기 (A · 라이트 표준형)
+   2026-09-10
+
+   style.css(Dashio, 어두운 사이드바 + 청록 버튼) 위에 덧씌운다.
+   원본은 건드리지 않는다. 이 파일만 빼면 예전 화면으로 돌아간다.
+
+   common.html 의 <head> 에서 style.css, style-responsive.css, to-do.css
+   다음에 읽어야 한다. 순서가 바뀌면 아무 효과가 없다.
+
+   글꼴은 일부러 그대로 둔다. 글꼴을 바꾸면 모든 표의 줄바꿈 위치가
+   같이 바뀌어서, 색 때문에 깨진 것인지 글꼴 때문인지 구분이 안 된다.
+   ===================================================================== */
+
+:root {
+	/* 바탕 */
+	--bn-app-bg:      #fafbfc;   /* 화면 전체 바탕 */
+	--bn-surface:     #ffffff;   /* 카드·표·사이드바 */
+	--bn-surface-2:   #f7f8fa;   /* 표 머리, 옅게 눌린 자리 */
+	--bn-surface-3:   #f1f2f5;   /* 더 옅은 구분 바탕 */
+
+	/* 글자 */
+	--bn-ink:         #1b2230;   /* 제목 */
+	--bn-ink-2:       #3c4452;   /* 본문 */
+	--bn-ink-3:       #8a92a0;   /* 설명, 단위 */
+	--bn-ink-4:       #9aa1ad;   /* 흐린 글자 */
+
+	/* 선 */
+	--bn-line:        #e3e6ea;
+	--bn-line-2:      #d5d9df;   /* 입력칸 테두리 */
+	--bn-line-3:      #eef0f3;   /* 표 안쪽 가로줄 */
+
+	/* 강조 */
+	--bn-accent:      #fe5000;   /* 홈페이지 주황 */
+	--bn-accent-ink:  #e04600;
+	--bn-accent-bg:   #fff2ec;
+	--bn-link:        #4c5bd4;
+	--bn-ok:          #2f9e44;
+	--bn-ok-bg:       #ebfbee;
+	--bn-warn:        #e8590c;
+	--bn-warn-bg:     #fff4e6;
+	--bn-danger:      #d64545;
+	--bn-danger-bg:   #fdeded;
+
+	--bn-radius:      7px;
+	--bn-radius-lg:   8px;
+	--bn-shadow:      0 1px 2px rgba(27, 34, 48, .05);
+}
+
+
+/* ── 바탕 ──────────────────────────────────────────────────────────── */
+
+body {
+	background: var(--bn-app-bg);
+	color: var(--bn-ink-2);
+}
+
+::selection      { background: var(--bn-accent); color: #fff; }
+::-moz-selection { background: var(--bn-accent); color: #fff; }
+
+a        { color: var(--bn-link); }
+a:hover  { color: var(--bn-link); }
+
+h1, h2, h3, h4, h5, h6 { color: var(--bn-ink); }
+
+
+/* ── 위쪽 머리줄 ────────────────────────────────────────────────────── */
+
+.header.black-bg {
+	background: var(--bn-surface);
+	border-bottom: 1px solid var(--bn-line);
+}
+
+.header a.logo,
+.header a.logo b {
+	color: var(--bn-ink);
+	font-size: 17px;
+	font-weight: 700;
+	letter-spacing: -.2px;
+	text-transform: none;
+	margin-top: 19px;
+}
+
+.header a.logo span { color: var(--bn-accent); }
+
+.sidebar-toggle-box .fa-bars { color: var(--bn-ink-3); }
+.sidebar-toggle-box .fa-bars:hover { color: var(--bn-ink); }
+
+.header ul.top-menu > li > a.logout {
+	background: var(--bn-surface);
+	border: 1px solid var(--bn-line-2);
+	color: var(--bn-ink-2);
+	border-radius: var(--bn-radius);
+	padding: 6px 12px;
+	font-size: 12px;
+	font-weight: 500;
+	margin-top: 14px;
+	margin-left: 6px;
+	box-shadow: none;
+}
+
+.header ul.top-menu > li > a.logout:hover {
+	background: var(--bn-surface-2);
+	border-color: var(--bn-line-2);
+	color: var(--bn-ink);
+}
+
+
+/* ── 왼쪽 차림표 ────────────────────────────────────────────────────── */
+
+#sidebar {
+	background: var(--bn-surface);
+	border-right: 1px solid var(--bn-line);
+}
+
+#sidebar h5 { color: var(--bn-ink-3); }
+
+ul.sidebar-menu { margin-top: 68px; }
+
+ul.sidebar-menu li a {
+	color: var(--bn-ink-2);
+	font-size: 13px;
+	font-weight: 500;
+	padding: 11px 10px 11px 12px;
+	border-radius: var(--bn-radius);
+}
+
+ul.sidebar-menu li a i {
+	color: var(--bn-ink-4);
+	width: 17px;
+	text-align: center;
+}
+
+ul.sidebar-menu li a:hover,
+ul.sidebar-menu li a:focus {
+	background: var(--bn-surface-3);
+	color: var(--bn-ink);
+}
+
+ul.sidebar-menu li a:hover i,
+ul.sidebar-menu li a:focus i {
+	color: var(--bn-ink-2);
+}
+
+ul.sidebar-menu li a.active,
+ul.sidebar-menu li a.active:hover,
+ul.sidebar-menu li a.active:focus {
+	background: var(--bn-accent-bg);
+	color: var(--bn-accent-ink);
+	font-weight: 700;
+	box-shadow: inset 2px 0 0 var(--bn-accent);
+}
+
+ul.sidebar-menu li a.active i,
+ul.sidebar-menu li a.active:hover i {
+	color: var(--bn-accent);
+}
+
+/* 하위 차림표 */
+ul.sidebar-menu li ul.sub li { background: transparent; }
+
+#sidebar .sub-menu > .sub li { padding-left: 22px; }
+
+ul.sidebar-menu li ul.sub li a {
+	color: var(--bn-ink-3);
+	font-size: 12.5px;
+	line-height: 30px;
+	height: 30px;
+	padding: 0 10px;
+	border-radius: var(--bn-radius);
+}
+
+ul.sidebar-menu li ul.sub li a:hover {
+	background: var(--bn-surface-3);
+	color: var(--bn-ink);
+}
+
+ul.sidebar-menu li ul.sub li.active a { color: var(--bn-accent-ink); }
+
+.dcjq-icon { top: 12px; }
+
+
+/* ── 본문 자리 ──────────────────────────────────────────────────────── */
+
+#main-content { background: var(--bn-app-bg); }
+
+.wrapper { padding-top: 6px; }
+
+.form-panel {
+	background: var(--bn-surface);
+	border: 1px solid var(--bn-line);
+	border-radius: var(--bn-radius-lg);
+	box-shadow: var(--bn-shadow);
+	padding: 18px 20px;
+	margin: 12px 0;
+}
+
+.form-panel > h4,
+.form-panel > h3 {
+	font-size: 15px;
+	font-weight: 700;
+	color: var(--bn-ink);
+	margin: 0 0 14px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid var(--bn-line-3);
+}
+
+.form-panel .mb { margin-bottom: 14px; }
+
+
+/* ── 입력칸 ─────────────────────────────────────────────────────────── */
+
+.form-control,
+input[type="text"].form-control,
+input[type="password"].form-control,
+textarea.form-control,
+select.form-control {
+	background: var(--bn-surface);
+	border: 1px solid var(--bn-line-2);
+	border-radius: var(--bn-radius);
+	color: var(--bn-ink-2);
+	box-shadow: none;
+	height: 34px;
+	font-size: 13px;
+}
+
+textarea.form-control { height: auto; line-height: 1.6; }
+
+.form-control:focus {
+	border-color: var(--bn-accent);
+	box-shadow: 0 0 0 3px rgba(254, 80, 0, .12);
+	outline: none;
+}
+
+.form-control::placeholder { color: var(--bn-ink-4); }
+
+label {
+	color: var(--bn-ink-2);
+	font-size: 13px;
+	font-weight: 500;
+}
+
+.form-horizontal.style-form .form-group {
+	border-bottom: 1px solid var(--bn-line-3);
+}
+
+.input-group-addon {
+	background: var(--bn-surface-2);
+	border-color: var(--bn-line-2);
+	color: var(--bn-ink-3);
+}
+
+
+/* ── 단추 ───────────────────────────────────────────────────────────── */
+
+.btn {
+	border-radius: var(--bn-radius);
+	font-size: 13px;
+	font-weight: 500;
+	padding: 6px 14px;
+	box-shadow: none;
+	text-shadow: none;
+}
+
+.btn-theme,
+.btn-theme:focus {
+	background-color: var(--bn-accent);
+	border-color: var(--bn-accent);
+	color: #fff;
+}
+
+.btn-theme:hover,
+.btn-theme:active,
+.btn-theme.active,
+.open .dropdown-toggle.btn-theme {
+	background-color: var(--bn-accent-ink);
+	border-color: var(--bn-accent-ink);
+	color: #fff;
+}
+
+/* 보조 단추: 원본에서 보라·초록·빨강이었다. 회색 테두리 하나로 모은다. */
+.btn-theme02,
+.btn-theme03,
+.btn-theme02:focus,
+.btn-theme03:focus {
+	background-color: var(--bn-surface);
+	border-color: var(--bn-line-2);
+	color: var(--bn-ink-2);
+}
+
+.btn-theme02:hover,
+.btn-theme03:hover,
+.btn-theme02:active,
+.btn-theme03:active {
+	background-color: var(--bn-surface-2);
+	border-color: var(--bn-line-2);
+	color: var(--bn-ink);
+}
+
+.btn-theme04,
+.btn-theme04:focus {
+	background-color: var(--bn-surface);
+	border-color: #f0c4c4;
+	color: var(--bn-danger);
+}
+
+.btn-theme04:hover,
+.btn-theme04:active {
+	background-color: var(--bn-danger-bg);
+	border-color: #e8a9a9;
+	color: #b93636;
+}
+
+.btn-default,
+.btn-default:focus {
+	background: var(--bn-surface);
+	border-color: var(--bn-line-2);
+	color: var(--bn-ink-2);
+}
+
+.btn-default:hover {
+	background: var(--bn-surface-2);
+	color: var(--bn-ink);
+}
+
+
+/* 파일 고르기 단추. 원본은 btn-warning(주황)이라 등록 단추와 구별이 안 된다.
+   등록이 주황이므로 파일 고르기는 회색 테두리로 낮춘다.
+   btn-warning 은 삭제에도 쓰여서 그쪽은 아래에서 붉게 남긴다.
+   두 클래스를 같이 달고 있으므로 더 좁은 .btn.btn-file 이 이긴다. */
+.btn.btn-file,
+.btn.btn-file:focus {
+	background-color: var(--bn-surface);
+	border-color: var(--bn-line-2);
+	color: var(--bn-ink-2);
+	font-weight: 500;
+}
+
+.btn.btn-file:hover,
+.btn.btn-file:active {
+	background-color: var(--bn-surface-2);
+	border-color: var(--bn-line-2);
+	color: var(--bn-ink);
+}
+
+.btn-file i { color: var(--bn-ink-3); margin-right: 5px; }
+
+/* 파일 이름이 보이는 칸 */
+.fileupload .uneditable-input {
+	border: 1px solid var(--bn-line-2);
+	border-radius: var(--bn-radius);
+	color: var(--bn-ink-2);
+}
+
+
+/* 부트스트랩 기본 단추. 원본 화면이 파랑·초록·빨강을 뒤섞어 써서
+   무엇이 주된 동작인지 구별이 안 됐다. 주황 하나만 주된 동작으로 남긴다. */
+.btn-primary,
+.btn-primary:focus,
+.btn-info,
+.btn-info:focus {
+	background-color: var(--bn-surface);
+	border-color: var(--bn-line-2);
+	color: var(--bn-ink-2);
+}
+
+.btn-primary:hover,
+.btn-primary:active,
+.btn-info:hover,
+.btn-info:active {
+	background-color: var(--bn-surface-2);
+	border-color: var(--bn-line-2);
+	color: var(--bn-ink);
+}
+
+/* 저장은 주된 동작이다 */
+.btn-success,
+.btn-success:focus {
+	background-color: var(--bn-accent);
+	border-color: var(--bn-accent);
+	color: #fff;
+}
+
+.btn-success:hover,
+.btn-success:active {
+	background-color: var(--bn-accent-ink);
+	border-color: var(--bn-accent-ink);
+	color: #fff;
+}
+
+/* 삭제. 원본이 어떤 화면은 btn-danger, 어떤 화면은 btn-warning 을 썼다.
+   둘 다 삭제 자리라 같은 모양으로 맞춘다. */
+.btn-danger,
+.btn-danger:focus,
+.btn-warning,
+.btn-warning:focus {
+	background-color: var(--bn-danger-bg);
+	border-color: #f0c4c4;
+	color: #b93636;
+}
+
+.btn-danger:hover,
+.btn-danger:active,
+.btn-warning:hover,
+.btn-warning:active {
+	background-color: #f9dcdc;
+	border-color: #e8a9a9;
+	color: #a12c2c;
+}
+
+.label-danger  { background: var(--bn-danger-bg); color: #b93636; }
+.label-warning { background: var(--bn-warn-bg);   color: var(--bn-warn); }
+.label-success { background: var(--bn-ok-bg);     color: var(--bn-ok); }
+.label-info    { background: #eef1fd;             color: var(--bn-link); }
+.label-default { background: var(--bn-surface-3); color: var(--bn-ink-3); }
+
+
+/* style.css 가 들고 있는 청록 계열. 남아 있으면 주황과 부딪힌다 */
+.bg-theme   { background-color: var(--bn-accent) !important; color: #fff; }
+.bg-theme02 { background-color: var(--bn-ink-3) !important; color: #fff; }
+.bg-theme03 { background-color: var(--bn-ok) !important; color: #fff; }
+.bg-theme04 { background-color: var(--bn-danger) !important; color: #fff; }
+
+.btn-blue,
+.btn-blue:focus,
+.btn-update,
+.btn-update:focus {
+	background-color: var(--bn-accent);
+	border-color: var(--bn-accent);
+	color: #fff;
+}
+
+.btn-blue:hover,
+.btn-blue:active,
+.btn-update:hover,
+.btn-update:active {
+	background-color: var(--bn-accent-ink);
+	border-color: var(--bn-accent-ink);
+	color: #fff;
+}
+
+.btn-secondary,
+.btn-light,
+.btn-secondary:focus,
+.btn-light:focus {
+	background-color: var(--bn-surface);
+	border-color: var(--bn-line-2);
+	color: var(--bn-ink-2);
+}
+
+.btn-secondary:hover,
+.btn-light:hover {
+	background-color: var(--bn-surface-2);
+	color: var(--bn-ink);
+}
+
+
+/* ── 표 ─────────────────────────────────────────────────────────────── */
+
+.table {
+	background: var(--bn-surface);
+	color: var(--bn-ink-2);
+	font-size: 13px;
+}
+
+.table > thead > tr > th {
+	background: var(--bn-surface-2);
+	border-bottom: 1px solid var(--bn-line) !important;
+	border-top: none;
+	color: var(--bn-ink-3);
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: .1px;
+	padding: 10px 12px;
+	vertical-align: middle;
+}
+
+.table > tbody > tr > td {
+	border-top: 1px solid var(--bn-line-3);
+	padding: 10px 12px;
+	vertical-align: middle;
+}
+
+.table-hover > tbody > tr:hover { background: var(--bn-surface-2); }
+
+.table-bordered,
+.table-bordered > thead > tr > th,
+.table-bordered > tbody > tr > td {
+	border-color: var(--bn-line-3);
+}
+
+.table-striped > tbody > tr:nth-child(odd) { background: var(--bn-surface-2); }
+
+
+/* ── 알림 딱지 ──────────────────────────────────────────────────────── */
+
+.badge, .label {
+	border-radius: 4px;
+	font-weight: 600;
+	font-size: 11px;
+	padding: 3px 7px;
+}
+
+.alert-success { background: var(--bn-ok-bg);     border-color: #c7ecd2; color: var(--bn-ok); }
+.alert-warning { background: var(--bn-warn-bg);   border-color: #ffd9b8; color: var(--bn-warn); }
+.alert-danger  { background: var(--bn-danger-bg); border-color: #f2c7c7; color: var(--bn-danger); }
+.alert-info    { background: #eef1fd;             border-color: #d3d9f7; color: var(--bn-link); }
+
+.alert { border-radius: var(--bn-radius); }
+
+
+/* ── 상자(모달) ─────────────────────────────────────────────────────── */
+
+.modal-content {
+	border: 1px solid var(--bn-line);
+	border-radius: var(--bn-radius-lg);
+	box-shadow: 0 12px 32px rgba(27, 34, 48, .14);
+}
+
+.modal-header {
+	background: var(--bn-surface);
+	border-bottom: 1px solid var(--bn-line-3);
+	padding: 14px 18px;
+}
+
+.modal-header .modal-title {
+	color: var(--bn-ink);
+	font-size: 15px;
+	font-weight: 700;
+}
+
+.modal-body   { padding: 18px; }
+.modal-footer { border-top: 1px solid var(--bn-line-3); padding: 12px 18px; }
+
+
+/* ── 쪽 번호 ────────────────────────────────────────────────────────── */
+
+.pagination > li > a,
+.pagination > li > span {
+	border-color: var(--bn-line);
+	color: var(--bn-ink-2);
+}
+
+.pagination > li > a:hover { background: var(--bn-surface-2); }
+
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover {
+	background: var(--bn-accent);
+	border-color: var(--bn-accent);
+	color: #fff;
+}
+
+
+/* ── 여러 화면에서 쓰는 조각 ─────────────────────────────────────────── */
+
+.brand-highlight { background: var(--bn-warn-bg) !important; }
+
+.nav-tabs > li > a {
+	color: var(--bn-ink-3);
+	border-radius: var(--bn-radius) var(--bn-radius) 0 0;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+	color: var(--bn-ink);
+	border-color: var(--bn-line) var(--bn-line) transparent;
+}
+
+.nav-tabs { border-bottom-color: var(--bn-line); }
+
+/* 서머노트 */
+.note-editor.note-frame {
+	border: 1px solid var(--bn-line-2);
+	border-radius: var(--bn-radius);
+}
+
+.note-editor.note-frame .note-toolbar {
+	background: var(--bn-surface-2);
+	border-bottom: 1px solid var(--bn-line-3);
+}

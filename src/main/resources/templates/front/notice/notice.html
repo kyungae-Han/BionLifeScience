@@ -40,7 +40,7 @@
 				    <tr class="notice__important" th:each="n : ${pinned}">
 				      <td>공지</td>
 				      <td class="table__subject">
-				        <a th:href="@{'/noticeDetail/' + ${n.id}}" th:text="${n.subject}"></a>
+				        <a th:href="@{'/noticeDetail/' + ${n.id}}" th:text="${@enText.pick(n.subject, n.subjectEn)}"></a>
 				      </td>
 				      <td th:text="${#dates.format(n.date, 'yyyy-MM-dd')}"></td>
 				    </tr>
@@ -55,7 +55,7 @@
 				      <!-- 전체 건수 기준 내림차순 번호 -->
 				      <td th:text="${page.totalElements - (page.number * page.size) - stat.index}"></td>
 				      <td class="table__subject">
-				        <a th:href="@{'/noticeDetail/' + ${n.id}}" th:text="${n.subject}"></a>
+				        <a th:href="@{'/noticeDetail/' + ${n.id}}" th:text="${@enText.pick(n.subject, n.subjectEn)}"></a>
 				      </td>
 				      <td th:text="${#dates.format(n.date, 'yyyy-MM-dd')}"></td>
 				    </tr>

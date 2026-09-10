@@ -583,6 +583,7 @@ public class BrandProductService {
 	                        .orElse(null);
 	                if (existing != null) {
 	                    existing.setProductInfoText(info.getProductInfoText());
+	                    existing.setProductInfoTextEn(info.getProductInfoTextEn());
 	                    brandProductInfoRepository.save(existing);
 	                }
 	            }
@@ -715,6 +716,8 @@ public class BrandProductService {
 	                existing.setSpecOrder(s.getSpecOrder());
 	                existing.setProductSpecSubject(s.getProductSpecSubject());
 	                existing.setProductSpecContent(s.getProductSpecContent());
+	                existing.setProductSpecSubjectEn(s.getProductSpecSubjectEn());
+	                existing.setProductSpecContentEn(s.getProductSpecContentEn());
 	                brandProductSpecRepository.save(existing);
 	            });
 	        } else {

@@ -21,4 +21,8 @@ public class NoticeSubject {
 	@Column(name="NOTICE_SUBJECT_TEXT")
 	private String text;
 	
+	/** 영문 분류명. 비우면 화면에서 한글이 나간다 */
+	@Column(name="NOTICE_SUBJECT_TEXT_EN", length = 1000)
+	private String textEn;
+	
 }

@@ -34,6 +34,19 @@
 										<p class="help-block">* 이벤트 제목을 입력하는 곳 입니다.</p>
 									</div>
 								</div>
+								<div class="form-group">
+									<label class="col-lg-2 control-label">제목 영문</label>
+									<div class="col-lg-10">
+										<input
+										type="text"
+										th:value="${event.subjectEn}"
+										class="form-control"
+										name="subjectEn"
+										id="subjectEn"
+										placeholder="비우면 영문 화면에도 한글이 나갑니다">
+										<p class="help-block">* 영문 화면에서 쓸 제목입니다. 선택 입력입니다.</p>
+									</div>
+								</div>
 								<div class="form-group has-error">
 									<label class="col-lg-2 control-label">내용</label>
 									<div class="col-lg-10">
@@ -45,6 +58,19 @@
 										name="content"
 										id="content">
 										<p class="help-block">* 이벤트 내용을 입력하는 곳 입니다.</p>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-2 control-label">내용 영문</label>
+									<div class="col-lg-10">
+										<input
+										type="text"
+										th:value="${event.contentEn}"
+										class="form-control"
+										name="contentEn"
+										id="contentEn"
+										placeholder="비우면 영문 화면에도 한글이 나갑니다">
+										<p class="help-block">* 영문 화면에서 쓸 내용입니다. 선택 입력입니다.</p>
 									</div>
 								</div>
 								<div class="form-group has-warning">
