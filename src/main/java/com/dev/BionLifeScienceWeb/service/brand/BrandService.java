@@ -152,6 +152,10 @@ public class BrandService {
             System.out.println("after base64 = " + brand.getDesc().contains("data:image"));
         }
         
+        if (brand.getDescEn() != null && !brand.getDescEn().isBlank()) {
+            brand.setDescEn(summernoteImageProcessor.processEditorImages(brand.getDescEn(), "brand"));
+        }
+        
         brand.setBrandIndex(index);
 
         // 로고 파일 처리
@@ -180,7 +184,6 @@ public class BrandService {
 	        b.setNameEn(brand.getNameEn());
 	        b.setContent(brand.getContent());
 	        b.setContentEn(brand.getContentEn());
-	        b.setDescEn(brand.getDescEn());
 	        b.setType(brand.getType());
 
 	        try {
@@ -192,6 +195,13 @@ public class BrandService {
 		        	    System.out.println("after base64 = " + b.getDesc().contains("data:image"));
 		        	} else {
 		        	    b.setDesc(brand.getDesc());
+		        	}
+	        	
+		        	// 영문 상세 설명도 같은 처리를 한다. 붙여넣은 이미지를 파일로 바꿔 저장한다
+		        	if (brand.getDescEn() != null && !brand.getDescEn().isBlank()) {
+		        	    b.setDescEn(summernoteImageProcessor.processEditorImages(brand.getDescEn(), "brand"));
+		        	} else {
+		        	    b.setDescEn(brand.getDescEn());
 		        	}
 	        	
 	            if (brandImage != null && !brandImage.isEmpty()) {

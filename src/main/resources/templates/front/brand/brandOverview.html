@@ -38,12 +38,12 @@
 		    <div class="brand-card text-center border rounded-3 bg-white"
 		         style="cursor:pointer; transition:all .25s ease;"
 		         th:data-index="${iterStat.index}"
-		         th:data-name="${b.name}"
-		         th:data-desc="${b.desc}"
+		         th:data-name="${@enText.pick(b.name, b.nameEn)}"
+		         th:data-desc="${@enText.pick(b.desc, b.descEn)}"
 		         th:data-image="${b.imageRoad}"
 		         th:data-id="${b.id}">
 		      <div class="brand-thumb">
-		        <img th:src="${b.imageRoad}" alt="[[${b.name}]]" class="img-fluid rounded-3" style="object-fit:cover;">
+		        <img th:src="${b.imageRoad}" alt="[[${@enText.pick(b.name, b.nameEn)}]]" class="img-fluid rounded-3" style="object-fit:cover;">
 		      </div>
 		    </div>
 		  </div>

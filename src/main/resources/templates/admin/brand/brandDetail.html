@@ -157,8 +157,7 @@
 								<div class="form-group has-success">
 								  <label class="col-lg-2 control-label">상세 설명 영문 (선택)</label>
 								  	<div class="col-lg-10">
-								  		 <textarea id="descEn" name="descEn" class="form-control" rows="8"
-								  		           placeholder="Detailed description in English" th:text="${brand.descEn}"></textarea>
+								  		 <textarea id="descEn" name="descEn" th:text="${brand.descEn}"></textarea>
 								 	</div>
 								
 									<div class="col-lg-offset-2 col-lg-10 text-right">
@@ -330,7 +329,7 @@
 		
 	let lastRange = null;
 
-	$('#desc').summernote({
+	var brandDescOptions = {
 	    height: 570,
 	    minHeight: null,
 	    maxHeight: null,
@@ -398,7 +397,15 @@
 	    	  }
 	    	}
 
-	  });
+	  };
+
+	$('#desc').summernote(brandDescOptions);
+
+	// 영문 상세 설명도 같은 편집기를 쓴다. 이미지와 표를 그대로 넣을 수 있다.
+	$('#descEn').summernote($.extend({}, brandDescOptions, {
+	    focus: false,
+	    placeholder: 'Brand description in English (optional)'
+	}));
 	</script>
 	
 	<script>

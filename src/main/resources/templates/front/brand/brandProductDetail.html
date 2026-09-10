@@ -156,7 +156,7 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 			<ol class="breadcrumb mb-0">
 				<li class="breadcrumb-item"><a href="/index">메인</a></li>
 				<li class="breadcrumb-item" aria-current="page">상세페이지</li>
-				<li class="breadcrumb-item active" th:utext="${brand.name}" style="white-space: nowrap;">Brand Name</li>
+				<li class="breadcrumb-item active" th:utext="${@enText.pick(brand.name, brand.nameEn)}" style="white-space: nowrap;">Brand Name</li>
 				<li class="breadcrumb-item active" th:text="${product.subject}">Screw Caps and Tubes</li>
 			</ol>
 		</section>	
@@ -368,7 +368,7 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 							        <!-- 내용 -->
 							        <div class="portfolio-desc px-3 pt-3 pb-3">
 							        		<div class="desc-title">
-								        		<h6 class="mb-0 mt-3" th:utext="${brand.name}"></h6>
+								        		<h6 class="mb-0 mt-3" th:utext="${@enText.pick(brand.name, brand.nameEn)}"></h6>
 								            <h4 class="title-clamp mb-3" th:text="${p.subject}"></h4>
 							            </div>
 							            <p class="description-clamp small" th:text="${p.content}"></p>

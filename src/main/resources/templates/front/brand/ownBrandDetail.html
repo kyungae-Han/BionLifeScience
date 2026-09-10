@@ -59,11 +59,11 @@
 		  <div class="brand-visual-overlay">
 		  	<div class="inner">
 			    <div class="brand-visual-text dark">
-				      <h1 th:text="${brand.name}">Brand Title</h1>
-				      <p class="sec-sub" th:text="${brand.content}">Brand Description</p>
+				      <h1 th:text="${@enText.pick(brand.name, brand.nameEn)}">Brand Title</h1>
+				      <p class="sec-sub" th:text="${@enText.pick(brand.content, brand.contentEn)}">Brand Description</p>
 				      <ol class="brand_breadcrumb">
 				        <li><a href="/index">Home</a></li>
-				        <li th:utext="${brand.name}">Brand Name</li>
+				        <li th:utext="${@enText.pick(brand.name, brand.nameEn)}">Brand Name</li>
 				      </ol>
 			    </div>
 		    </div>
@@ -71,13 +71,13 @@
 		</section>
 		
 		<section class="brand-body-container">
-			<div th:utext="${brand.desc}"></div>
+			<div th:utext="${@enText.pick(brand.desc, brand.descEn)}"></div>
 		</section>
 		
 		<!-- 상단 카테고리 탭 -->
 		<section class="product-container" id="brandProdcutListItem">
 		 	<div class="sec-head">
-		 		<h3 class="text-center w-100 pb-4" th:text="${brand.name} +' '+'PRODUCT'"></h3>
+		 		<h3 class="text-center w-100 pb-4" th:text="${@enText.pick(brand.name, brand.nameEn)} +' '+'PRODUCT'"></h3>
 		 		<p class="text-center pb-4" th:utext="'최고의 품질이 만드는 새로운 기준<br>'+'<span class=&quot;fw-bold fs-5&quot;>'+${brand.name}+'</span>'+'의 다양한 제품을 만나보세요.'">당사의 다양한 제품을 만나보세요. </p>
 		 	</div>
 		
@@ -166,7 +166,7 @@
 						      th:text="${product.bigSort.name}">
 						</span>
 			            </div>
-						  <h6 class="mb-0 mt-3" th:utext="${brand.name}"></h6>
+						  <h6 class="mb-0 mt-3" th:utext="${@enText.pick(brand.name, brand.nameEn)}"></h6>
 			              <h3 class="entry-title fs-6" th:text="${product.subject}">
 			                   Screw Caps and Tubes
 			              </h3>

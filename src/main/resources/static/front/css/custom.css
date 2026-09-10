@@ -5,4 +5,11 @@
 	Overwriting Default Theme Styles for Better Handling Updates
 -----------------------------------------------------------------*/
 
-
+/* 영문 헤더: Search 가 검색보다 길어 돋보기 아이콘과 겹친다.
+   아이콘은 왼쪽에 절대배치돼 있고 글자는 80px 안에서 가운데 정렬이라 그렇다.
+   영문일 때만 폭을 풀고 글자를 아이콘 오른쪽으로 밀어 둔다. */
+html[lang="en"] #top-search > a {
+  width: auto;
+  padding-left: 26px;
+  text-align: left;
+}

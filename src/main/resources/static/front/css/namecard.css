@@ -106,12 +106,15 @@ body {
 .quick svg { width: 1.25rem; height: 1.25rem; stroke: var(--blue); fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ── 상세 ── */
-.details { border-top: 1px solid var(--line); padding: 0.35rem 1.5rem 1.35rem; }
+/* dl 이라 브라우저가 위아래로 1em 을 넣는다. 그대로 두면 빠른 실행 칸과
+   구분선 사이가 벌어져 세로 칸막이가 끊겨 보인다 */
+.details { margin: 0; border-top: 1px solid var(--line); padding: 0.35rem 1.5rem 1.35rem; }
 .row { display: flex; gap: 0.9rem; padding: 0.7rem 0; border-bottom: 1px solid #f1f5f9; align-items: baseline; }
 .row:last-child { border-bottom: 0; }
 .row dt { flex: none; width: 4.25rem; font-size: 0.72rem; font-weight: 600; color: #94a3b8; }
 .row dd { margin: 0; font-size: 0.88rem; line-height: 1.55; word-break: break-word; }
-.row a { color: var(--ink); text-decoration: none; border-bottom: 1px solid #dbeafe; }
+/* 누를 수 있는 값은 밑줄 대신 색으로 알린다 */
+.row a { color: var(--blue-deep); text-decoration: none; }
 .row .plain { color: var(--ink); }
 .row .note { display: block; margin-top: 0.15rem; font-size: 0.72rem; color: #94a3b8; }
 

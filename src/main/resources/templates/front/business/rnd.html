@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="ko" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragments/front/common :: headSrc('바이온라이프사이언스 기업소개')}">
+<head th:replace="~{/fragments/front/common :: headSrc(${@pageText.get('rnd', 'rnd.meta.title')} ?: '바이온라이프사이언스 기업소개')}">
 </head>
 
 <link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
@@ -21,15 +21,15 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
     
     	<section id="snb" class="clearfix p-lg-4">
 			<ol class="breadcrumb mb-0">
-				<li class="breadcrumb-item"><a href="/index">메인</a></li>
-				<li class="breadcrumb-item active">R&D 연구소</li>
+				<li class="breadcrumb-item"><a href="/index" th:text="${@pageText.get('rnd', 'rnd.breadcrumb.home')} ?: _">메인</a></li>
+				<li class="breadcrumb-item active" th:text="${@pageText.get('rnd', 'rnd.breadcrumb.current')} ?: _">R&D 연구소</li>
 			</ol>
 		</section>
     
     
     	<div id="page-title">
-				<h1 class="sec-head">기업부설 연구소</h1>
-				<p>생명과학, 질병 진단, 의료기기 관련 소모품, 부자재, Plasticware, 진단 kit 등에 대한 연구 개발 업무를 수행</p>
+				<h1 class="sec-head" th:text="${@pageText.get('rnd', 'rnd.title')} ?: _">기업부설 연구소</h1>
+				<p th:text="${@pageText.get('rnd', 'rnd.subtitle')} ?: _">생명과학, 질병 진단, 의료기기 관련 소모품, 부자재, Plasticware, 진단 kit 등에 대한 연구 개발 업무를 수행</p>
 		</div>
     
 		<!-- Corporate Lab -->
@@ -49,16 +49,16 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 							style="--img: url('/front/images/about/institute-bg4.jpg'); --pos: 50% 45%;">
 						</article>
 						<div class="il-image-card__content">
-							<h4 class="il-image-card__title">진단·의료기기</h4>
-							<p class="il-image-card__subtitle">진단용 기자재·진단 Kit·소모품 R&amp;D</p>
+							<h4 class="il-image-card__title" th:text="${@pageText.get('rnd', 'rnd.card1.title')} ?: _">진단·의료기기</h4>
+							<p class="il-image-card__subtitle" th:text="${@pageText.get('rnd', 'rnd.card1.subtitle')} ?: _">진단용 기자재·진단 Kit·소모품 R&amp;D</p>
 							<ul class="il-image-card__list">
-								<li>Elastomer 재질의 부드러운 소재로 검체 재취용 <strong>Swab</strong> 개발
+								<li th:utext="${@pageText.get('rnd', 'rnd.card1.item1')} ?: _">Elastomer 재질의 부드러운 소재로 검체 재취용 <strong>Swab</strong> 개발
 								</li>
-								<li><strong>OAB</strong> 채취 Kit 및 <strong>NIPT</strong> 채취
+								<li th:utext="${@pageText.get('rnd', 'rnd.card1.item2')} ?: _"><strong>OAB</strong> 채취 Kit 및 <strong>NIPT</strong> 채취
 									Kit 개발</li>
-								<li>급성설사진단용 <strong>검체수송배지</strong> 개발
+								<li th:utext="${@pageText.get('rnd', 'rnd.card1.item3')} ?: _">급성설사진단용 <strong>검체수송배지</strong> 개발
 								</li>
-								<li>국내외 다수의 <strong>특허출원</strong> 및 <strong>디자인 등록</strong></li>
+								<li th:utext="${@pageText.get('rnd', 'rnd.card1.item4')} ?: _">국내외 다수의 <strong>특허출원</strong> 및 <strong>디자인 등록</strong></li>
 							</ul>
 						</div>
 					</div>
@@ -69,17 +69,17 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 						style="--img: url('/front/images/about/institute-bg2.jpg'); --pos: 48% 40%;">
 					</article>
 						<div class="il-image-card__content">
-							<h4 class="il-image-card__title">연구 기자재</h4>
-							<p class="il-image-card__subtitle">생명과학 연구용
+							<h4 class="il-image-card__title" th:text="${@pageText.get('rnd', 'rnd.card2.title')} ?: _">연구 기자재</h4>
+							<p class="il-image-card__subtitle" th:text="${@pageText.get('rnd', 'rnd.card2.subtitle')} ?: _">생명과학 연구용
 								기자재·소모품·Plasticware</p>
 							<ul class="il-image-card__list">
-								<li><strong>수직형 단백질 전기영동 장치</strong> 개발</li>
-								<li><strong>Filter Tip</strong>, <strong>Internal
+								<li th:utext="${@pageText.get('rnd', 'rnd.card2.item1')} ?: _"><strong>수직형 단백질 전기영동 장치</strong> 개발</li>
+								<li th:utext="${@pageText.get('rnd', 'rnd.card2.item2')} ?: _"><strong>Filter Tip</strong>, <strong>Internal
 										Screw &amp; Tube</strong> 개발</li>
-								<li>현장 아이디어 → <strong>3D 모델링 설계</strong> → <strong>3D
+								<li th:utext="${@pageText.get('rnd', 'rnd.card2.item3')} ?: _">현장 아이디어 → <strong>3D 모델링 설계</strong> → <strong>3D
 										프린팅<br>시제품
 								</strong></li>
-								<li>대량 생산을 위한 <strong>사출 금형 아이디어</strong> 제공
+								<li th:utext="${@pageText.get('rnd', 'rnd.card2.item4')} ?: _">대량 생산을 위한 <strong>사출 금형 아이디어</strong> 제공
 								</li>
 							</ul>
 						</div>
@@ -91,18 +91,18 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 							style="--img: url('/front/images/about/institute-bg1.jpg'); --pos: 55% 42%;">
 						</article>
 						<div class="il-image-card__content">
-							<h4 class="il-image-card__title">천연물소재 연구개발</h4>
-							<p class="il-image-card__subtitle">기능성 화장품·건강식품 소재</p>
+							<h4 class="il-image-card__title" th:text="${@pageText.get('rnd', 'rnd.card3.title')} ?: _">천연물소재 연구개발</h4>
+							<p class="il-image-card__subtitle" th:text="${@pageText.get('rnd', 'rnd.card3.subtitle')} ?: _">기능성 화장품·건강식품 소재</p>
 							<ul class="il-image-card__list">
-								<li><strong>마가목</strong>·<strong>배롱나무</strong> 성분 분석 및 지표성분
+								<li th:utext="${@pageText.get('rnd', 'rnd.card3.item1')} ?: _"><strong>마가목</strong>·<strong>배롱나무</strong> 성분 분석 및 지표성분
 									특정·정량분석</li>
-								<li>2차 대사산물 스크리닝 → 유효물질 특정 → <strong>동정/함량 분석</strong>
+								<li th:utext="${@pageText.get('rnd', 'rnd.card3.item2')} ?: _">2차 대사산물 스크리닝 → 유효물질 특정 → <strong>동정/함량 분석</strong>
 									(HPLC, LC-MS, LC-MS/MS, NMR)
 								</li>
-								<li>활성성분 <strong>추출</strong> 및 <strong>column
+								<li th:utext="${@pageText.get('rnd', 'rnd.card3.item3')} ?: _">활성성분 <strong>추출</strong> 및 <strong>column
 										chromatography</strong>로 유효물질 분리·정제
 								</li>
-								<li>향장 소재 유효 성분 분석 및 문헌/데이터 기반 <strong>활용 기술컨설팅</strong></li>
+								<li th:utext="${@pageText.get('rnd', 'rnd.card3.item4')} ?: _">향장 소재 유효 성분 분석 및 문헌/데이터 기반 <strong>활용 기술컨설팅</strong></li>
 							</ul>
 						</div>
 					</div>
@@ -111,22 +111,22 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 				<aside class="il-info li-tags">
 						<div class="il-info__list p-item">
 						  <div class="icon-caption">
-						    <span class="il-chip">설립</span>
-						    <span class="chip-caption">2023 연구전담부서 시작 → 2025 기업부설연구소 전환·운영</span>
+						    <span class="il-chip" th:text="${@pageText.get('rnd', 'rnd.info1.label')} ?: _">설립</span>
+						    <span class="chip-caption" th:text="${@pageText.get('rnd', 'rnd.info1.text')} ?: _">2023 연구전담부서 시작 → 2025 기업부설연구소 전환·운영</span>
 						  </div>
 						  <div class="icon-caption">
-						    <span class="il-chip">영역</span>
-						    <span class="chip-caption">생명과학, 질병 진단, 의료기기 소모품·부자재·Plasticware, 진단 Kit R&D</span>
+						    <span class="il-chip" th:text="${@pageText.get('rnd', 'rnd.info2.label')} ?: _">영역</span>
+						    <span class="chip-caption" th:text="${@pageText.get('rnd', 'rnd.info2.text')} ?: _">생명과학, 질병 진단, 의료기기 소모품·부자재·Plasticware, 진단 Kit R&D</span>
 						  </div>
 						</div>
 						<div class="il-info__list p-item">
 						  <div class="icon-caption">
-						    <span class="il-chip">핵심기능</span>
-						    <span class="chip-caption"><strong>혁신적이고 경쟁력 있는 제품개발</strong><br>외산 제품 대응 국산화 지속추진, 현장 문제 신속 해결 및 제품 개선 반영</span>
+						    <span class="il-chip" th:text="${@pageText.get('rnd', 'rnd.info3.label')} ?: _">핵심기능</span>
+						    <span class="chip-caption" th:utext="${@pageText.get('rnd', 'rnd.info3.text')} ?: _"><strong>혁신적이고 경쟁력 있는 제품개발</strong><br>외산 제품 대응 국산화 지속추진, 현장 문제 신속 해결 및 제품 개선 반영</span>
 						  </div>
 						  <div class="icon-caption">
-						    <span class="il-chip">확장</span>
-						    <span class="chip-caption">천연물 기반 기능성 화장품·건강식품 소재 연구, 3D 모델링·프린팅 도입</span>
+						    <span class="il-chip" th:text="${@pageText.get('rnd', 'rnd.info4.label')} ?: _">확장</span>
+						    <span class="chip-caption" th:text="${@pageText.get('rnd', 'rnd.info4.text')} ?: _">천연물 기반 기능성 화장품·건강식품 소재 연구, 3D 모델링·프린팅 도입</span>
 						  </div>
 					  </div>
                 </aside>
@@ -142,8 +142,8 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 						
 					<div class="copylight__p p-item">
 						<div class="text-center">
-							<h4 class="fp-heading">혁신적이고 경쟁력 있는 제품개발</h4>
-							<p class="mb-4">본 연구소는 생명과학 관련 소모품·부자재·Plasticware 시장에서 다수 점유하고 있는 외산 제품에 대응한 국산화와 함께 혁신적인 제품 개발을 지속적으로 추진하고 있습니다.</p>
+							<h4 class="fp-heading" th:text="${@pageText.get('rnd', 'rnd.pd.heading')} ?: _">혁신적이고 경쟁력 있는 제품개발</h4>
+							<p class="mb-4" th:text="${@pageText.get('rnd', 'rnd.pd.desc')} ?: _">본 연구소는 생명과학 관련 소모품·부자재·Plasticware 시장에서 다수 점유하고 있는 외산 제품에 대응한 국산화와 함께 혁신적인 제품 개발을 지속적으로 추진하고 있습니다.</p>
 						</div>
 						
 						<div class="product-development">
@@ -152,8 +152,8 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 						        <div class="icon">
 						          <i class="bi bi-gear"></i>
 						        </div>
-						        <h6>아이디어 도출</h6>
-						        <div class="hover-content">
+						        <h6 th:text="${@pageText.get('rnd', 'rnd.pd.step1.title')} ?: _">아이디어 도출</h6>
+						        <div class="hover-content" th:text="${@pageText.get('rnd', 'rnd.pd.step1.text')} ?: _">
 						          창의적인 아이디어를 수집하고 문제 해결 방향을 설정합니다.
 						        </div>
 						      </div>
@@ -161,8 +161,8 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 						        <div class="icon">
 						          <i class="bi bi-pencil-square"></i>
 						        </div>
-						        <h6>설계 및 스케치</h6>
-						        <div class="hover-content">
+						        <h6 th:text="${@pageText.get('rnd', 'rnd.pd.step2.title')} ?: _">설계 및 스케치</h6>
+						        <div class="hover-content" th:text="${@pageText.get('rnd', 'rnd.pd.step2.text')} ?: _">
 						          제품 구조와 기능에 대한 초안을 확정합니다.
 						        </div>
 						      </div>
@@ -170,8 +170,8 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 						        <div class="icon">
 						        	<i class="bi bi-bounding-box-circles"></i>
 						        </div>
-						        <h6>3D 모델링</h6>
-						        <div class="hover-content">
+						        <h6 th:text="${@pageText.get('rnd', 'rnd.pd.step3.title')} ?: _">3D 모델링</h6>
+						        <div class="hover-content" th:text="${@pageText.get('rnd', 'rnd.pd.step3.text')} ?: _">
 						          3D 모델링을 통해 시제품의 구조를 구현 및 설계 합니다.
 						        </div>
 						      </div>
@@ -179,8 +179,8 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 						        <div class="icon">
 						        	<i class="bi bi-cpu"></i>
 						        </div>
-						        <h6>3D 프린팅</h6>
-						        <div class="hover-content">
+						        <h6 th:text="${@pageText.get('rnd', 'rnd.pd.step4.title')} ?: _">3D 프린팅</h6>
+						        <div class="hover-content" th:text="${@pageText.get('rnd', 'rnd.pd.step4.text')} ?: _">
 						          연구제품을 3D 프린팅하여 본 연구소에서 다각도로 테스트합니다.
 						        </div>
 						      </div>
@@ -188,8 +188,8 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 						        <div class="icon">
 						        	<i class="bi bi-truck"></i>
 						        </div>
-						        <h6>향상된 제품공급</h6>
-						        <div class="hover-content">
+						        <h6 th:text="${@pageText.get('rnd', 'rnd.pd.step5.title')} ?: _">향상된 제품공급</h6>
+						        <div class="hover-content" th:text="${@pageText.get('rnd', 'rnd.pd.step5.text')} ?: _">
 						         	개선점을 보완하여 최적의 결과를 도출, 보다 향상된 제품을 공급하기 위해 지속적으로 연구개발 합니다.
 						        </div>
 						    </div>
@@ -220,7 +220,7 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 					    </div>
 					</div>
 						
-					<aside class="il-callout p-item" data-speed="0.28" role="note">
+					<aside class="il-callout p-item" data-speed="0.28" role="note" th:utext="${@pageText.get('rnd', 'rnd.callout')} ?: _">
 						<strong>3D 모델링 &amp; 프린팅</strong> 설계 검증 → 기능 개선 → 대량 생산(사출 금형)으로
 						이어지는 R&amp;D 파이프라인을 운영합니다.<br>(주)바이온라이프사이언스는 현장 요구를 신속히 반영하는
 						시제품 제작 체계를 갖추고 있습니다.
@@ -233,8 +233,8 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 				
 				    <section class="organic">
 					    <div class="biz-overlay p-item">
-					      <h4 class="fp-heading">천연물연구</h4>
-					      <p>본 연구소는 그동안 다져온 과학 기자재 사업 역량 위에 새로운 미래 성장 동력을 확보하기 위하여 천연물 기반 화장품·건강기능식품 소재 연구 개발을 추진하고 있습니다.</p>
+					      <h4 class="fp-heading" th:text="${@pageText.get('rnd', 'rnd.organic.heading')} ?: _">천연물연구</h4>
+					      <p th:text="${@pageText.get('rnd', 'rnd.organic.desc')} ?: _">본 연구소는 그동안 다져온 과학 기자재 사업 역량 위에 새로운 미래 성장 동력을 확보하기 위하여 천연물 기반 화장품·건강기능식품 소재 연구 개발을 추진하고 있습니다.</p>
 					    </div>
 					    <div class="biz-section">
 					    	<div class="container">
@@ -245,19 +245,19 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 							
 							  <div class="biz-right">
 							    <div class="card">
-							    	<img th:src="@{/front/images/about/movie-img-1.jpg}" alt="크로마토그래피">
+							    	<img th:src="@{/front/images/about/movie-img-1.jpg}" alt="크로마토그래피" th:alt="${@pageText.get('rnd', 'rnd.organic.img.alt')} ?: _">
 							    </div>
 							
 							     <div class="card">
-							    	<img th:src="@{/front/images/about/movie-img-2.jpg}" alt="크로마토그래피">
+							    	<img th:src="@{/front/images/about/movie-img-2.jpg}" alt="크로마토그래피" th:alt="${@pageText.get('rnd', 'rnd.organic.img.alt')} ?: _">
 							    </div>
 							
 							    <div class="card">
-							    	<img th:src="@{/front/images/about/movie-img-3.jpg}" alt="크로마토그래피">
+							    	<img th:src="@{/front/images/about/movie-img-3.jpg}" alt="크로마토그래피" th:alt="${@pageText.get('rnd', 'rnd.organic.img.alt')} ?: _">
 							    </div>
 							
 							     <div class="card">
-							    	<img th:src="@{/front/images/about/movie-img-4.jpg}" alt="크로마토그래피">
+							    	<img th:src="@{/front/images/about/movie-img-4.jpg}" alt="크로마토그래피" th:alt="${@pageText.get('rnd', 'rnd.organic.img.alt')} ?: _">
 							    </div>
 							  </div>
 						  </div>
@@ -270,8 +270,8 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 				
 				<section id="related-company">
 				 <article class="fp">
-				  <h4 class="fp-heading">Quality Enhancement</h4>
-				  <p class="fp-sub">혁신적인 제품의 개발과 생산, 첨단기술력의 발전과 끊임없는 도전으로 가치를 만들어 갑니다.</p>
+				  <h4 class="fp-heading" th:text="${@pageText.get('rnd', 'rnd.quality.heading')} ?: _">Quality Enhancement</h4>
+				  <p class="fp-sub" th:text="${@pageText.get('rnd', 'rnd.quality.sub')} ?: _">혁신적인 제품의 개발과 생산, 첨단기술력의 발전과 끊임없는 도전으로 가치를 만들어 갑니다.</p>
 				
 				  <div class="fp-wrap" role="list">
 				    <!-- 카드 1 -->
@@ -280,9 +280,9 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 				      <div class="fp-bg"></div>
 				      <div class="fp-dim"></div>
 				      <div class="fp-content">
-				        <h3 class="fp-title"><b>3D Printing&nbsp;&nbsp;&nbsp;설계</b></h3>
-				        <p class="fp-desc">3D 모델링·프린팅을 도입하여 보다 진보된 연구용 기자재 R&amp;D 추진</p>
-				        <span class="fp-more none" aria-hidden="true">자세히</span>
+				        <h3 class="fp-title" th:utext="${@pageText.get('rnd', 'rnd.quality.card1.title')} ?: _"><b>3D Printing&nbsp;&nbsp;&nbsp;설계</b></h3>
+				        <p class="fp-desc" th:text="${@pageText.get('rnd', 'rnd.quality.card1.desc')} ?: _">3D 모델링·프린팅을 도입하여 보다 진보된 연구용 기자재 R&amp;D 추진</p>
+				        <span class="fp-more none" aria-hidden="true" th:text="${@pageText.get('rnd', 'rnd.quality.more')} ?: _">자세히</span>
 				      </div>
 				    </div>
 				
@@ -292,9 +292,9 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 				      <div class="fp-bg"></div>
 				      <div class="fp-dim"></div>
 				      <div class="fp-content">
-				        <h3 class="fp-title"><b>Localization R&amp;D</b></h3>
-				        <p class="fp-desc">국내 생명과학 시장을 다소 점유하고 있는 외산 제품에 대응한 국산화를 지속 추진</p>
-				        <span class="fp-more none" aria-hidden="true">자세히</span>
+				        <h3 class="fp-title" th:utext="${@pageText.get('rnd', 'rnd.quality.card2.title')} ?: _"><b>Localization R&amp;D</b></h3>
+				        <p class="fp-desc" th:text="${@pageText.get('rnd', 'rnd.quality.card2.desc')} ?: _">국내 생명과학 시장을 다소 점유하고 있는 외산 제품에 대응한 국산화를 지속 추진</p>
+				        <span class="fp-more none" aria-hidden="true" th:text="${@pageText.get('rnd', 'rnd.quality.more')} ?: _">자세히</span>
 				      </div>
 				    </div>
 				
@@ -304,9 +304,9 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 				      <div class="fp-bg"></div>
 				      <div class="fp-dim"></div>
 				      <div class="fp-content">
-				        <h3 class="fp-title"><b>Quality</b></h3>
-				        <p class="fp-desc">연구 현장에서 발생하는 제품의 문제점을 신속히 해결</p>
-				        <span class="fp-more none" aria-hidden="true">자세히</span>
+				        <h3 class="fp-title" th:utext="${@pageText.get('rnd', 'rnd.quality.card3.title')} ?: _"><b>Quality</b></h3>
+				        <p class="fp-desc" th:text="${@pageText.get('rnd', 'rnd.quality.card3.desc')} ?: _">연구 현장에서 발생하는 제품의 문제점을 신속히 해결</p>
+				        <span class="fp-more none" aria-hidden="true" th:text="${@pageText.get('rnd', 'rnd.quality.more')} ?: _">자세히</span>
 				      </div>
 				    </div>
 				
@@ -316,9 +316,9 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 				      <div class="fp-bg"></div>
 				      <div class="fp-dim"></div>
 				      <div class="fp-content">
-				        <h3 class="fp-title"><b>True Lab</b></h3>
-				        <p class="fp-desc">정확하고 신뢰도 높은 연구 data</p>
-				        <span class="fp-more none" aria-hidden="true">자세히</span>
+				        <h3 class="fp-title" th:utext="${@pageText.get('rnd', 'rnd.quality.card4.title')} ?: _"><b>True Lab</b></h3>
+				        <p class="fp-desc" th:text="${@pageText.get('rnd', 'rnd.quality.card4.desc')} ?: _">정확하고 신뢰도 높은 연구 data</p>
+				        <span class="fp-more none" aria-hidden="true" th:text="${@pageText.get('rnd', 'rnd.quality.more')} ?: _">자세히</span>
 				      </div>
 				    </div>
 				  </div>
