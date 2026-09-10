@@ -7,6 +7,19 @@
 </head>
 </head>
 
+<style>
+/* 인증서 목록. 예전에는 한 건이 화면 한 폭을 차지해서 몇 개 있는지도 안 보였다.
+   줄 하나에 한 건씩 놓고, 이미지는 작은 미리보기로 줄인다. */
+.cert-table td { vertical-align: middle; }
+.cert-thumb {
+	width: 72px; height: 96px; object-fit: cover;
+	border: 1px solid var(--bn-line); border-radius: 4px; background: var(--bn-surface-2);
+}
+.cert-subject { font-weight: 600; color: var(--bn-ink); }
+.cert-content { color: var(--bn-ink-2); line-height: 1.6; }
+.cert-none { text-align: center; color: var(--bn-ink-4); padding: 28px 0 !important; }
+</style>
+
 <body>
 	<section id="container">
 		<th:block th:replace="~{fragments/admin/common :: headMenu}"></th:block>
@@ -77,38 +90,36 @@
 				</div>
 				<div class="row mt">
 					<div class="col-md-8">
-						<section class="task-panel tasks-widget">
-							<div class="panel-heading">
-								<div class="pull-left">
-									<h5>
-										<i class="fa fa-tasks"></i> 바이온라이프사이언스 - 인증서 관리
-									</h5>
-								</div>
-								<br>
-							</div>
-							<div class="panel-body">
-								<div class="task-content">
-									<ul class="task-list">
-										<li th:each="b:${certifications}">
-											<div class="task-title">
-												<div class="admin-banner-wrap">
-													<h3 th:text="${b.subject}">제목영역</h3>
-													<p th:text="${b.content}">컨텐츠 영역</p>
-													<div class="pull-right hidden-phone">
-														<button class="btn btn-danger btn-xs" th:onclick="|deleteCertification('${b.id}')|">
-															<i class="fa fa-trash-o "></i>
-														</button>
-													</div>
-												</div>
-												<div class="admin-banner-image row">
-													<img width="150px" th:src="${b.road}">
-												</div>
-											</div>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</section>
+						<div class="form-panel">
+							<h4><i class="fa fa-tasks"></i> 바이온라이프사이언스 - 인증서 관리</h4>
+							<table class="table table-hover cert-table">
+								<thead>
+									<tr>
+										<th style="width:96px;">미리보기</th>
+										<th style="width:96px;">분류</th>
+										<th style="width:220px;">SUBJECT</th>
+										<th>CONTENT</th>
+										<th style="width:70px;">관리</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="b:${certifications}">
+										<td><img class="cert-thumb" th:src="${b.road}" th:alt="${b.subject}"></td>
+										<td><span class="label label-default" th:text="${b.sort} ?: '분류 없음'">분류</span></td>
+										<td class="cert-subject" th:text="${b.subject}">제목</td>
+										<td class="cert-content" th:text="${b.content}">내용</td>
+										<td>
+											<button class="btn btn-danger btn-xs" th:onclick="|deleteCertification('${b.id}')|">
+												<i class="fa fa-trash-o"></i> 삭제
+											</button>
+										</td>
+									</tr>
+									<tr th:if="${#lists.isEmpty(certifications)}">
+										<td colspan="5" class="cert-none">등록된 인증서가 없다.</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</section>

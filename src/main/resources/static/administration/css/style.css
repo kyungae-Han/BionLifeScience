@@ -12,7 +12,9 @@ Website: http://Alvarez.is/
 */
 
 /* Import fonts */
-@import url(http://fonts.googleapis.com/css?family=Ruda:400,700,900);
+/* 글꼴은 common.html 에서 https 로 받는다. 여기 있던 @import 는
+   렌더를 막고, 주소가 http 라 운영(https)에서는 막혀서 아예 오지도 않았다. */
+/* @import url(http://fonts.googleapis.com/css?family=Ruda:400,700,900); */
 
 /* BASIC THEME CONFIGURATION */
 body {

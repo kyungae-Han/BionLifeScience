@@ -31,9 +31,10 @@
 	--bn-line-3:      #eef0f3;   /* 표 안쪽 가로줄 */
 
 	/* 강조 */
-	--bn-accent:      #fe5000;   /* 홈페이지 주황 */
-	--bn-accent-ink:  #e04600;
-	--bn-accent-bg:   #fff2ec;
+	--bn-accent:      #0e2a5a;   /* 홈페이지 남색 */
+	--bn-accent-ink:  #08203f;   /* 눌렀을 때, 그리고 연한 바탕 위 글자 */
+	--bn-accent-bg:   #eceff6;   /* 남색을 아주 옅게 깐 바탕 */
+	--bn-focus-ring:  rgba(14, 42, 90, .16);
 	--bn-link:        #4c5bd4;
 	--bn-ok:          #2f9e44;
 	--bn-ok-bg:       #ebfbee;
@@ -117,10 +118,38 @@ h1, h2, h3, h4, h5, h6 { color: var(--bn-ink); }
 
 ul.sidebar-menu { margin-top: 68px; }
 
+/* 줄 간격을 고르게 맞춘다. 원본은 세 군데가 어긋나 있었다.
+   - 하위가 있는 줄만 line-height 가 15px 이라 다른 줄보다 3px 낮았다 (41px vs 38px)
+   - 상위끼리는 5px 씩 떨어져 있는데 하위끼리는 딱 붙어 있었다 (0px)
+   - 마지막 하위 밑에만 10px 이 더 있었다
+   그래서 아래로 갈수록 간격이 들쭉날쭉했다. 상·하위 모두 4px 로 맞춘다. */
+ul.sidebar-menu li,
+ul.sidebar-menu li.sub-menu {
+	line-height: normal;
+	margin-bottom: 4px;
+}
+
+ul.sidebar-menu li ul.sub {
+	margin: 4px 0 0;
+	padding: 0;
+}
+
+ul.sidebar-menu li ul.sub li {
+	margin: 0 0 4px;
+}
+
+ul.sidebar-menu li ul.sub li:last-child,
+#sidebar .sub-menu > .sub li:last-child {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+
 ul.sidebar-menu li a {
 	color: var(--bn-ink-2);
 	font-size: 13px;
 	font-weight: 500;
+	line-height: 19px;   /* 아이콘(15px)보다 커야 모든 줄 높이가 같아진다 */
 	padding: 11px 10px 11px 12px;
 	border-radius: var(--bn-radius);
 }
@@ -186,7 +215,18 @@ ul.sidebar-menu li ul.sub li.active a { color: var(--bn-accent-ink); }
 
 .wrapper { padding-top: 6px; }
 
-.form-panel {
+/* 화면마다 바깥 칸이 col-lg-8 / col-lg-11 / col-lg-12 로 제각각이라
+   화면을 옮길 때마다 카드 오른쪽 끝이 튀었다. 하나로 맞춘다.
+   너무 넓으면 한 줄이 길어져 읽기 나쁘므로 위쪽을 막아 둔다. */
+#main-content > .wrapper > .row > [class*="col-"] {
+	float: none;
+	width: 100%;
+	max-width: 1180px;
+}
+
+.form-panel,
+.content-panel,
+.task-panel {
 	background: var(--bn-surface);
 	border: 1px solid var(--bn-line);
 	border-radius: var(--bn-radius-lg);
@@ -196,7 +236,11 @@ ul.sidebar-menu li ul.sub li.active a { color: var(--bn-accent-ink); }
 }
 
 .form-panel > h4,
-.form-panel > h3 {
+.content-panel > h4,
+.task-panel > h4,
+.form-panel > h3,
+.content-panel > h3,
+.task-panel > h3 {
 	font-size: 15px;
 	font-weight: 700;
 	color: var(--bn-ink);
@@ -206,6 +250,8 @@ ul.sidebar-menu li ul.sub li.active a { color: var(--bn-accent-ink); }
 }
 
 .form-panel .mb { margin-bottom: 14px; }
+.content-panel .mb { margin-bottom: 14px; }
+.task-panel .mb { margin-bottom: 14px; }
 
 
 /* ── 입력칸 ─────────────────────────────────────────────────────────── */
@@ -226,9 +272,32 @@ select.form-control {
 
 textarea.form-control { height: auto; line-height: 1.6; }
 
+/* 여러 개를 고르는 목록. 위에서 준 34px 을 그대로 두면 한 줄 반만 보이고 잘린다.
+   지우기 전에 무엇이 들어 있는지 한눈에 보여야 하는 자리라 넉넉히 편다.
+   화면에서 style 로 min-height 를 따로 준 곳은 그것이 이긴다. */
+select.form-control[multiple],
+select.form-control[size] {
+	height: auto;
+	min-height: 168px;      /* 여섯 줄쯤 */
+	padding: 6px 4px;
+	line-height: 1.6;
+}
+
+select.form-control[multiple] option {
+	padding: 5px 9px;
+	border-radius: 4px;
+}
+
+select.form-control[multiple] option:checked {
+	background: var(--bn-accent-bg) linear-gradient(0deg, var(--bn-accent-bg), var(--bn-accent-bg));
+	color: var(--bn-accent-ink);
+	font-weight: 600;
+}
+
+
 .form-control:focus {
 	border-color: var(--bn-accent);
-	box-shadow: 0 0 0 3px rgba(254, 80, 0, .12);
+	box-shadow: 0 0 0 3px var(--bn-focus-ring);
 	outline: none;
 }
 
@@ -455,6 +524,57 @@ label {
 }
 
 
+/* 주된 동작 단추는 자기 칸의 오른쪽 끝에 둔다.
+   원본은 전부 왼쪽에 붙어 있어서, 긴 폼을 다 채우고 나면 눈이 왼쪽으로 되돌아가야 했다.
+
+   두 가지 모양이 있다.
+   1) 단추 하나만 들어 있는 칸 → 칸을 통째로 오른쪽 정렬한다.
+      `:only-child` 를 붙여야 설명글이 같이 딸려 오지 않는다.
+   2) 입력칸 바로 뒤에 단추가 오고 그 밑에 설명글이 붙는 칸
+      → 설명글은 그대로 두고 단추만 오른쪽으로 민다.
+   `span.btn-file` 은 button 이 아니라서 2)에 걸리지 않는다. */
+.form-panel div:has(> .btn:only-child),
+.content-panel div:has(> .btn:only-child),
+.task-panel div:has(> .btn:only-child),
+.form-panel div:has(> button.btn:only-child),
+.content-panel div:has(> button.btn:only-child),
+.task-panel div:has(> button.btn:only-child) {
+	text-align: right;
+}
+
+.form-panel .form-control + button.btn,
+.content-panel .form-control + button.btn,
+.task-panel .form-control + button.btn,
+.form-panel .help-block + button.btn,
+.content-panel .help-block + button.btn,
+.task-panel .help-block + button.btn,
+.form-panel button.btn:has(+ .help-block),
+.content-panel button.btn:has(+ .help-block),
+.task-panel button.btn:has(+ .help-block) {
+	display: block;
+	width: fit-content;
+	margin-left: auto;
+}
+
+
+/* 한 줄짜리 도구띠. 정렬처럼 옆 입력칸에 딸린 단추는 그대로 두고,
+   등록처럼 새로 만드는 단추만 오른쪽 끝으로 보낸다. */
+.form-panel form.form-inline,
+.content-panel form.form-inline,
+.task-panel form.form-inline {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-wrap: wrap;
+}
+
+.form-panel form.form-inline .form-group { margin: 0; }
+.content-panel form.form-inline .form-group { margin: 0; }
+.task-panel form.form-inline .form-group { margin: 0; }
+
+.push-right { margin-left: auto !important; }
+
+
 /* ── 표 ─────────────────────────────────────────────────────────────── */
 
 .table {
@@ -490,6 +610,20 @@ label {
 }
 
 .table-striped > tbody > tr:nth-child(odd) { background: var(--bn-surface-2); }
+
+
+/* 한글은 글자 사이 아무 데서나 줄이 바뀐다. 좁은 칸에서 '볼텍스믹서' 가
+   세로로 한 글자씩 쪼개지던 이유다. 단어 단위로만 끊는다. */
+.table td,
+.table th { word-break: keep-all; }
+
+/* 날짜·확장자처럼 짧고 쪼개지면 안 되는 값 */
+.table .nowrap { white-space: nowrap; }
+
+/* 줄마다 붙는 수정·삭제 단추. 칸이 좁으면 위아래로 접혀서 줄 높이가 들쭉날쭉해진다 */
+.table td .btn + .btn { margin-left: 4px; }
+.table td .btn-sm,
+.table td .btn-xs { white-space: nowrap; }
 
 
 /* ── 알림 딱지 ──────────────────────────────────────────────────────── */
