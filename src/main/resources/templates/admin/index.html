@@ -61,11 +61,10 @@
                                     </form>
 								</div>
 							</div>
+							<h4 class="list-count">
+								<i class="fa fa-angle-right"></i> 총 문의 : <span th:text="${clients.totalElements}"></span>건
+							</h4>
 							<table class="table table-striped table-advance table-hover">
-								<h4>
-									<i class="fa fa-angle-right"></i> 총 문의 : <span th:text="${clients.totalElements}"></span>건
-								</h4>
-								<hr>
 								<thead>
 									<tr>
 										<th><i class="fa fa-bullhorn"></i>번호</th>

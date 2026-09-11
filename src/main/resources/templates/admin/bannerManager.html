@@ -2,6 +2,86 @@
 <html lang="KO" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{fragments/admin/common :: headMenu}">
+</head>
+
+<style>
+/* 배너 목록. 색과 간격은 bion-admin.css 의 이름을 쓴다 */
+.bn-help { margin: -6px 0 12px; font-size: 12.5px; color: var(--bn-ink-3); }
+
+/* 칸 너비를 th 에 적은 대로 지킨다.
+   그냥 두면 이미지가 있는 칸이 324px 까지 퍼지고 제목이 91px 로 눌린다 */
+.bn-table { table-layout: fixed; }
+.bn-table td { vertical-align: middle; }
+
+/* 긴 글은 세 줄에서 자른다. 목록은 훑어보는 자리라 전문이 필요 없다 */
+.bn-text .ko,
+.bn-text .en {
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+/* 끌어서 순서 바꾸는 손잡이 */
+.bn-grip { color: var(--bn-ink-4); cursor: grab; text-align: center; }
+.bn-grip:active { cursor: grabbing; }
+
+.bn-index {
+	display: inline-block; min-width: 22px; padding: 2px 6px;
+	border-radius: 4px; background: var(--bn-surface-3);
+	color: var(--bn-ink-3); font-size: 11.5px; text-align: center;
+}
+
+/* 끄는 중인 줄은 흐리게. 다만 글씨는 읽을 수 있게 남긴다 */
+.bn-table tr.bn-off td:not(:last-child) { opacity: .45; }
+
+/* 한글 위, 영문 아래 */
+.bn-text .ko { color: var(--bn-ink); font-size: 13px; line-height: 1.5; }
+.bn-text .en { margin-top: 3px; color: var(--bn-ink-3); font-size: 12px; line-height: 1.5; }
+.bn-text .en.none { color: var(--bn-ink-4); font-style: normal; }
+.bn-text br { display: none; }   /* 제목에 들어 있는 줄바꿈 태그가 표를 늘린다 */
+
+.bn-thumb {
+	display: block; width: 110px; height: 62px;
+	object-fit: cover; border-radius: 5px;
+	border: 1px solid var(--bn-line); background: var(--bn-surface-2);
+}
+
+.bn-thumb.mobile { width: 62px; height: 88px; }
+
+.bn-thumb.none {
+	display: flex; align-items: center; justify-content: center;
+	font-size: 11px; color: var(--bn-ink-4);
+}
+
+.bn-period { display: flex; align-items: center; gap: 5px; }
+.bn-period input[type="date"] { flex: 1 1 92px; min-width: 88px; height: 30px; font-size: 12px; padding: 0 6px; }
+.bn-period .tilde { color: var(--bn-ink-4); }
+.bn-period .btn { flex: none; }
+
+/* 켜기/끄기 스위치 */
+.bn-switch {
+	position: relative; width: 40px; height: 22px; padding: 0;
+	border: 0; border-radius: 20px; background: var(--bn-line-2);
+	cursor: pointer; transition: background .15s ease;
+}
+
+.bn-switch.on { background: var(--bn-ok); }
+
+.bn-switch .knob {
+	position: absolute; top: 3px; left: 3px;
+	width: 16px; height: 16px; border-radius: 50%;
+	background: #fff; box-shadow: 0 1px 2px rgba(27, 34, 48, .3);
+	transition: left .15s ease;
+}
+
+.bn-switch.on .knob { left: 21px; }
+
+.bn-none { padding: 26px 0; text-align: center; color: var(--bn-ink-4); }
+
+/* 끄는 동안 자리 잡아 주는 빈 줄 */
+.bn-placeholder { height: 70px; background: var(--bn-accent-bg); }
+</style>
 
 <body>
 	<section id="container">
@@ -117,115 +197,119 @@
 				</div>
 				<div class="row mt">
 					<div class="col-md-8">
-						<section class="task-panel tasks-widget">
-							<div class="panel-heading">
-								<div class="pull-left">
-									<h5>
-										<i class="fa fa-tasks"></i> 바이온라이프사이언스 - 메인 배너관리
-									</h5>
-								</div>
-								<br>
-							</div>
-							<div class="panel-body">
-								<div class="task-content">
-									<ul class="task-list">
-										<li th:each="b:${banners}">
-											<div class="task-title">
-												<div class="admin-banner-wrap">
-													<div>배너정렬 순서 : <span th:text="${b.bannerIndex}"></span></div>
-													<h3 th:utext="${b.subject}">제목영역</h3>
-													<p th:utext="${b.content}">컨텐츠 영역</p>
-													<div class="pull-right hidden-phone">
-														
-														<button class="btn btn-primary btn-xs" th:onclick="|openBannerEditModal('${b.id}')|">
-														    <i class="fa fa-pencil"></i>
-														  </button>
-													
-														<button class="btn btn-danger btn-xs" th:onclick="|deleteBanner('${b.id}')|">
-															<i class="fa fa-trash-o "></i>
-														</button>
-													</div>
-												</div>
-												<!-- <div class="admin-banner-image row">
-													<img width="150px" th:src="${b.webroad}">
-													<img width="150px" th:src="${b.mobileroad}">
-												</div> -->
-												
-												<div class="admin-banner-image row" style="display:flex; gap:12px; align-items:flex-start; flex-wrap:wrap;">
-												  <!-- Web -->
-												  <div>
-												    <!-- 이미지 -->
-												    <img th:if="${!#strings.isEmpty(b.webroad) and (
-												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.jpg') or
-												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.jpeg') or
-												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.png') or
-												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.gif') or
-												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.webp')
-												              )}"
-												     th:src="${b.webroad + '?v=' + timestamp}"
-												     width="150"
-												     alt="web banner"
-												     style="border-radius:6px;display:block;height:auto;object-fit:cover;background:#f8f8f8;" />
-												
-												    <!-- 동영상 -->
-												    <video
-												      th:if="${!#strings.isEmpty(b.webroad) and (
-												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4') or
-												                #strings.endsWith(#strings.toLowerCase(b.webroad), '.mov')
-												              )}"
-												      width="150"
-												      autoplay
-												      loop
-												      muted
-												      playsinline
-												      preload="auto"
-												      poster="/administration/img/instagram.jpg"
-												      style="display:block;height:auto;border-radius:6px;overflow:hidden;">
-												      <source th:src="${b.webroad}" type="video/mp4" />
-												    </video>
-												  </div>
-												
-												  <!-- Mobile -->
-												  <div>
-												    <!-- 이미지 -->
-												    <img th:if="${!#strings.isEmpty(b.mobileroad) and (
-												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.jpg') or
-												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.jpeg') or
-												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.png') or
-												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.gif') or
-												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.webp')
-												              )}"
-												     th:src="${b.mobileroad + '?v=' + timestamp}"
-												     width="150"
-												     alt="mobile banner"
-												     style="border-radius:6px;display:block;height:auto;object-fit:cover;background:#f8f8f8;" />
-												
-												    <!-- 동영상 -->
-												    <video
-												      th:if="${!#strings.isEmpty(b.mobileroad) and (
-												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4') or
-												                #strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mov')
-												              )}"
-												      width="150"
-												      autoplay
-												      loop
-												      muted
-												      playsinline
-												      preload="auto"
-												      poster="/administration/img/instagram.jpg"
-												      style="display:block;height:auto;border-radius:6px;overflow:hidden;">
-												      <source th:src="${b.mobileroad}" type="video/mp4" />
-												    </video>
-												  </div>
-												</div>
-												
-												
-											</div>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</section>
+						<div class="content-panel">
+							<h5><i class="fa fa-tasks"></i> 바이온라이프사이언스 - 메인 배너관리</h5>
+							<p class="bn-help">
+								줄 맨 앞을 잡고 끌어서 순서를 바꾼다. 놓는 순간 저장된다.
+								꺼져 있거나 기간이 지난 배너는 메인에 나가지 않는다.
+							</p>
+
+							<table class="table table-hover bn-table">
+								<thead>
+									<tr>
+										<th style="width:42px;"></th>
+										<th style="width:56px;">순서</th>
+										<th>배너 제목</th>
+										<th>배너 내용</th>
+										<th style="width:124px;">PC 배너</th>
+										<th style="width:82px;">모바일 배너</th>
+										<th style="width:246px;">노출 기간</th>
+										<th style="width:78px;">사용</th>
+										<th style="width:96px;">관리</th>
+									</tr>
+								</thead>
+								<tbody id="bannerRows">
+									<tr th:each="b:${banners}" th:data-id="${b.id}"
+										th:classappend="${b.on} ? '' : 'bn-off'">
+
+										<td class="bn-grip" title="끌어서 순서 바꾸기"><i class="fa fa-bars"></i></td>
+
+										<td><span class="bn-index" th:text="${b.bannerIndex}">1</span></td>
+
+										<!-- 제목: 한글 위, 영문 아래 -->
+										<td class="bn-text">
+											<span class="ko" th:utext="${b.subject}">제목</span>
+											<span class="en" th:if="${!b.missingSubjectEn}" th:utext="${b.subjectEn}">English</span>
+											<span class="en none" th:if="${b.missingSubjectEn}">영문 없음</span>
+										</td>
+
+										<!-- 내용: 한글 위, 영문 아래 -->
+										<td class="bn-text">
+											<span class="ko" th:utext="${b.content}">내용</span>
+											<span class="en" th:if="${!b.missingContentEn}" th:utext="${b.contentEn}">English</span>
+											<span class="en none" th:if="${b.missingContentEn}">영문 없음</span>
+										</td>
+
+										<!-- PC 배너 -->
+										<td>
+											<img class="bn-thumb"
+												th:if="${!#strings.isEmpty(b.webroad) and !(
+															#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4') or
+															#strings.endsWith(#strings.toLowerCase(b.webroad), '.mov'))}"
+												th:src="${b.webroad + '?v=' + timestamp}" alt="PC 배너">
+											<video class="bn-thumb" muted loop autoplay playsinline preload="metadata"
+												th:if="${!#strings.isEmpty(b.webroad) and (
+															#strings.endsWith(#strings.toLowerCase(b.webroad), '.mp4') or
+															#strings.endsWith(#strings.toLowerCase(b.webroad), '.mov'))}">
+												<source th:src="${b.webroad}" type="video/mp4">
+											</video>
+											<span class="bn-thumb none" th:if="${#strings.isEmpty(b.webroad)}">없음</span>
+										</td>
+
+										<!-- 모바일 배너 -->
+										<td>
+											<img class="bn-thumb mobile"
+												th:if="${!#strings.isEmpty(b.mobileroad) and !(
+															#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4') or
+															#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mov'))}"
+												th:src="${b.mobileroad + '?v=' + timestamp}" alt="모바일 배너">
+											<video class="bn-thumb mobile" muted loop autoplay playsinline preload="metadata"
+												th:if="${!#strings.isEmpty(b.mobileroad) and (
+															#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mp4') or
+															#strings.endsWith(#strings.toLowerCase(b.mobileroad), '.mov'))}">
+												<source th:src="${b.mobileroad}" type="video/mp4">
+											</video>
+											<span class="bn-thumb mobile none" th:if="${#strings.isEmpty(b.mobileroad)}">없음</span>
+										</td>
+
+										<!-- 노출 기간. 비우고 저장하면 제한이 없어진다 -->
+										<td>
+											<form method="post" th:action="@{/admin/bannerPeriod/{id}(id=${b.id})}" class="bn-period">
+												<input type="date" name="startDate" th:value="${b.startDate}">
+												<span class="tilde">~</span>
+												<input type="date" name="endDate" th:value="${b.endDate}">
+												<button type="submit" class="btn btn-default btn-xs">저장</button>
+											</form>
+										</td>
+
+										<!-- 사용 여부 -->
+										<td>
+											<form method="post" th:action="@{/admin/bannerUse/{id}(id=${b.id})}">
+												<input type="hidden" name="on" th:value="${!b.on}">
+												<button type="submit" class="bn-switch"
+													th:classappend="${b.on} ? 'on' : ''"
+													th:title="${b.on} ? '누르면 끈다' : '누르면 켠다'">
+													<span class="knob"></span>
+												</button>
+											</form>
+										</td>
+
+										<td>
+											<button class="btn btn-primary btn-xs" th:onclick="|openBannerEditModal('${b.id}')|">
+												<i class="fa fa-pencil"></i> 수정
+											</button>
+											<button class="btn btn-danger btn-xs" th:onclick="|deleteBanner('${b.id}')|">
+												<i class="fa fa-trash-o"></i>
+											</button>
+										</td>
+									</tr>
+
+									<tr th:if="${#lists.isEmpty(banners)}">
+										<td colspan="9" class="bn-none">등록된 배너가 없다.</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</section>
@@ -416,6 +500,42 @@
 	
 	 
 	</script>
+<script>
+$(function () {
+	// 줄을 끌어서 순서를 바꾼다. 손잡이를 잡아야만 끌린다.
+	// 표 전체를 잡히게 하면 날짜 칸을 누르다가도 끌려서 못 쓴다.
+	$('#bannerRows').sortable({
+		handle: '.bn-grip',
+		axis: 'y',
+		placeholder: 'bn-placeholder',
+		helper: function (e, tr) {
+			// 끌 때 칸 너비가 무너지지 않게 원래 너비를 박아 둔다
+			var originals = tr.children();
+			var helper = tr.clone();
+			helper.children().each(function (i) { $(this).width(originals.eq(i).width()); });
+			return helper;
+		},
+		update: function () {
+			var ids = $('#bannerRows tr[data-id]').map(function () {
+				return $(this).data('id');
+			}).get();
+
+			$.post('/admin/bannerOrder', { ids: ids })
+				.done(function () {
+					// 화면의 순서 번호도 다시 매긴다. 새로고침하지 않아도 맞게 보인다
+					$('#bannerRows tr[data-id] .bn-index').each(function (i) {
+						$(this).text(i + 1);
+					});
+				})
+				.fail(function () {
+					alert('순서를 저장하지 못했다. 새로고침하고 다시 해 주세요.');
+					location.reload();
+				});
+		}
+	});
+});
+</script>
+
 </body>
 
 </html>

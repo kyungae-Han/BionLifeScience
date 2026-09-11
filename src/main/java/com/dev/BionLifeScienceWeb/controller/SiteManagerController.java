@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dev.BionLifeScienceWeb.model.Banner;
 import com.dev.BionLifeScienceWeb.model.Event;
@@ -53,7 +54,9 @@ public class SiteManagerController {
 	        }
 	    }
 		
-		model.addAttribute("banners", bannerRepository.findAll());
+		// 위에서 정렬해 둔 목록을 그대로 넘긴다.
+		// findAll() 을 넘기고 있어서 관리 화면만 순서가 뒤죽박죽이었다
+		model.addAttribute("banners", banners);
 		model.addAttribute("timestamp", System.currentTimeMillis());
 		return "admin/bannerManager";
 	}
@@ -144,6 +147,66 @@ public class SiteManagerController {
 	    }
 	}
 	
+	/** 줄에서 바로 고치는 노출 기간 */
+	@PostMapping("/bannerPeriod/{id}")
+	public String bannerPeriod(@PathVariable Long id,
+			@RequestParam(value = "startDate", required = false) String startDate,
+			@RequestParam(value = "endDate", required = false) String endDate,
+			RedirectAttributes redirectAttributes) {
+
+		bannerRepository.findById(id).ifPresent(b -> {
+			b.setStartDate(parseDate(startDate));
+			b.setEndDate(parseDate(endDate));
+			bannerRepository.save(b);
+		});
+		redirectAttributes.addFlashAttribute("message", "노출 기간을 저장했습니다.");
+		return "redirect:/admin/bannerManager";
+	}
+
+	/** 줄에서 바로 켜고 끄기 */
+	@PostMapping("/bannerUse/{id}")
+	public String bannerUse(@PathVariable Long id,
+			@RequestParam("on") boolean on,
+			RedirectAttributes redirectAttributes) {
+
+		bannerRepository.findById(id).ifPresent(b -> {
+			b.setUseYn(on);
+			bannerRepository.save(b);
+		});
+		redirectAttributes.addFlashAttribute("message", on ? "배너를 켰습니다." : "배너를 껐습니다.");
+		return "redirect:/admin/bannerManager";
+	}
+
+	/**
+	 * 끌어서 바꾼 순서를 저장한다.
+	 * 화면이 보낸 차례대로 1 부터 다시 매긴다. 중간에 빠진 번호가 생기지 않는다.
+	 */
+	@PostMapping("/bannerOrder")
+	@ResponseBody
+	public String bannerOrder(@RequestParam("ids") List<Long> ids) {
+		int index = 1;
+		for (Long id : ids) {
+			Banner banner = bannerRepository.findById(id).orElse(null);
+			if (banner != null) {
+				banner.setBannerIndex(index++);
+				bannerRepository.save(banner);
+			}
+		}
+		return "ok";
+	}
+
+	/** 빈 칸은 null 로 둔다. 화면에서 지우면 기간 제한이 없어진다 */
+	private static java.time.LocalDate parseDate(String value) {
+		if (value == null || value.isBlank()) {
+			return null;
+		}
+		try {
+			return java.time.LocalDate.parse(value.trim());
+		} catch (RuntimeException e) {
+			return null;
+		}
+	}
+
 	@GetMapping("/eventManager")
 	public String eventManager(
 			Model model

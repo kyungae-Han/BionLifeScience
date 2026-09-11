@@ -101,7 +101,13 @@ public class HomeController {
 		 Model model
 			) {
 		
-		List<Banner> banners = bannerRepository.findAllByOrderByBannerIndexAscIdDesc();
+		// 꺼져 있거나 기간이 지난 배너는 메인에 내보내지 않는다.
+		// 사용 여부가 비어 있는 옛 줄은 켜진 것으로 본다
+		java.time.LocalDate today = java.time.LocalDate.now();
+		List<Banner> banners = bannerRepository.findAllByOrderByBannerIndexAscIdDesc()
+				.stream()
+				.filter(b -> b.isVisibleOn(today))
+				.collect(Collectors.toList());
 		
 		for (Banner b : banners) {
 	        if (b.getWebroad() != null) {
