@@ -35,7 +35,10 @@
 
 <body>
 	<section id="container">
-		<th:block th:fragment="headMenu">
+		<!-- 상단바. 이름이 <head> 조각과 같은 headMenu 였다.
+		     타임리프는 같은 이름을 가진 조각을 전부 찾아 넣기 때문에,
+		     화면마다 <head> 와 상단바가 두 번씩 나왔다. 스타일시트도 두 번 받았다. -->
+		<th:block th:fragment="topBar">
 			<header class="header black-bg">
 				<div class="sidebar-toggle-box">
 					<div class="fa fa-bars tooltips" data-placement="right"
@@ -86,13 +89,14 @@
 								<li><a href="/admin/brandProductManager">제품관리</a></li>
 							</ul>
 						</li>
-						<li class="sub-menu"><a th:classappend="${code} == 'site' ? 'active' : ''"  href="javascript:;"> <i
+						<li class="sub-menu"><a th:classappend="${code} == 'site' or ${code} == 'popup' ? 'active' : ''"  href="javascript:;"> <i
 								class="fa fa-camera"></i> <span>사이트관리</span>
 						</a>
 							<ul class="sub">
 								<li><a href="/admin/bannerManager">메인 배너 관리</a></li>
 								<li><a href="/admin/eventManager">이벤트 배너 관리</a></li>
 								<li><a href="/admin/pageManager">이벤트 페이지 관리</a></li>
+								<li><a href="/admin/popupManager">팝업 관리</a></li>
 							</ul>
 						</li>
 						<li><a th:classappend="${code} == 'certification' ? 'active' : ''"  href="/admin/certificationManager"> <i

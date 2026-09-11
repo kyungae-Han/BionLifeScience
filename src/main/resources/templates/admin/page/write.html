@@ -9,7 +9,7 @@
 <body>
 	<section id="container">
 
-		<th:block th:replace="~{fragments/admin/common :: headMenu}"></th:block>
+		<th:block th:replace="~{fragments/admin/common :: topBar}"></th:block>
 
 		<th:block th:replace="~{fragments/admin/common :: sideMenu('pageManager')}"></th:block>
 
@@ -190,21 +190,7 @@
 	<script src="/administration/lib/jquery-ui-1.9.2.custom.min.js"></script>
 	<script type="text/javascript"
 		src="/administration/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>
-	<script type="text/javascript"
-		src="/administration/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-	<script type="text/javascript"
-		src="/administration/lib/bootstrap-daterangepicker/date.js"></script>
-	<script type="text/javascript"
-		src="/administration/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
-	<script type="text/javascript"
-		src="/administration/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
-	<script type="text/javascript"
-		src="/administration/lib/bootstrap-daterangepicker/moment.min.js"></script>
-	<script type="text/javascript"
-		src="/administration/lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
-	<script src="/administration/lib/advanced-form-components.js"></script>
-	
-	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
 	<script th:src="@{/administration/lib/summernote-common.js}"></script>
 	
 	<script>

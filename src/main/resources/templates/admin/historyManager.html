@@ -5,11 +5,11 @@
 
 
 </head>
-</head>
+
 
 <body>
 	<section id="container">
-		<th:block th:replace="~{fragments/admin/common :: headMenu}"></th:block>
+		<th:block th:replace="~{fragments/admin/common :: topBar}"></th:block>
 		<th:block th:replace="~{fragments/admin/common :: sideMenu('history')}"></th:block>
 		<section id="main-content">
 			<section class="wrapper">
@@ -67,10 +67,8 @@
 													연혁 내용을 입력 하세요</span>
 											</div>
 											<div class="col-md-4 col-xs-11">
-												<div class="input-append date dpYears">
-													<input type="date" size="16" th:id="|content-date-${list.id}|"
-														class="form-control">
-												</div>
+												<input type="date" th:id="|content-date-${list.id}|"
+													class="form-control">
 												<span class="help-block"># 연혁에 해당하는 날을 입력 하세요</span>
 											</div>
 											<div class="col-md-3" style="padding-left: 5px;display:flex;">

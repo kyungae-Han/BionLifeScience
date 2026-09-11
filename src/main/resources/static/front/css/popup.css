@@ -1,0 +1,181 @@
+/* =====================================================================
+   메인 팝업. 2026-09-11
+
+   창은 하나고 그 안에서 이미지가 넘어간다. 아래에 '오늘 하루 열지 않기 | 닫기'
+   줄이 고정으로 붙는다.
+
+   뜨는 자리는 관리자가 정한다. 화면이 좁아지면 좌표를 버리고 아래 가운데로
+   내린다. 휴대폰에서 좌표를 그대로 쓰면 팝업이 화면 밖으로 나간다.
+   ===================================================================== */
+
+.bion-popup {
+	position: fixed;
+	z-index: 9000;
+	max-width: calc(100vw - 32px);
+	background: #fff;
+	border-radius: 14px;
+	overflow: hidden;
+	box-shadow: 0 18px 50px rgba(10, 32, 54, .28);
+	font-family: inherit;
+}
+
+/* 뜨는 자리. --pop-x, --pop-y 는 서버가 넣는다 */
+.bion-popup.top-left     { top: var(--pop-y); left: var(--pop-x); }
+.bion-popup.top-right    { top: var(--pop-y); right: var(--pop-x); }
+.bion-popup.bottom-left  { bottom: var(--pop-y); left: var(--pop-x); }
+.bion-popup.bottom-right { bottom: var(--pop-y); right: var(--pop-x); }
+
+.bion-popup.center {
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+/* ── 들어오는 움직임 ──────────────────────────────────────────────
+   방향은 뜨는 자리를 따라간다. 오른쪽에 뜨면 오른쪽 밖에서 밀려 들어오고,
+   왼쪽이면 왼쪽에서, 가운데면 아래에서 올라온다.
+   --pop-dur 은 관리자가 고른 속도다. 0 이면 서버가 is-in 을 처음부터 붙여 준다.
+
+   .is-in 이 붙으면 제자리로 간다. JS 가 한 프레임 뒤에 붙인다.
+   한 프레임을 기다려야 브라우저가 시작 자리를 먼저 그린다. */
+
+.bion-popup {
+	transition:
+		transform var(--pop-dur, 450ms) cubic-bezier(.22, .61, .36, 1),
+		opacity var(--pop-dur, 450ms) ease;
+}
+
+.bion-popup:not(.is-in) { opacity: 0; }
+
+/* 오른쪽에 뜨는 것은 오른쪽 화면 밖에서 */
+.bion-popup.top-right:not(.is-in),
+.bion-popup.bottom-right:not(.is-in) {
+	transform: translateX(calc(100% + var(--pop-x, 40px)));
+}
+
+/* 왼쪽에 뜨는 것은 왼쪽 화면 밖에서 */
+.bion-popup.top-left:not(.is-in),
+.bion-popup.bottom-left:not(.is-in) {
+	transform: translateX(calc(-100% - var(--pop-x, 40px)));
+}
+
+/* 가운데는 아래에서 위로. 가운데는 원래 transform 으로 자리를 잡고 있어서
+   그 값을 그대로 두고 세로만 밀어 둔다 */
+.bion-popup.center:not(.is-in) {
+	transform: translate(-50%, calc(-50% + 56px));
+}
+
+/* ── 이미지가 넘어가는 칸 ─────────────────────────────────────────── */
+
+.bion-popup-stage {
+	position: relative;
+	display: block;
+	line-height: 0;
+}
+
+.bion-popup-stage > a,
+.bion-popup-stage > span {
+	display: block;
+	line-height: 0;
+}
+
+.bion-popup-slide {
+	display: none;
+	width: 100%;
+	height: auto;
+}
+
+.bion-popup-slide.on { display: block; }
+
+/* 몇 번째인지 알리는 점. 한 장뿐이면 서버가 아예 안 그린다 */
+.bion-popup-dots {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 10px;
+	display: flex;
+	justify-content: center;
+	gap: 6px;
+	line-height: 1;
+}
+
+.bion-popup-dot {
+	width: 7px;
+	height: 7px;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, .55);
+	box-shadow: 0 0 0 1px rgba(10, 32, 54, .18);
+	cursor: pointer;
+}
+
+.bion-popup-dot.on { background: #fff; }
+
+/* ── 아래 고정 줄 ─────────────────────────────────────────────────── */
+
+.bion-popup-foot {
+	display: flex;
+	align-items: stretch;
+	border-top: 1px solid #e8eaee;
+	background: #fff;
+}
+
+.bion-popup-foot button {
+	flex: 1 1 50%;
+	padding: 14px 10px;
+	border: 0;
+	background: transparent;
+	color: #3c4452;
+	font-size: 13px;
+	font-family: inherit;
+	cursor: pointer;
+}
+
+.bion-popup-foot button:hover { background: #f5f6f8; }
+
+/* 두 칸을 가르는 선 */
+.bion-popup-foot button + button { border-left: 1px solid #e8eaee; }
+
+.bion-popup-foot .bion-popup-close { font-weight: 700; color: #0e2a5a; }
+
+/* ── 좁은 화면 ────────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+	.bion-popup,
+	.bion-popup.center {
+		top: auto;
+		right: auto;
+		bottom: 16px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: calc(100vw - 32px);
+		max-width: 420px;
+	}
+
+	/* 좁은 화면에서는 어디에 뜨기로 했든 아래에서 올라온다.
+	   가로로 밀어 넣으면 화면 밖으로 나가 가로 스크롤이 생긴다.
+	   위쪽 자리별 규칙과 세기를 맞춰야 이긴다 */
+	.bion-popup.top-left:not(.is-in),
+	.bion-popup.top-right:not(.is-in),
+	.bion-popup.bottom-left:not(.is-in),
+	.bion-popup.bottom-right:not(.is-in),
+	.bion-popup.center:not(.is-in) {
+		transform: translate(-50%, 28px);
+	}
+}
+
+/* 움직임을 줄여 달라고 한 사람에게는 넘기지 않는다. JS 가 이 값을 본다 */
+@media (prefers-reduced-motion: reduce) {
+	.bion-popup-slide { transition: none !important; }
+
+	/* 움직임을 줄여 달라고 한 사람에게는 미끄러뜨리지 않는다.
+	   자리별 시작 위치도 지워야 제자리에 바로 뜬다 */
+	.bion-popup { transition: none !important; }
+	.bion-popup:not(.is-in) { opacity: 1; }
+	.bion-popup.top-left:not(.is-in),
+	.bion-popup.top-right:not(.is-in),
+	.bion-popup.bottom-left:not(.is-in),
+	.bion-popup.bottom-right:not(.is-in) { transform: none; }
+	.bion-popup.center:not(.is-in) { transform: translate(-50%, -50%); }
+}

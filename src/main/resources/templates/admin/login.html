@@ -28,7 +28,47 @@
         /* 로고가 위로 올라온 만큼 폼의 여백을 줄인다 */
         #login-page .form-login {
             margin-top: 28px;
+            border-radius: var(--bn-radius-lg);
+            overflow: hidden;
+            box-shadow: 0 18px 40px rgba(7, 23, 38, .35);
         }
+
+        /* 제목띠. 템플릿에 딸려 온 청록 대신 회사 남색을 쓴다 */
+        #login-page .form-login h2.form-login-heading {
+            background: var(--bn-accent);
+            border-radius: 0;
+            padding: 20px;
+            font-size: 17px;
+            font-weight: 700;
+            letter-spacing: -.2px;
+            text-transform: none;
+        }
+
+        /* 줄 간격은 <br> 과 빈 label 이 아니라 여기서 준다.
+           <br> 은 글꼴 크기를 따라가서 자리마다 높이가 달랐다. */
+        #login-page .login-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: var(--bn-gap-3);
+            padding: var(--bn-gap-5);
+        }
+
+        #login-page .login-wrap .form-control { height: 42px; }
+
+        #login-page .login-wrap .btn-block {
+            height: 42px;
+            margin-top: var(--bn-gap-1);
+        }
+
+        /* 잘못 입력했을 때 나오는 줄. 단추 바로 밑에 붙여 눈이 안 흩어지게 한다 */
+        #login-page .login-wrap .alert {
+            margin: 0;
+            padding: 10px 12px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        #login-page .login-wrap .alert p { margin: 0; }
     </style>
 
     <div id="login-page">
@@ -40,13 +80,8 @@
                 <h2 class="form-login-heading">관리자로그인</h2>
                 <div class="login-wrap">
                     <input type="text" name="username" class="form-control" required="required" placeholder="아이디를 입력 해 주세요." autofocus>
-                    <br>
                     <input type="password" class="form-control" name="password" required="required" placeholder="비밀번호를 입력 해 주세요.">
-                    <label class="checkbox" style="margin-left:20px;">
-
-                    </label>
                     <button class="btn btn-theme btn-block" type="submit"><i class="fa fa-lock"></i>로그인</button>
-                    <hr>
                     <div class="alert alert-danger" role="alert" th:if="${param.error}">
 			    		<p th:text="${param.exception}"># 없는 계정 입니다.</p>
 			        </div>

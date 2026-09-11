@@ -5,7 +5,7 @@
 
 
 </head>
-</head>
+
 
 <style>
 /* 인증서 목록. 예전에는 한 건이 화면 한 폭을 차지해서 몇 개 있는지도 안 보였다.
@@ -22,7 +22,7 @@
 
 <body>
 	<section id="container">
-		<th:block th:replace="~{fragments/admin/common :: headMenu}"></th:block>
+		<th:block th:replace="~{fragments/admin/common :: topBar}"></th:block>
 		<th:block th:replace="~{fragments/admin/common :: sideMenu('certification')}"></th:block>
 		<section id="main-content">
 			<section class="wrapper">
@@ -129,20 +129,7 @@
 	<script src="/administration/lib/jquery-ui-1.9.2.custom.min.js"></script>
 	<script type="text/javascript"
 		src="/administration/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>
-	<script type="text/javascript"
-		src="/administration/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-	<script type="text/javascript"
-		src="/administration/lib/bootstrap-daterangepicker/date.js"></script>
-	<script type="text/javascript"
-		src="/administration/lib/bootstrap-daterangepicker/daterangepicker.js"></script>
-	<script type="text/javascript"
-		src="/administration/lib/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
-	<script type="text/javascript"
-		src="/administration/lib/bootstrap-daterangepicker/moment.min.js"></script>
-	<script type="text/javascript"
-		src="/administration/lib/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
-	<script src="/administration/lib/advanced-form-components.js"></script>
-	<script>
+<script>
 	$(function(){
 		
 		$("#file").on('change', function (e) {

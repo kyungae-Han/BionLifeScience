@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/admin/common :: headMenu}">
+</head>
+
+<style>
+/* 팝업 관리. 색과 간격은 bion-admin.css 의 이름을 쓴다 */
+.pop-row { display: flex; align-items: center; gap: var(--bn-gap-3); }
+.pop-row .form-control { margin-bottom: 0; }
+
+.pop-on  { color: var(--bn-ok); font-weight: 700; }
+.pop-off { color: var(--bn-ink-4); }
+
+/* 뜨는 자리를 글이 아니라 그림으로 고른다 */
+.pop-anchor-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(3, 30px);
+	gap: 4px;
+	width: 150px;
+	padding: 6px;
+	border: 1px solid var(--bn-line);
+	border-radius: var(--bn-radius);
+	background: var(--bn-surface-2);
+}
+
+.pop-anchor-grid label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0;
+	border: 1px dashed var(--bn-line-2);
+	border-radius: 4px;
+	background: var(--bn-surface);
+	cursor: pointer;
+	font-size: 10px;
+	color: var(--bn-ink-4);
+}
+
+.pop-anchor-grid label.empty { border: 0; background: transparent; cursor: default; }
+.pop-anchor-grid input { position: absolute; opacity: 0; pointer-events: none; }
+
+.pop-anchor-grid input:checked + span {
+	position: absolute;
+	inset: 0;
+	border-radius: 4px;
+	background: var(--bn-accent);
+}
+
+.pop-anchor-grid label { position: relative; }
+.pop-anchor-grid label > span { position: absolute; inset: 0; border-radius: 4px; }
+
+/* 올린 이미지 줄 */
+.pop-img {
+	display: flex;
+	align-items: center;
+	gap: var(--bn-gap-3);
+	padding: var(--bn-gap-2) 0;
+	border-bottom: 1px solid var(--bn-line-3);
+}
+
+.pop-img:last-child { border-bottom: 0; }
+
+.pop-thumb {
+	width: 64px;
+	height: 64px;
+	object-fit: contain;
+	border: 1px solid var(--bn-line);
+	border-radius: 4px;
+	background: var(--bn-surface-2);
+	flex: none;
+}
+
+.pop-thumb.none {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 10px;
+	color: var(--bn-ink-4);
+}
+
+.pop-img-meta { flex: 1 1 auto; min-width: 0; font-size: 12px; color: var(--bn-ink-3); }
+.pop-img-meta b { display: block; color: var(--bn-ink-2); font-size: 12.5px; }
+
+.pop-none { padding: 22px 0; text-align: center; color: var(--bn-ink-4); font-size: 13px; }
+
+/* 새로 올릴 줄 */
+.pop-upload-row {
+	display: flex;
+	gap: var(--bn-gap-2);
+	align-items: center;
+	margin-bottom: var(--bn-gap-2);
+}
+
+.pop-upload-row > label { flex: 0 0 42px; margin: 0; font-size: 11.5px; color: var(--bn-ink-3); }
+.pop-upload-row > input { flex: 1 1 auto; min-width: 0; }
+</style>
+
+<body>
+	<section id="container">
+
+		<th:block th:replace="~{fragments/admin/common :: topBar}"></th:block>
+		<th:block th:replace="~{fragments/admin/common :: sideMenu('popup')}"></th:block>
+
+		<section id="main-content">
+			<section class="wrapper">
+				<div class="row mt">
+					<div class="col-lg-12">
+						<h4><i class="fa fa-clone"></i> 팝업 관리</h4>
+						<p style="color:#8a92a0; font-size:12.5px; margin:-4px 0 12px;">
+							메인 화면에 뜨는 팝업이다. 창은 하나고 그 안에서 이미지가 넘어간다.
+							켤 수 있는 팝업은 한 번에 하나다. 새로 켜면 앞의 것은 자동으로 꺼진다.
+						</p>
+
+						<div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+
+						<div class="split-wrap">
+
+							<!-- ── 왼쪽: 등록된 팝업 ───────────────────────── -->
+							<div class="split-list">
+								<div class="content-panel">
+									<h5><i class="fa fa-list"></i> 등록된 팝업</h5>
+									<table class="table table-hover">
+										<thead>
+											<tr>
+												<th style="width:64px;">상태</th>
+												<th>이름</th>
+												<th style="width:160px;">노출 기간</th>
+												<th style="width:64px;">이미지</th>
+												<th style="width:150px;">관리</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="p : ${popups}" th:classappend="${p.id == popup.id} ? 'brand-highlight' : ''">
+												<td>
+													<span th:if="${p.useYn}" class="pop-on">켜짐</span>
+													<span th:unless="${p.useYn}" class="pop-off">꺼짐</span>
+												</td>
+												<td>
+													<a th:href="@{/admin/popupManager(id=${p.id})}" th:text="${p.subject}">팝업 이름</a>
+												</td>
+												<td style="font-size:12px;">
+													<span th:text="${p.startDate} ?: '제한 없음'">2026-09-11</span>
+													<span th:if="${p.endDate}" th:text="'~ ' + ${p.endDate}"></span>
+												</td>
+												<td th:text="${#lists.size(p.images)} + '장'">0장</td>
+												<td>
+													<form method="post" th:action="@{/admin/popupUse/{id}(id=${p.id})}" style="display:inline;">
+														<input type="hidden" name="on" th:value="${!p.useYn}">
+														<button type="submit" class="btn btn-xs"
+															th:classappend="${p.useYn} ? 'btn-default' : 'btn-theme'"
+															th:text="${p.useYn} ? '끄기' : '켜기'">켜기</button>
+													</form>
+													<button type="button" class="btn btn-danger btn-xs"
+														th:onclick="|deletePopup(${p.id})|">
+														<i class="fa fa-trash-o"></i> 삭제
+													</button>
+												</td>
+											</tr>
+											<tr th:if="${#lists.isEmpty(popups)}">
+												<td colspan="5" class="pop-none">등록된 팝업이 없다.</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+							<!-- ── 오른쪽: 등록·수정 ───────────────────────── -->
+							<div class="split-form">
+								<div class="form-panel">
+									<h5>
+										<i class="fa fa-pencil"></i>
+										<span th:text="${popup.id} != null ? '팝업 수정' : '팝업 등록'">팝업 등록</span>
+									</h5>
+
+									<form class="form-horizontal style-form" method="post"
+										th:action="@{/admin/popupSave}" enctype="multipart/form-data">
+
+										<input type="hidden" name="id" th:value="${popup.id}">
+
+										<div class="form-group">
+											<label class="col-lg-2 control-label">이름</label>
+											<div class="col-lg-10">
+												<input type="text" class="form-control" name="subject" required
+													th:value="${popup.subject}" placeholder="예) 2026 추석 휴무 안내">
+												<span class="help-block"># 관리자만 보는 이름이다. 화면에는 안 나간다.</span>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="col-lg-2 control-label">이동 주소</label>
+											<div class="col-lg-10">
+												<input type="text" class="form-control" name="linkUrl"
+													th:value="${popup.linkUrl}" placeholder="https://example.com (선택)">
+												<label style="font-weight:400; font-size:12px;">
+													<input type="checkbox" name="linkNewWindow" value="true"
+														th:checked="${popup.linkNewWindow}"> 새 창으로 열기
+												</label>
+												<span class="help-block"># 비우면 이미지를 눌러도 아무 일도 일어나지 않는다.</span>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="col-lg-2 control-label">노출 기간</label>
+											<div class="col-lg-10">
+												<div class="pop-row">
+													<input type="date" class="form-control" name="startDate"
+														th:value="${popup.startDate}">
+													<span style="color:#9aa1ad;">~</span>
+													<input type="date" class="form-control" name="endDate"
+														th:value="${popup.endDate}">
+												</div>
+												<span class="help-block"># 비우면 기간 제한 없이 뜬다.</span>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="col-lg-2 control-label">뜨는 자리</label>
+											<div class="col-lg-10">
+												<div class="pop-anchor-grid">
+													<label><input type="radio" name="anchor" value="TOP_LEFT"
+														th:checked="${popup.anchor == 'TOP_LEFT'}"><span></span></label>
+													<label class="empty"></label>
+													<label><input type="radio" name="anchor" value="TOP_RIGHT"
+														th:checked="${popup.anchor == 'TOP_RIGHT'}"><span></span></label>
+
+													<label class="empty"></label>
+													<label><input type="radio" name="anchor" value="CENTER"
+														th:checked="${popup.anchor == 'CENTER'}"><span></span></label>
+													<label class="empty"></label>
+
+													<label><input type="radio" name="anchor" value="BOTTOM_LEFT"
+														th:checked="${popup.anchor == 'BOTTOM_LEFT'}"><span></span></label>
+													<label class="empty"></label>
+													<label><input type="radio" name="anchor" value="BOTTOM_RIGHT"
+														th:checked="${popup.anchor == null or popup.anchor == 'BOTTOM_RIGHT'}"><span></span></label>
+												</div>
+												<span class="help-block"># 화면의 어느 모서리를 기준으로 삼을지 고른다.</span>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="col-lg-2 control-label">기준점에서</label>
+											<div class="col-lg-10">
+												<div class="pop-row">
+													<input type="number" class="form-control" name="offsetX"
+														th:value="${popup.offsetX} ?: 40" placeholder="가로">
+													<input type="number" class="form-control" name="offsetY"
+														th:value="${popup.offsetY} ?: 40" placeholder="세로">
+													<select class="form-control" name="offsetUnit" style="max-width:90px;">
+														<option value="PX" th:selected="${popup.offsetUnit != 'PERCENT'}">px</option>
+														<option value="PERCENT" th:selected="${popup.offsetUnit == 'PERCENT'}">%</option>
+													</select>
+												</div>
+												<span class="help-block"># 가로·세로 순서다. 가운데를 골랐으면 이 값은 쓰지 않는다.</span>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="col-lg-2 control-label">너비 / 넘김</label>
+											<div class="col-lg-10">
+												<div class="pop-row">
+													<input type="number" class="form-control" name="width"
+														th:value="${popup.width} ?: 380" placeholder="너비 px">
+													<input type="number" class="form-control" name="rollInterval"
+														th:value="${popup.rollInterval} ?: 4000" placeholder="넘김 간격 ms">
+												</div>
+												<span class="help-block"># 높이는 이미지 비율을 따라간다. 넘김 간격을 0 으로 두면 안 넘어간다.</span>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="col-lg-2 control-label">뜨는 속도</label>
+											<div class="col-lg-10">
+												<select class="form-control" name="animSpeed">
+													<option value="0"    th:selected="${popup.isSpeed(0)}">움직임 없음</option>
+													<option value="250"  th:selected="${popup.isSpeed(250)}">빠르게 (0.25초)</option>
+													<option value="450"  th:selected="${popup.isSpeed(450)}">보통 (0.45초)</option>
+													<option value="700"  th:selected="${popup.isSpeed(700)}">느리게 (0.7초)</option>
+													<option value="1100" th:selected="${popup.isSpeed(1100)}">아주 느리게 (1.1초)</option>
+												</select>
+												<span class="help-block"># 들어오는 방향은 위에서 고른 자리를 따라간다.</span>
+												<span class="help-block"># 오른쪽이면 오른쪽에서, 왼쪽이면 왼쪽에서, 가운데면 아래에서 올라온다.</span>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="col-lg-2 control-label">바로 켜기</label>
+											<div class="col-lg-10">
+												<label style="font-weight:400;">
+													<input type="checkbox" name="useYn" value="true"
+														th:checked="${popup.useYn}"> 저장하면서 이 팝업을 켠다
+												</label>
+												<span class="help-block"># 켜면 다른 팝업은 자동으로 꺼진다.</span>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label class="col-lg-2 control-label">이미지 추가</label>
+											<div class="col-lg-10">
+												<div id="popUploadRows">
+													<div class="pop-upload-row">
+														<label>한글</label>
+														<input type="file" class="form-control" name="koFile" accept="image/*">
+													</div>
+													<div class="pop-upload-row">
+														<label>영문</label>
+														<input type="file" class="form-control" name="enFile" accept="image/*">
+													</div>
+												</div>
+												<button type="button" class="btn btn-default btn-sm" id="popAddRow">
+													<i class="fa fa-plus"></i> 한 장 더
+												</button>
+												<span class="help-block"># 같은 순서끼리 한 줄이 된다. 한쪽만 올려도 된다.</span>
+												<span class="help-block"># 영문을 안 올리면 영문 화면에서도 한글 이미지가 나간다.</span>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<div class="col-lg-offset-2 col-lg-10">
+												<button type="submit" class="btn btn-theme">저장</button>
+											</div>
+										</div>
+									</form>
+								</div>
+
+								<!-- 이미 올라간 이미지 -->
+								<div class="form-panel" th:if="${popup.id != null}">
+									<h5><i class="fa fa-picture-o"></i> 올라간 이미지 (넘어가는 순서)</h5>
+
+									<div th:if="${#lists.isEmpty(popup.images)}" class="pop-none">
+										아직 올린 이미지가 없다. 한 장 이상 올려야 팝업이 뜬다.
+									</div>
+
+									<div class="pop-img" th:each="img, st : ${popup.images}">
+										<img class="pop-thumb" th:if="${img.road}" th:src="${img.road}" alt="한글 이미지">
+										<span class="pop-thumb none" th:unless="${img.road}">한글 없음</span>
+
+										<img class="pop-thumb" th:if="${img.roadEn}" th:src="${img.roadEn}" alt="영문 이미지">
+										<span class="pop-thumb none" th:unless="${img.roadEn}">영문 없음</span>
+
+										<span class="pop-img-meta">
+											<b th:text="${st.count} + '번째'">1번째</b>
+											<span th:text="${img.name} ?: '한글 이미지 없음'">파일명</span>
+											<span th:if="${img.missingEn}" class="label label-warning">영문 없음</span>
+										</span>
+
+										<form method="post" th:action="@{/admin/popupImageDelete/{id}(id=${img.id})}">
+											<input type="hidden" name="popupId" th:value="${popup.id}">
+											<button type="submit" class="btn btn-danger btn-xs">
+												<i class="fa fa-trash-o"></i> 삭제
+											</button>
+										</form>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+
+		<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
+	</section>
+
+<script>
+(function () {
+	// 한 번에 여러 장 올릴 수 있게 줄을 늘린다
+	document.getElementById('popAddRow').addEventListener('click', function () {
+		var box = document.getElementById('popUploadRows');
+		['한글', '영문'].forEach(function (label, i) {
+			var row = document.createElement('div');
+			row.className = 'pop-upload-row';
+			row.innerHTML = '<label>' + label + '</label>'
+				+ '<input type="file" class="form-control" name="' + (i === 0 ? 'koFile' : 'enFile') + '" accept="image/*">';
+			box.appendChild(row);
+		});
+	});
+})();
+
+function deletePopup(id) {
+	if (!confirm('이 팝업을 삭제한다. 올린 이미지도 같이 지워진다. 계속할까?')) {
+		return;
+	}
+	var form = document.createElement('form');
+	form.method = 'post';
+	form.action = '/admin/popupDelete/' + id;
+	document.body.appendChild(form);
+	form.submit();
+}
+</script>
+</body>
+</html>

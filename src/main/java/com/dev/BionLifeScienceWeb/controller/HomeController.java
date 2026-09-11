@@ -57,6 +57,7 @@ import com.dev.BionLifeScienceWeb.repository.product.BigSortRepository;
 import com.dev.BionLifeScienceWeb.repository.product.MiddleSortRepository;
 import com.dev.BionLifeScienceWeb.repository.product.ProductRepository;
 import com.dev.BionLifeScienceWeb.repository.product.SmallSortRepository;
+import com.dev.BionLifeScienceWeb.service.PopupService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -71,6 +72,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class HomeController {
 	
+	private final PopupService popupService;
 	private final HistorySubjectRepository historySubjectRepository;
 	private final HistoryContentRepository historyContentRepository;
 	private final ProductRepository productRepository;
@@ -149,6 +151,8 @@ public class HomeController {
 		model.addAttribute("ev", ev.get(0));
 		model.addAttribute("ba", banners);
 		model.addAttribute("brands",partnerBrands);
+		// 메인 팝업. 켜진 것이 없으면 null 이라 화면에서 아무것도 안 그린다
+		model.addAttribute("popup", popupService.activePopup().orElse(null));
 		
 		return "front/index";
 	}

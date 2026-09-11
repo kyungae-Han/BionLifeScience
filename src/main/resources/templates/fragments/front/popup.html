@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!--
+  메인 팝업 조각.
+
+  창은 하나고 그 안에서 이미지가 넘어간다.
+  이미지는 줄마다 한글용과 영문용이 있고, 영문이 비면 한글이 그대로 나간다
+  (@enText.pick 규칙).
+
+  popup 이 없으면 아무것도 그리지 않는다. 테이블이 아직 없는 DB 에서도
+  서비스가 빈 값을 돌려주므로 메인이 죽지 않는다.
+-->
+<th:block th:fragment="mainPopup(popup)">
+	<th:block th:if="${popup != null}">
+
+		<link rel="stylesheet" th:href="@{/front/css/popup.css}">
+
+		<div class="bion-popup"
+			th:classappend="${popup.anchorClass} + (${popup.animated} ? '' : ' is-in')"
+			th:data-popup-id="${popup.id}"
+			th:data-roll="${popup.rollInterval}"
+			th:style="'--pop-x:' + ${popup.offsetX} + ${popup.unitSuffix}
+					+ '; --pop-y:' + ${popup.offsetY} + ${popup.unitSuffix}
+					+ '; --pop-dur:' + ${popup.animSpeed} + 'ms'
+					+ '; width:' + ${popup.width} + 'px;'"
+			role="dialog"
+			aria-label="공지 팝업"
+			hidden>
+
+			<div class="bion-popup-stage">
+
+				<!-- 이동할 곳이 있으면 링크로 감싼다 -->
+				<a th:if="${popup.linkUrl != null}"
+					th:href="${popup.linkUrl}"
+					th:target="${popup.linkNewWindow} ? '_blank' : '_self'"
+					th:rel="${popup.linkNewWindow} ? 'noopener noreferrer' : null">
+					<img th:each="img, st : ${popup.images}"
+						class="bion-popup-slide"
+						th:classappend="${st.first} ? 'on' : ''"
+						th:src="${@enText.pick(img.road, img.roadEn)}"
+						th:alt="${popup.subject}">
+				</a>
+
+				<span th:if="${popup.linkUrl == null}">
+					<img th:each="img, st : ${popup.images}"
+						class="bion-popup-slide"
+						th:classappend="${st.first} ? 'on' : ''"
+						th:src="${@enText.pick(img.road, img.roadEn)}"
+						th:alt="${popup.subject}">
+				</span>
+
+				<!-- 두 장 이상일 때만 점을 그린다 -->
+				<div class="bion-popup-dots" th:if="${#lists.size(popup.images) > 1}">
+					<button type="button" class="bion-popup-dot"
+						th:each="img, st : ${popup.images}"
+						th:classappend="${st.first} ? 'on' : ''"
+						th:attr="aria-label=${st.count} + '번째 이미지 보기'"></button>
+				</div>
+			</div>
+
+			<div class="bion-popup-foot">
+				<button type="button" class="bion-popup-today"
+					th:text="#{popup.today}">오늘 하루 열지 않기</button>
+				<button type="button" class="bion-popup-close"
+					th:text="#{popup.close}">닫기</button>
+			</div>
+		</div>
+
+		<script th:src="@{/front/js/popup.js}" defer></script>
+	</th:block>
+</th:block>
+
+</body>
+</html>

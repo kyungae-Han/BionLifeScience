@@ -593,6 +593,9 @@
 
 </script>
 
+<!-- 메인 팝업. 켜진 팝업이 없으면 아무것도 그리지 않는다 -->
+<th:block th:replace="~{fragments/front/popup :: mainPopup(${popup})}"></th:block>
+
 </body>
 
 </html>
