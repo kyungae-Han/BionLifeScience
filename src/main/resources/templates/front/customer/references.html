@@ -6,24 +6,6 @@
 </head>
 <link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
 
-<style>
-@media (max-width:991px) {
-  .btn-vertical {
-    writing-mode: vertical-rl;
-    text-orientation: upright;
-    letter-spacing: 4px;
-    line-height:1.2;
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    width: 40px !important;
-    height: 120px !important;
-    padding: 0 !important;
-  }
-}
-</style>
 
 <body class="stretched">
 
@@ -48,19 +30,26 @@
 		  <div class="container clearfix">
 		   <div class="row gutter-40 col-mb-80">
 		    <div class="postcontent col-lg-12 order-lg-last">
+		     <div class="reference-table">
 		     <table class="table table-bordered table-hover text-center align-middle">
+		      <colgroup>
+		       <col class="col-thumb">
+		       <col class="col-subject">
+		       <col class="col-date">
+		       <col class="col-down">
+		      </colgroup>
 		      <thead>
 		       <tr>
-		        <th scope="col" style="width:5%;">미리보기</th>
-		        <th scope="col" style="width:70%">파일명</th>
+		        <th scope="col" class="col-thumb-cell">미리보기</th>
+		        <th scope="col">파일명</th>
 		        <th scope="col">등록일</th>
-		        <th scope="col" style="width:3%;">다운로드</th>
+		        <th scope="col">다운로드</th>
 		       </tr>
 		      </thead>
 		      <tbody>
 		       <tr th:each="f : ${file}">
 		        <!-- 이미지 미리보기 -->
-		        <td>
+		        <td class="col-thumb-cell">
 			        <div class="reference-files">
 				         <img th:src="@{${f.fileroad}}" alt="product brochure">
 		              </div>
@@ -70,17 +59,18 @@
 		        <td class="text-start ps-2" th:text="${@enText.pick(f.filesubject, f.filesubjectEn)}">파일제목</td>
 		
 		        <!-- 등록일 -->
-		        <td th:text="${#dates.format(f.filedate, 'yyyy-MM-dd')}">2023-07-05</td>
+		        <td class="ref-date" th:text="${#dates.format(f.filedate, 'yyyy-MM-dd')}">2023-07-05</td>
 		
 		        <!-- 다운로드 버튼 -->
 		        <td>
-		         <a th:href="@{${f.fileroad}}" download class="btn btn-sm btn-custom-color btn-vertical">
-		          <i class="icon-download"></i> 다운로드
+		         <a th:href="@{${f.fileroad}}" download class="btn btn-sm btn-custom-color ref-download" aria-label="다운로드">
+		          <i class="icon-download"></i><span class="ref-download__text">다운로드</span>
 		         </a>
 		        </td>
 		       </tr>
 		      </tbody>
 		     </table>
+		     </div>
 		
 		    </div>
 		   </div>
