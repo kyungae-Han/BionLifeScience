@@ -216,7 +216,7 @@ public class HomeController {
 			Model model
 			) {
 		
-		model.addAttribute("certification", certificationRepository.findAll());
+		model.addAttribute("certification", certificationRepository.findAllByOrderByCertificationIndexAscIdAsc());
 		model.addAttribute("metaDescription",
 		        "바이온라이프사이언스가 보유한 품질 인증서와 시험성적서를 확인하실 수 있습니다.");
 

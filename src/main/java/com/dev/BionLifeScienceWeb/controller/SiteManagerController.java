@@ -61,6 +61,12 @@ public class SiteManagerController {
 		return "admin/bannerManager";
 	}
 	
+	/** 배너 등록 화면. 목록과 분리해 두었다. 브랜드·제품 관리와 같은 방식이다 */
+	@GetMapping("/bannerInsertForm")
+	public String bannerInsertForm() {
+		return "admin/bannerInsertForm";
+	}
+
 	@PostMapping("/bannerInsert")
 	@ResponseBody
 	public String bannerInsert(

@@ -27,95 +27,53 @@
 		<section id="main-content">
 			<section class="wrapper">
 				<div class="row mt">
-					<div class="col-lg-8">
-						<div class="form-panel">
-							<form action="/admin/certificationInsert" method="POST" enctype="multipart/form-data" class="form-horizontal style-form">
-								<div class="row">
-									<div class="form-group col-12 col-md-12 col-lg-12">
-										<div class="col-md-12 col-xs-11">
-											<input class="form-control form-control-inline" 
-											type="text" 
-											name="subject"
-											required="required"> 
-											<span class="help-block"># 인증서의 SUBJECT 문구를 입력 해 주세요.</span>
-										</div>
-										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
-											<input class="form-control form-control-inline" 
-											type="text" 
-											name="content"
-											required="required"> 
-											<span class="help-block"># 인증서의 CONTENT 문구를 입력 해 주세요.</span>
-										</div>
-										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
-											<select class="form-control form-control-inline" 
-											name="sort"
-											required="required"> 
-												<option value="">=== 분류를 선택하세요 ===</option>
-												<option value="특허인증">특허인증</option>
-												<option value="기업인증">기업인증</option>
-												<option value="기타인증">기타인증</option>
-											</select>
-											<span class="help-block"># 인증서의 분류를 선택 해 주세요.</span>
-										</div>
-										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
-											<div class="fileupload fileupload-new"
-												data-provides="fileupload">
-												<span class="btn btn-warning btn-file" style="width:100%;"> 
-													<span class="fileupload-new"><i class="fa fa-paperclip"></i>Select file</span> 
-													<span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span> 
-													<input 
-													type="file"
-													class="default"
-													name="webFile"
-													id="webFile"
-													required="required" />
-												</span> 
-												<span class="fileupload-preview" style="margin-left: 5px;"></span>
-												<a href="#" class="close fileupload-exists" 
-													data-dismiss="fileupload"
-													style="float: none; margin-left: 5px;"></a>
-											</div>
-											<span class="help-block"># 인증서 이미지를 업로드 해 주세요.</span>
-											<span class="help-block"># 최적화된 사이즈는 420px * 600px 입니다.</span>
-											<span class="help-block"># 파일은 jpeg/png/jpg 확장자를 지원 합니다.</span>
-										</div>
-										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
-											<button type="submit" class="btn btn-theme">등록</button>
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-				<div class="row mt">
 					<div class="col-md-8">
-						<div class="form-panel">
-							<h4><i class="fa fa-tasks"></i> 바이온라이프사이언스 - 인증서 관리</h4>
+						<div class="content-panel">
+							<h5><i class="fa fa-tasks"></i> 바이온라이프사이언스 - 인증서 관리</h5>
+
+							<!-- 등록 버튼 줄. 배너·브랜드·제품 관리와 같은 자리다 -->
+							<div class="prod-filter-foot">
+								<button class="btn btn-default" type="button"
+									onclick="javascript:location.href='/admin/certificationInsertForm'">새로운 인증서 등록</button>
+							</div>
+
+							<p class="bn-help">
+								줄 맨 앞을 잡고 끌어서 순서를 바꾼다. 놓는 순간 저장된다.
+								회사소개의 인증서 페이지도 이 순서를 따라간다.
+							</p>
+
 							<table class="table table-hover cert-table">
 								<thead>
 									<tr>
+										<th style="width:34px;"></th>
+										<th style="width:44px;">순서</th>
 										<th style="width:96px;">미리보기</th>
 										<th style="width:96px;">분류</th>
 										<th style="width:220px;">SUBJECT</th>
 										<th>CONTENT</th>
-										<th style="width:70px;">관리</th>
+										<th style="width:136px;">관리</th>
 									</tr>
 								</thead>
-								<tbody>
-									<tr th:each="b:${certifications}">
+								<tbody id="certRows">
+									<tr th:each="b:${certifications}" th:data-id="${b.id}">
+										<td class="bn-grip" title="끌어서 순서 바꾸기"><i class="fa fa-bars"></i></td>
+										<td><span class="bn-index" th:text="${b.certificationIndex}">1</span></td>
 										<td><img class="cert-thumb" th:src="${b.road}" th:alt="${b.subject}"></td>
 										<td><span class="label label-default" th:text="${b.sort} ?: '분류 없음'">분류</span></td>
 										<td class="cert-subject" th:text="${b.subject}">제목</td>
 										<td class="cert-content" th:text="${b.content}">내용</td>
 										<td>
-											<button class="btn btn-danger btn-xs" th:onclick="|deleteCertification('${b.id}')|">
+											<button class="btn btn-primary btn-xs" type="button"
+												th:onclick="|location.href='/admin/certificationUpdateForm/${b.id}'|">
+												<i class="fa fa-pencil"></i> 수정
+											</button>
+											<button class="btn btn-danger btn-xs" type="button" th:onclick="|deleteCertification('${b.id}')|">
 												<i class="fa fa-trash-o"></i> 삭제
 											</button>
 										</td>
 									</tr>
 									<tr th:if="${#lists.isEmpty(certifications)}">
-										<td colspan="5" class="cert-none">등록된 인증서가 없다.</td>
+										<td colspan="7" class="cert-none">등록된 인증서가 없다.</td>
 									</tr>
 								</tbody>
 							</table>
@@ -130,29 +88,47 @@
 	<script type="text/javascript"
 		src="/administration/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>
 <script>
-	$(function(){
-		
-		$("#file").on('change', function (e) {
-	    	var size = 0;
-	    	for(var i=0;i<e.target.files.length;i++){
-	    		size += e.target.files[i].size;
-	    	}
-	    	if(size > 30000000){
-	    		alert('1회 업로드 가능 용량은 30MB입니다.');
-	    		$(this).val('');
-	    		return;
-	    	}
-	    });
+$(function () {
+	// 줄을 끌어서 순서를 바꾼다. 손잡이를 잡아야만 끌린다.
+	// 표 전체를 잡히게 하면 단추를 누르다가도 끌려서 못 쓴다.
+	$('#certRows').sortable({
+		handle: '.bn-grip',
+		axis: 'y',
+		placeholder: 'bn-placeholder',
+		helper: function (e, tr) {
+			// 끌 때 칸 너비가 무너지지 않게 원래 너비를 박아 둔다
+			var originals = tr.children();
+			var helper = tr.clone();
+			helper.children().each(function (i) { $(this).width(originals.eq(i).width()); });
+			return helper;
+		},
+		update: function () {
+			var ids = $('#certRows tr[data-id]').map(function () {
+				return $(this).data('id');
+			}).get();
 
-	});
-	function deleteCertification(id){
-		var result = confirm('해당 인증서를 삭제 하시겠습니까?');
-		if(result){
-			location.href="/admin/deleteCertification/" + id;
+			$.post('/admin/certificationOrder', { ids: ids })
+				.done(function () {
+					// 화면의 순서 번호도 다시 매긴다. 새로고침하지 않아도 맞게 보인다
+					$('#certRows tr[data-id] .bn-index').each(function (i) {
+						$(this).text(i + 1);
+					});
+				})
+				.fail(function () {
+					alert('순서를 저장하지 못했다. 새로고침하고 다시 해 주세요.');
+					location.reload();
+				});
 		}
+	});
+});
+
+function deleteCertification(id) {
+	var result = confirm('해당 인증서를 삭제 하시겠습니까?');
+	if (result) {
+		location.href = "/admin/deleteCertification/" + id;
 	}
-	  
-	</script>
+}
+</script>
 </body>
 
 </html>

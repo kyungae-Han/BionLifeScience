@@ -134,6 +134,19 @@
 		<script type="text/javascript" src="/administration/lib/zabuto_calendar.js"></script>
 		<script type="text/javascript" src="/administration/lib/jquery.backstretch.min.js"></script>
 		<script type="text/javascript" src="/administration/lib/jquery-ui-1.9.2.custom.min.js"></script>
+		<script>
+		// 날짜 칸은 오른쪽 작은 아이콘을 정확히 눌러야만 달력이 열린다.
+		// 칸 아무 데나 눌러도 열리게 한다. showPicker 는 사람이 누른 직후에만
+		// 허용되므로 click 안에서 부른다. 안 되는 브라우저에서는 조용히 넘어간다.
+		document.addEventListener('click', function (e) {
+			var el = e.target;
+			if (!el || el.tagName !== 'INPUT') return;
+			if (['date', 'datetime-local', 'month', 'time'].indexOf(el.type) < 0) return;
+			if (el.readOnly || el.disabled) return;
+			if (typeof el.showPicker !== 'function') return;
+			try { el.showPicker(); } catch (ignore) { /* 이미 열려 있거나 막힌 경우 */ }
+		});
+		</script>
 	</th:block>
 </body>
 

@@ -97,6 +97,13 @@ public class BrandController {
 		return "admin/brand/brandManager";
 	}
 	
+	/** 브랜드 등록 화면. 목록과 분리해 두었다. 폼이 길어서 목록과 같이 두면 둘 다 불편하다 */
+	@GetMapping("/brandInsertForm")
+	public String brandInsertForm(Model model) {
+		model.addAttribute("brand", brandRepository.findAll());
+		return "admin/brand/brandInsertForm";
+	}
+
 	@PostMapping("/brandInsert")
 	@ResponseBody
 	public String brandInsert(

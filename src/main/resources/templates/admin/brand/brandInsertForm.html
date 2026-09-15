@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/admin/common :: headMenu}">
+</head>
+
+<body>
+	<section id="container">
+
+		<th:block th:replace="~{fragments/admin/common :: topBar}"></th:block>
+		<th:block th:replace="~{fragments/admin/common :: sideMenu('brand')}"></th:block>
+
+		<section id="main-content">
+			<section class="wrapper">
+				<div class="row mt">
+					<div class="col-lg-12">
+						<h4><i class="fa fa-angle-right"></i> 브랜드 등록</h4>
+						<span class="alsert-messate">* 새 브랜드를 등록합니다.</span><br>
+						<span class="alsert-messate">* 등록 후에는 브랜드 관리 목록에서 수정할 수 있습니다.</span>
+
+						<div class="row mt">
+							<div class="col-md-12">
+						<div class="form-panel" id="brandPanel">
+							<form 
+							role="form" 
+							class="form-horizontal style-form" 
+							method="POST" 
+							enctype="multipart/form-data"
+							action="/admin/brandInsert">
+							  <div class="form-group ">
+							    <label class="col-lg-2 control-label" for="type">브랜드 타입</label>
+							     <div class="col-lg-10">
+							      <select class="form-control gsc-selected-option-container" id="type" name="type" required>
+								    <option value="" disabled selected>선택</option>
+								    <option th:each="t : ${T(com.dev.BionLifeScienceWeb.model.brand.Brand.BrandType).values()}"
+								            th:value="${t}"
+								            th:text="${t.label}">
+								    </option>
+								  </select>
+								  </div>
+							  </div>
+								<div class="form-group">
+									<label class="col-lg-2 control-label">브랜드명</label>
+									<div class="col-lg-10">
+										<input 
+										type="text" 
+										placeholder="브랜드 명칭 ex) Adidas"
+										class="form-control" 
+										name="name"
+										required="required">
+										<p class="help-block">* 브랜드명을 입력해 주세요</p>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-2 control-label">브랜드명 (영문)</label>
+									<div class="col-lg-10">
+										<input 
+										type="text" 
+										placeholder="Brand name in English"
+										class="form-control" 
+										name="nameEn">
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-lg-2 control-label">브랜드 로고</label>
+									<div class="col-lg-10">
+										<input 
+										type="file" 
+										class="form-control" 
+										name="brandImage"
+										accept=".png,.jpg,.jpeg,.svg" required />
+										<p class="help-block">*  512px*384px 사이즈에 최적화 되어 있습니다.</p>
+										<p class="help-block">* png, jpg, jpeg, svg 지원합니다.</p>
+									</div>
+								</div>
+								
+								<div class="form-group">
+								  <label class="col-lg-2 control-label" for="brandFooterImage">메인 Footer 전용 이미지</label>
+								  <div class="col-lg-10">
+									  <input type="file" id="brandFooterImage" class="form-control" name="brandFooterImage" accept=".png">
+									  <p class="text-muted small">※ 메인 하단 로고 전시용 이미지 (권장 사이즈: 300×150px)</p>
+								  </div>
+								</div>
+								
+								<div class="form-group">
+									<label class="col-lg-2 control-label">브랜드 소개</label>
+									<div class="col-lg-10">
+										<textarea 
+										class="form-control" 
+										name="content"
+										placeholder="브랜드 소개 ex) 멋진 신발을 만드는 회사"
+										required="required"></textarea>
+									</div>
+								</div>
+								
+								<div class="form-group">
+									<label class="col-lg-2 control-label">브랜드 소개 (영문)</label>
+									<div class="col-lg-10">
+										<textarea 
+										class="form-control" 
+										name="contentEn"
+										placeholder="Brand introduction in English"></textarea>
+									</div>
+								</div>
+								
+								<div class="form-group ">
+								  <label class="col-lg-2 control-label">비주얼 이미지 (자사브랜드만 넣어주세요.)</label>
+								  	<div class="col-lg-10">
+								  		<input type="file"
+									         id="visualImage"
+									         name="visualImage"
+									         accept="image/*"
+									         class="form-control">
+									
+										  <!-- 미리보기 박스 -->
+										  <div id="visualPreviewWrap" style="margin-top:10px; display:none;">
+										    <img id="visualPreview" alt="미리보기"
+										         style="max-width: 420px; height:auto; border:1px solid #ddd; padding:6px; background:#fff;">
+										    <div style="margin-top:6px;">
+										      <button type="button" id="visualRemoveBtn" class="btn btn-sm btn-default">미리보기 제거</button>
+										    </div>
+										  </div>
+										
+										  <!-- 수정화면: 기존 이미지가 있으면 초기 미리보기로 렌더 -->
+										  <input type="hidden" id="visualExisting"
+       											th:value="${editBrand?.brandVisualRoad} ?: ''">
+								 	</div>
+								</div>
+								
+								<div class="form-group ">
+								  <label class="col-lg-2 control-label">상세 설명 (선택)</label>
+								  	<div class="col-lg-10">
+								  		 <textarea id="desc" name="desc"></textarea>
+								 	</div>
+								</div>
+
+								<div class="form-group ">
+								  <label class="col-lg-2 control-label">상세 설명 영문 (선택)</label>
+								  	<div class="col-lg-10">
+								  		 <textarea id="descEn" name="descEn"></textarea>
+								 	</div>
+								 	
+								 	<div class="col-lg-offset-2 col-lg-10 right">
+										<button class="btn btn-theme" type="submit" style="margin-top: 10px;">등록</button>
+									</div>
+								</div>
+
+								<div class="form-group ">
+									<label for="lastname" class="control-label col-lg-2">브랜드 삭제</label>
+									<div class="col-lg-10">
+										<select class="form-control" id="brandPanel">	
+											<option value="">=== 브랜드 선택 ===</option>
+											<option th:each="b:${brand}" th:text="${b.name}" th:value="${b.id}"></option>
+										</select>
+										<button type="button" class="btn btn-danger" id="brandDeleteBtn" style="margin-top: 10px;">삭제</button>
+									</div>
+								</div>
+							</form>
+						</div>
+								<div class="form-panel" style="margin-top:0;">
+									<button type="button" class="btn btn-default"
+										onclick="javascript:location.href='/admin/brandManager'">
+										<i class="fa fa-angle-left"></i> 목록으로
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+	</section>
+	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
+	<script src="/administration/lib/brandManager.js"></script>
+	
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-lite.min.js"></script>
+	<script th:src="@{/administration/lib/summernote-common.js}"></script>
+	
+	<script>	
+	 $(function () {
+	    initSummernoteEditor('#desc', {
+	      height: 500,
+	      placeholder: '브랜드 상세 설명(선택)',
+	      uploadUrl: '/admin/brandCenter/editor/image'
+	    });
+
+	    initSummernoteEditor('#descEn', {
+	      height: 500,
+	      placeholder: 'Brand description in English (optional)',
+	      uploadUrl: '/admin/brandCenter/editor/image'
+	    });
+	  });
+	 
+	</script>
+	
+	<script>
+		(function () {
+		
+		  const input      = document.getElementById('visualImage');
+		  const wrap       = document.getElementById('visualPreviewWrap');
+		  const img        = document.getElementById('visualPreview');
+		  const removeBtn  = document.getElementById('visualRemoveBtn');
+		  const existing   = document.getElementById('visualExisting')?.value || '';
+		
+		  // 수정 화면에서 기존 비주얼 이미지가 있을 경우 초기 표시
+		  if (existing) {
+		    img.src = existing.startsWith('http') ? existing : existing; // 필요시 prefix
+		    wrap.style.display = 'block';
+		  }
+		
+		  // 파일 선택 → 미리보기
+		  input.addEventListener('change', function () {
+		    if (!this.files || !this.files[0]) {
+		      clearPreview();
+		      return;
+		    }
+		
+		    const file = this.files[0];
+		
+		    // 간단한 타입/용량 체크(선택)
+		    if (!file.type.startsWith('image/')) {
+		      alert('이미지 파일만 업로드할 수 있습니다.');
+		      this.value = '';
+		      clearPreview();
+		      return;
+		    }
+		    // if (file.size > 5 * 1024 * 1024) { ... } // 5MB 제한 예시
+		
+		    const reader = new FileReader();
+		    reader.onload = e => {
+		      img.src = e.target.result;
+		      wrap.style.display = 'block';
+		    };
+		    reader.readAsDataURL(file);
+		  });
+		
+		  removeBtn.addEventListener('click', function () {
+		    input.value = '';
+		    clearPreview();
+		  });
+		
+		  function clearPreview() {
+		    img.src = '';
+		    wrap.style.display = 'none';
+		  }
+		
+		})();
+	</script>
+	
+	<script>
+		$(function() {
+			  function toggleVisual() {
+			    let selectedType = $('#type').val(); 
+			    if (selectedType === 'OWN') {
+			      $('#visualImageWrap').show();
+			    } else {
+			      $('#visualImageWrap').hide();
+			    }
+			  }
+
+			  // 최초 실행 (수정화면 진입 시 선택된 값 반영)
+			  toggleVisual();
+
+			  // 값 변경될 때마다 실행
+			  $('#type').on('change', toggleVisual);
+			});
+		</script>
+	
+	
+</body>
+</html>

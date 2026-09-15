@@ -32,4 +32,8 @@ public class Certification {
 	
 	@Column(name="CERTIFICATION_IMAGE_PATH")
 	private String path;
+
+	/** 목록에서 끌어 맞춘 순서. 작은 것이 앞이다. 배너의 BANNER_INDEX 와 같은 방식이다 */
+	@Column(name="CERTIFICATION_INDEX")
+	private Integer certificationIndex;
 }

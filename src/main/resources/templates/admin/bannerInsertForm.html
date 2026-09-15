@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="KO" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/admin/common :: headMenu}">
+</head>
+
+<style>
+/* 배너 목록. 색과 간격은 bion-admin.css 의 이름을 쓴다 */
+.bn-help { margin: -6px 0 12px; font-size: 12.5px; color: var(--bn-ink-3); }
+
+/* 칸 너비를 th 에 적은 대로 지킨다.
+   그냥 두면 이미지가 있는 칸이 324px 까지 퍼지고 제목이 91px 로 눌린다 */
+.bn-table { table-layout: fixed; width: 100%; }
+
+/* 그래도 좁아지면 표만 가로로 밀린다. 카드가 깨지지 않는다 */
+.bn-wrap { overflow-x: auto; }
+.bn-table td { vertical-align: middle; }
+
+/* 긴 글은 세 줄에서 자른다. 목록은 훑어보는 자리라 전문이 필요 없다 */
+.bn-text .ko,
+.bn-text .en {
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+/* 끌어서 순서 바꾸는 손잡이 */
+.bn-grip { color: var(--bn-ink-4); cursor: grab; text-align: center; }
+.bn-grip:active { cursor: grabbing; }
+
+.bn-index {
+	display: inline-block; min-width: 22px; padding: 2px 6px;
+	border-radius: 4px; background: var(--bn-surface-3);
+	color: var(--bn-ink-3); font-size: 11.5px; text-align: center;
+}
+
+/* 끄는 중인 줄은 흐리게. 다만 글씨는 읽을 수 있게 남긴다 */
+.bn-table tr.bn-off td:not(:last-child) { opacity: .45; }
+
+/* 한글 위, 영문 아래 */
+.bn-text .ko { color: var(--bn-ink); font-size: 13px; line-height: 1.5; }
+.bn-text .en { margin-top: 3px; color: var(--bn-ink-3); font-size: 12px; line-height: 1.5; }
+.bn-text .en.none { color: var(--bn-ink-4); font-style: normal; }
+.bn-text br { display: none; }   /* 제목에 들어 있는 줄바꿈 태그가 표를 늘린다 */
+
+/* 칸 너비에서 좌우 여백(12px씩)을 뺀 만큼만 차지한다.
+   더 크면 자기 칸을 넘어 옆 칸 위로 올라간다 */
+.bn-thumb {
+	display: block; width: 104px; height: 58px;
+	object-fit: cover; border-radius: 5px;
+	border: 1px solid var(--bn-line); background: var(--bn-surface-2);
+}
+
+.bn-thumb.mobile { width: 56px; height: 78px; }
+
+.bn-thumb.none {
+	display: flex; align-items: center; justify-content: center;
+	font-size: 11px; color: var(--bn-ink-4);
+}
+
+/* 넘치면 옆 칸을 밀고 나가지 말고 아래로 접히게 한다.
+   table-layout:fixed 라 칸은 안 늘어나고 내용만 삐져나가기 때문이다 */
+.bn-period { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.bn-period input[type="date"] { flex: 0 1 104px; min-width: 96px; height: 30px; font-size: 12px; padding: 0 4px; }
+.bn-period .tilde { color: var(--bn-ink-4); }
+.bn-period .btn { flex: none; }
+
+/* 켜기/끄기 스위치 */
+.bn-switch {
+	position: relative; width: 40px; height: 22px; padding: 0;
+	border: 0; border-radius: 20px; background: var(--bn-line-2);
+	cursor: pointer; transition: background .15s ease;
+}
+
+.bn-switch.on { background: var(--bn-ok); }
+
+.bn-switch .knob {
+	position: absolute; top: 3px; left: 3px;
+	width: 16px; height: 16px; border-radius: 50%;
+	background: #fff; box-shadow: 0 1px 2px rgba(27, 34, 48, .3);
+	transition: left .15s ease;
+}
+
+.bn-switch.on .knob { left: 21px; }
+
+.bn-none { padding: 26px 0; text-align: center; color: var(--bn-ink-4); }
+
+/* 끄는 동안 자리 잡아 주는 빈 줄 */
+.bn-placeholder { height: 70px; background: var(--bn-accent-bg); }
+</style>
+
+<body>
+	<section id="container">
+
+		<th:block th:replace="~{fragments/admin/common :: topBar}"></th:block>
+		<th:block th:replace="~{fragments/admin/common :: sideMenu('site')}"></th:block>
+
+		<section id="main-content">
+			<section class="wrapper">
+				<div class="row mt">
+					<div class="col-lg-12">
+						<h4><i class="fa fa-angle-right"></i> 메인 배너 등록</h4>
+						<span class="alsert-messate">* 메인 화면 위쪽에 넘어가는 배너를 등록합니다.</span><br>
+						<span class="alsert-messate">* 노출 기간과 사용 여부는 등록 후 목록에서 바로 고칩니다.</span>
+
+						<div class="row mt">
+							<div class="col-lg-8">
+						<div class="form-panel">
+							<form action="/admin/bannerInsert" method="POST" enctype="multipart/form-data" class="form-horizontal style-form">
+								<div class="row">
+									<div class="form-group col-12 col-md-12 col-lg-12">
+										<div class="col-md-12 col-xs-11">
+											<textarea class="form-control form-control-inline" 
+											type="text" 
+											name="subject"
+											required="required"> </textarea>
+											<span class="help-block"># 메인 배너의 SUBJECT 문구를 입력 해 주세요.</span>
+										</div>
+										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
+											<textarea class="form-control form-control-inline"
+											type="text"
+											name="subjectEn"
+											placeholder="Banner subject in English (optional)"></textarea>
+											<span class="help-block"># 영문 SUBJECT. 비우면 영문 화면에도 한글이 나갑니다.</span>
+										</div>
+										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
+											<textarea class="form-control form-control-inline" 
+											type="text" 
+											name="content"
+											required="required"> </textarea>
+											<span class="help-block"># 메인 배너의 CONTENT 문구를 입력 해 주세요.</span>
+										</div>
+										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
+											<textarea class="form-control form-control-inline"
+											type="text"
+											name="contentEn"
+											placeholder="Banner description in English (optional)"></textarea>
+											<span class="help-block"># 영문 CONTENT. 비우면 영문 화면에도 한글이 나갑니다.</span>
+										</div>
+										<div class="col-md-6 col-xs-11" style="margin-top:20px;">
+											<div class="fileupload fileupload-new"
+												data-provides="fileupload">
+												<span class="btn btn-warning btn-file" style="width:100%;"> 
+													<span class="fileupload-new"><i class="fa fa-paperclip"></i>Select file</span> 
+													<span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span> 
+													<input 
+													type="file"
+													class="default"
+													name="webFile"
+													id="webFile"
+													required="required" />
+												</span> 
+												<span class="fileupload-preview" style="margin-left: 5px;"></span>
+												<a href="#" class="close fileupload-exists" 
+													data-dismiss="fileupload"
+													style="float: none; margin-left: 5px;"></a>
+											</div>
+											<span class="help-block"># PC용 이미지를 업로드 해 주세요.</span>
+											<span class="help-block"># 최적화된 사이즈는 1920px * 1180px 입니다.</span>
+											<span class="help-block"># 파일은 jpeg/png/jpg 확장자를 지원 합니다.</span>
+											<span class="help-block"># PC용 이미지는 필수 등록 사항입니다.</span>
+										</div>
+										<div class="col-md-6 col-xs-11" style="margin-top:20px;">
+											<div class="fileupload fileupload-new"
+												data-provides="fileupload">
+												<span class="btn btn-warning btn-file" style="width:100%;"> 
+													<span class="fileupload-new"><i class="fa fa-paperclip"></i>Select file</span> 
+													<span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span> 
+													<input 
+													type="file"
+													class="default"
+													name="mobileFile"
+													id="mobileFile" />
+												</span> 
+												<span class="fileupload-preview" style="margin-left: 5px;"></span>
+												<a href="#" class="close fileupload-exists" 
+													data-dismiss="fileupload"
+													style="float: none; margin-left: 5px;"></a>
+											</div>
+											<span class="help-block"># MOBILE용 이미지를 업로드 해 주세요.</span>
+											<span class="help-block"># MOBILE용 이미지 미등록시 WEB용 이미지로 대체됩니다.</span>
+											<span class="help-block"># 최적화된 사이즈는 460px * 700px 입니다.</span>
+										</div>
+										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
+											<label class="control-label">링크등록</label>
+											<input 
+												type="text"
+												class="form-control"
+												name="linkUrl"
+												placeholder="hppts://example.com" />
+											<span class="help-block"># 배너 클릭 시 이동할 링크를 입력하세요. (미입력시 이동 없음)</span>
+										</div>
+										
+										
+										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
+											<label class="control-label">정렬순서</label>
+											 <input 
+											 type="number" 
+											 class="form-control"
+											 name="bannerIndex">
+										</div>
+										
+										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
+											<button type="submit" class="btn btn-theme">등록</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+								<div class="form-panel" style="margin-top:0;">
+									<button type="button" class="btn btn-default"
+										onclick="javascript:location.href='/admin/bannerManager'">
+										<i class="fa fa-angle-left"></i> 목록으로
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+	</section>
+	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
+	<script src="/administration/lib/jquery-ui-1.9.2.custom.min.js"></script>
+	<script type="text/javascript"
+		src="/administration/lib/bootstrap-fileupload/bootstrap-fileupload.js"></script>
+<script>
+	$(function(){
+		
+		$("#file").on('change', function (e) {
+	    	var size = 0;
+	    	for(var i=0;i<e.target.files.length;i++){
+	    		size += e.target.files[i].size;
+	    	}
+	    	if(size > 30000000){
+	    		alert('1회 업로드 가능 용량은 30MB입니다.');
+	    		$(this).val('');
+	    		return;
+	    	}
+	    });
+
+	});
+	function deleteBanner(id){
+		var result = confirm('해당 배너 세트를 삭제 하시겠습니까?');
+		if(result){
+			location.href="/admin/deleteBanner/" + id;
+		}
+	}
+	
+	let bannerId = null; 
+	
+	  // 🔹 수정 모달 열기 함수
+	  function openBannerEditModal(id) {
+
+		  bannerId = id;
+		  
+	    $.ajax({
+	      url: '/admin/getBanner/' + id,
+	      type: 'GET',
+	      success: function (banner) {
+	        // 데이터 주입
+	        $('#editBannerId').val(banner.id);
+	        $('#editBannerSubject').val(banner.subject);
+	        $('#editBannerContent').val(banner.content);
+	        $('#editBannerSubjectEn').val(banner.subjectEn);
+	        $('#editBannerContentEn').val(banner.contentEn);
+	        $('#editBannerLinkUrl').val(banner.linkUrl);
+	        $('#editBannerIndex').val(banner.bannerIndex)
+
+	        // 미리보기 초기화
+	        $('#previewWeb').empty();
+	        $('#previewMobile').empty();
+
+	        // PC용 미리보기
+	        if (banner.webroad) {
+	          if (banner.webroad.endsWith('.mp4')) {
+	            $('#previewWeb').html(`<video width="200" controls><source src="${banner.webroad}" type="video/mp4"></video>`);
+	          } else {
+	            $('#previewWeb').html(`<img src="${banner.webroad}" width="200" />`);
+	          }
+	        }
+
+	        // 모바일용 미리보기
+	        if (banner.mobileroad) {
+	          if (banner.mobileroad.endsWith('.mp4')) {
+	            $('#previewMobile').html(`<video width="200" controls><source src="${banner.mobileroad}" type="video/mp4"></video>`);
+	          } else {
+	            $('#previewMobile').html(`<img src="${banner.mobileroad}" width="200" />`);
+	          }
+	        }
+
+	        // 모달 표시
+	        $('#bannerEditModal').modal('show');
+	      },
+	      error: function () {
+	        alert('배너 정보를 불러오지 못했습니다.');
+	      }
+	    });
+	  }
+
+	  // 🔹 수정 저장 버튼 클릭 시
+	  $('#saveBannerBtn').on('click', function () {
+	    let formData = new FormData($('#bannerEditForm')[0]);
+
+	    $.ajax({
+		  url: '/admin/bannerUpdate/' + bannerId,
+		  type: 'POST',
+		  data: formData,
+		  processData: false,
+		  contentType: false,
+		  success: function(res) {
+		    alert('수정 완료되었습니다.');
+		    location.reload();
+		  },
+		  error: function(err) {
+		    alert('수정 중 오류가 발생했습니다.');
+		  }
+		});
+	  });
+
+	
+	 
+	</script>
+<script>
+$(function () {
+	// 줄을 끌어서 순서를 바꾼다. 손잡이를 잡아야만 끌린다.
+	// 표 전체를 잡히게 하면 날짜 칸을 누르다가도 끌려서 못 쓴다.
+	$('#bannerRows').sortable({
+		handle: '.bn-grip',
+		axis: 'y',
+		placeholder: 'bn-placeholder',
+		helper: function (e, tr) {
+			// 끌 때 칸 너비가 무너지지 않게 원래 너비를 박아 둔다
+			var originals = tr.children();
+			var helper = tr.clone();
+			helper.children().each(function (i) { $(this).width(originals.eq(i).width()); });
+			return helper;
+		},
+		update: function () {
+			var ids = $('#bannerRows tr[data-id]').map(function () {
+				return $(this).data('id');
+			}).get();
+
+			$.post('/admin/bannerOrder', { ids: ids })
+				.done(function () {
+					// 화면의 순서 번호도 다시 매긴다. 새로고침하지 않아도 맞게 보인다
+					$('#bannerRows tr[data-id] .bn-index').each(function (i) {
+						$(this).text(i + 1);
+					});
+				})
+				.fail(function () {
+					alert('순서를 저장하지 못했다. 새로고침하고 다시 해 주세요.');
+					location.reload();
+				});
+		}
+	});
+});
+</script>
+
+</body>
+
+</html>
