@@ -47,9 +47,10 @@
 				<a href="/admin/index" class="logo"><b>(주)바이온라이프사이언스</b></a>
 				<div class="top-menu">
 					<ul class="nav pull-right top-menu">
-						<li sec:authorize="isAuthenticated()"><a class="logout" href="/admin/memberList">계정목록</a></li>
-						<li sec:authorize="isAuthenticated()"><a class="logout" href="/admin/memberInsert">관리자등록</a></li>
-						<li sec:authorize="isAuthenticated()"><a class="logout" href="/admin/brandCenter/productOverall">ProductCenter</a></li>
+						<!-- 권한은 로그인 때 담은 값이 아니라 요청마다 DB 에서 읽은 값으로 가른다 (AdminMenuAccess) -->
+						<li th:if="${@adminMenu.isAdmin()}"><a class="logout" href="/admin/memberList">계정목록</a></li>
+						<li th:if="${@adminMenu.isAdmin()}"><a class="logout" href="/admin/memberInsert">계정등록</a></li>
+						<li th:if="${@adminMenu.can('brand')}"><a class="logout" href="/admin/brandCenter/productOverall">ProductCenter</a></li>
 						<li sec:authorize="isAuthenticated()"><a class="logout" href="/logout">Logout</a></li>
 					</ul>
 				</div>
@@ -59,15 +60,15 @@
 			<aside>
 				<div id="sidebar" class="nav-collapse ">
 					<ul class="sidebar-menu" id="nav-accordion">
-						<li class="mt"><a th:classappend="${code} == 'index' ? 'active' : ''" href="/admin/clientManager">
+						<li th:if="${@adminMenu.can('client')}"><a th:classappend="${code} == 'index' ? 'active' : ''" href="/admin/clientManager">
 								<i class="fa fa-dashboard"></i> <span>문의사항 관리</span>
 						</a>
 						</li>
-						<li><a th:classappend="${code} == 'history' ? 'active' : ''"  href="/admin/historyManager"> <i
+						<li th:if="${@adminMenu.can('history')}"><a th:classappend="${code} == 'history' ? 'active' : ''"  href="/admin/historyManager"> <i
 								class="fa fa-book"></i> <span>연혁 관리</span>
 						</a>
 						</li>
-						<li class="sub-menu"><a th:classappend="${code} == 'notice' ? 'active' : ''"  href="javascript:;"> <i
+						<li class="sub-menu" th:if="${@adminMenu.can('notice')}"><a th:classappend="${code} == 'notice' ? 'active' : ''"  href="javascript:;"> <i
 								class="fa fa-envelope"></i> <span>공지사항 관리</span>
 						</a>
 							<ul class="sub">
@@ -75,12 +76,12 @@
 								<li><a href="/admin/noticeManager">공지사항 관리</a></li>
 							</ul>
 						</li>
-						<li><a th:classappend="${code} == 'information' ? 'active' : ''"  href="/admin/siteManager"> <i class="fa fa-tasks"></i><span>회사정보관리</span>
+						<li th:if="${@adminMenu.can('information')}"><a th:classappend="${code} == 'information' ? 'active' : ''"  href="/admin/siteManager"> <i class="fa fa-tasks"></i><span>회사정보관리</span>
 						</a></li>
-						<li><a th:classappend="${code} == 'reference' ? 'active' : ''"  href="/admin/referenceManager"> <i
+						<li th:if="${@adminMenu.can('reference')}"><a th:classappend="${code} == 'reference' ? 'active' : ''"  href="/admin/referenceManager"> <i
 								class="fa fa-cogs"></i><span>자료실 관리</span>
 						</a></li>
-						<li class="sub-menu"><a th:classappend="${code} == 'brand' ? 'active' : ''"  href="javascript:;"> <i class="fa fa-dashboard"></i>
+						<li class="sub-menu" th:if="${@adminMenu.can('brand')}"><a th:classappend="${code} == 'brand' ? 'active' : ''"  href="javascript:;"> <i class="fa fa-dashboard"></i>
 							<span>제품관리(브랜드관리)</span>
 						</a>
 							<ul class="sub">
@@ -89,7 +90,7 @@
 								<li><a href="/admin/brandProductManager">제품관리</a></li>
 							</ul>
 						</li>
-						<li class="sub-menu"><a th:classappend="${code} == 'site' or ${code} == 'popup' ? 'active' : ''"  href="javascript:;"> <i
+						<li class="sub-menu" th:if="${@adminMenu.can('site')}"><a th:classappend="${code} == 'site' or ${code} == 'popup' ? 'active' : ''"  href="javascript:;"> <i
 								class="fa fa-camera"></i> <span>사이트관리</span>
 						</a>
 							<ul class="sub">
@@ -99,19 +100,19 @@
 								<li><a href="/admin/popupManager">팝업 관리</a></li>
 							</ul>
 						</li>
-						<li><a th:classappend="${code} == 'certification' ? 'active' : ''"  href="/admin/certificationManager"> <i
+						<li th:if="${@adminMenu.can('certification')}"><a th:classappend="${code} == 'certification' ? 'active' : ''"  href="/admin/certificationManager"> <i
 								class="fa fa-book"></i> <span>인증서 관리</span>
 						</a>
 						</li>
-						<li><a th:classappend="${code} == 'namecard' ? 'active' : ''"  href="/admin/namecardManager"> <i
+						<li th:if="${@adminMenu.can('namecard')}"><a th:classappend="${code} == 'namecard' ? 'active' : ''"  href="/admin/namecardManager"> <i
 								class="fa fa-user"></i> <span>디지털 명함 관리</span>
 						</a>
 						</li>
-						<li><a th:classappend="${code} == 'enName' ? 'active' : ''"  href="/admin/enNameManager"> <i
+						<li th:if="${@adminMenu.can('enName')}"><a th:classappend="${code} == 'enName' ? 'active' : ''"  href="/admin/enNameManager"> <i
 								class="fa fa-globe"></i> <span>영문명 관리</span>
 						</a>
 						</li>
-						<li><a th:classappend="${code} == 'pageText' ? 'active' : ''"  href="/admin/pageTextManager"> <i
+						<li th:if="${@adminMenu.can('pageText')}"><a th:classappend="${code} == 'pageText' ? 'active' : ''"  href="/admin/pageTextManager"> <i
 								class="fa fa-pencil"></i> <span>페이지 문구 관리</span>
 						</a>
 						</li>

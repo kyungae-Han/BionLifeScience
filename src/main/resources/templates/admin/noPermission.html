@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="KO" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/admin/common :: headMenu}">
+</head>
+
+<body>
+	<section id="container">
+		<th:block th:replace="~{fragments/admin/common :: topBar}"></th:block>
+		<th:block th:replace="~{fragments/admin/common :: sideMenu('none')}"></th:block>
+		<section id="main-content">
+			<section class="wrapper">
+				<div class="row mt">
+					<div class="col-lg-8">
+						<div class="form-panel">
+							<h4><i class="fa fa-lock"></i> 아직 쓸 수 있는 메뉴가 없습니다</h4>
+							<p class="help-block">
+								이 계정은 일반회원이고, 관리자가 아직 메뉴 권한을 주지 않았습니다.
+								관리자에게 필요한 메뉴를 요청해 주세요.
+							</p>
+							<p class="help-block">
+								권한을 받으면 다시 로그인하지 않아도 새로고침하면 왼쪽 메뉴에 바로 나타납니다.
+							</p>
+							<div class="prod-filter-foot">
+								<a class="btn btn-default" href="/admin/passwordForm">비밀번호 변경</a>
+								<a class="btn btn-default" href="/logout">로그아웃</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+	</section>
+	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
+</body>
+</html>

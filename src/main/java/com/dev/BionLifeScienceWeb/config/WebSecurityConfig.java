@@ -46,8 +46,12 @@ public class WebSecurityConfig {
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
             .requestMatchers("/api/v1/join").denyAll()
-            .requestMatchers("/clientDelete").hasAuthority("ROLE_ADMIN")
-            .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+            // 관리자와 일반회원이 들어온다. 일반회원이 어느 대카테고리를 쓸지는
+            // AdminMenuInterceptor 가 주소마다 확인한다. 계정 관리는 관리자만이다
+            .requestMatchers("/admin/memberInsert", "/admin/memberList", "/admin/memberDelete/**",
+                             "/admin/memberEdit/**", "/admin/memberUpdate").hasAuthority("ROLE_ADMIN")
+            .requestMatchers("/clientDelete").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+            .requestMatchers("/admin", "/admin/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
             .requestMatchers("/**", "/api/v1/**").permitAll()
             .anyRequest().authenticated()
         )

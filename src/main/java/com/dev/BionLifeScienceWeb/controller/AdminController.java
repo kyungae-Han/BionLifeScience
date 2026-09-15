@@ -39,6 +39,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dev.BionLifeScienceWeb.controller.api.SummernoteImageProcessor;
+import com.dev.BionLifeScienceWeb.model.AdminMenu;
 import com.dev.BionLifeScienceWeb.model.AllowedEmailAddress;
 import com.dev.BionLifeScienceWeb.model.AllowedEmailTld;
 import com.dev.BionLifeScienceWeb.model.Client;
@@ -66,6 +67,7 @@ import com.dev.BionLifeScienceWeb.service.ClientService;
 import com.dev.BionLifeScienceWeb.service.CompanyInfoService;
 import com.dev.BionLifeScienceWeb.service.MemberService;
 import com.dev.BionLifeScienceWeb.service.NoticeService;
+import com.dev.BionLifeScienceWeb.service.member.AdminMenuAccess;
 import com.dev.BionLifeScienceWeb.service.page.PageContentAdminService;
 import com.dev.BionLifeScienceWeb.service.page.PageGroupAdminService;
 import com.dev.BionLifeScienceWeb.utils.PasswordEncoding;
@@ -99,6 +101,7 @@ public class AdminController {
 	
 	
 	private final MemberRepository memberRepository;
+	private final AdminMenuAccess adminMenuAccess;
 	private final PasswordEncoding passwordEncoder;
 	
 	//******************************어드민메인
@@ -208,13 +211,23 @@ public class AdminController {
 	    Member member = memberRepository.findById(id).orElseThrow(() ->
 	        new IllegalArgumentException("회원 정보를 찾을 수 없습니다."));
 	    model.addAttribute("member", member);
+	    model.addAttribute("menus", AdminMenu.values());
+	    model.addAttribute("grantedCodes", memberService.menuCodesOf(id));
 	    return "admin/memberInsert"; // 같은 폼 재사용
 	}
 	
 	@PostMapping("/memberUpdate")
-	public String memberUpdate(@ModelAttribute Member member) {
-	    memberService.updateMember(member);
-	    return "redirect:/admin/memberList";
+	public String memberUpdate(@ModelAttribute Member member,
+	                           @RequestParam(value = "menus", required = false) List<String> menus,
+	                           RedirectAttributes ra) {
+	    try {
+	        memberService.updateMember(member, menus, adminMenuAccess.currentMemberId());
+	        ra.addFlashAttribute("msg", "계정이 수정되었습니다.");
+	        return "redirect:/admin/memberList";
+	    } catch (IllegalStateException e) {
+	        ra.addFlashAttribute("msg", e.getMessage());
+	        return "redirect:/admin/memberEdit/" + member.getId();
+	    }
 	}
 
 	

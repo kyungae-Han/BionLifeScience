@@ -15,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
+import com.dev.BionLifeScienceWeb.filter.AdminMenuInterceptor;
 import com.dev.BionLifeScienceWeb.filter.RateLimitInterceptor;
 
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class WebConfig implements WebMvcConfigurer {
 
   private final RateLimitInterceptor rateLimitInterceptor;
+  private final AdminMenuInterceptor adminMenuInterceptor;
 
   @Value("${spring.upload.path}")
   private String uploadPath;
@@ -61,6 +63,10 @@ public class WebConfig implements WebMvcConfigurer {
     // 고객문의 폼에만 속도 제한 적용
     registry.addInterceptor(rateLimitInterceptor)
             .addPathPatterns("/clientInsert");
+
+    // 일반회원은 관리자가 준 대카테고리만 쓴다. /clientDelete 는 /admin 밖이지만 문의사항 삭제다
+    registry.addInterceptor(adminMenuInterceptor)
+            .addPathPatterns("/admin", "/admin/**", "/clientDelete");
 
     // 언어 전환은 모든 화면에서 동작해야 한다
     registry.addInterceptor(localeChangeInterceptor());

@@ -9,12 +9,13 @@
 
 <section id="container">
 	<th:block th:replace="~{fragments/admin/common :: topBar}"></th:block>
-	<th:block th:replace="~{fragments/admin/common :: sideMenu('index')}"></th:block>
+	<th:block th:replace="~{fragments/admin/common :: sideMenu('member')}"></th:block>
 	<section id="main-content">
 		<section class="wrapper">
 			<div class="row mt">
-				<div class="col-lg-8">			
-				 <h4>멤버 등록</h4>
+				<div class="col-lg-8">
+				 <h4 th:text="${member.id != null ? '계정 수정' : '계정 등록'}">계정 등록</h4>
+					<div class="alert alert-warning" th:if="${msg}" th:text="${msg}">안내</div>
 					<div class="form-panel">
 						  <form th:action="@{${member.id} != null ? '/admin/memberUpdate' : '/admin/memberInsert'}" class="form-horizontal style-form" method="post"  th:object="${member}">
 						  <input type="hidden" th:field="*{id}">
@@ -27,7 +28,10 @@
 							<div class="form-group">
 							    <label for="Password" class="col-lg-2 control-label">비밀번호</label>
 							    <div class="col-lg-10">
-							    	<input class="form-control"  id="Password" type="password" th:field="*{password}" placeholder="비밀번호를 입력하세요 (수정 시 미입력 = 기존 유지)">
+							    	<!-- 값을 채우지 않는다. 수정 화면에서 해시가 칸에 들어가 다시 저장되면 비밀번호가 바뀐다 -->
+							    	<input class="form-control" id="Password" type="password" name="password" autocomplete="new-password"
+							    		th:required="${member.id == null}"
+							    		th:placeholder="${member.id != null ? '비워 두면 기존 비밀번호를 유지합니다' : '비밀번호를 입력하세요'}">
 							    </div>
 							</div>
 							<div class="form-group">
@@ -41,7 +45,7 @@
 							    <div class="col-lg-10">
 							    	<input class="form-control"  id="Email" type="email" th:field="*{email}">
 							    </div>
-							</div>    
+							</div>
 							<div class="form-group">
 							    <label for="Phone" class="col-lg-2 control-label">전화번호</label>
 							    <div class="col-lg-10">
@@ -49,18 +53,41 @@
 							    </div>
 							</div>
 							<div class="form-group">
-							    <label class="col-lg-2 control-label">권한</label>
+							    <label for="role" class="col-lg-2 control-label">권한</label>
 							    <div class="col-lg-10">
-								    <select class="form-control"  th:field="*{role}">
-								      <option value="ROLE_USER" selected>일반회원</option>
-								      <option value="ROLE_ADMIN" selected>관리자</option>
+								    <select class="form-control" th:field="*{role}">
+								      <option value="ROLE_USER">일반회원</option>
+								      <option value="ROLE_ADMIN">관리자</option>
 								    </select>
+								    <p class="help-block" id="adminNote">관리자는 모든 메뉴와 계정 관리를 씁니다.</p>
 							    </div>
-							</div>    
-							
+							</div>
+
+							<!-- 일반회원일 때만 보인다 -->
+							<div class="form-group" id="menuGroup">
+							    <label class="col-lg-2 control-label">사용할 메뉴</label>
+							    <div class="col-lg-10">
+							    	<p class="help-block">
+							    		체크한 대카테고리만 쓸 수 있습니다. 대카테고리를 주면 그 아래 화면과 등록, 수정, 삭제가 모두 열립니다.
+							    		바꾼 권한은 상대가 다시 로그인하지 않아도 바로 적용됩니다.
+							    	</p>
+							    	<div class="menu-grant">
+							    		<label class="menu-grant-item" th:each="m : ${menus}">
+							    			<input type="checkbox" name="menus" th:value="${m.code}"
+							    				th:checked="${grantedCodes.contains(m.code)}">
+							    			<span th:text="${m.label}">메뉴</span>
+							    		</label>
+							    	</div>
+							    	<div class="menu-grant-tools">
+							    		<button type="button" class="btn btn-default btn-xs" id="menuAll">모두 선택</button>
+							    		<button type="button" class="btn btn-default btn-xs" id="menuNone">모두 해제</button>
+							    	</div>
+							    </div>
+							</div>
+
 							<div class="form-group pb-3">
-							  <div class="col-lg-12 text-center">
-							    <button type="submit" class="btn btn-theme" th:text="${member.id != null ? '수정' : '등록'}"></button>
+							  <div class="col-lg-12">
+							    <button type="submit" class="btn btn-theme" th:text="${member.id != null ? '수정' : '등록'}">등록</button>
 							  </div>
 							</div>
 						  </form>
@@ -68,9 +95,26 @@
 				</div>
 			</div>
 		</section>
-	</section>			  
- </section> 
+	</section>
+ </section>
  	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
 	<script src="/administration/lib/search.js" type="text/javascript"></script>
+	<script>
+	$(function () {
+		var $role = $('#role');
+
+		// 관리자는 모든 메뉴를 쓰니 체크 칸이 필요 없다
+		function sync() {
+			var user = $role.val() === 'ROLE_USER';
+			$('#menuGroup').toggle(user);
+			$('#adminNote').toggle(!user);
+		}
+		$role.on('change', sync);
+		sync();
+
+		$('#menuAll').on('click', function () { $('input[name="menus"]').prop('checked', true); });
+		$('#menuNone').on('click', function () { $('input[name="menus"]').prop('checked', false); });
+	});
+	</script>
 </body>
 </html>

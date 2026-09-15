@@ -1061,3 +1061,40 @@ input[type="date"]:focus::-webkit-calendar-picker-indicator { opacity: 1; }
 	background: var(--bn-surface-2);
 	border-bottom: 1px solid var(--bn-line-3);
 }
+
+
+/* ── 계정 권한 ────────────────────────────────────────────── */
+
+/* 왼쪽 차림표는 권한 없는 대카테고리를 빼고 그린다.
+   예전엔 첫 줄에만 .mt 가 붙어 있어서, 첫 줄이 빠지면 위 여백이 사라졌다.
+   남은 줄 중 첫 줄에 여백을 준다. */
+ul.sidebar-menu > li:first-child { margin-top: 25px; }
+
+/* 계정 등록·수정의 메뉴 체크 칸 */
+.menu-grant {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+	gap: var(--bn-gap-2);
+	margin: var(--bn-gap-2) 0;
+}
+.menu-grant-item {
+	display: flex; align-items: center; gap: var(--bn-gap-2);
+	margin: 0; padding: 8px 10px;
+	border: 1px solid var(--bn-line-2); border-radius: 6px;
+	background: var(--bn-surface); color: var(--bn-ink-2);
+	font-weight: normal; cursor: pointer;
+}
+.menu-grant-item input { margin: 0; }
+.menu-grant-item:has(input:checked) {
+	border-color: var(--bn-accent); background: var(--bn-accent-bg); color: var(--bn-ink);
+}
+.menu-grant-tools { display: flex; gap: var(--bn-gap-2); }
+
+/* 계정 목록의 사용 메뉴 표시 */
+.menu-tag {
+	display: inline-block; margin: 0 4px 4px 0; padding: 2px 6px;
+	border-radius: 4px; background: var(--bn-surface-3);
+	color: var(--bn-ink-2); font-size: 11.5px;
+}
+.menu-tag.all { background: var(--bn-accent-bg); color: var(--bn-accent-ink); }
+.menu-tag.none { background: transparent; color: var(--bn-ink-4); padding-left: 0; }
