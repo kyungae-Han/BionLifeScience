@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html dir="ltr" th:lang="${#locale.language}" lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title th:text="${page.pageName}">페이지</title>
+<meta name="description" th:content="${page.pageContent}" content="">
+
+<!--
+  독립 레이아웃 이벤트 페이지.
+  page_type 이 FULL 인 페이지가 이 템플릿으로 그려진다.
+
+  공통 머리말·꼬리말을 넣지 않는다. 넣으면 style.css 가 따라 들어와
+  원본 디자인이 깨진다 (CLAUDE.md 6번).
+
+  화면 스타일은 slug 와 같은 이름의 CSS 파일에서 읽는다.
+  예) slug 가 pa-micro-N 이면 /front/css/pages/pa-micro-N.css
+  원본 HTML 의 <style> 내용을 그대로 그 파일에 넣으면 된다.
+  편집기는 <style> 태그를 지우지만 이 파일은 건드리지 못한다.
+
+  본문 글과 이미지는 관리자 이벤트 페이지 관리에서 고친다.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans+KR:wght@400;500;700&amp;display=swap">
+<link rel="stylesheet" th:href="@{'/front/css/pages/' + ${page.slug} + '.css'}">
+</head>
+
+<body style="margin:0">
+<div th:utext="${page.pageDesc}"></div>
+</body>
+</html>

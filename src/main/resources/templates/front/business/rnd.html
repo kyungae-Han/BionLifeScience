@@ -13,7 +13,7 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 </style>
 
 
-<body class="stretched">
+<body class="stretched rnd">
   <div id="wrapper" class="clearfix">
   
 	    <th:block
@@ -30,6 +30,18 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
     	<div id="page-title">
 				<h1 class="sec-head" th:text="${@pageText.get('rnd', 'rnd.title')} ?: _">기업부설 연구소</h1>
 				<p th:text="${@pageText.get('rnd', 'rnd.subtitle')} ?: _">생명과학, 질병 진단, 의료기기 관련 소모품, 부자재, Plasticware, 진단 kit 등에 대한 연구 개발 업무를 수행</p>
+		</div>
+
+		<!-- 회사소개와 같은 페이지 내비게이션. 회사소개에서 넘어왔을 때 길이 끊기지 않게 같은 자리에 둔다.
+		     여기서는 다른 화면이라 회사소개 쪽 항목은 /about 의 해당 자리로 보낸다.
+		     회사소개 화면은 스크롤에 따라 스크립트가 show 를 붙이지만, 이 화면은 한 곳에 머무르므로 처음부터 붙여 둔다. -->
+		<div class="breadcrumb-wrap show">
+			<ul>
+				<li><a href="/about#about" th:text="${@pageText.get('rnd', 'rnd.nav.about')} ?: _">회사소개</a></li>
+				<li><a href="/about#history" th:text="${@pageText.get('rnd', 'rnd.nav.history')} ?: _">연혁</a></li>
+				<li><a href="/rnd" aria-current="page" th:text="${@pageText.get('rnd', 'rnd.nav.lab')} ?: _">기업부설 연구소</a></li>
+				<li><a href="/about#customerCenter" th:text="${@pageText.get('rnd', 'rnd.nav.contact')} ?: _">견적문의</a></li>
+			</ul>
 		</div>
     
 		<!-- Corporate Lab -->
@@ -330,7 +342,8 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
   </div>
   <th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
 
-  <script th:src="@{/front/js/timeline.js}" defer></script>
+  <script th:src="@{/front/js/common/breadcrumb-scroll.js}" defer></script>
+<script th:src="@{/front/js/timeline.js}" defer></script>
   
   
 	<script>

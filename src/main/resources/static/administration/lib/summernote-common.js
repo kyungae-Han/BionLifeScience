@@ -248,6 +248,37 @@
         }
       }
     });
+
+    // 저장할 때 편집기 내용을 원래 입력칸으로 옮긴다.
+    //
+    // 코드 보기 상태에서는 편집기가 입력칸을 갱신하지 않는다.
+    // 그래서 코드 보기로 붙여 넣고 바로 저장하면 예전 내용이 저장됐다.
+    // 저장이 됐다 안 됐다 하던 원인이다.
+    //
+    // 폼을 보내기 직전에 코드 보기를 끄고 내용을 한 번 더 넣어 준다.
+    // 편집기를 쓰는 모든 화면에 같이 걸린다.
+    // 한 화면에 편집기가 둘 이상일 때가 있다 (한글칸·영문칸).
+    // 이름이 같으면 나중에 붙는 쪽이 앞의 것을 지워 버리므로 칸마다 다른 이름을 쓴다.
+    var syncNs = 'submit.summernoteSync_' + ($editor.attr('id') || Math.random().toString(36).slice(2));
+
+    $editor.closest('form').off(syncNs).on(syncNs, function () {
+      try {
+        var $note = $editor.next('.note-editor');
+        var $codable = $note.find('.note-codable');
+
+        // 코드 보기 상태면 거기 적힌 글자를 그대로 가져간다.
+        // 편집 화면으로 되돌리면 편집기가 HTML 을 자기 방식대로 다시 써서
+        // 붙여 넣은 태그가 바뀌거나 잘린다. 그래서 되돌리지 않고 원문을 쓴다.
+        if ($codable.length && $codable.is(':visible')) {
+          $editor.val($codable.val());
+          return;
+        }
+
+        $editor.val($editor.summernote('code'));
+      } catch (e) {
+        // 편집기가 이미 사라진 경우는 그냥 넘어간다
+      }
+    });
   };
 
 })(window, window.jQuery);

@@ -622,83 +622,8 @@
   });
 })();
 
-//  nav top body 스크롤 이벤트 (변경 없음)
-document.addEventListener("DOMContentLoaded", () => {
-  const breadcrumb = document.querySelector(".breadcrumb-wrap");
-  const footer     = document.querySelector("footer");
-  const header     = document.querySelector("#header") || document.querySelector(".header-wrap");
-  if (!breadcrumb) return;
-
-  let footerVisible = false;
-  let isHidden      = false;
-  let idleTimer     = null;
-
-  const AT_TOP_EPS = 1;
-  const IDLE_MS    = 1800;
-
-  const atTop = () => window.scrollY <= AT_TOP_EPS;
-  const headerH = () => (header ? header.offsetHeight || 0 : 0);
-  const inHeaderZone = () => window.scrollY <= Math.max(0, headerH() - AT_TOP_EPS);
-
-  function setFixedBottom(toBottom) {
-    breadcrumb.classList.toggle("fixed-bottom", !!toBottom);
-  }
-
-  function setHidden(nextHidden) {
-    if (isHidden === nextHidden) return;
-    isHidden = nextHidden;
-    if (!nextHidden) {
-      breadcrumb.classList.remove('gone');
-      requestAnimationFrame(() => breadcrumb.classList.remove("hide"));
-    } else {
-      breadcrumb.classList.add("hide");
-    }
-  }
-
-  breadcrumb.addEventListener('transitionend', (e) => {
-    if (isHidden && (e.propertyName === 'opacity' || e.propertyName === 'transform')) {
-      breadcrumb.classList.add('gone');
-    }
-  });
-
-  if (footer) {
-    const io = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        footerVisible = entry.isIntersecting;
-        if (footerVisible) setHidden(true);
-      }
-    }, { threshold: 0 });
-    io.observe(footer);
-  }
-
-  function onScroll() {
-    if (footerVisible) { setHidden(true); return; }
-
-    if (atTop() || inHeaderZone()) {
-      setFixedBottom(false);
-      setHidden(false);
-    } else {
-      setFixedBottom(true);
-      setHidden(false);
-    }
-
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(() => {
-      if (footerVisible) { setHidden(true); return; }
-      if (atTop() || inHeaderZone()) setHidden(false);
-      else setHidden(true);
-    }, IDLE_MS);
-  }
-  window.addEventListener("scroll", onScroll, { passive: true });
-
-  function sync() {
-    if (atTop() || inHeaderZone()) setFixedBottom(false);
-    else setFixedBottom(true);
-    setHidden(false);
-  }
-  window.addEventListener("load",   sync, { passive: true });
-  window.addEventListener("resize", sync, { passive: true });
-});
+// 내비게이션 스크롤 동작은 /front/js/common/breadcrumb-scroll.js 로 옮겼다.
+// R&D 화면과 같은 동작을 써야 해서 한곳에 두었다.
 
 document.addEventListener('DOMContentLoaded', () => {
   const headerEl = document.getElementById('header');

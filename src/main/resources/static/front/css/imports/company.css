@@ -1,11 +1,10 @@
 @charset "UTF-8";
 
 :root {
-	--brand: #1e7f7c; /* 포인트 */
-	--ink: #0b1320; /* 본문 */
-	--muted: #627084; /* 보조 텍스트 */
-	--card: #ffffff; /* 카드 배경 */
-	--bg: #f6f8fb; /* 섹션 배경 */
+	--brand: #1e7f7c; --ink: #0b1320; 
+	--muted: #627084; 
+	--card: #ffffff; 
+	--bg: #f6f8fb; 
 	--ring: rgba(30, 127, 124, .18);
 	--shadow: 0 10px 30px rgba(3, 10, 27, .08), 0 2px 8px
 		rgba(3, 10, 27, .06);
@@ -18,9 +17,7 @@
 }
 
 
-/*-----------------------------------
-	common
--------------------------------------*/
+
 
 html {
   scroll-behavior: auto !important;
@@ -77,12 +74,15 @@ button {background: none; border:0; }
 
 .about section {padding: 0 25px;}
 
-/*---------------------------------
-	page nav
-----------------------------------*/
+
    
 
- .about .breadcrumb-wrap {
+ .about .breadcrumb-wrap ,
+
+
+   
+
+ .rnd .breadcrumb-wrap {
     position: fixed;
     left: 0;
     right: 0;
@@ -104,16 +104,21 @@ button {background: none; border:0; }
   
   
   
-.about .breadcrumb-wrap.fixed-bottom {
+.about .breadcrumb-wrap.fixed-bottom ,
+  
+  
+  
+.rnd .breadcrumb-wrap.fixed-bottom {
     top: auto !important;
     bottom: 30px;
   }
 
-  /* 숨김 상태 */
- .about .breadcrumb-wrap.hide {
+  .about .breadcrumb-wrap.hide ,
+
+  
+ .rnd .breadcrumb-wrap.hide {
     opacity: 0;
-    transform: scale(0.95); /* 작아지면서 사라짐 */
-    visibility: hidden;
+    transform: scale(0.95); visibility: hidden;
     pointer-events: none;
     backdrop-filter: none !important;
     box-shadow: none !important;
@@ -121,11 +126,14 @@ button {background: none; border:0; }
   }
   
   
-.about .breadcrumb-wrap.gone{
+.about .breadcrumb-wrap.gone,
+  
+  
+.rnd .breadcrumb-wrap.gone{
   display: none;                 
 }
 
-/* 스티키 상태에선 항상 표시(호환용 여러 클래스 대비) */
+
 .sticky-header .breadcrumb-wrap,
 .header-is-sticky .breadcrumb-wrap,
 .is-stuck .breadcrumb-wrap,
@@ -143,10 +151,16 @@ button {background: none; border:0; }
 
 
 
-.about .breadcrumb-wrap ul, 
+.about .breadcrumb-wrap ul,
+
+
+
+.rnd .breadcrumb-wrap ul, 
 .breadcrumb-wrap li {list-style: none;}
 
-.about .breadcrumb-wrap ul {
+.about .breadcrumb-wrap ul ,
+
+.rnd .breadcrumb-wrap ul {
 	position:relative;
 	display: flex;
 	justify-content: center;
@@ -154,7 +168,9 @@ button {background: none; border:0; }
 	gap: 120px;
 }
 
-.about .breadcrumb-wrap ul::after{
+.about .breadcrumb-wrap ul::after,
+
+.rnd .breadcrumb-wrap ul::after{
 	content: '';
 	position:absolute;
 	top:0;
@@ -168,7 +184,10 @@ button {background: none; border:0; }
 }
 
 
-.about .breadcrumb-wrap li {
+.about .breadcrumb-wrap li ,
+
+
+.rnd .breadcrumb-wrap li {
   position: relative;
   padding: 20px 0;
   opacity: 0;
@@ -176,8 +195,11 @@ button {background: none; border:0; }
   transition: all 0.6s ease;
 }
 
-/*페이지 로드시 활성화 클래스*/
-.about .breadcrumb-wrap.show li {
+
+.about .breadcrumb-wrap.show li ,
+
+
+.rnd .breadcrumb-wrap.show li {
 	opacity: 1;
 	transform: translateY(0);
 	transition-delay: 0.35s;
@@ -185,7 +207,11 @@ button {background: none; border:0; }
 
 
 
-.about .breadcrumb-wrap li:not(:last-child)::after {
+.about .breadcrumb-wrap li:not(:last-child)::after ,
+
+
+
+.rnd .breadcrumb-wrap li:not(:last-child)::after {
   content: '';
   position: absolute;
   right: -60px;  /* 선 위치 (gap 절반만큼) */
@@ -199,11 +225,14 @@ button {background: none; border:0; }
 
 
 @media(max-width:991px){
-	.about .breadcrumb-wrap ul {
+	.about .breadcrumb-wrap ul ,
+	.rnd .breadcrumb-wrap ul {
 		gap: 40px;
 	} 
 	
-	.about .breadcrumb-wrap li:not(:last-child)::after {
+	.about .breadcrumb-wrap li:not(:last-child)::after , 
+	
+	.rnd .breadcrumb-wrap li:not(:last-child)::after {
 	  right: -14px;
 	  top: 50%;
 	  height: 17px;
@@ -212,25 +241,34 @@ button {background: none; border:0; }
 }
 
 @media (max-width:768px){
-	.about .breadcrumb-wrap ul {
+	.about .breadcrumb-wrap ul ,
+	.rnd .breadcrumb-wrap ul {
 		    gap: 20px;
 	}
 	
-	.about .breadcrumb-wrap ul li {
+	.about .breadcrumb-wrap ul li ,
+	
+	.rnd .breadcrumb-wrap ul li {
 		padding:  0 7px;
 	}
 }
 
 
 
-.about .breadcrumb-wrap a {
+.about .breadcrumb-wrap a ,
+
+
+
+.rnd .breadcrumb-wrap a {
 	color: #fff;
 	font-weight: 700;
 	font-family: 'Noto Sans KR', sans-serif;
 	font-size: clamp(14px, 2.6vw, 18px);
 }
 
-.about .breadcrumb-wrap a:hover {color: var(--bs-gray-900);}
+.about .breadcrumb-wrap a:hover ,
+
+.rnd .breadcrumb-wrap a:hover {color: var(--bs-gray-900);}
 
 
 

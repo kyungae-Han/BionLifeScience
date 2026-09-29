@@ -46,6 +46,11 @@ public class DynamicPageController {
     	        .ifPresent(brand -> model.addAttribute("brandId", brand.getId()));
     	        
     	        
+    	        // page_type 이 FULL 이면 공통 머리말 없이 그 페이지만 그린다.
+    	        // 원본 HTML 을 그대로 옮겨 온 홍보 페이지처럼 자기 디자인을 가진 화면에 쓴다.
+    	        if ("FULL".equalsIgnoreCase(page.getPageType())) {
+    	            return "front/eventPage/pageDetailFull";
+    	        }
     	        return "front/eventPage/pageDetail";
     	    }
     	
