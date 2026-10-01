@@ -51,7 +51,7 @@
 <body class="stretched">
 	<div id="wrapper" class="clearfix">
 		<th:block th:fragment="headerSrc(transparent, menuList)">
-			<header id="header" class="full-header" th:classappend="${transparent} == true ? transparent-header">
+			<header id="header" class="full-header" data-mobile-sticky="true" th:classappend="${transparent} == true ? transparent-header">
 				<div id="header-wrap">
 					<div class="container">
 						<div class="header-row">

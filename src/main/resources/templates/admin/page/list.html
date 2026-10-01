@@ -63,7 +63,7 @@
 								                        <th style="width: 90px;">사용여부</th>
 								                        <th style="width: 150px;">등록일</th>
 								                        <th style="width: 150px;">수정일</th>
-								                        <th style="width: 100px;">관리</th>
+								                        <th style="width: 230px;">관리</th>
 								                    </tr>
 								                    </thead>
 								                    
@@ -91,7 +91,25 @@
 														    <td th:text="${#temporals.format(page.updatedAt,'yyyy-MM-dd HH:mm')}"></td>
 														
 														    <td>
-														        <a class="btn btn-danger" th:href="@{/admin/pageManager/form/{id}(id=${page.pageContentId})}">수정</a>
+														        <a class="btn btn-theme" th:href="@{/admin/pageManager/form/{id}(id=${page.pageContentId})}">수정</a>
+														        <form th:action="@{/admin/pageManager/delete}" method="post" style="display:inline;"
+														              th:if="${page.useYn == 'Y'}"
+														              onsubmit="return confirm('화면에서만 숨깁니다. 데이터는 남고 수정 화면에서 되돌릴 수 있습니다. 계속할까요?');">
+														            <input type="hidden" name="id" th:value="${page.pageContentId}">
+														            <button type="submit" class="btn btn-default">사용 안 함</button>
+														        </form>
+														        <form th:action="@{/admin/pageManager/remove}" method="post" style="display:inline;"
+														              th:unless="${page.useYn == 'Y'}"
+														              onsubmit="return confirm('이 페이지를 DB 에서 완전히 지웁니다. 되돌릴 수 없습니다. 계속할까요?');">
+														            <input type="hidden" name="id" th:value="${page.pageContentId}">
+														            <button type="submit" class="btn btn-danger">페이지삭제</button>
+														        </form>
+														        <form th:action="@{/admin/pageManager/removeGroup}" method="post" style="display:inline;"
+														              th:if="${page.useYn != 'Y' and #strings.equalsIgnoreCase(page.slug, page.pageGroup.basePath)}"
+														              class="group-delete-form" th:data-group="${page.pageGroup.groupName}">
+														            <input type="hidden" name="groupId" th:value="${page.pageGroup.pageGroupId}">
+														            <button type="submit" class="btn btn-danger">그룹삭제</button>
+														        </form>
 														    </td>
 														</tr>
 								                    </tbody>
@@ -108,6 +126,21 @@
 	
 	
 	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
+
+	<script>
+	// 그룹을 지우면 그 안의 페이지가 전부 같이 사라진다.
+	// 어느 그룹인지 이름을 보여 주고 한 번 더 묻는다.
+	// 사용 중인 페이지가 하나라도 있으면 서버가 거부한다.
+	document.addEventListener('submit', function (e) {
+		var form = e.target;
+		if (!form.classList || !form.classList.contains('group-delete-form')) { return; }
+		var name = form.getAttribute('data-group') || '';
+		var ok = confirm('[' + name + '] 그룹을 DB 에서 지웁니다. '
+			+ '그 안의 페이지가 전부 같이 사라지고, 그룹 주소도 없어집니다. '
+			+ '되돌릴 수 없습니다. 계속할까요?');
+		if (!ok) { e.preventDefault(); }
+	});
+	</script>
 </body>
 
 </html>

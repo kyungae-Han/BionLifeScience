@@ -24,7 +24,6 @@ public class MemberAccount extends User{
                 getAuthorities(member)
              );
         this.member = member;
-        System.out.println(member.toString());
     }
 
     /**
@@ -35,7 +34,6 @@ public class MemberAccount extends User{
     private static Collection<? extends GrantedAuthority> getAuthorities(Member member) {
         String[] userRoles = new String[1];
         userRoles[0] = member.getRole();
-        System.out.println(userRoles[0]);
         Collection<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(userRoles);
         return authorities;
     }

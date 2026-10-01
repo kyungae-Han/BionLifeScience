@@ -94,10 +94,68 @@ public class PageContentAdminService {
         return pageContentRepository.save(entity).getPageContentId();
     }
 
+    /**
+     * 사용 안 함으로 바꾼다. 데이터는 남아 있고 화면에서만 빠진다.
+     * 수정 화면에서 다시 사용으로 되돌릴 수 있다.
+     */
     @Transactional
     public void delete(Long pageContentId) {
         PageContent entity = getDetail(pageContentId);
         entity.setUseYn("N");
+    }
+
+    /**
+     * 페이지를 DB 에서 실제로 지운다. 되돌릴 수 없다.
+     *
+     * 안전장치: 사용 안 함(use_yn = 'N') 인 것만 지울 수 있다.
+     * 쓰고 있는 페이지를 실수로 지우는 일을 막는다. 먼저 사용 안 함으로 바꿔야 한다.
+     *
+     * 올려둔 비주얼 이미지 파일은 업로드 폴더에 그대로 남는다 (사용자 데이터라 건드리지 않는다).
+     */
+    @Transactional
+    public void deleteForever(Long pageContentId) {
+        PageContent entity = getDetail(pageContentId);
+
+        if (!"N".equalsIgnoreCase(nvl(entity.getUseYn()).trim())) {
+            throw new IllegalArgumentException(
+                    "사용 중인 페이지는 지울 수 없습니다. 먼저 '사용 안 함' 으로 바꿔 주세요.");
+        }
+
+        pageContentRepository.delete(entity);
+    }
+
+    /**
+     * 그룹을 그 안의 페이지와 함께 DB 에서 실제로 지운다. 되돌릴 수 없다.
+     *
+     * 안전장치: 그룹 안의 페이지가 전부 사용 안 함(N) 이어야 지울 수 있다.
+     * 하나라도 쓰고 있으면 거부한다.
+     *
+     * 페이지가 그룹을 참조하므로 페이지를 먼저 지워야 한다.
+     * 순서를 바꾸면 외래키 제약에 걸린다.
+     *
+     * @return 같이 지워진 페이지 수
+     */
+    @Transactional
+    public int deleteGroupForever(Long pageGroupId) {
+        PageGroup group = pageGroupRepository.findById(pageGroupId)
+                .orElseThrow(() -> new IllegalArgumentException("페이지 그룹 정보가 없습니다."));
+
+        List<PageContent> pages =
+                pageContentRepository.findByPageGroup_PageGroupIdOrderByPageIndexAscPageContentIdDesc(pageGroupId);
+
+        long using = pages.stream()
+                .filter(p -> !"N".equalsIgnoreCase(nvl(p.getUseYn()).trim()))
+                .count();
+
+        if (using > 0) {
+            throw new IllegalArgumentException(
+                    "이 그룹에 사용 중인 페이지가 " + using + "개 있습니다. "
+                    + "전부 '사용 안 함' 으로 바꾼 뒤에 지울 수 있습니다.");
+        }
+
+        pageContentRepository.deleteAll(pages);
+        pageGroupRepository.delete(group);
+        return pages.size();
     }
 
     private void validateRequired(PageContent form) {

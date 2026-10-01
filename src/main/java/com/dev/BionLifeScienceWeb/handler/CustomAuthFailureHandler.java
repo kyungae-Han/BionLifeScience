@@ -37,7 +37,6 @@ public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHand
         } else if (exception instanceof AuthenticationCredentialsNotFoundException) {
             errorMessage = "AuthenticationCredentialsNotFoundException";
         } else {
-        	System.out.println(exception);
             errorMessage = "알 수 없는 이유로 로그인에 실패하였습니다 관리자에게 문의하세요.";
         }
         errorMessage = URLEncoder.encode(errorMessage, "UTF-8");

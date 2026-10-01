@@ -1,0 +1,411 @@
+@charset "UTF-8";
+
+/* ===========================================================
+   R&D 화면 겉모양 (Figma: BionLifeScience R&D UI Redesign)
+
+   마크업과 문구는 그대로 두고 색·글자·여백·모서리만 바꾼다.
+   company.css 다음에 읽혀야 이긴다. rnd.html 에서 그 순서로 걸어 둔다.
+
+   선택자 앞에 .rnd 를 붙여 이 화면에만 걸리게 한다.
+   company.css 는 회사소개 화면과 같이 쓰기 때문이다.
+
+   색은 Figma 값을 그대로 쓴다. 남색이 #043885 로, 관리자 화면의
+   남색(#0e2a5a)과는 다른 값이다. 시안이 그렇게 되어 있다.
+   =========================================================== */
+
+.rnd {
+  --rnd-navy:    #043885;  /* 히어로·CTA 배경, 큰 숫자 */
+  --rnd-blue:    #0a52b0;  /* 구역 머리말(영문 작은 글씨) */
+  --rnd-sky:     #35b6ea;  /* 단계 번호 */
+  --rnd-pale:    #8fd0ee;  /* 남색 위에 얹는 옅은 파랑 */
+  --rnd-ink:     #121b26;  /* 제목 */
+  --rnd-muted:   #616e7d;  /* 본문 */
+  --rnd-surface: #f7f9fc;  /* 옅은 구역 배경, 카드 배경 */
+  --rnd-line:    #e4ebf4;
+}
+
+
+/* -----------------------------------------------------------
+   01. 상단 제목 — 흰 바탕 가운데 정렬 → 남색 바탕 왼쪽 정렬
+   #page-title 은 id 라 .rnd 를 앞에 붙여야 이긴다.
+   원본이 !important 를 쓰고 있어 배경색도 !important 가 필요하다.
+   ----------------------------------------------------------- */
+.rnd #page-title {
+  background-color: var(--rnd-navy) !important;
+  text-align: left;
+  padding: 120px 0 100px;
+  /* 원본은 고정 머리말에 가리지 않으려고 margin-top:100px 을 준다.
+     이 화면은 위에 #snb 가 있어 이미 자리가 잡혀 있고, 그 100px 이 흰 띠로 보인다. */
+  margin-top: 0;
+}
+
+.rnd #page-title > * {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 20px;
+}
+
+/* 왼쪽 글, 오른쪽 R&D 흐름 칸 */
+.rnd .rnd-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 660px) minmax(0, 480px);
+  gap: 60px;
+  align-items: start;
+}
+
+.rnd .rnd-hero__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+}
+
+/* style.css 의 '#page-title span { color:#777 }' 이 id 라 더 세다.
+   같은 자리에 #page-title 을 끼워 넣어 이기게 한다. */
+.rnd #page-title .rnd-hero__eyebrow {
+  color: #f1f1f1;
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* 오른쪽 칸은 연구소 사진 한 장만 넣는다 */
+.rnd .rnd-hero__panel {
+  border-radius: 28px;
+  overflow: hidden;
+  height: 400px;
+}
+
+.rnd .rnd-hero__panel img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rnd #page-title h1 {
+  color: #fff;
+  text-align: left;
+  font-weight: 700;
+  font-size: clamp(28px, 3.9vw, 56px);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin-bottom: 22px;
+}
+
+/* 본문은 통 전체를 차지하게 두고 오른쪽 여백으로 줄 길이를 줄인다.
+   max-width 로 줄이면 위의 margin:auto 때문에 가운데로 쏠려 제목과 어긋난다. */
+.rnd #page-title p {
+  color: var(--rnd-pale);
+  font-size: clamp(15px, 1.4vw, 20px);
+  line-height: 1.6;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* -----------------------------------------------------------
+   02. 연구 분야 카드 세 장
+   ----------------------------------------------------------- */
+.rnd #institute .il-image-card__contain {
+  background: var(--rnd-surface);
+  border-radius: 18px;
+  padding: 28px;
+  border: 1px solid var(--rnd-line);
+}
+
+.rnd #institute .il-image-card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.rnd #institute .il-image-card__title {
+  color: var(--rnd-ink);
+  font-weight: 700;
+  font-size: clamp(20px, 2vw, 25px);
+  letter-spacing: -0.01em;
+}
+
+.rnd #institute .il-image-card__subtitle {
+  color: var(--rnd-blue);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.rnd #institute .il-image-card__list li {
+  color: var(--rnd-muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.rnd #institute .il-image-card__list li strong { color: var(--rnd-ink); }
+
+/* 넓은 화면에서는 좌우 여백을 없앤다. 바깥 카드(28px)가 이미 여백을 준다.
+   좁은 화면은 원래대로 25px 을 둔다. */
+@media (min-width: 992px) {
+  .rnd #institute .il-image-card__content {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+
+/* -----------------------------------------------------------
+   03. 연구소 정보 칩 — Figma 의 숫자 네 칸 느낌으로
+   ----------------------------------------------------------- */
+.rnd #institute .il-info {
+  background: var(--rnd-surface);
+  border-radius: 20px;
+  padding: 36px 28px;
+}
+
+.rnd #institute .il-chip {
+  background: var(--rnd-navy);
+  color: #fff;
+  border: 0;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.rnd .chip-caption {
+  color: var(--rnd-muted);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.rnd .chip-caption strong { color: var(--rnd-navy); font-weight: 700; }
+
+
+/* -----------------------------------------------------------
+   04. 제품개발 단계 다섯 칸
+   가운데 정렬 → 왼쪽 정렬, 흰 카드 → 옅은 회색 카드
+   덮개 효과(::after)와 hover 는 그대로 둔다.
+   ----------------------------------------------------------- */
+.rnd .step-card {
+  background: var(--rnd-surface);
+  border: 1px solid var(--rnd-line);
+  border-radius: 16px;
+  padding: 22px;
+  text-align: left;
+  box-shadow: none;
+}
+
+.rnd .step-card .icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--rnd-navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 14px;
+}
+
+.rnd .step-card .icon i {
+  font-size: 22px;
+  color: #fff;
+}
+
+.rnd .step-card h6 {
+  color: var(--rnd-navy);
+  font-weight: 700;
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+
+.rnd .step-card .hover-content {
+  color: var(--rnd-muted);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+
+/* -----------------------------------------------------------
+   05. 시제품 이미지 격자
+   ----------------------------------------------------------- */
+.rnd .irregular-image-grid .card {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.rnd .irregular-image-grid .card img {
+  border-radius: 20px;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+
+/* -----------------------------------------------------------
+   06. 구역 제목 공통 / 분석 장비 태그
+   ----------------------------------------------------------- */
+.rnd .fp-heading {
+  color: var(--rnd-ink);
+  font-weight: 700;
+  font-size: clamp(24px, 2.6vw, 34px);
+  letter-spacing: -0.01em;
+}
+
+.rnd .copylight__p .fp-heading + p,
+.rnd .fp-sub {
+  color: var(--rnd-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.rnd #institute .il-tag {
+  background: #fff;
+  border: 1px solid var(--rnd-line);
+  border-radius: 999px;
+  color: var(--rnd-navy);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  padding: 8px 16px;
+}
+
+.rnd #institute .il-callout {
+  background: var(--rnd-surface);
+  border: 1px solid var(--rnd-line);
+  border-left: 4px solid var(--rnd-navy);
+  border-radius: 16px;
+  color: var(--rnd-muted);
+  font-size: 15px;
+  line-height: 1.7;
+  padding: 24px 28px;
+}
+
+.rnd #institute .il-callout strong { color: var(--rnd-navy); }
+
+
+/* -----------------------------------------------------------
+   07. 천연물 구역 — 옅은 바탕으로 구역을 구분한다
+   ----------------------------------------------------------- */
+.rnd .organic { background: var(--rnd-surface); }
+
+/* 원본은 .biz-section 에 회색(--bs-gray-300)을 깔아 두 겹이 된다. 없앤다. */
+.rnd .biz-section { background: none; }
+
+.rnd .organic .biz-overlay p {
+  color: var(--rnd-muted);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.rnd .organic .biz-right .card,
+.rnd .organic .biz-left video {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+
+/* -----------------------------------------------------------
+   08. Quality 카드 네 장
+   사진 카드라 배경은 그대로 두고 모서리와 글자만 맞춘다.
+   ----------------------------------------------------------- */
+/* 배경은 넣지 않는다. 흰 바탕 그대로 둔다. */
+
+/* Figma 의 '3D Modeling' 갤러리 배치를 그대로 쓴다.
+   왼쪽 큰 칸 하나 + 오른쪽에 나머지를 쌓는다.
+   원본은 flex 한 줄이라 넷이 나란히 섰다. 격자로 바꾼다.
+   flex 값을 쓰던 hover 확대(.fp-wrap:hover .fp-card{flex:...})는
+   격자에서는 그냥 무시된다. 사진 확대·어둡게는 그대로 돈다. */
+.rnd .fp-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 1.85fr) minmax(0, 1fr);
+  grid-template-rows: repeat(3, 170px);
+  gap: 24px;
+  max-width: 1200px;
+  border-radius: 0;
+  overflow: visible;
+  box-shadow: none;
+}
+
+.rnd .fp-wrap > .fp-card:first-child { grid-row: span 3; }
+
+.rnd .fp-card {
+  border-radius: 20px;
+  overflow: hidden;
+  min-height: 0;
+  flex: none;
+}
+
+/* 사진 위에 글이 얹혀 있는데 글이 어두운 회색이라 거의 안 읽혔다.
+   위쪽(글이 앉는 자리)에 어두운 그늘을 깔고 글을 흰색으로 바꾼다.
+   원본의 hover 규칙이 글을 다시 어둡게 돌리므로 그것도 같이 막는다. */
+.rnd .fp-card .fp-dim {
+  background: linear-gradient(180deg,
+      rgba(3, 16, 40, 0.74) 0%,
+      rgba(3, 16, 40, 0.48) 46%,
+      rgba(3, 16, 40, 0.16) 100%);
+  opacity: 1;
+}
+
+.rnd .fp-content .fp-title,
+.rnd .fp-content .fp-desc,
+.rnd .fp-wrap .fp-card:hover .fp-content > p,
+.rnd .fp-wrap .fp-card:focus .fp-content > p {
+  color: #fff;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+}
+
+.rnd .fp-title {
+  font-weight: 700;
+  font-size: clamp(18px, 1.8vw, 20px);
+  letter-spacing: 0.01em;
+}
+
+.rnd .fp-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
+
+/* -----------------------------------------------------------
+   좁은 화면
+   Figma 값은 1440px 기준이라 그대로 두면 넘친다.
+   이 파일은 991 / 768 두 단계로 줄인다 (이 프로젝트가 쓰는 기준점).
+   ----------------------------------------------------------- */
+@media (max-width: 991px) {
+  .rnd #page-title { padding: 80px 0 64px; }
+  .rnd .rnd-hero { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .rnd .rnd-hero__panel { height: 260px; border-radius: 20px; }
+  .rnd #page-title h1 { margin-bottom: 16px; }
+
+  .rnd #institute .il-image-card__contain { padding: 22px; border-radius: 16px; }
+  .rnd #institute .il-info { padding: 28px 22px; border-radius: 16px; }
+  .rnd .step-card { padding: 18px; }
+  .rnd .irregular-image-grid .card,
+  .rnd .irregular-image-grid .card img { border-radius: 16px; }
+}
+
+@media (max-width: 768px) {
+  .rnd #page-title { padding: 56px 0 44px; }
+  .rnd #page-title > * { padding: 0 16px; }
+  .rnd #page-title p { font-size: 15px; }
+
+  .rnd #institute .il-image-card__contain { padding: 18px; }
+  .rnd #institute .il-info { padding: 22px 18px; }
+  .rnd #institute .il-callout { padding: 18px 20px; border-radius: 12px; }
+  .rnd #institute .il-tag { font-size: 12px; padding: 6px 12px; }
+
+  .rnd .fp-wrap {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    gap: 16px;
+  }
+  .rnd .fp-wrap > .fp-card:first-child { grid-row: auto; }
+  .rnd .fp-card { min-height: 220px; border-radius: 16px; }
+
+  .rnd .step-card { padding: 16px; }
+  .rnd .step-card .icon { width: 40px; height: 40px; margin-bottom: 10px; }
+  .rnd .step-card .icon i { font-size: 18px; }
+  .rnd .step-card h6 { font-size: 15px; }
+}

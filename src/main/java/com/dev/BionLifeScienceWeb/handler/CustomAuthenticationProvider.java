@@ -31,18 +31,15 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String password = (String) authentication.getCredentials();
         MemberAccount memberAccount = (MemberAccount) userDetailsService.loadUserByUsername(username);
         if (memberAccount.getMember()==null) {
-        	System.out.println("Account is None");
             throw new BadCredentialsException("NONE");
         }
         Member member = memberAccount.getMember();
         if (!passwordEncoder.matches(password, member.getPassword())) {
-        	System.out.println("Password not match");
             throw new BadCredentialsException("PWER");
         }
         
 
         if (!member.getEnabled()) {
-        	System.out.println("not CertificationTT");
             throw new DisabledException("not CertificationTT"+member.getUsername());
         }
 

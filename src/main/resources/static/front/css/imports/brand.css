@@ -13,7 +13,7 @@
 	  width: 100%;
 	  height: auto;
 	  background: rgba(255, 255, 255, 0);
-	  transition: background 0.3s ease height .3s ease;
+	  transition: background 0.3s ease, height 0.3s ease;
 	  z-index: 1000;
 	}
 	
@@ -171,6 +171,21 @@
   font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 20px;
+}
+
+/* 상단 비주얼 글자 크기 (좁은 화면)
+   기본값은 제목 3rem(48px), 좌우 여백 60px 인데 화면 폭과 상관없이 같았다.
+   375px 화면에서 제목만 세로 216px 을 먹고, 좌우 60px 씩 빠져 글자 쓸 폭이 255px 뿐이었다. */
+@media(max-width:991px){
+  .brand-visual-text { padding: 0 40px; }
+  .brand-visual-text h1 { font-size: 2.25rem; margin-bottom: 16px; }
+}
+
+@media(max-width:768px){
+  .brand-visual-text { padding: 0 20px; }
+  .brand-visual-text h1 { font-size: 1.75rem; margin-bottom: 12px; }
+  .brand-visual-text p { font-size: 0.9375rem; margin-bottom: 16px; }
+  .brand_breadcrumb { font-size: 0.8125rem; }
 }
 
 

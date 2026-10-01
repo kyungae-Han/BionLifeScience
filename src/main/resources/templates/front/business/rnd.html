@@ -4,6 +4,8 @@
 </head>
 
 <link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
+<!-- 겉모양만 바꾸는 덧칠. 반드시 company.css 뒤에 와야 이긴다. -->
+<link rel="stylesheet" th:href="@{/front/css/imports/rnd-redesign.css}">
 
 
 <style>
@@ -27,15 +29,27 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 		</section>
     
     
+    	<!-- 상단 제목. 왼쪽은 기존 제목·설명 그대로, 오른쪽은 R&D 흐름을 보여 주는 칸.
+    	     새로 들어간 글은 모두 page_text 로 뺐다. 값이 없으면 여기 적힌 글이 그대로 나온다. -->
     	<div id="page-title">
-				<h1 class="sec-head" th:text="${@pageText.get('rnd', 'rnd.title')} ?: _">기업부설 연구소</h1>
-				<p th:text="${@pageText.get('rnd', 'rnd.subtitle')} ?: _">생명과학, 질병 진단, 의료기기 관련 소모품, 부자재, Plasticware, 진단 kit 등에 대한 연구 개발 업무를 수행</p>
+			<div class="rnd-hero">
+				<div class="rnd-hero__copy">
+					<span class="rnd-hero__eyebrow" th:text="${@pageText.get('rnd', 'rnd.hero.eyebrow')} ?: _">BION R&amp;D CENTER</span>
+					<h1 class="sec-head" th:text="${@pageText.get('rnd', 'rnd.title')} ?: _">기업부설 연구소</h1>
+					<p th:text="${@pageText.get('rnd', 'rnd.subtitle')} ?: _">생명과학, 질병 진단, 의료기기 관련 소모품, 부자재, Plasticware, 진단 kit 등에 대한 연구 개발 업무를 수행</p>
+				</div>
+
+				<div class="rnd-hero__panel">
+					<img th:src="@{/front/images/about/pagetitle.jpg}" alt="기업부설 연구소"
+						 th:alt="${@pageText.get('rnd', 'rnd.title')} ?: '기업부설 연구소'">
+				</div>
+			</div>
 		</div>
 
 		<!-- 회사소개와 같은 페이지 내비게이션. 회사소개에서 넘어왔을 때 길이 끊기지 않게 같은 자리에 둔다.
 		     여기서는 다른 화면이라 회사소개 쪽 항목은 /about 의 해당 자리로 보낸다.
 		     회사소개 화면은 스크롤에 따라 스크립트가 show 를 붙이지만, 이 화면은 한 곳에 머무르므로 처음부터 붙여 둔다. -->
-		<div class="breadcrumb-wrap show">
+		<div class="breadcrumb-wrap show hide gone" data-hide-at-top="true">
 			<ul>
 				<li><a href="/about#about" th:text="${@pageText.get('rnd', 'rnd.nav.about')} ?: _">회사소개</a></li>
 				<li><a href="/about#history" th:text="${@pageText.get('rnd', 'rnd.nav.history')} ?: _">연혁</a></li>
@@ -64,13 +78,10 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 							<h4 class="il-image-card__title" th:text="${@pageText.get('rnd', 'rnd.card1.title')} ?: _">진단·의료기기</h4>
 							<p class="il-image-card__subtitle" th:text="${@pageText.get('rnd', 'rnd.card1.subtitle')} ?: _">진단용 기자재·진단 Kit·소모품 R&amp;D</p>
 							<ul class="il-image-card__list">
-								<li th:utext="${@pageText.get('rnd', 'rnd.card1.item1')} ?: _">Elastomer 재질의 부드러운 소재로 검체 재취용 <strong>Swab</strong> 개발
-								</li>
-								<li th:utext="${@pageText.get('rnd', 'rnd.card1.item2')} ?: _"><strong>OAB</strong> 채취 Kit 및 <strong>NIPT</strong> 채취
-									Kit 개발</li>
-								<li th:utext="${@pageText.get('rnd', 'rnd.card1.item3')} ?: _">급성설사진단용 <strong>검체수송배지</strong> 개발
-								</li>
-								<li th:utext="${@pageText.get('rnd', 'rnd.card1.item4')} ?: _">국내외 다수의 <strong>특허출원</strong> 및 <strong>디자인 등록</strong></li>
+								<li th:utext="${@pageText.get('rnd', 'rnd.card1.item1')} ?: _">Elastomer 재질의 부드러운 소재로 검체 재취용 Swab 개발</li>
+								<li th:utext="${@pageText.get('rnd', 'rnd.card1.item2')} ?: _">OAB 채취 Kit 및 NIPT 채취 Kit 개발</li>
+								<li th:utext="${@pageText.get('rnd', 'rnd.card1.item3')} ?: _">급성설사진단용 검체수송배지 개발</li>
+								<li th:utext="${@pageText.get('rnd', 'rnd.card1.item4')} ?: _">국내외 다수의 특허출원 및 디자인 등록</li>
 							</ul>
 						</div>
 					</div>
@@ -85,14 +96,10 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 							<p class="il-image-card__subtitle" th:text="${@pageText.get('rnd', 'rnd.card2.subtitle')} ?: _">생명과학 연구용
 								기자재·소모품·Plasticware</p>
 							<ul class="il-image-card__list">
-								<li th:utext="${@pageText.get('rnd', 'rnd.card2.item1')} ?: _"><strong>수직형 단백질 전기영동 장치</strong> 개발</li>
-								<li th:utext="${@pageText.get('rnd', 'rnd.card2.item2')} ?: _"><strong>Filter Tip</strong>, <strong>Internal
-										Screw &amp; Tube</strong> 개발</li>
-								<li th:utext="${@pageText.get('rnd', 'rnd.card2.item3')} ?: _">현장 아이디어 → <strong>3D 모델링 설계</strong> → <strong>3D
-										프린팅<br>시제품
-								</strong></li>
-								<li th:utext="${@pageText.get('rnd', 'rnd.card2.item4')} ?: _">대량 생산을 위한 <strong>사출 금형 아이디어</strong> 제공
-								</li>
+								<li th:utext="${@pageText.get('rnd', 'rnd.card2.item1')} ?: _">수직형 단백질 전기영동 장치 개발</li>
+								<li th:utext="${@pageText.get('rnd', 'rnd.card2.item2')} ?: _">Filter Tip, Internal Screw &amp; Tube 개발</li>
+								<li th:utext="${@pageText.get('rnd', 'rnd.card2.item3')} ?: _">현장 아이디어 → 3D 모델링 설계 → 3D 프린팅 시제품</li>
+								<li th:utext="${@pageText.get('rnd', 'rnd.card2.item4')} ?: _">대량 생산을 위한 사출 금형 아이디어 제공</li>
 							</ul>
 						</div>
 					</div>
@@ -106,15 +113,10 @@ h1, h2, h3, h4, h5, h6 {font-family: 'pretendard','Noto Sans KR', sans-serif !im
 							<h4 class="il-image-card__title" th:text="${@pageText.get('rnd', 'rnd.card3.title')} ?: _">천연물소재 연구개발</h4>
 							<p class="il-image-card__subtitle" th:text="${@pageText.get('rnd', 'rnd.card3.subtitle')} ?: _">기능성 화장품·건강식품 소재</p>
 							<ul class="il-image-card__list">
-								<li th:utext="${@pageText.get('rnd', 'rnd.card3.item1')} ?: _"><strong>마가목</strong>·<strong>배롱나무</strong> 성분 분석 및 지표성분
-									특정·정량분석</li>
-								<li th:utext="${@pageText.get('rnd', 'rnd.card3.item2')} ?: _">2차 대사산물 스크리닝 → 유효물질 특정 → <strong>동정/함량 분석</strong>
-									(HPLC, LC-MS, LC-MS/MS, NMR)
-								</li>
-								<li th:utext="${@pageText.get('rnd', 'rnd.card3.item3')} ?: _">활성성분 <strong>추출</strong> 및 <strong>column
-										chromatography</strong>로 유효물질 분리·정제
-								</li>
-								<li th:utext="${@pageText.get('rnd', 'rnd.card3.item4')} ?: _">향장 소재 유효 성분 분석 및 문헌/데이터 기반 <strong>활용 기술컨설팅</strong></li>
+								<li th:utext="${@pageText.get('rnd', 'rnd.card3.item1')} ?: _">마가목·배롱나무 성분 분석 및 지표성분 특정·정량분석</li>
+								<li th:utext="${@pageText.get('rnd', 'rnd.card3.item2')} ?: _">2차 대사산물 스크리닝 → 유효물질 특정 → 동정/함량 분석 (HPLC, LC-MS, LC-MS/MS, NMR)</li>
+								<li th:utext="${@pageText.get('rnd', 'rnd.card3.item3')} ?: _">활성성분 추출 및 column chromatography로 유효물질 분리·정제</li>
+								<li th:utext="${@pageText.get('rnd', 'rnd.card3.item4')} ?: _">향장 소재 유효 성분 분석 및 문헌/데이터 기반 활용 기술컨설팅</li>
 							</ul>
 						</div>
 					</div>

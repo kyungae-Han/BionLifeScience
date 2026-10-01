@@ -791,8 +791,35 @@ public class AdminController {
 	    @PostMapping("/pageManager/delete")
 	    public String delete(@RequestParam Long id, RedirectAttributes redirectAttributes) {
 	        pageContentAdminService.delete(id);
-	        redirectAttributes.addFlashAttribute("message", "삭제되었습니다.");
-	        return "redirect:/admin/page/list";
+	        redirectAttributes.addFlashAttribute("message", "사용 안 함으로 바꿨습니다.");
+	        return "redirect:/admin/pageManager";
+	    }
+
+	    // DB 에서 실제로 지운다. 위의 사용 안 함과 달리 되돌릴 수 없다.
+	    // 사용 안 함(N) 인 것만 지워진다.
+	    @PostMapping("/pageManager/remove")
+	    public String removePage(@RequestParam Long id, RedirectAttributes redirectAttributes) {
+	        try {
+	            pageContentAdminService.deleteForever(id);
+	            redirectAttributes.addFlashAttribute("message", "페이지를 DB 에서 삭제했습니다.");
+	        } catch (Exception e) {
+	            redirectAttributes.addFlashAttribute("message", e.getMessage());
+	        }
+	        return "redirect:/admin/pageManager";
+	    }
+
+	    // 그룹을 지우면 그 안의 페이지도 같이 사라지고 주소(basePath)도 없어진다.
+	    // 그룹 안의 페이지가 전부 사용 안 함(N) 이어야 지워진다.
+	    @PostMapping("/pageManager/removeGroup")
+	    public String removePageGroup(@RequestParam Long groupId, RedirectAttributes redirectAttributes) {
+	        try {
+	            int removed = pageContentAdminService.deleteGroupForever(groupId);
+	            redirectAttributes.addFlashAttribute("message",
+	                    "그룹과 그 안의 페이지 " + removed + "개를 DB 에서 삭제했습니다.");
+	        } catch (Exception e) {
+	            redirectAttributes.addFlashAttribute("message", e.getMessage());
+	        }
+	        return "redirect:/admin/pageManager";
 	    }
 
 }
