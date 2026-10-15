@@ -1,3 +1,22 @@
+// 줄을 지우거나 자리를 바꾼 뒤 specs[i] 번호를 0부터 다시 매긴다.
+// 예전에는 이 함수가 수정 화면의 DOMContentLoaded 안에 들어 있어서
+// 이 파일의 삭제 처리에서 부르면 ReferenceError 가 났다. 그러면 번호에 구멍이
+// 남고(specs[0], specs[2]), 서버가 빈 줄을 하나 새로 만들려다 DB 에 걸려 fail 이 떴다.
+// 어디서나 부를 수 있도록 여기 둔다.
+function reindexSpecs() {
+	var wrap = document.querySelector('#info-wrap');
+	if (!wrap) return;
+	wrap.querySelectorAll('.spec-item').forEach(function (item, idx) {
+		item.querySelectorAll('input').forEach(function (input) {
+			if (input.name) {
+				input.name = input.name.replace(/specs\[\d+\]/, 'specs[' + idx + ']');
+			}
+		});
+		var orderInput = item.querySelector('input[name$=".specOrder"]');
+		if (orderInput) orderInput.value = idx + 1;
+	});
+}
+
 $(function() {
 	$('#brandProductBrandId').on('change',function(){
 		$.ajax({
@@ -74,9 +93,10 @@ $(function() {
 	
 	
 	$('#spec-plus-button').on('click',function(){
+		// 칸 너비와 간격은 bion-admin.css 의 격자가 잡는다. 여기서 적지 않는다
 		var specDiv = $('<div class="spec-wrap">'
-		+'<input type="text" name="spec" required="required" placeholder="제품 스펙을 입력 해 주세요. 예) 80mm*80mm*100mm" class="form-control" style="width:80%;">'+
-		'<input type="text" name="specEn" placeholder="English (optional)" class="form-control" style="width:80%;margin-top:4px;">'+
+		+'<input type="text" name="spec" required="required" placeholder="제품 스펙을 입력 해 주세요. 예) 80mm*80mm*100mm" class="form-control">'+
+		'<input type="text" name="specEn" placeholder="English (optional)" class="form-control">'+
 		'</div>');
 		$(specDiv).appendTo('#spec-wrap');
 	});
@@ -90,19 +110,28 @@ $(function() {
 	
 	$('#info-plus-button').on('click', function(){
 	  const wrap = $('#info-wrap');
-	  const nextOrder = wrap.find('.spec-wrap').length + 1;
+	  // 단추 줄(.spec-wrap#info-foot)은 세지 않는다. 값이 든 줄만 센다
+	  const nextOrder = wrap.find('.spec-item').length + 1;
 
+	  // 칸 차례는 저장된 줄과 같아야 한다. 한 줄에 주제와 값이 나란히 서고,
+	  // 윗줄이 한글 아랫줄이 영문이다. 차례가 어긋나면 새로 더한 줄만 다르게 읽힌다.
+	  // 너비와 간격은 bion-admin.css 의 격자가 잡는다.
 	  const infoDiv = $(`
 	    <div class="spec-wrap spec-item">
-		  <input type="checkbox" class="spec-check" style="width:18px;height:18px;margin-right:8px;">
-	      <input type="text" class="form-control" name="infoQ" required="required" placeholder="주제를 입력 해 주세요. 예) 제조자" style="width:40%;margin-right:4px;">
-	      <input type="text" class="form-control" name="infoA" required="required" placeholder="답변을 입력 해 주세요. 예) 바이온라이프사이언스" style="width:40%;">
-	      <input type="text" class="form-control" name="infoQEn" placeholder="Subject in English (optional)" style="width:40%;margin-right:4px;margin-top:4px;">
-	      <input type="text" class="form-control" name="infoAEn" placeholder="Value in English (optional)" style="width:40%;margin-top:4px;">
-	      <input type="hidden" name="specOrder" value="${nextOrder}"> <!-- ✅ 이 부분 추가 -->
+	      <input type="checkbox" class="spec-check">
+	      <input type="text" class="form-control" name="infoQ" required="required" placeholder="주제 (한글) 예) 제조자">
+	      <input type="text" class="form-control" name="infoA" required="required" placeholder="값 (한글) 예) 바이온라이프사이언스">
+	      <input type="text" class="form-control" name="infoQEn" placeholder="Subject in English (optional)">
+	      <input type="text" class="form-control" name="infoAEn" placeholder="Value in English (optional)">
+	      <input type="hidden" name="specOrder" value="${nextOrder}">
+	      <div class="btn-group-vertical">
+	        <button type="button" class="btn btn-light btn-sm move-up">▲</button>
+	        <button type="button" class="btn btn-light btn-sm move-down">▼</button>
+	      </div>
 	    </div>
 	  `);
-	  wrap.append(infoDiv);
+	  // 단추가 맨 아래에 있으므로 새 줄은 그 앞에 끼운다
+	  infoDiv.insertBefore('#info-foot');
 	});
 	$('#info-del-button').on('click', function () {
 	    const $wrap = $('#info-wrap');

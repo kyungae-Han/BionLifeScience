@@ -267,9 +267,13 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 												<div class="tab-container">
 													<div class="tab-content clearfix text-left" id="tabs-1"
 														style="text-align: center;">
-														<!-- <img width="1200px" style="margin: 0 auto;"
-															th:src="${product.tableImageRoad}"> -->
-														 <img style="margin: 0 auto;"
+														<!-- 상세페이지 본문. 관리자 제품 수정 화면의 편집기로 넣는다 -->
+														<div class="lh-lg" style="text-align:left;"
+															th:if="${not #strings.isEmpty(@enText.pick(product.detailContent, product.detailContentEn))}"
+															th:utext="${@enText.pick(product.detailContent, product.detailContentEn)}"></div>
+														<!-- 예전 제품은 상세페이지가 이미지 한 장뿐이다. 본문이 비었을 때만 그 이미지를 쓴다 -->
+														<img style="margin: 0 auto;"
+															th:if="${#strings.isEmpty(product.detailContent) and #strings.isEmpty(product.detailContentEn) and not #strings.isEmpty(product.specImageRoad)}"
 															th:src="${product.specImageRoad}">
 													</div>
 													<div class="tab-content clearfix text-left" id="tabs-2"

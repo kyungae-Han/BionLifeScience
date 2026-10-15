@@ -180,9 +180,16 @@
 
     $editor.summernote({
       height: opt.height,
-      focus: true,
+      // 한 화면에 편집기가 둘 이상일 때 둘 다 커서를 잡으면 화면이 끌려 내려간다.
+      // focus: false 를 넘기면 커서를 두지 않는다. 안 넘기면 예전처럼 커서가 간다.
+      focus: opt.focus !== false,
       lang: opt.lang,
       placeholder: opt.placeholder,
+
+      // 대화상자를 <body> 로 뺀다. 기본값은 편집기 안이라 폼 안쪽에 붙는데,
+      // 그림 넣기 대화상자가 name="files" 인 파일 칸을 들고 있어서
+      // 폼을 저장할 때 그 파일까지 같이 전송된다. 받는 쪽은 그런 칸이 없어 저장이 깨진다.
+      dialogsInBody: true,
 
       toolbar: [
         ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],

@@ -1098,3 +1098,200 @@ ul.sidebar-menu > li:first-child { margin-top: 25px; }
 }
 .menu-tag.all { background: var(--bn-accent-bg); color: var(--bn-accent-ink); }
 .menu-tag.none { background: transparent; color: var(--bn-ink-4); padding-left: 0; }
+
+
+/* ── 주요 특징 / 제품 상세 정보 줄 ───────────────────────────────────── */
+/* 원본은 form-inline 안에서 칸마다 width 40%, 80% 를 직접 적어 두었다.
+   칸 수가 줄마다 달라서 줄바꿈 자리가 제각각이었고, 체크박스가 있는 줄만
+   오른쪽으로 밀려 아래 줄과 왼쪽 끝이 어긋났다. 여기서 격자로 묶는다.
+   한 항목이 두 줄을 쓴다. 윗줄이 한글, 아랫줄이 영문이다.
+   제품 상세 정보는 한 줄 안에 주제와 값이 나란히 선다. */
+
+#spec-wrap > .spec-wrap,
+#info-wrap > .spec-wrap {
+	margin-bottom: var(--bn-gap-2);
+}
+
+/* 단추와 안내글만 든 줄 */
+#spec-wrap > .spec-wrap:has(> .btn),
+#info-wrap > .spec-wrap:has(> .btn) {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--bn-gap-2);
+	margin-bottom: var(--bn-gap-3);
+}
+
+/* 상세 정보의 단추는 입력 줄 아래에 있다. 줄과 붙지 않게 위를 띄운다 */
+#info-foot {
+	margin-top: var(--bn-gap-4);
+	margin-bottom: 0;
+}
+
+#spec-wrap > .spec-wrap:has(> .btn) > p,
+#info-wrap > .spec-wrap:has(> .btn) > p {
+	flex: 1 0 100%;
+	margin: 0;
+	font-size: 12px;
+	color: var(--bn-ink-3);
+}
+
+/* 값이 든 줄.
+   minmax(0, ...) 를 쓰는 이유: 그냥 1fr 로 두면 칸의 최소 너비가 내용 길이라
+   긴 값이 든 칸이 제 몫보다 넓어진다. 0 을 최소로 줘야 비율대로 나뉜다.
+
+   아래 세 규칙은 서로 겹치지 않게 적었다. 겹쳐 두면 :has() 안의 선택자까지
+   세기에 들어가서, 나중에 적은 규칙이 지고 칸이 엉뚱하게 나뉜다. */
+
+/* 공통 */
+#spec-wrap > .spec-wrap:has(> input[type="text"]),
+#info-wrap > .spec-wrap:has(> input[type="text"]) {
+	display: grid;
+	gap: var(--bn-gap-2);
+	align-items: center;
+}
+
+/* 주요 특징은 칸이 하나뿐이다. 위가 한글 아래가 영문으로 쌓인다 */
+#spec-wrap > .spec-wrap:has(> input[type="text"]) {
+	grid-template-columns: minmax(0, 1fr);
+}
+
+/* 제품 상세 정보, 체크박스가 없는 줄 (등록 화면).
+   한 줄에 주제와 값이 나란히 선다. 값이 더 길어서 칸을 두 배로 준다 */
+#info-wrap > .spec-wrap:has(> input[type="text"]):not(:has(> .spec-check)) {
+	grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+}
+
+/* 제품 상세 정보, 체크박스와 순서 단추가 있는 줄 (수정 화면).
+   양 끝에 칸을 하나씩 더 두고 둘 다 두 줄에 걸쳐 세운다.
+   그래야 한글 줄과 영문 줄의 왼쪽 끝이 맞는다 */
+#info-wrap > .spec-wrap:has(> .spec-check) {
+	grid-template-columns: auto minmax(0, 1fr) minmax(0, 2fr) auto;
+}
+
+#info-wrap > .spec-wrap > .spec-check {
+	grid-column: 1;
+	grid-row: 1 / span 2;
+	width: 16px;
+	height: 16px;
+	margin: 0;
+}
+
+#info-wrap > .spec-wrap > .btn-group-vertical {
+	grid-column: 4;
+	grid-row: 1 / span 2;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	margin: 0;
+}
+
+/* form-inline 이 입력칸을 inline-block + width:auto 로 만든다. 칸을 꽉 채우게 되돌린다 */
+#spec-wrap > .spec-wrap > .form-control,
+#info-wrap > .spec-wrap > .form-control {
+	display: block;
+	width: 100%;
+	margin: 0;
+}
+
+/* 단추 크기를 한 가지로 맞춘다 */
+#spec-wrap .btn,
+#info-wrap .btn {
+	min-width: 74px;
+	padding: 6px 12px;
+}
+
+#info-wrap .btn-group-vertical > .btn {
+	min-width: 0;
+	width: 28px;
+	height: 28px;
+	padding: 0;
+	line-height: 1;
+	font-size: 11px;
+}
+
+@media (max-width: 991px) {
+	#info-wrap > .spec-wrap:has(> input[type="text"]):not(:has(> .spec-check)) {
+		grid-template-columns: minmax(0, 1fr);
+	}
+	#info-wrap > .spec-wrap:has(> .spec-check) {
+		grid-template-columns: auto minmax(0, 1fr) auto;
+	}
+	#info-wrap > .spec-wrap > .spec-check,
+	#info-wrap > .spec-wrap > .btn-group-vertical {
+		grid-row: 1 / span 4;
+	}
+}
+
+
+/* ── 키워드 칩 ───────────────────────────────────────────────────────── */
+/* 적고 엔터를 누르면 한 덩이씩 쌓인다. 실제로 보내는 값은 옆의 hidden 한 줄이다 */
+
+.keyword-box {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--bn-gap-2);
+	min-height: 34px;
+	padding: 5px 8px;
+	border: 1px solid var(--bn-line-2);
+	border-radius: var(--bn-radius);
+	background: var(--bn-surface);
+}
+
+.keyword-box:focus-within {
+	border-color: var(--bn-accent);
+	box-shadow: 0 0 0 3px var(--bn-focus-ring);
+}
+
+.keyword-list {
+	display: contents;
+}
+
+.keyword-chip {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--bn-gap-icon);
+	padding: 3px 6px 3px 9px;
+	border-radius: 999px;
+	background: var(--bn-accent-bg);
+	color: var(--bn-accent-ink);
+	font-size: 12px;
+	line-height: 1.5;
+	white-space: nowrap;
+}
+
+.keyword-chip > button {
+	border: 0;
+	padding: 0;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	background: transparent;
+	color: var(--bn-ink-3);
+	font-size: 14px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.keyword-chip > button:hover {
+	background: var(--bn-surface-3);
+	color: var(--bn-danger);
+}
+
+/* 칸 테두리는 바깥 상자가 그린다. 안쪽 칸은 테두리 없이 남은 자리를 채운다 */
+.keyword-box > .keyword-input.form-control {
+	flex: 1 1 180px;
+	min-width: 140px;
+	height: auto;
+	margin: 0;
+	padding: 2px 0;
+	border: 0;
+	box-shadow: none;
+	background: transparent;
+}
+
+.keyword-box > .keyword-input.form-control:focus {
+	border: 0;
+	box-shadow: none;
+}

@@ -44,6 +44,7 @@ public interface BrandProductRepository extends JpaRepository<BrandProduct, Long
 		    LEFT JOIN p.specs s
 		    WHERE LOWER(p.subject) LIKE LOWER(CONCAT('%', :keyword, '%'))
 		       OR LOWER(p.content) LIKE LOWER(CONCAT('%', :keyword, '%'))
+		       OR LOWER(p.searchKeyword) LIKE LOWER(CONCAT('%', :keyword, '%'))
 		       OR (LOWER(s.productSpecSubject) = '품목코드' AND LOWER(s.productSpecContent) LIKE LOWER(CONCAT('%', :keyword, '%')))
 		       OR LOWER(s.productSpecContent) LIKE LOWER(CONCAT('%', :keyword, '%'))
 		    """)

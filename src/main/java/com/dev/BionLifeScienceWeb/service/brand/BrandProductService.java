@@ -384,27 +384,21 @@ public class BrandProductService {
 		}
 		
 		String overviewContentType = productOverviewImage.getContentType();
-		String specContentType = productSpecImage.getContentType();
 		// 확장자 명 NULL 검증
 		if (ObjectUtils.isEmpty(overviewContentType)) {
 			return null;
 		} 
 		
+		// 상세페이지는 편집기로 넣는다. 등록 화면에서 이미지 칸이 빠졌으므로
+		// 이 파일은 안 올라오는 게 정상이다. 예전 방식으로 올라올 때만 받아 둔다.
+		boolean hasSpecImage = productSpecImage != null
+				&& !productSpecImage.isEmpty()
+				&& !ObjectUtils.isEmpty(productSpecImage.getContentType());
+		
 		String specPath = commonPath + "/brandproduct/" + productCode +  "/spec"; 
 		String specRoad = "/upload/brandproduct/" + productCode +  "/spec"; 
-		File specFileFolder = new File(specPath);
-		
-		if (!specFileFolder.exists()) {
-			specFileFolder.mkdirs();
-		}
-
-		// 확장자 명 NULL 검증
-		if (ObjectUtils.isEmpty(specContentType)) {
-			return null;
-		} 
 
 		String overviewFileName = generatedString + "_" + productOverviewImage.getOriginalFilename();
-		String specFileName = generatedString + "_" + productSpecImage.getOriginalFilename();
 
 		int index = 1;
 		if(brandProductRepository.findFirstIndex().isPresent()) {
@@ -414,21 +408,33 @@ public class BrandProductService {
 		
 		if (env.equals("local")) {
 			overviewFileFolder = new File(absolutePath + overviewPath + "/" + overviewFileName);
-			specFileFolder = new File(absolutePath + specPath + "/" + specFileName);
 		} else if (env.equals("prod")) {
 			overviewFileFolder = new File(overviewPath + "/" + overviewFileName);
-			specFileFolder = new File(specPath + "/" + specFileName);
 		}
 
 		productOverviewImage.transferTo(overviewFileFolder);
-		productSpecImage.transferTo(specFileFolder);
+		
+		if (hasSpecImage) {
+			File specFileFolder = new File(specPath);
+			if (!specFileFolder.exists()) {
+				specFileFolder.mkdirs();
+			}
+			
+			String specFileName = generatedString + "_" + productSpecImage.getOriginalFilename();
+			File specDest = env.equals("local")
+					? new File(absolutePath + specPath + "/" + specFileName)
+					: new File(specPath + "/" + specFileName);
+			
+			productSpecImage.transferTo(specDest);
+			product.setSpecImageName(specFileName);
+			product.setSpecImagePath(specPath + "/" + specFileName);
+			product.setSpecImageRoad(specRoad + "/" + specFileName);
+		}
+		
 		product.setBrandProductCode(productCode);
 		product.setTableImagePath(overviewPath + "/" + overviewFileName);
 		product.setTableImageRoad(overviewRoad + "/" + overviewFileName);
 		product.setTableImageName(overviewFileName);
-		product.setSpecImageName(specFileName);
-		product.setSpecImagePath(specPath + "/" + specFileName);
-		product.setSpecImageRoad(specRoad + "/" + specFileName);
 		
 		String subContent = product.getProductSubContent();
 		if (subContent != null) {
@@ -545,6 +551,12 @@ public class BrandProductService {
 	        subContentEn = subContentEn.replace("\n", "<br>");
 	    }
 	    saved.setProductSubContentEn(subContentEn);
+	    
+	    // 상세페이지 본문(편집기)과 검색키워드
+	    saved.setDetailContent(product.getDetailContent());
+	    saved.setDetailContentEn(product.getDetailContentEn());
+	    saved.setSearchKeyword(product.getSearchKeyword());
+	    
 	    saved.setSign(product.getSign());
 	    
 	    
@@ -711,6 +723,16 @@ public class BrandProductService {
 	    if (specs == null) return;
 
 	    for (BrandProductSpec s : specs) {
+	        // 화면에서 줄을 지우면 specs[i] 번호에 구멍이 생길 수 있다.
+	        // 그때 스프링이 빈 칸을 하나 만들어 넘기는데, 그대로 저장하면
+	        // 내용 없는 행을 새로 넣으려다 DB 제약에 걸려 저장 전체가 깨진다.
+	        // 아이디도 내용도 없는 줄은 건너뛴다. 기존 줄(아이디 있음)은 그대로 둔다.
+	        if (s == null) continue;
+	        if (s.getId() == null
+	                && isBlank(s.getProductSpecSubject())
+	                && isBlank(s.getProductSpecContent())) {
+	            continue;
+	        }
 	        if (s.getId() != null) {
 	            brandProductSpecRepository.findById(s.getId()).ifPresent(existing -> {
 	                existing.setSpecOrder(s.getSpecOrder());
@@ -728,6 +750,11 @@ public class BrandProductService {
 	}
 	
 	
+
+	private boolean isBlank(String v) {
+		return v == null || v.trim().isEmpty();
+	}
+
 	@Transactional
 	public void deleteSpecById(Long id) {
 	    brandProductSpecRepository.findById(id).ifPresent(spec -> {

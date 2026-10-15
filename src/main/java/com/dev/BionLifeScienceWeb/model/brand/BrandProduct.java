@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OrderBy;
@@ -52,6 +53,19 @@ public class BrandProduct {
 	
 	@Column(name="BRAND_PRODUCT_SUB_CONTENT_EN")
 	private String productSubContentEn;
+	
+	/** 상세페이지 본문. 관리자 편집기(summernote)로 넣는다. 이미지가 들어가니 LONGTEXT 다 */
+	@Lob
+	@Column(name="BRAND_PRODUCT_DETAIL_CONTENT", columnDefinition="LONGTEXT")
+	private String detailContent;
+	
+	@Lob
+	@Column(name="BRAND_PRODUCT_DETAIL_CONTENT_EN", columnDefinition="LONGTEXT")
+	private String detailContentEn;
+	
+	/** 검색용 키워드. 쉼표로 여러 개. 화면에는 안 나오고 사이트 검색과 meta keywords 에만 쓴다 */
+	@Column(name="BRAND_PRODUCT_SEARCH_KEYWORD")
+	private String searchKeyword;
 	
 	@Column(name="BRAND_TABLE_IMAGE_PATH")
 	private String tableImagePath;

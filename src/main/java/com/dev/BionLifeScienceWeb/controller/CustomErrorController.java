@@ -4,7 +4,7 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +17,9 @@ public class CustomErrorController implements ErrorController{
 	// 에러 VIEW 공통 PATH
 	private String VIEW_PATH = "/error/";
 	
-	@GetMapping("/error")
+	// GET 만 받으면 POST 요청이 실패했을 때 스프링이 원래 메서드를 유지한 채
+	// /error 로 넘기므로 405 가 나고 진짜 오류가 가려진다. 모든 메서드를 받는다.
+	@RequestMapping("/error")
 	public String handleError(
 			HttpServletRequest request,
 			Model model) {

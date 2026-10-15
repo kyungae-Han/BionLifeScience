@@ -327,6 +327,8 @@ public class HomeController {
 	    model.addAttribute("metaDescription",
 	            SeoText.description(product.getSubject(), product.getContent(),
 	                    "BION Life Science 취급 제품 정보"));
+	    // 관리자에서 넣은 검색 키워드. 비어 있으면 meta 태그 자체가 안 나간다.
+	    model.addAttribute("metaKeywords", product.getSearchKeyword());
 	    
 	    List<BrandProduct> relatedProducts = new ArrayList<>();
 	    

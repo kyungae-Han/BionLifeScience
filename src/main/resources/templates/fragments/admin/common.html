@@ -148,6 +148,79 @@
 			try { el.showPicker(); } catch (ignore) { /* 이미 열려 있거나 막힌 경우 */ }
 		});
 		</script>
+		<script>
+		// 키워드 칩. .keyword-box 를 쓰는 화면이면 어디서나 같게 동작한다.
+		// 보이는 칸은 이름이 없어서 전송되지 않는다. 실제 값은 data-keyword-target 이
+		// 가리키는 hidden 한 줄이고, 쉼표로 이어 붙인다. 저장 형식은 예전 그대로다.
+		// 자바스크립트가 안 돌아도 hidden 값은 남으므로 기존 값이 지워지지 않는다.
+		(function () {
+			function split(text) {
+				return String(text || '').split(',')
+					.map(function (v) { return v.trim(); })
+					.filter(function (v) { return v.length > 0; });
+			}
+
+			function setup(input) {
+				var box = input.closest('.keyword-box');
+				var list = box && box.querySelector('.keyword-list');
+				var store = document.getElementById(input.dataset.keywordTarget);
+				if (!list || !store) return;
+
+				var items = split(store.value);
+
+				function draw() {
+					store.value = items.join(', ');
+					list.textContent = '';
+					items.forEach(function (word, idx) {
+						var chip = document.createElement('span');
+						chip.className = 'keyword-chip';
+						chip.appendChild(document.createTextNode(word));
+						var x = document.createElement('button');
+						x.type = 'button';
+						x.title = '빼기';
+						x.textContent = '×';
+						x.addEventListener('click', function () {
+							items.splice(idx, 1);
+							draw();
+							input.focus();
+						});
+						chip.appendChild(x);
+						list.appendChild(chip);
+					});
+				}
+
+				function add() {
+					var added = false;
+					split(input.value).forEach(function (word) {
+						if (items.indexOf(word) < 0) { items.push(word); added = true; }
+					});
+					input.value = '';
+					if (added) draw();
+				}
+
+				input.addEventListener('keydown', function (e) {
+					if (e.key === 'Enter' || e.key === ',') {
+						// 엔터로 폼이 전송되는 것을 막는다
+						e.preventDefault();
+						add();
+						return;
+					}
+					// 빈 칸에서 지우기를 누르면 마지막 칩을 뺀다
+					if (e.key === 'Backspace' && input.value === '' && items.length) {
+						items.pop();
+						draw();
+					}
+				});
+
+				// 적다가 저장을 누르면 그 말이 사라지므로, 칸을 떠날 때도 넣어 준다
+				input.addEventListener('blur', add);
+
+				draw();
+			}
+
+			document.querySelectorAll('.keyword-input[data-keyword-target]').forEach(setup);
+		})();
+		</script>
 	</th:block>
 </body>
 

@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,6 +53,19 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/admin")
 @RequiredArgsConstructor
 public class BrandController {
+
+	/**
+	 * 폼이 보낸 값을 엔티티에 채울 때 files 는 건너뛴다.
+	 * 서버가 직접 채우는 첨부 목록이라 폼에서 같은 이름이 넘어오면
+	 * 변환에 실패해 저장이 통째로 깨진다.
+	 * 2026-10-15: 편집기의 그림 넣기 칸이 name="files" 라 실제로 이 문제가 났다.
+	 * 편집기 쪽은 dialogsInBody 로 폼 밖에 내보냈고, 이것은 그래도 새는 경우를 막는 것이다.
+	 * specs / infos 는 폼에서 정상으로 받는 값이므로 막지 않는다.
+	 */
+	@InitBinder
+	public void initBrandProductBinder(WebDataBinder binder) {
+		binder.setDisallowedFields("files", "files.*");
+	}
 
 	private final SummernoteImageProcessor imageProcessor;
 	private final BrandRepository brandRepository;
@@ -168,6 +183,27 @@ public class BrandController {
 	 * 영문 입력칸은 한글칸과 같은 개수로 넘어온다. 자리에 값이 없거나 비어 있으면 null 로 둔다.
 	 * null 이면 화면에서 한글이 나간다.
 	 */
+	/**
+	 * 편집기를 안 건드리고 저장하면 summernote 가 &lt;p&gt;&lt;br&gt;&lt;/p&gt; 를 넣어 준다.
+	 * 그 값은 빈 값이 아니어서, 영문칸을 비워 둔 채 저장하면 영문 화면이
+	 * 한글로 떨어지지 않고 빈칸으로 나간다. 글자도 그림도 없으면 null 로 바꾼다.
+	 */
+	private String blankEditorToNull(String html) {
+		if (html == null) {
+			return null;
+		}
+		// 그림·표·영상이 들어 있으면 글자가 없어도 내용이 있는 것이다
+		String lower = html.toLowerCase();
+		if (lower.contains("<img") || lower.contains("<table")
+			|| lower.contains("<iframe") || lower.contains("<video")) {
+			return html;
+		}
+		String text = html.replaceAll("<[^>]*>", "")
+			.replace("&nbsp;", " ")
+			.replace("\u00a0", " ");
+		return text.trim().isEmpty() ? null : html;
+	}
+
 	private String pickEn(String[] values, int index) {
 		if (values == null || values.length <= index || values[index] == null) {
 			return null;
@@ -495,7 +531,7 @@ public class BrandController {
 	        String[] infoQEn,
 	        String[] infoAEn,
 	        MultipartFile productOverviewImage,
-	        MultipartFile productSpecImage,
+	        @RequestParam(required = false) MultipartFile productSpecImage,
 	        List<MultipartFile> slides,
 	        List<MultipartFile> productFile
 	) throws IllegalStateException, IOException {
@@ -528,6 +564,10 @@ public class BrandController {
 	        String datePart = java.time.LocalDate.now().toString(); // yyyy-MM-dd
 	        product.setBrandProductCode(randomCode + "_" + datePart);
 	    }
+
+	    // 편집기 본문. 빈 값을 걸러 내고, 붙여 넣은 이미지는 파일로 바꿔 저장한다
+	    product.setDetailContent(imageProcessor.processEditorImages(blankEditorToNull(product.getDetailContent()), "brandproduct"));
+	    product.setDetailContentEn(imageProcessor.processEditorImages(blankEditorToNull(product.getDetailContentEn()), "brandproduct"));
 
 	    // ✅ 핵심: 이미지/스펙/오버뷰 파일은 서비스 로직으로 처리
 	    BrandProduct savedProduct = brandProductService.productInsert(
@@ -705,6 +745,10 @@ public class BrandController {
 		}
 		
 		
+		// 편집기 본문. 빈 값을 걸러 내고, 붙여 넣은 이미지는 파일로 바꿔 저장한다
+		product.setDetailContent(imageProcessor.processEditorImages(blankEditorToNull(product.getDetailContent()), "brandproduct"));
+		product.setDetailContentEn(imageProcessor.processEditorImages(blankEditorToNull(product.getDetailContentEn()), "brandproduct"));
+
 		brandProductService.productUpdate(productOverviewImage, productSpecImage, product);
 		
 		if (spec != null && spec.length > 0) {

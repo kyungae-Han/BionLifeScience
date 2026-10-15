@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class SummernoteImgController{
+
+		@Value("${spring.upload.path}")
+		private String commonPath;
 	
 	 	@GetMapping("/upload/notice/editor/{dateDir}/{fileName:.+}")
 		public ResponseEntity<Resource> getNoticeImage(
@@ -147,4 +151,36 @@ public class SummernoteImgController{
 	    }
 		
 		
+
+	 	@PostMapping("/admin/brandProduct/image")
+		public Map<String, String> uploadBrandProductImage(@RequestParam("file") MultipartFile file) throws IOException {
+
+		    String original = file.getOriginalFilename() == null ? "file" : file.getOriginalFilename();
+		    original = Paths.get(original).getFileName().toString();
+		    String lower = original.toLowerCase();
+
+		    if (!(lower.endsWith(".jpg") || lower.endsWith(".jpeg") || lower.endsWith(".png")
+		            || lower.endsWith(".gif") || lower.endsWith(".webp"))) {
+		        throw new IOException("허용되지 않는 이미지 확장자입니다.");
+		    }
+
+		    String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		    String fileName = System.currentTimeMillis() + "_" + original;
+
+		    // 제품 이미지와 같은 업로드 폴더 아래에 둔다. /upload/** 로 그대로 나간다.
+		    Path saveDir = Paths.get(commonPath, "brandproduct", "editor", today)
+		            .toAbsolutePath().normalize();
+		    Files.createDirectories(saveDir);
+
+		    Path savePath = saveDir.resolve(fileName).normalize();
+
+		    if (!savePath.startsWith(saveDir)) {
+		        throw new IOException("Invalid file path");
+		    }
+
+		    file.transferTo(savePath.toFile());
+
+		    return Map.of("url", "/upload/brandproduct/editor/" + today + "/" + fileName);
+		}
+
 }

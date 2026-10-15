@@ -75,9 +75,10 @@ $(function() {
 	
 	
 	$('#spec-plus-button').on('click',function(){
+		// 칸 너비와 간격은 bion-admin.css 의 격자가 잡는다. 여기서 적지 않는다
 		var specDiv = $('<div class="spec-wrap">'
-		+'<input type="text" name="spec" required="required" placeholder="제품 스펙을 입력 해 주세요. 예) 80mm*80mm*100mm" class="form-control" style="width:80%;">'+
-		'<input type="text" name="specEn" placeholder="English (optional)" class="form-control" style="width:80%;margin-top:4px;">'+
+		+'<input type="text" name="spec" required="required" placeholder="제품 스펙을 입력 해 주세요. 예) 80mm*80mm*100mm" class="form-control">'+
+		'<input type="text" name="specEn" placeholder="English (optional)" class="form-control">'+
 		'</div>');
 		$(specDiv).appendTo('#spec-wrap');
 	});
@@ -90,19 +91,24 @@ $(function() {
 	});
 	
 	$('#info-plus-button').on('click',function(){
-		var infoDiv = $('<div class="spec-wrap">'
-		+'<input type="text" class="form-control" name="infoQ" required="required" placeholder="주제를 입력 해 주세요. 예) 제조자" style="width:40%;margin-right:4px;">'+
-		'<input type="text" class="form-control" name="infoA" required="required" placeholder="답변을 입력 해 주세요. 예) 바이온라이프사이언스" style="width:40%;">'+
-		'<input type="text" class="form-control" name="infoQEn" placeholder="Subject in English (optional)" style="width:40%;margin-right:4px;margin-top:4px;">'+
-		'<input type="text" class="form-control" name="infoAEn" placeholder="Value in English (optional)" style="width:40%;margin-top:4px;">'+
+		// 칸 차례는 수정 화면과 같다. 한 줄에 주제와 값, 윗줄 한글 / 아랫줄 영문.
+		// 너비와 간격은 bion-admin.css 의 격자가 잡는다.
+		var infoDiv = $('<div class="spec-wrap spec-item">'
+		+'<input type="text" class="form-control" name="infoQ" required="required" placeholder="주제 (한글) 예) 제조자">'+
+		'<input type="text" class="form-control" name="infoA" required="required" placeholder="값 (한글) 예) 바이온라이프사이언스">'+
+		'<input type="text" class="form-control" name="infoQEn" placeholder="Subject in English (optional)">'+
+		'<input type="text" class="form-control" name="infoAEn" placeholder="Value in English (optional)">'+
 		'</div>');
-		$(infoDiv).appendTo('#info-wrap');
+		// 단추가 맨 아래에 있으므로 새 줄은 그 앞에 끼운다
+		$(infoDiv).insertBefore('#info-foot');
 	});
 	$('#info-del-button').on('click',function(){
-		if($('#info-wrap div').length < 2){
+		// div:last 로 지우면 맨 아래 단추 줄이 지워진다. 값이 든 줄만 센다
+		var $rows = $('#info-wrap').find('.spec-item');
+		if($rows.length < 2){
 			alert('1개 이하로 삭제할 수 없습니다.');			
 		}else{
-			$('#info-wrap').find('div:last').remove();
+			$rows.last().remove();
 		}
 	});
 	
