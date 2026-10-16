@@ -47,6 +47,11 @@
 		       </tr>
 		      </thead>
 		      <tbody>
+		       <!-- 올려둔 자료가 없을 때 -->
+		       <tr th:if="${file == null or #lists.isEmpty(file)}">
+		        <td colspan="4" class="reference-empty" th:text="#{reference.empty}">현재 자료실에 데이터가 없습니다.</td>
+		       </tr>
+
 		       <tr th:each="f : ${file}">
 		        <!-- 이미지 미리보기 -->
 		        <td class="col-thumb-cell">

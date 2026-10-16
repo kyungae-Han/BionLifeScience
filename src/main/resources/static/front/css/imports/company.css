@@ -3115,8 +3115,16 @@ tbody td:not(.table__subject){
 .references-body table {
 	table-layout: fixed;
 	min-width: 640px;
-	border-bottom: 0;
+	/* 표 아래 끝선. 머리줄 위 선(thead 의 border-top 2px)과 굵기를 맞춘다 */
+	border-bottom: 2px solid var(--bs-gray-900);
 }
+
+/* 머리줄 양 끝의 세로선은 지운다. 표가 좌우로 닫혀 보이지 않게 한다.
+   비어 있을 때 나오는 안내줄도 같이 맞춘다 */
+.references-body thead th:first-child,
+.references-body .reference-empty {border-left: 0;}
+.references-body thead th:last-child,
+.references-body .reference-empty {border-right: 0;}
 .references-body col.col-thumb {width:110px;}
 .references-body col.col-date  {width:130px;}
 .references-body col.col-down  {width:140px;}
@@ -3126,6 +3134,12 @@ tbody td:not(.table__subject){
 .references-body thead {height:auto;}
 .references-body tbody {height:auto;}
 .references-body .ref-date {white-space: nowrap;}
+
+/* 올려둔 자료가 없을 때 나오는 안내줄 */
+.references-body .reference-empty {
+	padding: 48px 16px;
+	color: var(--bs-gray-600);
+}
 
 .references-body .reference-files {margin:0 auto;}
 
