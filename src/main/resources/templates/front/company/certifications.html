@@ -53,7 +53,7 @@
 												class="overlay-trigger-icon bg-light text-dark"
 												data-hover-animate="fadeInDownSmall"
 												data-hover-animate-out="fadeOutUpSmall"
-												data-hover-speed="350" data-lightbox="image" th:title="${c.subject}"><i
+												data-hover-speed="350" data-lightbox="image" th:title="${@enText.pick(c.subject, c.subjectEn)}"><i
 												class="icon-line-plus"></i></a> 
 										</div>
 										<div class="bg-overlay-bg dark" data-hover-animate="fadeIn"></div>
@@ -61,9 +61,9 @@
 								</div>
 								<div class="portfolio-desc">
 									<h3>
-										<a href="javascript:void(0);" th:text="${c.subject}">벤처기업확인서</a>
+										<a href="javascript:void(0);" th:text="${@enText.pick(c.subject, c.subjectEn)}">벤처기업확인서</a>
 									</h3>
-									<span><a href="javascript:void(0);" th:text="${c.content}">혁신성장유형 벤처기업확인서</a></span>
+									<span><a href="javascript:void(0);" th:text="${@enText.pick(c.content, c.contentEn)}">혁신성장유형 벤처기업확인서</a></span>
 								</div>
 							</div>
 						</article>

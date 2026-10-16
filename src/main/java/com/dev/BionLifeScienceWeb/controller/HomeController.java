@@ -66,11 +66,16 @@ import com.dev.BionLifeScienceWeb.model.CompanyEmail;
 
 import org.springframework.data.domain.Sort;
 
+import com.dev.BionLifeScienceWeb.util.EnText;
+
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
+
+	/** 화면 언어에 맞춰 한글·영문을 골라 준다 */
+	private final EnText enText;
 	
 	private final PopupService popupService;
 	private final HistorySubjectRepository historySubjectRepository;
@@ -403,8 +408,9 @@ public class HomeController {
 	            .orElseThrow(UrlNotFoundException::new);
 
 	    Map<String, Object> result = new HashMap<>();
-	    result.put("brandName", brand.getName());
-	    result.put("brandDesc", brand.getContent());
+	    // 자바스크립트가 그리는 목록이라 화면에서 고를 수 없다. 서버에서 골라 보낸다
+	    result.put("brandName", enText.pick(brand.getName(), brand.getNameEn()));
+	    result.put("brandDesc", enText.pick(brand.getContent(), brand.getContentEn()));
 	    result.put("brandLogo", brand.getImageRoad());
 
 	    // ✅ 1️⃣ 브랜드의 전체 대분류 가져오기
@@ -420,7 +426,7 @@ public class HomeController {
 
 	    for (BrandBigSort bigSort : bigSortList) {
 	        Map<String, Object> categoryMap = new HashMap<>();
-	        categoryMap.put("bigSortName", bigSort.getName());
+	        categoryMap.put("bigSortName", enText.pick(bigSort.getName(), bigSort.getNameEn()));
 
 	        List<Map<String, Object>> productList = products.stream()
 	                .filter(p -> p.getBigSort() != null &&
@@ -428,8 +434,8 @@ public class HomeController {
 	                .map(p -> {
 	                    Map<String, Object> m = new HashMap<>();
 	                    m.put("id", p.getId());
-	                    m.put("subject", p.getSubject());
-	                    m.put("content", p.getContent());
+	                    m.put("subject", enText.pick(p.getSubject(), p.getSubjectEn()));
+	                    m.put("content", enText.pick(p.getContent(), p.getContentEn()));
 	                    m.put("firstImageRoad", (p.getImages() != null && !p.getImages().isEmpty())
 	                            ? p.getImages().get(0).getProductImageRoad()
 	                            : "/front/images/no-image.png");

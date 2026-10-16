@@ -15,3 +15,156 @@ html[lang="en"] #top-search > a {
   padding-right: 24px;
   text-align: left;
 }
+
+
+/* ── 최근 검색어 ─────────────────────────────────────────────────────── */
+/* 검색칸 바로 아래에 키워드 줄만 펼친다. 값은 이 브라우저에만 남는다.
+
+   ⚠️ .top-search-form 에는 position 을 주지 않는다.
+   테마가 그 폼을 position:absolute 로 머리말 전체에 겹쳐 두고 열고 닫는다.
+   relative 로 바꾸면 폼이 흐름 안으로 들어와 머리말이 통째로 높아진다.
+   기준은 입력칸을 감싼 .search-field 에 둔다. 그래야 칸 바로 밑에 붙는다. */
+
+.search-field { position: relative; }
+
+/* 테마 style.css 에 `.top-search-form div { position: relative }` 가 있다.
+   클래스 하나짜리 선택자로는 그것을 못 이겨서 상자가 제자리를 못 잡았다.
+   클래스 둘로 적어 이긴다. 왼쪽과 폭은 자바스크립트가 검색칸에 맞춘다. */
+.search-field > .recent-search {
+  position: absolute;
+  top: 100%;          /* 자바스크립트가 칸 바닥에 맞춰 다시 적는다 */
+  /* 테마가 이 자리의 div 를 flex 로 잡는다. 그대로 두면 안의 목록이
+     내용 너비만큼만 줄어들어 × 가 가운데 붙는다. 블록으로 되돌린다 */
+  display: block;
+  z-index: 1200;
+  padding: 4px 0;
+  background: #fff;
+  border: 1px solid #e3e6ea;
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .10);
+  text-align: left;
+}
+
+/* 위의 display:block 보다 세야 한다. 안 그러면 숨겨지지 않는다 */
+.search-field > .recent-search[hidden] { display: none; }
+
+.recent-search-list {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.recent-search-list li {
+  display: flex;
+  align-items: center;
+}
+
+.recent-search-list li:hover { background: #f7f8fa; }
+
+.recent-search-word {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  padding: 8px 4px 8px 14px;
+  background: none;
+  color: #3c4452;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.recent-search-remove {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  margin-right: 8px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: #9aa1ad;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.recent-search-remove:hover { background: #f1f2f5; color: #d64545; }
+
+/* 자동완성 줄. 제품명 아래에 품목코드를 작게 붙인다 */
+.recent-search-list li.suggest-item {
+  display: block;
+}
+
+.suggest-item > .recent-search-word {
+  display: block;
+  width: 100%;
+  padding: 9px 14px;
+  white-space: normal;
+  text-decoration: none;
+}
+
+.suggest-item > .recent-search-word:hover { text-decoration: none; }
+
+/* ⚠️ 테마 style.css 에 `.top-search-form div span` 이 있다.
+   그 규칙이 span 을 32px 굵은 글씨에 position:absolute 로 만든다.
+   클래스 하나짜리 선택자로는 못 이겨서 글자가 겹치고 넘쳤다.
+   .recent-search 를 앞에 붙여 클래스 둘로 적고, 자리도 되돌린다. */
+.recent-search .suggest-name {
+  display: block;
+  position: static;
+  color: #3c4452;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 친 글자를 굵게 */
+.recent-search .suggest-name b {
+  color: #0e2a5a;
+  font-size: inherit;
+  font-weight: 700;
+}
+
+.recent-search .suggest-code {
+  display: block;
+  position: static;
+  margin-top: 2px;
+  color: #9aa1ad;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── 검색칸 테두리 ──────────────────────────────────────────────────── */
+/* 검색칸을 열어 둔 채 스크롤을 내리면 테두리가 사라지던 것.
+
+   검색칸의 네모 테두리는 style.css 의
+     .form-control { border: 1px solid var(--bs-gray-900) }
+   에서 온다.
+
+   그런데 스크롤을 내리면 머리말에 sticky-header 가 붙고, 테마의
+     .sticky-header .top-search-form input { border: none !important }
+   가 그것을 지워 버린다. 원래는 테두리 없는 큰 오버레이 검색을 전제한 규칙이다.
+   우리 검색칸은 네모 칸이라 스크롤해도 테두리가 남아야 한다.
+
+   테마 쪽이 !important 라 이쪽도 !important 로 적는다.
+   색은 같은 변수를 쓴다. 나중에 색을 바꿔도 따라온다. */
+.sticky-header .top-search-form input.form-control {
+  border: 1px solid var(--bs-gray-900) !important;
+}

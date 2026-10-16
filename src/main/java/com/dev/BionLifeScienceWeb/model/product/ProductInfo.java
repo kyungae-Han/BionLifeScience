@@ -23,4 +23,7 @@ public class ProductInfo {
 	
 	@Column(name="PRODUCT_INFO_TEXT")
 	private String productInfoText;
+
+	@Column(name="PRODUCT_INFO_TEXT_EN")
+	private String productInfoTextEn;
 }

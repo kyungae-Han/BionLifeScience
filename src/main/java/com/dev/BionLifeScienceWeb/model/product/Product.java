@@ -30,6 +30,10 @@ public class Product {
 	
 	@Column(name="PRODUCT_SUBJECT")
 	private String subject;
+
+	/** 영문 화면에서 쓰는 제품명. 비어 있으면 한글이 그대로 나간다 */
+	@Column(name="PRODUCT_SUBJECT_EN")
+	private String subjectEn;
 	
 	@Column(name="PRODUCT_CODE")
 	@Nullable
@@ -37,9 +41,15 @@ public class Product {
 	
 	@Column(name="PRODUCT_CONTENT")
 	private String content;
+
+	@Column(name="PRODUCT_CONTENT_EN")
+	private String contentEn;
 	
 	@Column(name="PRODUCT_SUB_CONTENT")
 	private String productSubContent;
+
+	@Column(name="PRODUCT_SUB_CONTENT_EN")
+	private String productSubContentEn;
 	
 	@Column(name="TABLE_IMAGE_PATH")
 	private String tableImagePath;

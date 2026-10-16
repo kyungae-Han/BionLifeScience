@@ -154,6 +154,39 @@
     });
   }
 
+  // 클립보드 HTML 에서 실제 내용만 떼어 낸다.
+  // 크롬은 <html><body><!--StartFragment-->...<!--EndFragment--> 로 감싸서 준다.
+  function clipboardFragment(html) {
+    const m = html.match(/<!--StartFragment-->([\s\S]*?)<!--EndFragment-->/i);
+    return (m ? m[1] : html).trim();
+  }
+
+  // 우리 사이트에 이미 올라가 있는 이미지인지 본다.
+  // 편집기 안에서 복사한 이미지가 여기 해당한다. 다시 올릴 필요가 없다.
+  // 바깥 사이트에서 복사한 이미지는 주소가 남의 것이라 그대로 쓰면 안 된다.
+  function isOwnImageHtml(html) {
+    const m = html.match(/<img[^>]+src\s*=\s*["']([^"']+)["']/i);
+    if (!m) return false;
+
+    const src = m[1];
+    if (/^https?:\/\//i.test(src)) {
+      return src.indexOf(w.location.origin + '/') === 0;
+    }
+    return src.charAt(0) === '/';
+  }
+
+  // 이 paste 는 우리가 끝까지 처리한다는 뜻.
+  //
+  // summernote 자체 붙여넣기 처리도 같은 paste 에 묶여 있어서, 멈추지 않으면
+  // 우리가 한 번 올리고 그쪽이 또 한 번 올려 이미지가 두 장 들어간다.
+  // 멈추는 것은 jQuery 이벤트(e) 쪽이어야 한다. 네이티브 이벤트(ev)에 걸면
+  // jQuery 가 다음 처리기를 그대로 부른다.
+  function stopPaste(e, ev) {
+    if (e && e.preventDefault) e.preventDefault();
+    if (e && e.stopImmediatePropagation) e.stopImmediatePropagation();
+    if (ev && ev !== e && ev.preventDefault) ev.preventDefault();
+  }
+
   // =========================
   // 3) 에디터 초기화 함수 (페이지에서 호출)
   // =========================
@@ -222,6 +255,13 @@
       codeviewFilter: false,
       codeviewIframeFilter: false,
 
+      // summernote 는 편집기 위에 drop 영역을 덮어 두고 모든 drop 을 가로챈다.
+      // 그래서 편집기 안에서 이미지를 끌어 옮기면 브라우저의 "옮기기" 가 취소되어
+      // 원본이 남은 채 복사본이 하나 더 생기고, 드래그에 실려 오는 주소 글자까지 박힌다.
+      // 이걸 끄면 편집기 안 이미지 옮기기가 브라우저 기본 동작으로 돌아간다.
+      // 대신 바깥에서 파일을 끌어다 넣는 건 안 된다. 그림 단추로 넣는다.
+      disableDragAndDrop: true,
+
       callbacks: {
         onInit: function () {
           $editor.next('.note-editor').find('.note-editable').css({ 'background-color': '#fff' });
@@ -241,15 +281,35 @@
           for (const f of files) uploadImageAjax(f, this, opt);
         },
 
+        // 이미지를 복사해서 붙이면 클립보드에 HTML 과 그림 파일이 같이 담긴다.
+        // 그림 파일만 쓰면 크기·정렬(width:50%, 좌우 배치)이 다 사라지고
+        // 같은 파일이 서버에 또 하나 쌓인다. 그래서 둘 중 무엇을 쓸지 여기서 가린다.
+        //
+        // stopImmediatePropagation 이 필요한 이유:
+        // summernote 자체 붙여넣기 처리도 같은 paste 에 묶여 있어서, 막지 않으면
+        // 우리가 한 번 올리고 그쪽이 또 한 번 올려 이미지가 두 장 들어간다.
         onPaste: function (e) {
-          const cb = (e.originalEvent || e).clipboardData;
-          if (!cb?.items) return;
+          const ev = e.originalEvent || e;
+          const cb = ev.clipboardData;
+          if (!cb) return;
 
-          for (const item of cb.items) {
-            if (item.type && item.type.startsWith('image/')) {
-              e.preventDefault();
-              uploadImageAjax(item.getAsFile(), this, opt);
-              return;
+          const html = cb.getData ? (cb.getData('text/html') || '') : '';
+
+          // 편집기 안에서 복사한 이미지 - 이미 올라가 있으니 HTML 을 그대로 붙인다
+          if (html && isOwnImageHtml(html)) {
+            stopPaste(e, ev);
+            $(this).summernote('pasteHTML', clipboardFragment(html));
+            return;
+          }
+
+          // 화면 캡처나 바깥에서 복사한 이미지 - 파일로 올린다
+          if (cb.items) {
+            for (const item of cb.items) {
+              if (item.type && item.type.startsWith('image/')) {
+                stopPaste(e, ev);
+                uploadImageAjax(item.getAsFile(), this, opt);
+                return;
+              }
             }
           }
         }

@@ -29,8 +29,8 @@
 						<div class="container text-center">
 
 							<div class="heading-block center">
-								<h2 th:text="${product.subject}">Screw Caps and Tubes</h2>
-								<span th:text="${product.content}">Screw Caps and Tubes 제품 상세
+								<h2 th:text="${@enText.pick(product.subject, product.subjectEn)}">Screw Caps and Tubes</h2>
+								<span th:text="${@enText.pick(product.content, product.contentEn)}">Screw Caps and Tubes 제품 상세
 									페이지 입니다.</span>
 							</div>
 						</div>
@@ -69,14 +69,14 @@
 											</p>
 											<ul class="iconlist">
 												<li th:each="i:${product.infos}"><i class="icon-caret-right"></i>
-													<span th:text="${i.productInfoText}"></span></li>
+													<span th:text="${@enText.pick(i.productInfoText, i.productInfoTextEn)}"></span></li>
 											</ul>
 											<div class="card product-meta">
 												<div class="card-body">
 													<th:block th:each="s:${product.specs}">
-														<span class="posted_in">[[${s.productSpecSubject}]]
+														<span class="posted_in">[[${@enText.pick(s.productSpecSubject, s.productSpecSubjectEn)}]]
 															: <a href="javascript:void();" rel="tag"
-															th:text="${s.productSpecContent}">제조자</a>
+															th:text="${@enText.pick(s.productSpecContent, s.productSpecContentEn)}">제조자</a>
 														</span><br>
 													</th:block>
 
@@ -161,7 +161,7 @@
 									<div class="toggle-content sidebar-menu-toggle">
 										<ul>
 											<li th:if="${s.id == product.smallSort.id}" th:each="product:${p}">
-												<a th:href="@{|/productDetail/${product.id}|}" th:text="${product.subject}">Capture Screw Caps and
+												<a th:href="@{|/productDetail/${product.id}|}" th:text="${@enText.pick(product.subject, product.subjectEn)}">Capture Screw Caps and
 														Tubes(5ML)<i class="icon-line-arrow-right"></i>
 												</a>
 											</li>

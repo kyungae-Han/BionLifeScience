@@ -12,7 +12,10 @@ function reindexSpecs() {
 				input.name = input.name.replace(/specs\[\d+\]/, 'specs[' + idx + ']');
 			}
 		});
-		var orderInput = item.querySelector('input[name$=".specOrder"]');
+		// 저장된 줄은 specs[i].specOrder, 새로 더한 줄은 그냥 specOrder 다.
+		// 예전에는 점이 붙은 쪽만 찾아서, 새 줄을 위로 올려도 순서가 안 바뀌었다.
+		// 그래서 저장하면 늘 맨 끝으로 돌아갔다.
+		var orderInput = item.querySelector('input[name="specOrder"], input[name$=".specOrder"]');
 		if (orderInput) orderInput.value = idx + 1;
 	});
 }

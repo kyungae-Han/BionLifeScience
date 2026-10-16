@@ -2,7 +2,7 @@
 <html dir="ltr" lang="ko" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 
 <head
-	th:replace="~{/fragments/front/common :: headSrc(${product != null ? product.subject + ' | BION Life Science' : '바이온라이프사이언스 제품'})}">
+	th:replace="~{/fragments/front/common :: headSrc(${product != null ? @enText.pick(product.subject, product.subjectEn) + ' | BION Life Science' : '바이온라이프사이언스 제품'})}">
 </head>
 <link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
 
@@ -157,7 +157,7 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 				<li class="breadcrumb-item"><a href="/index">메인</a></li>
 				<li class="breadcrumb-item" aria-current="page">상세페이지</li>
 				<li class="breadcrumb-item active" th:utext="${@enText.pick(brand.name, brand.nameEn)}" style="white-space: nowrap;">Brand Name</li>
-				<li class="breadcrumb-item active" th:text="${product.subject}">Screw Caps and Tubes</li>
+				<li class="breadcrumb-item active" th:text="${@enText.pick(product.subject, product.subjectEn)}">Screw Caps and Tubes</li>
 			</ol>
 		</section>	
 			
@@ -169,7 +169,7 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 						<div class="container text-center">
 
 							<div class="heading-block center">
-								<h2 th:text="${product.subject}">Screw Caps and Tubes</h2>
+								<h2 th:text="${@enText.pick(product.subject, product.subjectEn)}">Screw Caps and Tubes</h2>
 								<p th:text="${@enText.pick(product.content, product.contentEn)}">Screw Caps and Tubes 제품 상세 페이지 입니다</p>
 							</div>
 						</div>
@@ -203,7 +203,7 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 										
 											<div class="mb-3">
 										        <span class="badge bg-danger p-2"
-										              th:text="${product.bigSort != null ? product.bigSort.name : '기타'}">
+										              th:text="${product.bigSort != null ? @enText.pick(product.bigSort.name, product.bigSort.nameEn) : #{sort.etc}}">
 										        </span>
 										        
 										        <span class="badge bg-primary p-2 text-white"
@@ -336,12 +336,12 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 											<i class="toggle-closed icon-ok-circle"></i> <i
 												class="toggle-open icon-remove-circle"></i>
 										</div>
-										<div class="toggle-title" th:text="${bs.name}">Screw Caps and Tubes</div>
+										<div class="toggle-title" th:text="${@enText.pick(bs.name, bs.nameEn)}">Screw Caps and Tubes</div>
 									</div>
 									<div class="toggle-content sidebar-menu-toggle">
 										<ul>
 											<li th:if="${bs.id == bp.smallSort.id}" th:each="bp:${bp}">
-												<a th:href="@{|/brandProductDetail/${bp.id}|}" th:text="${bp.subject}">Capture Screw Caps and
+												<a th:href="@{|/brandProductDetail/${bp.id}|}" th:text="${@enText.pick(bp.subject, bp.subjectEn)}">Capture Screw Caps and
 														Tubes(5ML)<i class="icon-line-arrow-right"></i>
 												</a>
 											</li>
@@ -373,7 +373,7 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 							        <div class="portfolio-desc px-3 pt-3 pb-3">
 							        		<div class="desc-title">
 								        		<h6 class="mb-0 mt-3" th:utext="${@enText.pick(brand.name, brand.nameEn)}"></h6>
-								            <h4 class="title-clamp mb-3" th:text="${p.subject}"></h4>
+								            <h4 class="title-clamp mb-3" th:text="${@enText.pick(p.subject, p.subjectEn)}"></h4>
 							            </div>
 							            <p class="description-clamp small" th:text="${@enText.pick(p.content, p.contentEn)}"></p>
 							        </div>

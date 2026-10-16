@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -533,8 +534,21 @@ public class BrandController {
 	        MultipartFile productOverviewImage,
 	        @RequestParam(required = false) MultipartFile productSpecImage,
 	        List<MultipartFile> slides,
-	        List<MultipartFile> productFile
+	        List<MultipartFile> productFile,
+	        HttpServletRequest request
 	) throws IllegalStateException, IOException {
+
+		// ⚠️ 스프링은 값이 하나뿐인 요청 파라미터를 String[] 로 바꿀 때 쉼표로 쪼갠다.
+		// 상세 정보 값에 'CT-2015-S, CT-2050-S' 처럼 쉼표가 들어가면 두 개로 갈라져서
+		// 주제와 값의 짝이 밀리고 쉼표 뒤가 사라진다.
+		// 브라우저가 보낸 그대로 다시 읽어 덮어쓴다. 줄이 둘 이상일 때는 원래도 정상이다.
+		spec = request.getParameterValues("spec");
+		specEn = request.getParameterValues("specEn");
+		infoQ = request.getParameterValues("infoQ");
+		infoA = request.getParameterValues("infoA");
+		infoQEn = request.getParameterValues("infoQEn");
+		infoAEn = request.getParameterValues("infoAEn");
+
 
 
 	    // 브랜드 및 분류 필수 세팅
@@ -706,8 +720,21 @@ public class BrandController {
 	        @RequestParam(required = false) String[] infoAEn,
 	        @RequestParam(required = false) Integer[] specOrder,
 	        Model model,
-	        @PageableDefault(size = 10) Pageable pageable
+	        @PageableDefault(size = 10) Pageable pageable,
+	        HttpServletRequest request
 			) throws IllegalStateException, IOException {
+
+		// ⚠️ 스프링은 값이 하나뿐인 요청 파라미터를 String[] 로 바꿀 때 쉼표로 쪼갠다.
+		// 상세 정보 값에 'CT-2015-S, CT-2050-S' 처럼 쉼표가 들어가면 두 개로 갈라져서
+		// 주제와 값의 짝이 밀리고 쉼표 뒤가 사라진다.
+		// 브라우저가 보낸 그대로 다시 읽어 덮어쓴다. 줄이 둘 이상일 때는 원래도 정상이다.
+		spec = request.getParameterValues("spec");
+		specEn = request.getParameterValues("specEn");
+		infoQ = request.getParameterValues("infoQ");
+		infoA = request.getParameterValues("infoA");
+		infoQEn = request.getParameterValues("infoQEn");
+		infoAEn = request.getParameterValues("infoAEn");
+
 		
 		
 		
@@ -907,10 +934,22 @@ public class BrandController {
 		    desc = desc.replaceAll("(?i)<p>(\\s|&nbsp;|<br>|)*</p>", "");
 		}
 		
+		// 영문 상세 설명도 한글과 같은 처리를 한다
+		String descEn = imageProcessor.processEditorImages(brand.getDescEn(), "brand");
+		
+		if (descEn != null) {
+		    descEn = descEn.replaceAll("(?i)<p>(\\s|&nbsp;|<br>|)*</p>", "");
+		}
+		
 		saved.setType(brand.getType());
 	    saved.setName(brand.getName());
 	    saved.setContent(brand.getContent());
 	    saved.setDesc(desc);
+	    
+	    // 영문 칸은 폼에서 넘어오는데 여기서 옮겨 담지 않아 저장되지 않았다
+	    saved.setNameEn(brand.getNameEn());
+	    saved.setContentEn(brand.getContentEn());
+	    saved.setDescEn(descEn);
 	    
 	    brandService.applyLogo(saved, brandImage);
 	    brandService.applyVisual(saved, visualImage);

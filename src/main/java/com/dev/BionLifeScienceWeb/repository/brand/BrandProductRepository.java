@@ -49,6 +49,23 @@ public interface BrandProductRepository extends JpaRepository<BrandProduct, Long
 		       OR LOWER(s.productSpecContent) LIKE LOWER(CONCAT('%', :keyword, '%'))
 		    """)
     List<BrandProduct> searchAllByKeyword(@Param("keyword") String keyword);
+
+	/**
+	 * 검색칸 자동완성용. 제품명과 품목코드만 본다.
+	 * 전체 검색(searchAllByKeyword)은 본문과 모든 스펙까지 뒤져서 결과가 넓다.
+	 * 자동완성은 칠 때마다 도는 조회라 좁게 잡고 Pageable 로 개수를 끊는다.
+	 */
+	@Query("""
+		    SELECT DISTINCT p
+		    FROM BrandProduct p
+		    LEFT JOIN p.specs s
+		    WHERE LOWER(p.subject) LIKE LOWER(CONCAT('%', :keyword, '%'))
+		       OR LOWER(p.searchKeyword) LIKE LOWER(CONCAT('%', :keyword, '%'))
+		       OR (LOWER(s.productSpecSubject) = '품목코드'
+		           AND LOWER(s.productSpecContent) LIKE LOWER(CONCAT('%', :keyword, '%')))
+		    ORDER BY p.subject ASC
+		    """)
+	List<BrandProduct> suggestByKeyword(@Param("keyword") String keyword, Pageable pageable);
 	
 	
 	Page<BrandProduct> findAllBySubjectContainsOrderByIdDesc(Pageable pageable, String searchWord);

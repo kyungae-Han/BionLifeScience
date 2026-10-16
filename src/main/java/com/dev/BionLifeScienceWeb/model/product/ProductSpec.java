@@ -20,10 +20,16 @@ public class ProductSpec {
 	
 	@Column(name="PRODUCT_SPEC_SUBJECT")
 	private String productSpecSubject;
+
+	@Column(name="PRODUCT_SPEC_SUBJECT_EN")
+	private String productSpecSubjectEn;
 	
 	@Column(name="PRODUCT_ID")
 	private Long productId;
 	
 	@Column(name="PRODUCT_SPEC_CONTENT")
 	private String productSpecContent;
+
+	@Column(name="PRODUCT_SPEC_CONTENT_EN")
+	private String productSpecContentEn;
 }

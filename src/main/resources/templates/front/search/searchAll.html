@@ -57,7 +57,7 @@
 										</div>
 										<div class="entry-title">
 											<h3 style="font-size:16px;">
-												<a th:href="@{|/brandProductDetail/${product.id}|}" th:text="${product.subject}">Screw Caps and Tubes</a>
+												<a th:href="@{|/brandProductDetail/${product.id}|}" th:text="${@enText.pick(product.subject, product.subjectEn)}">Screw Caps and Tubes</a>
 											</h3>
 										</div>
 										<div class="entry-meta">
@@ -68,7 +68,7 @@
 											</span>
 										</div>
 										<div class="entry-content mt-1">
-											<p style="font-size:14px;" th:text="${product.content}">간단한 제품에 대한 설명이 들어가는 영역입니다.</p>
+											<p style="font-size:14px;" th:text="${@enText.pick(product.content, product.contentEn)}">간단한 제품에 대한 설명이 들어가는 영역입니다.</p>
 											<a th:href="@{|/brandProductDetail/${product.id}|}" class="more-link">자세히 보기 <i class="icon-line-arrow-right"></i></a>
 										</div>
 									</div>

@@ -169,7 +169,7 @@
 
 <th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
 
-<script>
+<script th:inline="javascript">
 document.addEventListener('DOMContentLoaded', () => {
 
 	
@@ -255,10 +255,10 @@ function unlockBodyScroll() {
     .then(res => res.json())
     .then(data => {
       // ✅ 브랜드 정보 표시
-      nameBox.textContent = data.brandName || '브랜드명 없음';
+      nameBox.textContent = data.brandName || /*[[#{brand.noName}]]*/ '브랜드명 없음';
       descBox.innerHTML = (data.brandDesc && data.brandDesc.trim() !== '')
         ? data.brandDesc
-        : '브랜드 소개가 준비 중입니다.';
+        : /*[[#{brand.noDesc}]]*/ '브랜드 소개가 준비 중입니다.';
       logo.src = data.brandLogo || '/front/images/no-logo.png';
 
 
@@ -268,13 +268,13 @@ function unlockBodyScroll() {
 		const products = categories.flatMap(c => 
 		  (c.products || []).map(p => ({
 		    ...p,
-		    bigSortName: c.bigSortName || '기타'
+		    bigSortName: c.bigSortName || /*[[#{sort.etc}]]*/ '기타'
 		  }))
 		);
 	
 		
 	// ✅ 카테고리 버튼 생성
-	const categoryNames = [...new Set(categories.map(c => c.bigSortName || '기타'))];
+	const categoryNames = [...new Set(categories.map(c => c.bigSortName || /*[[#{sort.etc}]]*/ '기타'))];
 	categoryBox.innerHTML = categoryNames.map((c, i) => `
 	  <button class="category-item m-2 text-center ${i === 0 ? 'active' : ''}" data-category="${c}">
 	    ${c}

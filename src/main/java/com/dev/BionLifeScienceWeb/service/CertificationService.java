@@ -58,6 +58,9 @@ public class CertificationService {
 
 		saved.setSubject(form.getSubject());
 		saved.setContent(form.getContent());
+		// 영문 칸. 비어 있으면 앞단에서 한글로 떨어진다
+		saved.setSubjectEn(form.getSubjectEn());
+		saved.setContentEn(form.getContentEn());
 		saved.setSort(form.getSort());
 
 		if (file != null && !file.isEmpty()) {

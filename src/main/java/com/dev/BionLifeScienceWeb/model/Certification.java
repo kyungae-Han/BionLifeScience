@@ -20,9 +20,16 @@ public class Certification {
 
 	@Column(name="CERTIFICATION_SUBJECT")
 	private String subject;
+
+	/** 영문 화면에서 쓰는 제목. 비어 있으면 한글이 그대로 나간다 */
+	@Column(name="CERTIFICATION_SUBJECT_EN")
+	private String subjectEn;
 	
 	@Column(name="CERTIFICATION_CONTENT")
 	private String content;
+
+	@Column(name="CERTIFICATION_CONTENT_EN")
+	private String contentEn;
 	
 	@Column(name="CERTIFICATION_SORT")
 	private String sort;

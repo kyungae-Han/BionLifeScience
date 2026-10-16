@@ -37,7 +37,7 @@
                 <div class="border-top-0 m-0">
                     <div class="container text-center">
                         <div class="heading-block center">
-                            <h2 th:text="${brandInfo.name}">Tubes</h2>
+                            <h2 th:text="${@enText.pick(brandInfo.name, brandInfo.nameEn)}">Tubes</h2>
                             <span th:text="${name}">카테고리명</span>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                                     <div class="entry-title">
                                         <h2>
                                             <a th:href="@{|/brandProductDetail/${product.id}|}"
-                                               th:text="${product.subject}">Screw Caps and Tubes</a>
+                                               th:text="${@enText.pick(product.subject, product.subjectEn)}">Screw Caps and Tubes</a>
                                         </h2>
                                     </div>
 
@@ -66,13 +66,13 @@
                                         <ul>
                                             <li th:each="spec : ${product.specs}">
                                                 <i class="icon-folder-open"></i>
-                                                # [[${spec.productSpecContent}]]
+                                                # [[${@enText.pick(spec.productSpecContent, spec.productSpecContentEn)}]]
                                             </li>
                                         </ul>
                                     </div>
 
                                     <div class="entry-content mt-1">
-                                        <p th:text="${product.content}">
+                                        <p th:text="${@enText.pick(product.content, product.contentEn)}">
                                             간단한 제품에 대한 설명이 들어가는 영역입니다.
                                         </p>
                                     </div>

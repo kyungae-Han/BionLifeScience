@@ -83,9 +83,13 @@
 									<div class="menu-container mobile-primary-menu">
 										<div class="header-misc search-wrap-mobile" id="search-wrap">
 											<form class="top-search-form-mobile" action="/searchAll" method="get" id="top-search-form">
-												<div>
+												<div class="search-field">
 													<input type="text" name="searchWord" class="form-control" required="required" th:placeholder="#{nav.search.placeholder}" placeholder="검색어를 입력 하세요." autocomplete="off"> <span class="search-btn" id="search-btn"><i
 														class="icon-line-search"></i></span>
+													<!-- 최근 검색어. 값은 이 브라우저에만 남는다. 서버로 보내지 않는다 -->
+													<div class="recent-search" hidden th:attr="data-remove-label=#{nav.search.recent.remove}">
+														<ul class="recent-search-list"></ul>
+													</div>
 												</div>
 											</form>
 										</div>
@@ -227,9 +231,13 @@
 								</div>
 							</div>
 							<form class="top-search-form" action="/searchAll" method="get" id="top-search-form">
-								<div>
+								<div class="search-field">
 									<input type="text" name="searchWord" class="form-control" required="required" th:placeholder="#{nav.search.placeholder}" placeholder="검색어를 입력 하세요." autocomplete="off"> <span class="search-btn" id="search-btn"><i
 										class="icon-line-search"></i></span>
+									<!-- 최근 검색어. 값은 이 브라우저에만 남는다. 서버로 보내지 않는다 -->
+									<div class="recent-search" hidden th:attr="data-remove-label=#{nav.search.recent.remove}">
+										<ul class="recent-search-list"></ul>
+									</div>
 								</div>
 							</form>
 							<script>
@@ -435,6 +443,206 @@
  
 
 	<th:block th:fragment="scriptSrc">
+		<script>
+		// 최근 검색어. 이 브라우저에만 남는다. 서버로 보내지 않는다.
+		// 공용 PC 를 쓸 수 있으므로 하나씩 빼기와 전체 삭제를 같이 둔다.
+		(function () {
+			var KEY = 'BION_RECENT_SEARCH';
+			var MAX = 10;
+
+			// 시크릿 창이나 저장이 막힌 브라우저에서는 조용히 넘어간다
+			function load() {
+				try {
+					var raw = window.localStorage.getItem(KEY);
+					var list = raw ? JSON.parse(raw) : [];
+					return Array.isArray(list) ? list.filter(function (v) {
+						return typeof v === 'string' && v.trim() !== '';
+					}).slice(0, MAX) : [];
+				} catch (e) { return []; }
+			}
+
+			function save(list) {
+				try { window.localStorage.setItem(KEY, JSON.stringify(list.slice(0, MAX))); }
+				catch (e) { /* 저장 못 해도 검색은 된다 */ }
+			}
+
+			function remember(word) {
+				var w = String(word || '').trim();
+				if (!w) return;
+				var list = load().filter(function (v) { return v !== w; });
+				list.unshift(w);          // 최근 것이 맨 위
+				save(list);
+			}
+
+			function setup(panel) {
+				var form = panel.closest('form');
+				var input = form && form.querySelector('input[name="searchWord"]');
+				var listEl = panel.querySelector('.recent-search-list');
+				var removeLabel = panel.getAttribute('data-remove-label') || '삭제';
+				if (!form || !input || !listEl) return;
+
+				function draw() {
+					var list = load();
+					listEl.textContent = '';
+					list.forEach(function (word) {
+						var li = document.createElement('li');
+
+						var pick = document.createElement('button');
+						pick.type = 'button';
+						pick.className = 'recent-search-word';
+						pick.textContent = word;
+						pick.addEventListener('click', function () {
+							input.value = word;
+							remember(word);
+							form.submit();
+						});
+
+						var del = document.createElement('button');
+						del.type = 'button';
+						del.className = 'recent-search-remove';
+						del.title = removeLabel;
+						del.setAttribute('aria-label', removeLabel);
+						del.textContent = '×';
+						del.addEventListener('click', function (e) {
+							e.stopPropagation();
+							save(load().filter(function (v) { return v !== word; }));
+							if (draw() === 0) panel.hidden = true;
+							input.focus();
+						});
+
+						li.appendChild(pick);
+						li.appendChild(del);
+						listEl.appendChild(li);
+					});
+					return list.length;
+				}
+
+				// ── 자동완성 ───────────────────────────────────────────
+				// 글자를 치면 같은 상자가 제품 목록으로 바뀐다. 칸을 비우면 최근 검색어로 돌아간다.
+				var acTimer = null;
+				var acSeq = 0;
+
+				// 친 글자를 제품명 안에서 굵게 보여 준다. 텍스트로만 다루므로 태그가 끼어들 수 없다
+				function markHit(name, word) {
+					var frag = document.createDocumentFragment();
+					var at = name.toLowerCase().indexOf(word.toLowerCase());
+					if (at < 0) {
+						frag.appendChild(document.createTextNode(name));
+						return frag;
+					}
+					frag.appendChild(document.createTextNode(name.slice(0, at)));
+					var b = document.createElement('b');
+					b.textContent = name.slice(at, at + word.length);
+					frag.appendChild(b);
+					frag.appendChild(document.createTextNode(name.slice(at + word.length)));
+					return frag;
+				}
+
+				function drawSuggest(rows, word) {
+					listEl.textContent = '';
+					rows.forEach(function (row) {
+						var li = document.createElement('li');
+						li.className = 'suggest-item';
+
+						var a = document.createElement('a');
+						a.className = 'recent-search-word';
+						a.href = '/brandProductDetail/' + row.id;
+
+						var nameEl = document.createElement('span');
+						nameEl.className = 'suggest-name';
+						nameEl.appendChild(markHit(row.name || '', word));
+						a.appendChild(nameEl);
+
+						if (row.code) {
+							var codeEl = document.createElement('span');
+							codeEl.className = 'suggest-code';
+							codeEl.textContent = row.code;
+							a.appendChild(codeEl);
+						}
+
+						li.appendChild(a);
+						listEl.appendChild(li);
+					});
+					return rows.length;
+				}
+
+				function askSuggest(word) {
+					var mine = ++acSeq;
+					fetch('/searchSuggest?q=' + encodeURIComponent(word), { headers: { 'Accept': 'application/json' } })
+						.then(function (r) { return r.ok ? r.json() : []; })
+						.then(function (rows) {
+							// 늦게 온 응답이 새 것을 덮지 않게 한다
+							if (mine !== acSeq || input.value.trim() !== word) return;
+							if (drawSuggest(rows, word) === 0) { panel.hidden = true; return; }
+							fit();
+							panel.hidden = false;
+						})
+						.catch(function () { /* 조회가 안 되면 조용히 넘어간다 */ });
+				}
+
+				input.addEventListener('input', function () {
+					var word = input.value.trim();
+					clearTimeout(acTimer);
+					if (!word) { open(); return; }   // 비면 최근 검색어로 돌아간다
+					// 칠 때마다 보내지 않는다. 잠깐 멈추면 한 번 보낸다
+					acTimer = setTimeout(function () { askSuggest(word); }, 180);
+				});
+
+				// 상자를 검색칸에 맞춘다. 테마가 칸을 flex 로 배치하고 폭도 화면마다
+				// 달라서, 고정값 대신 그때그때 칸의 자리와 폭을 읽어 맞춘다.
+				function fit() {
+					panel.style.left = input.offsetLeft + 'px';
+					panel.style.width = input.offsetWidth + 'px';
+					// 감싼 상자가 검색칸보다 높아서 top:100% 로는 아래로 뜬다.
+					// 칸의 바닥에 맞춘다.
+					panel.style.top = (input.offsetTop + input.offsetHeight + 4) + 'px';
+				}
+
+				// 담긴 것이 없으면 빈 상자를 띄우지 않는다
+				function open() {
+					if (draw() === 0) { panel.hidden = true; return; }
+					fit();
+					panel.hidden = false;
+				}
+
+				window.addEventListener('resize', function () {
+					if (!panel.hidden) fit();
+				});
+				function close() { panel.hidden = true; }
+
+				function openSmart() {
+					var word = input.value.trim();
+					if (word) { askSuggest(word); } else { open(); }
+				}
+				input.addEventListener('focus', openSmart);
+				input.addEventListener('click', openSmart);
+				input.addEventListener('keydown', function (e) {
+					if (e.key === 'Escape') close();
+				});
+
+				// 엔터로 보내면 submit 이벤트가 난다
+				form.addEventListener('submit', function () {
+					remember(input.value);
+				});
+
+				// 돋보기 단추는 form.submit() 을 직접 부른다.
+				// 그 방식은 submit 이벤트를 건너뛰므로 여기서 따로 담는다.
+				var btn = form.querySelector('.search-btn');
+				if (btn) {
+					btn.addEventListener('click', function () {
+						remember(input.value);
+					});
+				}
+
+				// 바깥을 누르면 닫는다
+				document.addEventListener('click', function (e) {
+					if (!form.contains(e.target)) close();
+				});
+			}
+
+			document.querySelectorAll('.recent-search').forEach(setup);
+		})();
+		</script>
 		<div id="gotoTop" class="icon-angle-up"></div>
 		<!-- 아래 스크립트들이 화면에 찍는 문구. 언어에 따라 서버가 채운다 -->
 		<script th:inline="javascript">
