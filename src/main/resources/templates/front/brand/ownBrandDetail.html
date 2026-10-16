@@ -44,6 +44,21 @@
 	    overflow: hidden;
 	    text-overflow: ellipsis;
 	}
+
+	/* 모바일: 카드가 길어지지 않도록 상세정보(스펙) 줄을 숨기고 상품명·설명만 노출 */
+	@media (max-width: 767.98px) {
+		#brandProdcutListItem .product-card .entry-meta {
+			display: none;
+		}
+		/* 스펙 목록이 빠진 만큼 하단 특허/특징 배지와 본문이 겹치지 않도록 여백 확보 */
+		#brandProdcutListItem .product-card .grid-inner {
+			padding-bottom: 3.5rem;
+		}
+		/* 배지가 없는 카드는 여백을 줄여 더 짧게 (:has 미지원 브라우저는 위 기본값 유지) */
+		#brandProdcutListItem .product-card:not(:has(.obtain)) .grid-inner {
+			padding-bottom: 0.5rem;
+		}
+	}
 </style>
 
 
