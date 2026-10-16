@@ -203,7 +203,7 @@ a.btn-custom-blue:hover {color: #292929 !important;}
 										
 											<div class="mb-3">
 										        <span class="badge bg-danger p-2"
-										              th:text="${product.bigSort != null ? @enText.pick(product.bigSort.name, product.bigSort.nameEn) : #{sort.etc}}">
+										              th:text="${product.bigSort != null} ? ${@enText.pick(product.bigSort.name, product.bigSort.nameEn)} : #{sort.etc}">
 										        </span>
 										        
 										        <span class="badge bg-primary p-2 text-white"
