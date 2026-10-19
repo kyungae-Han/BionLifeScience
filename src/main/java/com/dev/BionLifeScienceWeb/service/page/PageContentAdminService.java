@@ -84,6 +84,13 @@ public class PageContentAdminService {
         entity.setPageType(isBlank(form.getPageType()) ? "PAGE" : form.getPageType().trim());
         entity.setSlug(slug);
         entity.setPageDesc(form.getPageDesc());
+
+        // 영문. 비어 있으면 화면에서 @enText.pick 이 한글로 떨어뜨린다.
+        // ⚠️ 여기에 안 적으면 폼에서 넘어와도 조용히 버려진다 (이 메서드는 칸을 하나씩 옮겨 담는다).
+        entity.setPageNameEn(nvl(form.getPageNameEn()));
+        entity.setPageSubNameEn(nvl(form.getPageSubNameEn()));
+        entity.setPageContentEn(nvl(form.getPageContentEn()));
+        entity.setPageDescEn(form.getPageDescEn());
         entity.setPageIndex(form.getPageIndex() == null ? 0 : form.getPageIndex());
         entity.setUseYn(isBlank(form.getUseYn()) ? "Y" : form.getUseYn());
 

@@ -35,11 +35,21 @@ public class PageContent {
     @Column(name = "page_name", nullable = false, length = 1000)
     private String pageName;
 
+    /** 영문 화면용. 비어 있으면 한글이 그대로 나간다 (@enText.pick) */
+    @Column(name = "page_name_en", length = 1000)
+    private String pageNameEn;
+
     @Column(name = "page_sub_name", length = 1000)
     private String pageSubName;
 
+    @Column(name = "page_sub_name_en", length = 1000)
+    private String pageSubNameEn;
+
     @Column(name = "page_content", length = 1000)
     private String pageContent;
+
+    @Column(name = "page_content_en", length = 1000)
+    private String pageContentEn;
 
     @Column(name = "page_index")
     private Integer pageIndex;
@@ -62,6 +72,10 @@ public class PageContent {
     @Lob
     @Column(name = "page_desc")
     private String pageDesc;
+
+    @Lob
+    @Column(name = "page_desc_en")
+    private String pageDescEn;
 
     @Column(name = "use_yn", nullable = false, length = 1)
     private String useYn = "Y";

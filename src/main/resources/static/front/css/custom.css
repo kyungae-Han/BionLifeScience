@@ -168,3 +168,174 @@ html[lang="en"] #top-search > a {
 .sticky-header .top-search-form input.form-control {
   border: 1px solid var(--bs-gray-900) !important;
 }
+
+/* ── 검색 닫기 단추 ─────────────────────────────────────────────────── */
+/* 검색을 열면 폼이 머리말 전체(width:100%, height:100%)를 흰 띠로 덮는다.
+   그래서 테마가 검색 아이콘 자리에 띄우는 X 가 폼 뒤에 깔려 눌리지 않고,
+   폼 바깥을 눌러야만 닫혔다.
+
+   단추는 폼 "안"에 둬야 한다. 폼 밖에 두면 폼이 클릭을 가로챈다.
+   다만 자리는 흰 띠 바깥(바로 아래 오른쪽)으로 뺀다. 흰 띠 안에 두면
+   가운데 검색칸과 멀리 떨어져 떠 보인다.
+
+   배경 사진 위에 얹히므로 글자색만으로는 안 보일 수 있다. 어두운 알약으로 깐다. */
+.top-search-form .top-search-close {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 40px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, .55);
+  color: #fff;
+  font-size: 14px;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.top-search-form .top-search-close i {
+  font-size: 15px;
+}
+
+.top-search-form .top-search-close:hover {
+  background: rgba(0, 0, 0, .75);
+}
+
+@media (max-width: 767px) {
+  /* 좁은 화면에서는 자리를 아껴 X 만 남긴다 */
+  .top-search-form .top-search-close {
+    right: 16px;
+    padding: 8px 10px;
+  }
+  .top-search-form .top-search-close span {
+    display: none;
+  }
+}
+
+/* ── 고객문의 모달 폼 ───────────────────────────────────────────────── */
+/* 머리말의 "고객문의" 로 뜨는 모달 안에 들어가는 폼이다.
+   마크업은 front/customer/contact.html, 동작은 front/js/contact-form.js.
+   모두 .bion-contact 안에서만 걸리게 해서 다른 화면에 새지 않게 한다. */
+
+.bion-contact { color: #1b2430; }
+
+/* 고객센터 번호 */
+.bion-contact .cf-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  border: 1px solid #e3e6ea; border-radius: 10px;
+  padding: 14px 16px; margin-bottom: 20px; background: #fbfcfd;
+}
+.bion-contact .cf-head__label,
+.bion-contact .cf-head__hours { display: block; font-size: 12.5px; color: #5b6676; }
+.bion-contact .cf-head__num {
+  display: block; margin: 2px 0; font-size: 24px; font-weight: 800;
+  color: #0e2a5a; text-decoration: none; letter-spacing: -0.5px;
+}
+.bion-contact .cf-head__call {
+  flex: none; border: 1px solid #0e2a5a; border-radius: 6px; background: #fff;
+  color: #0e2a5a; font-weight: 700; padding: 9px 16px; text-decoration: none;
+}
+/* 전화걸기는 걸 수 있는 기기에서만. PC 에서는 눌러도 아무 일이 없어 숨긴다 */
+@media (min-width: 992px) {
+  .bion-contact .cf-head__call { display: none; }
+}
+
+/* 단계 묶음 */
+.bion-contact .cf-sect { border-top: 1px solid #e3e6ea; margin-top: 22px; padding-top: 18px; }
+.bion-contact .cf-sect:first-of-type { border-top: 0; margin-top: 0; padding-top: 0; }
+.bion-contact .cf-sect__title {
+  display: flex; align-items: center; gap: 8px;
+  margin: 0 0 14px; font-size: 14px; font-weight: 700;
+}
+/* ⚠️ 제목 글자는 영문 전환 때문에 <span> 으로 감싸 두었다.
+   그러자 테마 style.css 의 h4 > span:not(.nocolor):not(.badge) { color:#fe5000 } 에 걸려
+   주황으로 나왔다. 그 규칙이 (0,2,2) 라 클래스를 하나 더 붙여 (0,3,0) 으로 이긴다. */
+.bion-contact .cf-sect__title > .cf-sect__label { color: #1b2430; }
+.bion-contact .cf-sect__n {
+  width: 20px; height: 20px; border-radius: 50%; background: #0e2a5a; color: #fff;
+  font-size: 12px; display: grid; place-items: center; flex: none;
+}
+/* ⚠️ 테마 style.css 에 h4 > span:not(.nocolor):not(.badge) { color:#fe5000 } 이 있다.
+   선택자 세기가 (0,2,2) 라 위의 (0,2,0) 규칙을 이겨서 숫자가 주황으로 나왔다.
+   클래스를 하나 더 붙여 (0,3,0) 으로 올려 이긴다. */
+.bion-contact .cf-sect__title > .cf-sect__n { color: #fff; }
+
+/* 입력 칸 */
+.bion-contact .cf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+.bion-contact .cf-full { grid-column: 1 / -1; }
+.bion-contact .cf-field label {
+  display: block; margin-bottom: 6px; font-size: 13.5px; font-weight: 700; color: #1b2430;
+}
+.bion-contact .cf-req { color: #d6453d; }
+.bion-contact .cf-ctl {
+  width: 100%; height: 42px; padding: 0 12px;
+  border: 1px solid #cfd4da; border-radius: 6px; background: #fff;
+  font: inherit; font-size: 14px; color: #1b2430;
+}
+.bion-contact .cf-ctl:focus {
+  outline: 0; border-color: #0e2a5a; box-shadow: 0 0 0 3px rgba(14, 42, 90, .10);
+}
+.bion-contact .cf-textarea { height: 130px; padding: 10px 12px; resize: vertical; line-height: 1.6; }
+
+/* 첨부파일 */
+.bion-contact .cf-file { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.bion-contact .cf-drop {
+  display: block; border: 1.5px dashed #cfd4da; border-radius: 10px;
+  background: #fbfcfd; padding: 18px; text-align: center; cursor: pointer;
+  transition: border-color .15s ease, background .15s ease;
+}
+.bion-contact .cf-drop:hover,
+.bion-contact .cf-drop.is-over { border-color: #0e2a5a; background: #f4f8ff; }
+.bion-contact .cf-drop__big { display: block; font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.bion-contact .cf-drop__sub { display: block; font-size: 12.5px; color: #5b6676; }
+
+.bion-contact .cf-chip {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 10px;
+  border: 1px solid #cfd4da; border-radius: 999px; padding: 5px 8px 5px 14px;
+  background: #fff; font-size: 13px;
+}
+.bion-contact .cf-chip[hidden] { display: none; }
+.bion-contact .cf-chip__size { color: #8a94a2; }
+.bion-contact .cf-chip__x {
+  width: 20px; height: 20px; border: 0; border-radius: 50%;
+  background: #e9edf2; color: #5b6676; line-height: 1; cursor: pointer; font-size: 15px;
+}
+.bion-contact .cf-chip__x:hover { background: #d9dfe6; color: #1b2430; }
+
+/* 동의 */
+.bion-contact .cf-consent {
+  display: flex; align-items: flex-start; gap: 10px;
+  border: 1px solid #e3e6ea; border-radius: 10px; padding: 14px 16px; background: #fbfcfd;
+}
+.bion-contact .cf-consent__box { width: 17px; height: 17px; margin-top: 3px; flex: none; }
+.bion-contact .cf-consent__main { display: block; margin: 0; font-size: 14px; font-weight: 700; cursor: pointer; }
+.bion-contact .cf-consent__detail { margin: 4px 0 0; font-size: 12.5px; color: #5b6676; line-height: 1.55; }
+.bion-contact .cf-consent__links { margin: 6px 0 0; }
+.bion-contact .cf-link {
+  padding: 0; border: 0; background: none; font: inherit; font-size: 13px;
+  color: #0e2a5a; text-decoration: underline; cursor: pointer;
+}
+.bion-contact .cf-dot { color: #c4cad1; margin: 0 4px; }
+
+/* 보내기 */
+.bion-contact .cf-submit { margin-top: 16px; text-align: right; }
+.bion-contact .cf-send {
+  height: 46px; padding: 0 28px; border: 0; border-radius: 6px;
+  background: #0e2a5a; color: #fff; font-weight: 700; font-size: 15px; cursor: pointer;
+}
+/* 동의 전에는 못 누른다. 색은 네이비 그대로 두고 흐리게만 해서
+   "같은 단추인데 아직 못 누른다" 로 보이게 한다. 회색으로 바꾸면 딴 단추처럼 보인다 */
+.bion-contact .cf-send:disabled { background: #0e2a5a; opacity: .45; cursor: not-allowed; }
+.bion-contact .cf-send:not(:disabled):hover { background: #0a2048; }
+
+@media (max-width: 767px) {
+  .bion-contact .cf-grid { grid-template-columns: 1fr; }
+  .bion-contact .cf-head { flex-direction: column; align-items: flex-start; }
+  .bion-contact .cf-head__call { width: 100%; text-align: center; }
+  .bion-contact .cf-submit { text-align: stretch; }
+  .bion-contact .cf-send { width: 100%; }
+}

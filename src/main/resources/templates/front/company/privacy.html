@@ -145,7 +145,7 @@ body td {
 		<main id="main">
     <section class="bio-policy-wrap">
       <div class="container">
-        <div class="policy-content">
+        <div class="policy-content" th:if="${!@enText.isEnglish()}">
 
           <h3>제1조 (목적)</h3>
           <p>
@@ -196,6 +196,62 @@ body td {
 
           <h3>부칙</h3>
           <p>본 약관은 2025년 11월 01일부터 시행합니다.</p>
+
+        </div>
+
+          <!-- 영문. 한글 원문을 그대로 옮긴 것이다. 내용을 고칠 때는 위 한글 블록과 같이 고친다.
+               ⚠️ 법적 문서다. 대외 공개 전에 반드시 사람이 검수해야 한다. -->
+        <div class="policy-content" th:if="${@enText.isEnglish()}">
+
+          <h3>Article 1 (Purpose)</h3>
+          <p>
+            These terms set out the rights, duties and responsibilities between BION Life Science Inc. (hereinafter the "Company")
+            and users, in connection with the use of the information and services provided on the website operated by the Company.
+          </p>
+
+          <h3>Article 2 (Effect and amendment of these terms)</h3>
+          <ol>
+            <li>These terms take effect when they are posted on the website.</li>
+            <li>The Company may amend these terms to the extent that it does not breach the relevant laws.</li>
+            <li>Amended terms take effect on the day they are announced on the website.</li>
+          </ol>
+
+          <h3>Article 3 (Provision and change of services)</h3>
+          <ol>
+            <li class="mb-3">The Company provides the following services.
+                <p class="mt-1" style="margin-bottom:0;">(1) Information on the Company's own and other companies' products and brands</p>
+                <p style="margin-bottom:0;">(2) Notices and Company promotional content</p>
+                <p style="margin-bottom:0;">(3) Other services determined by the Company</p>
+            </li>
+            <li>The Company may change or suspend the content of a service for technical or operational reasons, and will give notice in advance where necessary.</li>
+          </ol>
+
+          <h3>Article 4 (Intellectual property and copyright)</h3>
+          <ol>
+            <li>The copyright and intellectual property rights in all content posted on the website (text, images, video, logos and the like) belong to the Company or to the rightful holder.</li>
+            <li>Users may not reproduce, distribute, transmit, modify or sell the content without the prior written consent of the Company.</li>
+          </ol>
+
+          <h3>Article 5 (Disclaimer)</h3>
+          <ol>
+            <li>The Company is not liable for interruption of service caused by force majeure, such as natural disaster, system failure or the unlawful acts of a third party.</li>
+            <li>The Company is not liable for any damage arising from a user's use of the information posted on the website.</li>
+            <li>The Company accepts no liability whatsoever for the content, advertising or transactions of external links posted on the website.</li>
+          </ol>
+
+          <h3>Article 6 (Restriction on use of the service)</h3>
+          <p>
+            Where a user breaches these terms or the relevant laws, the Company may restrict the use of the service without prior notice.
+          </p>
+
+          <h3>Article 7 (Governing law and jurisdiction)</h3>
+          <p>
+            The laws of the Republic of Korea apply to the interpretation of these terms and to any dispute arising from them.
+            Any dispute between the Company and a user in connection with the use of the service is subject to the jurisdiction of the Seoul Central District Court.
+          </p>
+
+          <h3>Addendum</h3>
+          <p>These terms take effect on 1 November 2025.</p>
 
         </div>
       </div>

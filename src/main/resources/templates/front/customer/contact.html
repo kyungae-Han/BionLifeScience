@@ -1,139 +1,151 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="ko" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="~{/fragments/front/common :: headSrc('고객문의')}">
+<head th:replace="~{/fragments/front/common :: headSrc('바이온라이프사이언스 고객문의')}">
 </head>
-<link rel="stylesheet" th:href="@{/front/css/bootstrap.css}">
-
-
-<style>
-@media (max-width:991px){
-	
-	#policyFrame {
-	  width: 100%;
-	  border: 0;
-	  display: block;
-	  border-radius: 8px;
-	}
-}
-</style>
-
 
 <body class="stretched">
 	<div id="wrapper" class="clearfix">
-		<section id="openContact">
-			<div class="call_center_num">
-			 <div class="inner-left">
-		          <h3 class="label">바이온 고객센터</h3>
-		          <h1 class="num">
-		            <a class="tel" href="tel:0315722272">031-572-2272</a>
-		          </h1>
-		          <p class="pb-2"><small class="hours">평일 09:00–18:00 (점심 12:00–13:00)</small></p>
-	          </div>
-	          <div class="pb-3">
-		          <a class="btn" href="tel:0315722272">전화걸기</a>
-	          </div>
-	        </div>
-			<div class="content-wrap">
-			
-				<div class="container">
-						<div class="postcontent">
-							<form action="/clientInsert" method="post"
-								enctype="multipart/form-data">
-								
-								<div class="form-group">
-									<label for="template-contactform-topic">문의 주제</label>
-									<select id="template-contactform-topic" name="topic" class="sm-form-control">
-										<option value="none">-- 선택 --</option>
-										<option value="제품정보관련">제품정보관련</option>
-										<option value="제휴관련">제휴관련</option>
-										<option value="기업제휴관련">기업제휴관련</option>
-										<option value="기타문의">기타문의</option>
-									</select>
-								</div>
-								<div class="form-group">
-									<label for="template-contactform-name">성함<small>*</small></label>
-									<input type="text" id="template-contactform-name" name="name"
-										class="sm-form-control" required="required" />
-								</div>
+		<!--
+			고객문의. 이 화면은 메인 머리말의 "고객문의" 를 누르면 뜨는 모달 안으로
+			#openContact 안쪽만 잘려서 들어간다 (common.html 의 loadContactOnce).
 
-								<div class="form-group">
-									<label for="template-contactform-company">회사명</label> <input type="text" id="template-contactform-company" name="company"
-										class="sm-form-control" />
-								</div>
+			⚠️ 그래서 이 파일 안에 <script> 를 넣어도 모달에서는 실행되지 않는다.
+			   innerHTML 로 꽂히는 마크업이라 스크립트가 안 돈다.
+			   폼 동작(동의 체크, 파일 검사, 약관 보기)은 전부
+			   /front/js/contact-form.js 에 있고, 그 파일은 common.html 이 불러온다.
 
-								<div class="form-group">
-									<label for="template-contactform-email">이메일<small>*</small></label>
-									<input type="email" id="template-contactform-email" name="email" required="required"
-										class="sm-form-control" />
-								</div>
+			⚠️ 글은 전부 messages.properties / messages_en.properties 에 있다 (contact.*).
+			   여기에 한글을 직접 적으면 영문으로 바뀌지 않는다.
+		-->
+		<section id="openContact" class="bion-contact">
 
-								<div class="form-group">
-									<label for="template-contactform-phone">연락처<small>*</small>
-									</label> <input type="phone" id="template-contactform-phone" name="phone"
-										required="required" class="sm-form-control" />
-								</div>
+			<!-- 고객센터 번호 -->
+			<div class="cf-head">
+				<div>
+					<span class="cf-head__label" th:text="#{contact.center}">바이온 고객센터</span>
+					<a class="cf-head__num" th:href="#{contact.tel.link}" href="tel:0315722272"
+						th:text="#{contact.tel}">031-572-2272</a>
+					<span class="cf-head__hours" th:text="#{contact.hours}">평일 09:00–18:00 (점심 12:00–13:00)</span>
+				</div>
+				<!-- 전화걸기는 누를 수 있는 기기에서만 보여 준다. PC 에서는 눌러도 아무 일이 없다 -->
+				<a class="cf-head__call" th:href="#{contact.tel.link}" href="tel:0315722272" th:text="#{contact.call}">전화걸기</a>
+			</div>
 
-								<div class="form-group">
-									<label for="template-contactform-country">국가명</label> <input type="text" id="template-contactform-country" name="country"
-										class="sm-form-control" />
-								</div>
+			<form action="/clientInsert" method="post" enctype="multipart/form-data" id="contactForm">
 
-								<div></div>
-
-								<div class="form-group">
-									<label for="template-contactform-title">문의 제목<small>*</small>
-									</label> <input type="text" id="template-contactform-title" name="subject"
-										required="required" class="sm-form-control" />
-								</div>
-
-								<div class="form-group">
-									<label for="template-contactform-message">내용 <small>*</small>
-									</label>
-									<textarea class="required sm-form-control" id="template-contactform-message"
-										name="comment" required="required" rows="6" cols="30"></textarea>
-								</div>
-								<div class="col-12 form-group">
-									<label for="template-contactform-file">파일 업로드</label> <input type="file" id="template-contactform-file" name="file"
-										class="sm-form-control" /> <span class="alert-text">
-												1회 업로드 가능 용량은 20MB입니다.<small>[&nbsp;jpg | jpeg | pdf | png | zip&nbsp;]등록가능</small></span>
-								</div>
-								<div id="policyEmbed" style="margin-top:10px;">
-								  <div style="border:1px solid #eee; background:#fff; border-radius:10px; padding:12px 6px 12px 12px;">
-								  	<h4>※ 개인 정보 처리방침 이용약관</h4>
-								    <iframe id="policyFrame" src="/front/company/privacy-policy/iframe" ></iframe>
-								  </div>
-								</div>
-								<div class="form-check">
-									<input type="checkbox" class="form-check-input"
-										style="margin-left: -0.5rem; margin-right: 5px;"
-										id="policyCheck"> <label class="form-check-label"
-										for="policyCheck">개인정보의 수집 및 이용에 동의합니다.</label>
-								</div>
-								<div class="form-group">
-									<button class="button button-3d" type="submit"
-										id="contactBtn">메시지 보내기</button>
-								</div>
-							</form>
+				<!-- 1. 연락받으실 곳 -->
+				<section class="cf-sect">
+					<h4 class="cf-sect__title"><span class="cf-sect__n">1</span> <span class="cf-sect__label" th:text="#{contact.step1}">연락받으실 곳</span></h4>
+					<div class="cf-grid">
+						<div class="cf-field">
+							<label for="template-contactform-name"><span th:text="#{contact.name}">성함</span> <span class="cf-req">*</span></label>
+							<input type="text" id="template-contactform-name" name="name" class="cf-ctl" required="required">
+						</div>
+						<div class="cf-field">
+							<label for="template-contactform-company"><span th:text="#{contact.company}">회사명</span> <span class="cf-req">*</span></label>
+							<input type="text" id="template-contactform-company" name="company" class="cf-ctl" required="required">
+						</div>
+						<div class="cf-field">
+							<label for="template-contactform-email"><span th:text="#{contact.email}">이메일</span> <span class="cf-req">*</span></label>
+							<input type="email" id="template-contactform-email" name="email" class="cf-ctl" required="required">
+						</div>
+						<div class="cf-field">
+							<label for="template-contactform-phone"><span th:text="#{contact.phone}">연락처</span> <span class="cf-req">*</span></label>
+							<input type="tel" id="template-contactform-phone" name="phone" class="cf-ctl" required="required">
+						</div>
+						<div class="cf-field cf-full">
+							<label for="template-contactform-country" th:text="#{contact.country}">국가명</label>
+							<input type="text" id="template-contactform-country" name="country" class="cf-ctl">
 						</div>
 					</div>
-				</div>
-		</section>
-</div>
+				</section>
 
+				<!-- 2. 문의 내용 -->
+				<section class="cf-sect">
+					<h4 class="cf-sect__title"><span class="cf-sect__n">2</span> <span class="cf-sect__label" th:text="#{contact.step2}">문의 내용</span></h4>
+					<div class="cf-grid">
+						<div class="cf-field cf-full">
+							<label for="template-contactform-topic" th:text="#{contact.topic}">문의 주제</label>
+							<!-- ⚠️ value 는 한글 그대로 둔다. 그 값이 DB 와 담당자 메일로 들어간다.
+							     번역하면 예전 문의와 값이 어긋난다. 보이는 글만 바꾼다 -->
+							<select id="template-contactform-topic" name="topic" class="cf-ctl">
+								<option value="none" th:text="#{contact.topic.choose}">-- 선택 --</option>
+								<option value="제품정보관련" th:text="#{contact.topic.product}">제품정보관련</option>
+								<option value="제휴관련" th:text="#{contact.topic.partner}">제휴관련</option>
+								<option value="기업제휴관련" th:text="#{contact.topic.business}">기업제휴관련</option>
+								<option value="기타문의" th:text="#{contact.topic.etc}">기타문의</option>
+							</select>
+						</div>
+						<div class="cf-field cf-full">
+							<label for="template-contactform-title"><span th:text="#{contact.subject}">제목</span> <span class="cf-req">*</span></label>
+							<input type="text" id="template-contactform-title" name="subject" class="cf-ctl" required="required">
+						</div>
+						<div class="cf-field cf-full">
+							<label for="template-contactform-message"><span th:text="#{contact.comment}">내용</span> <span class="cf-req">*</span></label>
+							<textarea id="template-contactform-message" name="comment" class="cf-ctl cf-textarea"
+								rows="6" required="required"></textarea>
+						</div>
+
+						<!-- 첨부파일. 서버는 파일 하나만 받는다 (ClientController 의 MultipartFile file) -->
+						<div class="cf-field cf-full">
+							<label for="template-contactform-file" th:text="#{contact.file}">첨부파일</label>
+							<label class="cf-drop" for="template-contactform-file" id="cfDrop">
+								<span class="cf-drop__big" th:text="#{contact.file.drop}">파일을 끌어다 놓거나 눌러서 고르세요</span>
+								<span class="cf-drop__sub" th:text="#{contact.file.rule}">jpg · jpeg · png · pdf · zip / 20MB 까지 / 1개</span>
+							</label>
+							<input type="file" id="template-contactform-file" name="file" class="cf-file"
+								accept=".jpg,.jpeg,.png,.pdf,.zip">
+							<div class="cf-chip" id="cfChip" hidden>
+								<span class="cf-chip__name"></span>
+								<span class="cf-chip__size"></span>
+								<button type="button" class="cf-chip__x"
+									th:attr="aria-label=#{contact.file.remove}" aria-label="첨부 지우기">&times;</button>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<!-- 3. 동의 -->
+				<section class="cf-sect">
+					<h4 class="cf-sect__title"><span class="cf-sect__n">3</span> <span class="cf-sect__label" th:text="#{contact.step3}">동의</span></h4>
+
+					<div class="cf-consent">
+						<input type="checkbox" id="policyCheck" class="cf-consent__box">
+						<div class="cf-consent__txt">
+							<label for="policyCheck" class="cf-consent__main">
+								<span th:text="#{contact.consent}">개인정보의 수집 및 이용에 동의합니다.</span> <span class="cf-req">*</span>
+							</label>
+							<p class="cf-consent__detail" th:text="#{contact.consent.detail}">
+								수집 항목: 이름, 회사명, 이메일, 연락처 · 이용 목적: 발송 고객 식별 및 민원처리 · 보유 기간: 메일 발송일로부터 3년
+							</p>
+							<p class="cf-consent__links">
+								<button type="button" class="cf-link" id="cfOpenPolicy"
+									th:text="#{contact.policy.view}">개인정보 처리방침 전문 보기</button>
+								<span class="cf-dot">·</span>
+								<button type="button" class="cf-link" id="cfOpenTerms"
+									th:text="#{contact.terms.view}">이용약관 보기</button>
+							</p>
+						</div>
+					</div>
+
+					<div class="cf-submit">
+						<!-- ⚠️ 여기에 disabled 를 박아 두지 않는다.
+						     박아 두면 contact-form.js 가 한 번이라도 못 뜰 때 문의를 아예 못 보낸다.
+						     잠그는 것도 푸는 것도 JS 가 한다. JS 가 죽으면 폼은 그냥 열려 있고,
+						     동의 확인은 보내기 직전 검사가 한 번 더 막는다. -->
+						<button class="cf-send" type="submit" id="contactBtn" th:text="#{contact.send}">문의 보내기</button>
+					</div>
+				</section>
+
+			</form>
+		</section>
+	</div>
 
 <th:block th:replace="~{/fragments/front/common :: scriptSrc}"></th:block>
 <script th:if="${mailSuccess}">
     alert("문의가 정상적으로 접수되었습니다.");
 </script>
-<script src="/front/js/contact.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelector('#openPolicy')
-      .addEventListener('click', (e) => window.open(e.currentTarget.dataset.url, '_blank'));
-  });
-</script>
-
 
 </body>
 </html>

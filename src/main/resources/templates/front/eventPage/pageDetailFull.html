@@ -1,10 +1,35 @@
 <!DOCTYPE html>
 <html dir="ltr" th:lang="${#locale.language}" lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
+<!-- ⚠️ http 로 들어오면 https 로 보낸다. 지우지 말 것.
+     카페24 자바호스팅은 앞단 nginx 가 TLS 를 끊고 톰캣에는 http 로만 넘긴다.
+     그래서 톰캣(스프링 필터)에서는 돌려보낼 수 없다. 카페24 공식 안내도
+     "Tomcat 에서 리다이렉트를 시도하면 헤더와 충돌해 무한 루프가 난다,
+      HTTPS 강제 접속은 소스 내부의 자바스크립트로 처리해야 한다" 고 못박고 있다.
+     (help.cafe24.com - Tomcat 서비스의 리다이렉트 설정은 어떻게 하나요?)
+
+     <head> 맨 앞에 인라인으로 둔다. 외부 파일로 빼면 그 파일을 받는 동안
+     http 페이지가 먼저 그려진다. 로컬 개발 서버는 건드리지 않는다. -->
+<script>
+(function () {
+	if (location.protocol !== 'http:') { return; }
+	// 포트를 지정해 띄운 곳은 개발용으로 보고 그냥 둔다
+	if (location.port && location.port !== '80') { return; }
+	var h = location.hostname;
+	if (h === 'localhost' || h === '127.0.0.1' || h === '::1' || h === ''
+			|| h.indexOf('.') === -1
+			|| /\.(local|test|localhost)$/i.test(h)
+			|| /^10\./.test(h)
+			|| /^192\.168\./.test(h)
+			|| /^172\.(1[6-9]|2[0-9]|3[01])\./.test(h)) { return; }
+	// replace 를 쓴다. 뒤로가기로 http 로 되돌아가지 않게 한다
+	location.replace('https://' + h + location.pathname + location.search + location.hash);
+})();
+</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title th:text="${page.pageName}">페이지</title>
-<meta name="description" th:content="${page.pageContent}" content="">
+<title th:text="${@enText.pick(page.pageName, page.pageNameEn)}">페이지</title>
+<meta name="description" th:content="${@enText.pick(page.pageContent, page.pageContentEn)}" content="">
 
 <!--
   독립 레이아웃 이벤트 페이지.
@@ -26,6 +51,6 @@
 </head>
 
 <body style="margin:0">
-<div th:utext="${page.pageDesc}"></div>
+<div th:utext="${@enText.pick(page.pageDesc, page.pageDescEn)}"></div>
 </body>
 </html>

@@ -84,7 +84,10 @@ public class ClientController {
 		// === 입력값 검증 ===
 
 		// 필수 항목 검증
-		if (isBlank(client.getName()) || isBlank(client.getEmail())
+		// 회사명도 필수다 (2026-10-19). 화면에서도 required 지만,
+		// 폼을 거치지 않고 직접 넣는 요청이 있어 서버에서도 한 번 더 본다.
+		if (isBlank(client.getName()) || isBlank(client.getCompany())
+				|| isBlank(client.getEmail())
 				|| isBlank(client.getPhone()) || isBlank(client.getSubject())
 				|| isBlank(client.getComment())) {
 			writeAlert(response, "필수 항목을 모두 입력해 주세요.");

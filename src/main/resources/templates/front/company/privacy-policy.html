@@ -199,7 +199,7 @@ table th, table td {
 }
 </style>
 <body>
-			<div class="policy-box policy-body__top">
+			<div class="policy-box policy-body__top" th:if="${!@enText.isEnglish()}">
 				<p>주식회사 바이온라이프사이언스(이하 "회사")는 이용자들의 개인정보를 소중히 다루고, 개인정보와 관련된 법규를 준수하고 있습니다.
 				회사는 정보통신망 이용 촉진 및 정보보호 등에 관한 법률(이하 "정보통신망법") 및 개인정보보호에 관한 법률 (이하 "개인정보보호법")등을 준수합니다.</p>
 				
@@ -419,6 +419,229 @@ table th, table td {
 				<h3>12. 개인정보 처리방침의 변경</h3>
 				<p>본 개인정보처리방침의 내용의 추가, 삭제 및 수정이 있을 시에는 변경되는 내용을 시행하기 7일전에 홈페이지를 통해 공지하도록 하겠습니다.</p>
 			</div>	
+
+			<!-- 영문. 한글 원문을 그대로 옮긴 것이다. 내용을 고칠 때는 위 한글 블록과 같이 고친다.
+			     ⚠️ 법적 문서다. 대외 공개 전에 반드시 사람이 검수해야 한다. -->
+			<div class="policy-box policy-body__top" th:if="${@enText.isEnglish()}">
+				<p>BION Life Science Inc. (hereinafter the "Company") handles users' personal information with care and complies with the laws relating to personal information.
+				The Company complies with the Act on Promotion of Information and Communications Network Utilization and Information Protection (the "Information and Communications Network Act") and the Personal Information Protection Act (the "Personal Information Protection Act").</p>
+
+				<div class="policy-list-item">
+					<p><b>The Company's privacy policy covers the following.</b></p>
+					<div class="flex-body">
+						<ol>
+							<li>Purpose of processing personal information</li>
+							<li>Items of personal information processed</li>
+							<li>Retention and use period</li>
+							<li>Procedure and method of destruction</li>
+							<li>Provision to third parties</li>
+							<li>Entrustment of processing</li>
+						</ol>
+						<ol start="7">
+							<li>Rights and duties of data subjects and legal representatives, and how to exercise them</li>
+							<li>Installation, operation and refusal of devices that collect personal information automatically</li>
+							<li>Collection, use, provision and refusal of behavioural information</li>
+							<li>Measures to secure the safety of personal information</li>
+							<li>Complaint services regarding personal information</li>
+							<li>Changes to this privacy policy</li>
+						</ol>
+					</div>
+				</div>
+
+				<h3>1. Purpose of processing personal information</h3>
+				<p class="pb-2">The Company processes personal information for the purposes below. Personal information being processed is not used for any purpose other than these, and if the purpose of use changes, the Company will take the necessary measures, such as obtaining separate consent under Article 18 of the Personal Information Protection Act.</p>
+				<div class="pb-2">
+					<p>1) Required items collected: name, company name, email, phone number</p>
+					<p>2) The following information may be created and collected in the course of using the service or handling business: service use records, access logs, cookies, access IP, payment records, records of improper use</p>
+					<p>3) How personal information is collected: the website (customer enquiry, quotation request), the mobile application, telephone consultation, written forms</p>
+				</div>
+				<br>
+				<h3>2. Items of personal information processed</h3>
+				<p class="pb-2">The Company processes the following items of personal information.</p>
+				<table border="1" cellspacing="0" cellpadding="8" style="border-collapse:collapse; width:100%; text-align:center;">
+					<thead>
+						<tr>
+							<th>Service</th>
+							<th>Purpose of collection</th>
+							<th>Items collected</th>
+							<th>Retention and use period</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Customer enquiry</td>
+							<td>Identifying the sender and handling the enquiry</td>
+							<td>Name, company name, email, phone number</td>
+							<td>3 years</td>
+						</tr>
+					</tbody>
+				</table>
+				<br>
+				<h3>3. Retention and use period</h3>
+				<p>Once the purpose of collecting and using personal information has been achieved, the information is destroyed without delay. However, where it must be retained under the relevant laws, the Company keeps customer information for the period set by those laws, as follows.</p>
+				<P class="py-2 bold">Customer enquiry: destroyed after 3 years from the date the email is sent</P>
+				<p class="pb-2">Other personal information that must be kept for a set period under the law, and the laws concerned, are as follows.</p>
+				<table border="1" cellspacing="0" cellpadding="8" style="border-collapse:collapse; width:100%; text-align:center;">
+					<thead>
+						<tr>
+							<th>Item retained</th>
+							<th>Governing law</th>
+							<th>Retention period</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Records on contracts or withdrawal of subscription</td>
+							<td rowspan="4">Act on Consumer Protection in Electronic Commerce</td>
+							<td>5 years</td>
+						</tr>
+						<tr>
+							<td>Records on payment and the supply of goods</td>
+							<td>5 years</td>
+						</tr>
+						<tr>
+							<td>Records on consumer complaints or dispute resolution</td>
+							<td>3 years</td>
+						</tr>
+						<tr>
+							<td>Records on labelling and advertising</td>
+							<td>6 months</td>
+						</tr>
+						<tr>
+							<td>Books and supporting documents on all transactions prescribed by tax law</td>
+							<td>Framework Act on National Taxes</td>
+							<td>5 years</td>
+						</tr>
+						<tr>
+							<td>Records on electronic financial transactions</td>
+							<td>Electronic Financial Transactions Act</td>
+							<td>5 years</td>
+						</tr>
+						<tr>
+							<td>Service visit records</td>
+							<td>Protection of Communications Secrets Act</td>
+							<td>3 months</td>
+						</tr>
+					</tbody>
+				</table>
+				<br>
+				<h3>4. Procedure and method of destruction</h3>
+				<div class="pb-2">
+					<p>1) When personal information becomes unnecessary — because the retention period has passed or the purpose of processing has been achieved — the Company destroys it without delay.</p>
+					<p>2) Where personal information must continue to be retained under other laws even though the retention period consented to by the data subject has passed or the purpose of processing has been achieved, the Company moves it to a separate database or stores it in a different location.</p>
+					<p>3) The procedure and method of destruction are as follows.</p>
+					<div class="mx-sm-3">
+						<p>Procedure: the Company identifies the personal information for which a reason for destruction has arisen and destroys it with the approval of the Company's personal information protection officer.</p>
+						<p>Method: personal information recorded and stored in electronic file form is destroyed so that the records cannot be reproduced; personal information recorded and stored on paper is shredded or incinerated.</p>
+					</div>
+
+				</div>
+				<br>
+				<h3>5. Provision to third parties</h3>
+				<div class="pb-2">
+					<p>As a rule, the Company does not provide personal information to outside parties except with the customer's consent or as provided by the relevant laws. The following are exceptions.</p>
+
+					<div class="mx-sm-3">
+						<p>· Where separate consent has been obtained from the data subject</p>
+						<p>· Where required by law, or where an investigative agency requests it for investigative purposes in accordance with the procedures and methods set by law</p>
+						<p>· Where the information is provided in a form that cannot identify a particular individual, for the purpose of compiling statistics, academic research or market research</p>
+					</div>
+				</div>
+				<br>
+				<h3>6. Entrustment of processing</h3>
+				<div class="pb-2">
+					<p>To provide better services and to carry out its work smoothly, the Company entrusts the handling and processing of personal information as follows.</p>
+					<div class="mx-sm-3">
+						<p>· Entrusted party: BION Life Science Inc.</p>
+						<p>· Scope of the entrusted work: departments related to customer management services</p>
+						<p>· Period of entrustment: until the purpose of collecting and using the personal information has been achieved</p>
+					</div>
+				</div>
+				<br>
+				<h3>7. Rights and duties of data subjects and legal representatives, and how to exercise them</h3>
+				<div class="pb-2">
+					<p>1) Data subjects may at any time request to view or correct their registered personal information, or to withdraw their consent. If a data subject contacts the Company's personal information management department in writing, by telephone or by email, the Company will act without delay.</p>
+					<p>2) Where a data subject requests correction of an error in their personal information, the Company does not use or provide that personal information until the correction is complete.</p>
+					<p>3) For children under the age of 14, the legal representative has the right to view or correct the child's personal information and to withdraw consent to its collection and use.</p>
+					<p>4) Personal information terminated or deleted at the request of a data subject or legal representative is handled as set out in this privacy policy and is not viewed or used for any other purpose.</p>
+				</div>
+				<br>
+				<h3>8. Installation, operation and refusal of devices that collect personal information automatically</h3>
+				<p>The Company uses "cookies" and similar devices that store and retrieve your information from time to time. A cookie is a very small text file sent to your browser by the server that runs the Company's website, and it is stored on your computer's hard disk.</p>
+				<div class="pb-2">
+					<p>1) Purpose of using cookies: to analyse how often users visit pages and how long they stay (you have a choice about whether cookies are installed). By setting the options in your web browser, you can allow all cookies, be asked each time a cookie is stored, or refuse all cookies.</p>
+					<p>2) How to set this: for example, in Internet Explorer: Tools at the top of the browser &gt; Internet Options &gt; Privacy. Please note that if you refuse to allow cookies, some services may be difficult to provide.</p>
+				</div>
+				<br>
+				<h3>9. Collection, use, provision and refusal of behavioural information</h3>
+				<div class="pb-2">
+					<p>1) The Company collects and uses behavioural information in order to provide data subjects with services and benefits tailored to them during their use of the service.</p>
+					<p>2) The Company collects behavioural information about website users through Google Analytics, a log analysis tool provided by Google, as set out below. Even in this case, only information that cannot identify an individual is collected.</p>
+					<table border="1" cellspacing="0" cellpadding="8" style="border-collapse:collapse; width:100%; text-align:center;">
+						<thead>
+							<tr>
+								<th>Purpose of the behavioural information collected</th>
+								<th>How it is collected</th>
+								<th>Items collected</th>
+								<th>Retention and use period, and later handling</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Enquiry</td>
+								<td>Identifying the sender and handling the enquiry</td>
+								<td>Name, company name, email, phone number, country, and similar</td>
+								<td>3 years</td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="pt-sm-3">3) If you do not want your behavioural information collected and used, you can refuse this processing through the guidance page below.</p>
+					<button type="button" class="policy_google_ana"
+					onclick="window.open('https://tools.google.com/dlpage/gaoptout', '_blank')">
+					How to opt out of Google Analytics
+					</button>
+
+				</div>
+				<br>
+				<h3>10. Measures to secure the safety of personal information</h3>
+				<p class="sec-sub">The Company takes the following measures to secure the safety of personal information.</p>
+				<div class="pb-2">
+					<p>· Administrative measures: regular staff training</p>
+
+				</div>
+				<br>
+				<h3>11. Complaint services regarding personal information</h3>
+				<p>To protect your personal information and to handle complaints relating to personal information, the Company operates as follows.</p>
+				<table border="1" cellspacing="0" cellpadding="8" style="border-collapse:collapse; width:100%; text-align:center;">
+				  <tbody>
+				  	<tr>
+				  		<td colspan="6" style="background-color: #eee; font-weight: 600;">Personal information protection officer</td>
+				  	</tr>
+				    <tr>
+				      <td>Position</td>
+				      <td>CEO</td>
+				      <td>Name</td>
+				      <td>Ko Chang-wook</td>
+				      <td>Contact</td>
+				      <td>+82) 31-572-2272</td>
+				    </tr>
+				    <tr>
+				    	<td colspan="6" style="background-color: #eee; font-weight: 600;">Personal information complaints officer</td>
+				    </tr>
+				    <tr>
+				    	<td>Position</td>
+				    	<td>Assistant Manager</td>
+				    	<td>Name</td>
+				    	<td>Han Kyung-ae</td>
+				    	<td>Contact</td>
+				    	<td>+82) 31-572-2272</td>
+				    </tr>
+				  </tbody>
+				</table>
+				<br>
+				<h3>12. Changes to this privacy policy</h3>
+				<p>If anything is added to, deleted from or changed in this privacy policy, the Company will give notice of the changes on its website 7 days before they take effect.</p>
+			</div>
 	<script>
 	document.addEventListener('DOMContentLoaded', () => {
 	  document.querySelectorAll('.policy-box p').forEach(pre => {

@@ -1295,3 +1295,12 @@ ul.sidebar-menu > li:first-child { margin-top: 25px; }
 	border: 0;
 	box-shadow: none;
 }
+
+/* ── 이벤트 페이지 관리 (등록·수정 화면) ─────────────────────────────── */
+/* 이 화면의 단추만 조금 작게 한다. 그룹추가·저장·취소 전부 해당된다.
+   ⚠️ .btn 은 어드민 전체가 쓰는 클래스다. 다른 화면이 같이 바뀌지 않도록
+      write.html 의 #main-content 에 붙인 .page-manager-form 안으로만 가둔다.
+      (0,2,0) 이라 테마의 .btn (0,1,0) 을 이긴다. */
+.page-manager-form .btn {
+  padding: 7px 14px;
+}
