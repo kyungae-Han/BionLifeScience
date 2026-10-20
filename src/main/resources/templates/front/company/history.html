@@ -58,7 +58,7 @@
 																</time>
 															</header>
 															<div class="card__content">
-																<p th:text="${c.contentSubject}"></p>
+																<p th:text="${@enText.pick(c.contentSubject, c.contentSubjectEn)}"></p>
 															</div>
 														</div>
 													</div>

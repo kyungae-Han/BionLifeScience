@@ -313,6 +313,10 @@ public class AdminController {
 		historyContent.setDate(date);
 		historyContent.setHistoryDate(dateString);
 		historyContent.setSubjectId(historyContent.getSubjectId());
+		// 영문 빈 칸은 null 로 둔다. 빈 문자열이 들어가면 @enText.pick 이 한글로 안 떨어진다
+		if (historyContent.getContentSubjectEn() != null && historyContent.getContentSubjectEn().isBlank()) {
+			historyContent.setContentSubjectEn(null);
+		}
 		historyContentRepository.save(historyContent);
 		
 		List<HistorySubject> subject = historySubjectRepository.findAllByOrderByStartDesc();
@@ -325,6 +329,45 @@ public class AdminController {
 		
 	}
 	
+	/**
+	 * 연혁 한 건을 고친다. 내용(한글·영문)과 날짜를 바꾼다.
+	 *
+	 * 등록과 달리 새로 만들지 않고 있는 것을 찾아 고친다.
+	 * 영문은 비워 둘 수 있다. 비우면 영문 화면에서 한글이 그대로 나간다.
+	 */
+	@PostMapping("/historyContentUpdate")
+	public String historyContentUpdate(
+			Long id,
+			String contentSubject,
+			String contentSubjectEn,
+			String dateString,
+			Model model
+			) throws ParseException {
+
+		HistoryContent saved = historyContentRepository.findById(id).orElse(null);
+		if (saved != null) {
+			saved.setContentSubject(contentSubject);
+			// 빈 칸은 null 로 둔다. 빈 문자열이 들어가면 @enText.pick 이 한글로 안 떨어진다
+			saved.setContentSubjectEn(
+					(contentSubjectEn == null || contentSubjectEn.isBlank()) ? null : contentSubjectEn.trim());
+
+			if (dateString != null && !dateString.isBlank()) {
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+				saved.setDate(format.parse(dateString));
+				saved.setHistoryDate(dateString);
+			}
+			historyContentRepository.save(saved);
+		}
+
+		List<HistorySubject> subject = historySubjectRepository.findAllByOrderByStartDesc();
+		for(HistorySubject s : subject) {
+			s.setContents(historyContentRepository.findAllBySubjectIdOrderByDateDesc(s.getId()));
+		}
+		model.addAttribute("list",subject);
+
+		return "admin/historyManager :: #history-subject-wrap";
+	}
+
 	@RequestMapping(value = "/historyDelete",
 		    method = {RequestMethod.GET, RequestMethod.POST}
 	)

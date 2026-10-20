@@ -22,7 +22,11 @@ public class HistoryContent {
 	
 	@Column(name="HISTORY_CONTENT_SUBJECT")
 	private String contentSubject;
-	
+
+	/** 연혁 내용 영문. 비워 두면 영문 화면에서도 한글이 나간다 (@enText.pick) */
+	@Column(name="HISTORY_CONTENT_SUBJECT_EN")
+	private String contentSubjectEn;
+
 	@Column(name="HISTORY_CONTENT_DATE")
 	private Date date;
 	

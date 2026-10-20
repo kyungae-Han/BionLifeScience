@@ -1304,3 +1304,40 @@ ul.sidebar-menu > li:first-child { margin-top: 25px; }
 .page-manager-form .btn {
   padding: 7px 14px;
 }
+
+/* ── 연혁 관리: 영문 줄과 고치기 칸 (2026-10-20) ────────────────────── */
+/* 한글이 윗줄, 영문이 아랫줄이다.
+   줄 사이 점선은 to-do.css 의 .task-list li 가 그린다. 여기서 건드리지 않는다. */
+
+#main-content .history-en {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--bn-ink-3);
+}
+
+/* 영문을 아직 안 넣은 줄. 눈에 덜 띄게 두어 채울 곳을 찾기 쉽게 한다 */
+#main-content .history-en.is-empty {
+  color: var(--bn-ink-4);
+  font-style: italic;
+}
+
+/* 고치기 칸 */
+#main-content .history-edit {
+  padding: 4px 0 2px;
+}
+
+#main-content .history-edit .form-control {
+  margin-bottom: 6px;
+}
+
+#main-content .history-edit__row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+#main-content .history-edit__row .form-control {
+  margin-bottom: 0;
+  max-width: 190px;
+}

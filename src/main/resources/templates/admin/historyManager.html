@@ -60,22 +60,32 @@
 												<span th:text="${list.start}">2014년 </span> ~ <span th:text="${list.end}"> 2017년</span>
 											</div>
 										</div>
+										<!-- 등록칸. 한글이 윗줄, 영문이 아랫줄이다.
+										     영문은 비워 둘 수 있다. 비우면 영문 화면에서 한글이 그대로 나간다. -->
 										<div class="form-group col-12 col-md-12 col-lg-12">
-											<div class="col-md-5 col-xs-11">
+											<div class="col-md-9 col-xs-11">
 												<input class="form-control form-control-inline" size="16"
 													type="text" th:id="|content-${list.id}|"> <span class="help-block">#
 													연혁 내용을 입력 하세요</span>
-											</div>
-											<div class="col-md-4 col-xs-11">
-												<input type="date" th:id="|content-date-${list.id}|"
-													class="form-control">
-												<span class="help-block"># 연혁에 해당하는 날을 입력 하세요</span>
 											</div>
 											<div class="col-md-3" style="padding-left: 5px;display:flex;">
 												<button style="width: 100%;" type="button"
 													class="btn btn-primary" th:onclick="|historyContentInsert(${list.id});|">등록</button>
 												<button style="width: 100%;margin-left:5px;" type="button"
-													class="btn btn-warning" th:onclick="|historyDelete(${list.id},1);|">삭제</button>	
+													class="btn btn-warning" th:onclick="|historyDelete(${list.id},1);|">삭제</button>
+											</div>
+										</div>
+										<div class="form-group col-12 col-md-12 col-lg-12">
+											<div class="col-md-9 col-xs-11">
+												<input class="form-control form-control-inline" size="16"
+													type="text" th:id="|content-en-${list.id}|"
+													placeholder="English (optional)"> <span class="help-block">#
+													영문 내용입니다. 비워 두면 영문 화면에서 한글이 나갑니다</span>
+											</div>
+											<div class="col-md-3 col-xs-11">
+												<input type="date" th:id="|content-date-${list.id}|"
+													class="form-control">
+												<span class="help-block"># 연혁에 해당하는 날</span>
 											</div>
 										</div>
 									</div>
@@ -92,17 +102,52 @@
 									<div class="panel-body">
 										<div class="task-content">
 											<ul class="task-list">
-												<li th:each="content:${list.contents}"  th:id="|history-content-wrap-${list.id}|">
+												<!-- 연혁 한 건.
+												     줄 사이 점선은 to-do.css 의 .task-list li 가 그린다. 그대로 둔다.
+												     보기 모드와 고치기 모드를 둘 다 넣어 두고 JS 가 번갈아 보여 준다.
+												     ⚠️ id 를 content.id 로 묶었다. 예전에는 li 의 id 가 list.id 라
+												        한 해에 여러 건이 있으면 id 가 전부 같았다. -->
+												<li th:each="content:${list.contents}" th:id="|history-item-${content.id}|">
 													<div class="task-checkbox">
 													</div>
 													<div class="task-title">
-														<span class="task-title-sp" th:text="${content.contentSubject}">연혁 내용이 입력되는 장소 입니다.</span> <span
-															class="badge bg-theme" th:text="${content.historyDate}">2023.01.01</span>
-														<div class="pull-right hidden-phone">
-															<button class="btn btn-danger btn-xs" th:onclick="|historyDelete(${content.id},0);|">
-																<i class="fa fa-trash-o "></i>
-															</button>
+
+														<!-- 보기 -->
+														<div th:id="|history-view-${content.id}|">
+															<div class="pull-right hidden-phone">
+																<button class="btn btn-primary btn-xs" title="수정"
+																	th:onclick="|historyEditOpen(${content.id});|">
+																	<i class="fa fa-pencil"></i>
+																</button>
+																<button class="btn btn-danger btn-xs" title="삭제"
+																	th:onclick="|historyDelete(${content.id},0);|">
+																	<i class="fa fa-trash-o "></i>
+																</button>
+															</div>
+															<span class="task-title-sp" th:text="${content.contentSubject}">연혁 내용이 입력되는 장소 입니다.</span>
+															<span class="badge bg-theme" th:text="${content.historyDate}">2023.01.01</span>
+															<div class="history-en" th:classappend="${content.contentSubjectEn} ? '' : 'is-empty'"
+																th:text="${content.contentSubjectEn} ?: '— 영문 없음'">English</div>
 														</div>
+
+														<!-- 고치기 -->
+														<div class="history-edit" th:id="|history-edit-${content.id}|" style="display:none;">
+															<input type="text" class="form-control"
+																th:id="|hist-ko-${content.id}|" th:value="${content.contentSubject}"
+																placeholder="한글 내용">
+															<input type="text" class="form-control"
+																th:id="|hist-en-${content.id}|" th:value="${content.contentSubjectEn}"
+																placeholder="English (optional)">
+															<div class="history-edit__row">
+																<input type="date" class="form-control"
+																	th:id="|hist-date-${content.id}|" th:value="${content.historyDate}">
+																<button type="button" class="btn btn-theme btn-sm"
+																	th:onclick="|historyContentUpdate(${content.id});|">저장</button>
+																<button type="button" class="btn btn-default btn-sm"
+																	th:onclick="|historyEditClose(${content.id});|">취소</button>
+															</div>
+														</div>
+
 													</div>
 												</li>
 											</ul>
