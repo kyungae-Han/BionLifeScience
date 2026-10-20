@@ -3680,3 +3680,40 @@ body:has(.breadcrumb-wrap.fixed-bottom:not(.hide):not(.gone)) #gotoTop {
 .overview-contact-us div.section-left {
   max-height: none;
 }
+
+/* ── 5. 인증서 분류 탭이 서로 겹치던 것 ─────────────────────────────── */
+/* 위쪽에 #certificates ... .grid-filter li { width: 100px } 가 있다.
+   칸은 100px 로 묶어 놓고 안의 <a> 는 글자만큼 커지게 두어서,
+   글자가 길면 <a> 가 칸 밖으로 나와 옆 탭을 덮는다.
+
+   실측(1400px, 영문): li 는 모두 100px 인데
+     All 52px / Company 118px / Patents 99px / Others 92px
+   → Company 가 18px 삐져나와 Patents 를 덮었다.
+   한글("기업인증")은 짧아서 100px 에 들어가 그동안 안 드러났다.
+
+   ⚠️ 넓은 화면에만 건다.
+      좁은 화면은 위쪽 @media 에서 li 에 flex:1 을 걸어 남는 폭을 나눠 쓰게 해 두었다.
+      거기까지 min-width 를 걸면 칸이 안 줄어들어 마지막 탭이 화면 밖으로 잘린다.
+      (실제로 그렇게 만들었다가 375px 에서 Others 가 89px 잘려 되돌렸다) */
+
+@media (min-width: 1025px) {
+
+  #certificates .grid-filter-container .grid-filter li {
+    width: auto;
+    min-width: 100px;
+  }
+
+  /* <a> 가 칸을 꽉 채우게 한다. 안 그러면 칸 안에서 왼쪽으로 쏠려
+     탭마다 색칠된 넓이가 달라 보인다 */
+  #certificates .grid-filter-container .grid-filter li a {
+    display: block;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  /* 칸이 커지면서 담는 칸(424px)을 넘자 마지막 탭이 아랫줄로 내려갔다.
+     한 줄로 둔다. 넓은 화면은 자리가 충분하다 */
+  #certificates .grid-filter-container .grid-filter {
+    flex-wrap: nowrap;
+  }
+}
