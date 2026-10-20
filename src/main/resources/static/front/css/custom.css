@@ -482,3 +482,16 @@ html[lang="en"] #top-search > a {
   .nav-btn .quote-full  { display: none; }
   .nav-btn .quote-short { display: inline; }
 }
+
+/* ── 모바일에서 로고와 설명 사이 간격 ───────────────────────────────── */
+/* 로고 칸과 글 칸이 세로로 쌓이는데(≤768px) 둘이 딱 붙어 있었다.
+   마크업에서 ps-4 를 뺀 뒤로 왼쪽 들여쓰기는 사라졌지만 위쪽 간격은 없었다.
+   24px 은 모달 바디 안여백·설명 아래 마진과 같은 값이다. 리듬을 맞춘다.
+   768px 은 brand.css 가 두 칸을 세로로 쌓는 바로 그 경계다. */
+
+@media (max-width: 768px) {
+  #brandModal .brand__info > .col-md-7,
+  #brandGlobalModal .modal-body .row.g-0 > .col-md-7 {
+    padding-top: 24px;
+  }
+}
