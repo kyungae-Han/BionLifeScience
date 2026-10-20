@@ -36,7 +36,8 @@ public class PageTextController {
 	 */
 	private static final Map<String, String> PAGE_LABELS = Map.of(
 			"index", "메인 화면",
-			"rnd", "기업부설 연구소");
+			"rnd", "기업부설 연구소",
+			"about", "회사소개");
 
 	@GetMapping("/pageTextManager")
 	public String manager(Model model) {

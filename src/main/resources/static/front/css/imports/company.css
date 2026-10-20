@@ -3594,3 +3594,74 @@ tbody td:not(.table__subject){
  
  
  
+
+/* ══════════════════════════════════════════════════════════════════
+   2026-10-20 회사소개 화면 손질 세 가지
+   이 파일은 common 의 custom.css 보다 **나중에** 읽힌다. 그래서 여기 둔다.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── 1. 위로가기 단추가 아래 고정 메뉴와 겹치던 것 ───────────────── */
+/* 실측(820x1100): 고정 메뉴는 화면 바닥에서 50~120px 을 차지하고,
+   #gotoTop 은 bottom:30 + 높이 40 이라 30~70px 을 차지한다 → 20~40px 겹쳤다.
+   메뉴가 떠 있을 때만 단추를 그 위로 올린다.
+   :has() 를 쓴 이유: 메뉴는 스크롤 위치에 따라 hide/gone 이 붙었다 떨어진다.
+   고정으로 올려 두면 메뉴가 없는 구간에서 단추만 허공에 떠 보인다. */
+body:has(.breadcrumb-wrap.fixed-bottom:not(.hide):not(.gone)) #gotoTop {
+  bottom: 130px;
+}
+
+/* ── 2. 모바일에서 회사 정보 배너와 입력칸의 좌우가 어긋나던 것 ──── */
+/* 실측(375px): 배너 42~333, 입력칸 70~305 로 28px 어긋났다.
+   입력칸이 더 좁았던 이유는 폼 바깥칸과 .cf-sect 에 좌우 안여백이 붙어서다.
+   그 안여백을 좁은 화면에서만 걷어내면 둘 다 바깥칸(25~350)에 맞는다.
+   위아래 안여백은 구분선 간격이라 건드리지 않는다. */
+@media (max-width: 991.98px) {
+
+  #customerCenter .bion-contact form,
+  #customerCenter .bion-contact .cf-sect {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  #customerCenter .overview-contact-us div.section-left {
+    width: auto !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+}
+
+/* ── 3. 태블릿에서 인증서가 한 장씩만 보이던 것 ──────────────────── */
+/* 위쪽 @media (max-width: 1024.98px) 안에 #certificates .cert { flex: 0 0 100% }
+   가 있다. 폰 기준으로 넣은 것이 태블릿까지 걸려서,
+   820px 화면에서 인증서 한 장이 765x1017px 로 화면을 통째로 먹었다.
+   폰(600px 미만)만 한 장씩 두고, 그 위로는 여러 장을 보여 준다. */
+
+@media (min-width: 600px) and (max-width: 767.98px) {
+  /* 두 장씩. gap 20px 이 하나 들어간다 */
+  #certificates .cert {
+    flex: 0 0 calc((100% - 20px) / 2) !important;
+    max-width: calc((100% - 20px) / 2) !important;
+    /* 위쪽에 #certificates .swiper-slide { margin: 0 auto } 가 있다.
+       auto 여백이 남는 자리를 빨아들여 카드가 흩어진다 */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024.98px) {
+  /* 세 장씩. gap 20px 이 둘 들어간다 */
+  #certificates .cert {
+    flex: 0 0 calc((100% - 40px) / 3) !important;
+    max-width: calc((100% - 40px) / 3) !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1024.98px) {
+  /* 좌우 화살표를 다시 보여 준다. 위쪽 규칙이 1025px 아래를 전부 숨기고 있었다.
+     태블릿은 넘길 수 있다는 것을 알려 줄 자리가 있다. */
+  #certificates .cert-nav {
+    display: flex !important;
+  }
+}

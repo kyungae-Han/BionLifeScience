@@ -39,21 +39,21 @@
 		
 		<section id="snb" class="clearfix p-lg-4">
 				<ol class="breadcrumb mb-0">
-					<li class="breadcrumb-item"><a href="/index">메인</a></li>
-					<li class="breadcrumb-item active">회사소개</li>
+					<li class="breadcrumb-item"><a href="/index" th:text="${@pageText.get('about', 'about.breadcrumb.home')} ?: _">메인</a></li>
+					<li class="breadcrumb-item active" th:text="${@pageText.get('about', 'about.breadcrumb.current')} ?: _">회사소개</li>
 				</ol>
 		</section>
 	
 	
 		<div id="page-title">
-				<h1 class="sec-head">회사 소개</h1>
+				<h1 class="sec-head" th:text="${@pageText.get('about', 'about.title')} ?: _">회사 소개</h1>
 		</div>
 		<div class="breadcrumb-wrap">
 			<ul>
-				<li><a href="#about">회사소개</a></li>
-				<li><a href="#history">연혁</a></li>
-				<li><a href="/rnd">기업부설 연구소</a></li>
-				<li><a href="#customerCenter">견적문의</a></li>
+				<li><a href="#about" th:text="${@pageText.get('about', 'about.nav.about')} ?: _">회사소개</a></li>
+				<li><a href="#history" th:text="${@pageText.get('about', 'about.nav.history')} ?: _">연혁</a></li>
+				<li><a href="/rnd" th:utext="${@pageText.get('about', 'about.nav.rnd')} ?: _">기업부설 연구소</a></li>
+				<li><a href="#customerCenter" th:text="${@pageText.get('about', 'about.nav.contact')} ?: _">견적문의</a></li>
 			</ul>
 		</div>		
 		
@@ -67,17 +67,19 @@
 					</div>
 					
 					<div class="about-caption p-item m-lg-5 p-lg-2 pb-4 pt-4 text-center fs-lg-5 fs-6">
-						<p class="1h-lg m-lg-0 mb-4">생명과학 분야 연구, 제조 및 유통 기업인 <span class="fw-semibold d-block d-lg-inline">주식회사 바이온라이프사이언스는</span><br>
-						   창사 이래 지속적인 기술 개발을 통해 국내외 <span class="d-block d-lg-inline">다수의 특허를 보유하는 등 독보적인 기술 경쟁력을 갖춘 강소기업으로서,</span><br>
-						   우수한 기술력을 바탕으로 실험 및 연구용 <span class="d-block d-lg-inline">다양한 제품을 전문적으로 제조하고 있으며</span><br>
-						   생명과학 관련 글로벌 선도 브랜드의 유통까지 <span class="d-block d-lg-inline">사업 영역을 확대해 나가고 있습니다.</span></p>
+						<!-- 네 줄이 각각 한 문구다. 줄 안의 span 은 좁은 화면에서 줄을 바꾸는 장치라
+						     문구 값 안에 같이 들어 있다. 그래서 th:utext 다. -->
+						<p class="1h-lg m-lg-0 mb-4"><th:block th:utext="${@pageText.get('about', 'about.intro.line1')} ?: _">생명과학 분야 연구, 제조 및 유통 기업인 <span class="fw-semibold d-block d-lg-inline">주식회사 바이온라이프사이언스는</span></th:block><br>
+						   <th:block th:utext="${@pageText.get('about', 'about.intro.line2')} ?: _">창사 이래 지속적인 기술 개발을 통해 국내외 <span class="d-block d-lg-inline">다수의 특허를 보유하는 등 독보적인 기술 경쟁력을 갖춘 강소기업으로서,</span></th:block><br>
+						   <th:block th:utext="${@pageText.get('about', 'about.intro.line3')} ?: _">우수한 기술력을 바탕으로 실험 및 연구용 <span class="d-block d-lg-inline">다양한 제품을 전문적으로 제조하고 있으며</span></th:block><br>
+						   <th:block th:utext="${@pageText.get('about', 'about.intro.line4')} ?: _">생명과학 관련 글로벌 선도 브랜드의 유통까지 <span class="d-block d-lg-inline">사업 영역을 확대해 나가고 있습니다.</span></th:block></p>
 					</div>
 					
 					<div class="copylights" data-speed="0.28">
 						<div class="cpation-items p-item">
 							<h3 class="sec-head left"><b>MISSION</b></h3>
 							<div class="copy-body left">
-								<p>주식회사 바이온라이프사이언스는 질병 진단과 연구 현장에서 요구되는 Plasticware 실험기자재 및 소모품을 개발·공급하며,
+								<p th:text="${@pageText.get('about', 'about.mission.body')} ?: _">주식회사 바이온라이프사이언스는 질병 진단과 연구 현장에서 요구되는 Plasticware 실험기자재 및 소모품을 개발·공급하며,
 								사용자의 편의성과 연구 효율성을 높이는 것을 핵심 목표로 삼고 있습니다.
 								또한 기업 간 신뢰를 기반으로 정확하고 신속하게 고품질 제품을 제공하기 위해 끊임없이 노력합니다.</p>
 							</div>
@@ -85,14 +87,14 @@
 						<div class="cpation-items p-item">
 							<h3 class="sec-head left"><b>VISION</b></h3>
 							<div class="copy-body left">
-								<p>바이온은 생명과학 분야의 새로운 가능성과 가치를 창출하고, 글로벌 산업의 성장을 선도하며,
+								<p th:utext="${@pageText.get('about', 'about.vision.body')} ?: _">바이온은 생명과학 분야의 새로운 가능성과 가치를 창출하고, 글로벌 산업의 성장을 선도하며,
 								끊임없는 도전과 책임 있는<br>연구 활동을 통해 미래 사회가 요구하는 Life Science 분야의 해답을 제시하고자 합니다.</p>
 							</div>
 						</div>
 						<div class="cpation-items p-item">
 							<h3 class="sec-head left"><b>STRATEGY</b></h3>
 							<div class="copy-body left">
-								<p>바이온은 창의적인 발상을 기반으로 새로운 아이디어를 실현하고,
+								<p th:utext="${@pageText.get('about', 'about.strategy.body')} ?: _">바이온은 창의적인 발상을 기반으로 새로운 아이디어를 실현하고,
 								지속적인 연구개발을 통해 차별화된 기술을 확보합니다.
 								<br>또한 지식재산권을 적극적으로 보호하여 독창적인 경쟁력을 강화하며,
 								파트너십과 협력을 통해 시장에서 지속적인 우위를<br>확보합니다.</p>
@@ -115,7 +117,7 @@
 				</div>
 			</div>
 			<div class="about-history-wrap">
-				<h2 class="history-title sec-head p-item" data-speed="0.22"><b>연혁</b></h2>
+				<h2 class="history-title sec-head p-item" data-speed="0.22"><b th:text="${@pageText.get('about', 'about.history.title')} ?: _">연혁</b></h2>
 
 				<section class="bio-history-wrap">
 					<div class="bio-history-tabs tabs-alt tabs-tb" id="tab-8">
@@ -180,8 +182,8 @@
 		
 		<section class="glance-slider" id="glance-slider">
 					<div class="p-item">
-						<h2 class="sec-head">인증서</h2>
-						<p class="pb-lg-5 mb-4">2012년 설립 이후, 바이온은 생명과학 실험기자재 연구와 독자 기술 특허를 이어가고 있습니다.</p>
+						<h2 class="sec-head" th:text="${@pageText.get('about', 'about.cert.title')} ?: _">인증서</h2>
+						<p class="pb-lg-5 mb-4" th:text="${@pageText.get('about', 'about.cert.desc')} ?: _">2012년 설립 이후, 바이온은 생명과학 실험기자재 연구와 독자 기술 특허를 이어가고 있습니다.</p>
 					</div>
 					
 					<div class="glance-nav">
@@ -194,10 +196,10 @@
 										style="--bg-img: url('/front/images/about/glance-1.jpg'); --fg: #fff"
 										aria-label="연 매출">
 										<p class="stat-card__value">
-											<small>총</small><span class="countup" data-target="165"
-												data-suffix="건+">0</span>
+											<small th:text="${@pageText.get('about', 'about.stat1.label')} ?: _">총</small><span class="countup" data-target="165"
+												th:attr="data-suffix=${@pageText.get('about', 'about.stat.suffix')} ?: '건+'" data-suffix="건+">0</span>
 										</p>
-										<p class="stat-card__desc long">
+										<p class="stat-card__desc long" th:text="${@pageText.get('about', 'about.stat1.desc')} ?: _">
 											다양한 특허와 디자인 등록을 통해 독창적인 가치를 창출해왔으며,
 											앞으로도 꾸전히 새로운 지적재산을 확보하여 시장을 선도해 나가겠습니다.
 										</p>
@@ -209,10 +211,10 @@
 										style="--bg-img: url('/front/images/about/employees.jpg'); --fg: #fff"
 										aria-label="임직원 수">
 										<p class="stat-card__value">
-											<small>국내</small><span class="countup" data-target="66"
-												data-suffix="건+">0</span>
+											<small th:text="${@pageText.get('about', 'about.stat2.label')} ?: _">국내</small><span class="countup" data-target="66"
+												th:attr="data-suffix=${@pageText.get('about', 'about.stat.suffix')} ?: '건+'" data-suffix="건+">0</span>
 										</p>
-										<p class="stat-card__desc">
+										<p class="stat-card__desc" th:utext="${@pageText.get('about', 'about.stat2.desc')} ?: _">
 											국내특허 22건, 디자인등록 31건<br>실용신안등록 1건, 상표등록 12건
 										</p>
 									</article>
@@ -223,10 +225,10 @@
 										style="--bg-img: url('/front/images/about/global.jpg'); --fg: #fff"
 										aria-label="해외 거점">
 										<p class="stat-card__value">
-											<small>해외</small><span class="countup" data-target="99"
-												data-suffix="건+">0</span>
+											<small th:text="${@pageText.get('about', 'about.stat3.label')} ?: _">해외</small><span class="countup" data-target="99"
+												th:attr="data-suffix=${@pageText.get('about', 'about.stat.suffix')} ?: '건+'" data-suffix="건+">0</span>
 										</p>
-										<p class="stat-card__desc">해외 특허 5건, 디자인등록 94건</p>
+										<p class="stat-card__desc" th:text="${@pageText.get('about', 'about.stat3.desc')} ?: _">해외 특허 5건, 디자인등록 94건</p>
 									</article>
 								</div>
 								<!-- Slide 4 (넓은 카드 예시: R&D) -->
@@ -235,15 +237,15 @@
 										style="--bg-img: url('/front/images/about/action-plan.jpg')"
 										aria-label="R&D 투자 비중">
 										<p class="stat-card__value">
-											<small>지속가능한 성장</small> <span class="countup" data-target="5"
+											<small th:text="${@pageText.get('about', 'about.stat4.label')} ?: _">지속가능한 성장</small> <span class="countup" data-target="5"
 												data-suffix="step">0</span>
 										</p>
 										<p class="stat-card__desc long">
-											<span>step 1. 주요 해외 국가 대상 Global IP 전략추진</span>
-											<span>step 2. 글로벌 업체에 제품 시연</span>
-											<span>step 3. 의료기기 진단 검사 학회 참여 [FIME, MEDICA, MEDLAB 등]</span>
-											<span>step 4. 유럽 시장 진출을 위한 다양한 CE인증 추진</span>
-											<span>step 5. 글로벌 리딩 업체와 MOU체결 등 사업 협업 강화</span>
+											<span th:text="${@pageText.get('about', 'about.stat4.step1')} ?: _">step 1. 주요 해외 국가 대상 Global IP 전략추진</span>
+											<span th:text="${@pageText.get('about', 'about.stat4.step2')} ?: _">step 2. 글로벌 업체에 제품 시연</span>
+											<span th:text="${@pageText.get('about', 'about.stat4.step3')} ?: _">step 3. 의료기기 진단 검사 학회 참여 [FIME, MEDICA, MEDLAB 등]</span>
+											<span th:text="${@pageText.get('about', 'about.stat4.step4')} ?: _">step 4. 유럽 시장 진출을 위한 다양한 CE인증 추진</span>
+											<span th:text="${@pageText.get('about', 'about.stat4.step5')} ?: _">step 5. 글로벌 리딩 업체와 MOU체결 등 사업 협업 강화</span>
 										</p>
 									</article>
 								</div>
@@ -275,10 +277,10 @@
 				    <div class="grid-filter-container">
 				      <div class="grid-filter-wrap me-lg-5 bio-history-tabs">
 				        <ul class="grid-filter bio-history-tab-nav gap-2" data-container="#certTrack">
-				          <li class="activeFilter"><a href="#" data-filter="*">모두보기</a></li>
-				          <li><a href="#" data-filter=".pf-기업인증">기업인증</a></li>
-				          <li><a href="#" data-filter=".pf-특허인증">특허인증</a></li>
-				          <li><a href="#" data-filter=".pf-기타인증">기타인증</a></li>
+				          <li class="activeFilter"><a href="#" data-filter="*" th:text="${@pageText.get('about', 'about.cert.tab.all')} ?: _">모두보기</a></li>
+				          <li><a href="#" data-filter=".pf-기업인증" th:text="${@pageText.get('about', 'about.cert.tab.company')} ?: _">기업인증</a></li>
+				          <li><a href="#" data-filter=".pf-특허인증" th:text="${@pageText.get('about', 'about.cert.tab.patent')} ?: _">특허인증</a></li>
+				          <li><a href="#" data-filter=".pf-기타인증" th:text="${@pageText.get('about', 'about.cert.tab.etc')} ?: _">기타인증</a></li>
 				        </ul>
 				      </div>
 				    </div>
@@ -288,7 +290,7 @@
 				
 				        <div class="cert-nav" aria-hidden="false">
 				          <button class="cert-btn bi bi-arrow-left-circle-fill" id="certPrev" aria-label="이전"></button>
-				          <button class="cert-btn bi bi-arrow-rigth-circle-fill" id="certNext" aria-label="다음"></button>
+				          <button class="cert-btn bi bi-arrow-right-circle-fill" id="certNext" aria-label="다음"></button>
 				        </div>
 				
 				        <!-- ✅ swiper-wrapper 추가 -->
@@ -318,7 +320,7 @@
 				          </div>
 				            <div class="cert-empty-message w-100 bg-white rounded-2" id="certEmptyMessage" hidden>
 							  <div class="d-flex justify-content-center align-items-center" style="min-height:200px">
-							    <p class="m-lg-0 p-lg-0 m-5 p-5 text-center">등록된 데이터가 없습니다.</p>
+							    <p class="m-lg-0 p-lg-0 m-5 p-5 text-center" th:text="${@pageText.get('about', 'about.cert.empty')} ?: _">등록된 데이터가 없습니다.</p>
 							  </div>
 							</div>
 				        </div>
@@ -335,10 +337,10 @@
 					<div class="container">
 					<div class="section-left">
 						<h4>Contact US</h4>
-						<h3 class="sub-head"><b>끊임없는 탐구,<br>안정된 기술,<br>성장하는 가치</b></h3>
-						<p>미래를 설계하는 파트너십,<br>바이온에서 시작됩니다.</p>
+						<h3 class="sub-head"><b th:utext="${@pageText.get('about', 'about.contact.heading')} ?: _">끊임없는 탐구,<br>안정된 기술,<br>성장하는 가치</b></h3>
+						<p th:utext="${@pageText.get('about', 'about.contact.sub')} ?: _">미래를 설계하는 파트너십,<br>바이온에서 시작됩니다.</p>
 						<br>
-						<p>견적문의 :</p>
+						<p th:text="${@pageText.get('about', 'about.contact.quote')} ?: _">견적문의 :</p>
 						<h3 class="pb-lg-3"><b>031-572-2272</b></h3>
 					</div>
 					<div class="section-right">
@@ -351,88 +353,114 @@
 								  </svg>
 								</a>
 					    	</div>
-							<form id="contactForm" action="/clientInsert" method="post"
-									enctype="multipart/form-data">
-									<div class="from-row">
-									
-										<div class="form-group">
-											<label for="topic">문의 주제</label>
-											<select id="topic" name="topic" class="sm-form-control">
-												<option value="none">-- 선택 --</option>
-												<option value="제품정보관련">제품정보관련</option>
-												<option value="제휴관련">제휴관련</option>
-												<option value="기업제휴관련">기업제휴관련</option>
-												<option value="기타문의">기타문의</option>
-											</select>
-										</div>
-										
-										<div class="form-group">
-											<label for="name">성함<small>*</small></label>
-											<input type="text" id="name" name="name"
-												class="sm-form-control" required="required" />
-										</div>
-	
-										<div class="form-group">
-											<label for="company">회사명
-												</label> <input type="text" id="company" name="company"
-												class="sm-form-control" />
-										</div>
-	
-										<div class="form-group">
-											<label for="email">이메일<small>*</small></label>
-											<input type="text" id="email" name="email" required="required"
-												class="sm-form-control" />
-										</div>
-	
-										<div class="form-group">
-											<label for="phone">연락처
-												<small>*</small>
-											</label> <input type="text" id="phone" name="phone"
-												required="required" class="sm-form-control" />
-										</div>
-	
-										<div class="form-group">
-											<label for="country">국가명
-												</label> <input type="text" id="country" name="country"
-												class="sm-form-control" />
-										</div>
-	
-	
-										<div class="form-group">
-											<label for="subject">문의 제목<small>*</small>
-											</label> <input type="text" id="subject" name="subject"
-												required="required" class="sm-form-control" />
-										</div>
-	
-	
-										<div class="w-100"></div>
-	
-										<div class="form-group">
-											<label for="comment">문의 내용<small>*</small>
-											</label>
-											<textarea class="required sm-form-control" id="comment"
-												name="comment" required="required" rows="6" cols="30"></textarea>
-										</div>
-										<div class="form-group">
-											<label for="file">파일 업로드</label> <input type="file" id="file" name="file"
-												class="sm-form-control" /> <span class="alert-text">
-												1회 업로드 가능 용량은 20MB입니다.<small>[&nbsp;jpg | jpeg | pdf | png | zip&nbsp;]등록가능</small></span>
-										</div>
-										<div class="form-check">
-											<input type="checkbox" name="policyAgree" class="form-check-input"
-												style="margin-left: -0.5rem; margin-right: 5px;"
-												id="policyCheck"> <label class="form-check-label"
-												for="policyCheck">개인정보의 수집 및 이용에 동의합니다.
-												</label>
-												<button type="button" id="openPolicy" style="font-size:0.9em; color:var(--bs-gray-900); font-weight: 500;"
-        												data-url="/front/company/privacy-policy.html">개인정보처리방침</button>
-										</div>
-										<div class="form-group">
-											<button class="button button-3d m-0" type="submit"
-												id="contactBtn">문의하기</button>
+							<!-- 고객문의 폼. 머리말 모달(front/customer/contact.html)과 같은 모양이다.
+						     글은 전부 messages.properties 의 contact.* 를 쓰므로 영문이 따라온다.
+						     id 와 name 은 모달 쪽과 똑같이 두어야 contact-form.js 가 붙는다.
+						     ⚠️ 이 화면에는 모달 폼도 같이 뜬다. js 는 폼 단위로 찾도록 되어 있다. -->
+						<div class="bion-contact">
+						<form id="contactForm" action="/clientInsert" method="post" enctype="multipart/form-data">
+
+							<!-- 1. 연락받으실 곳 -->
+							<section class="cf-sect">
+								<h4 class="cf-sect__title"><span class="cf-sect__n">1</span> <span class="cf-sect__label" th:text="#{contact.step1}">연락받으실 곳</span></h4>
+								<div class="cf-grid">
+									<div class="cf-field">
+										<label for="template-contactform-name"><span th:text="#{contact.name}">성함</span> <span class="cf-req">*</span></label>
+										<input type="text" id="template-contactform-name" name="name" class="cf-ctl" required="required">
+									</div>
+									<div class="cf-field">
+										<label for="template-contactform-company"><span th:text="#{contact.company}">회사명</span> <span class="cf-req">*</span></label>
+										<input type="text" id="template-contactform-company" name="company" class="cf-ctl" required="required">
+									</div>
+									<div class="cf-field">
+										<label for="template-contactform-email"><span th:text="#{contact.email}">이메일</span> <span class="cf-req">*</span></label>
+										<input type="email" id="template-contactform-email" name="email" class="cf-ctl" required="required">
+									</div>
+									<div class="cf-field">
+										<label for="template-contactform-phone"><span th:text="#{contact.phone}">연락처</span> <span class="cf-req">*</span></label>
+										<input type="tel" id="template-contactform-phone" name="phone" class="cf-ctl" required="required">
+									</div>
+									<div class="cf-field cf-full">
+										<label for="template-contactform-country" th:text="#{contact.country}">국가명</label>
+										<input type="text" id="template-contactform-country" name="country" class="cf-ctl">
+									</div>
+								</div>
+							</section>
+
+							<!-- 2. 문의 내용 -->
+							<section class="cf-sect">
+								<h4 class="cf-sect__title"><span class="cf-sect__n">2</span> <span class="cf-sect__label" th:text="#{contact.step2}">문의 내용</span></h4>
+								<div class="cf-grid">
+									<div class="cf-field cf-full">
+										<label for="template-contactform-topic" th:text="#{contact.topic}">문의 주제</label>
+										<!-- ⚠️ value 는 한글 그대로 둔다. 그 값이 DB 와 담당자 메일로 들어간다 -->
+										<select id="template-contactform-topic" name="topic" class="cf-ctl">
+											<option value="none" th:text="#{contact.topic.choose}">-- 선택 --</option>
+											<option value="제품정보관련" th:text="#{contact.topic.product}">제품정보관련</option>
+											<option value="제휴관련" th:text="#{contact.topic.partner}">제휴관련</option>
+											<option value="기업제휴관련" th:text="#{contact.topic.business}">기업제휴관련</option>
+											<option value="기타문의" th:text="#{contact.topic.etc}">기타문의</option>
+										</select>
+									</div>
+									<div class="cf-field cf-full">
+										<label for="template-contactform-title"><span th:text="#{contact.subject}">제목</span> <span class="cf-req">*</span></label>
+										<input type="text" id="template-contactform-title" name="subject" class="cf-ctl" required="required">
+									</div>
+									<div class="cf-field cf-full">
+										<label for="template-contactform-message"><span th:text="#{contact.comment}">내용</span> <span class="cf-req">*</span></label>
+										<textarea id="template-contactform-message" name="comment" class="cf-ctl cf-textarea" rows="6" required="required"></textarea>
+									</div>
+
+									<!-- 첨부파일. 서버는 파일 하나만 받는다 -->
+									<div class="cf-field cf-full">
+										<label for="template-contactform-file" th:text="#{contact.file}">첨부파일</label>
+										<label class="cf-drop" for="template-contactform-file" id="cfDrop">
+											<span class="cf-drop__big" th:text="#{contact.file.drop}">파일을 끌어다 놓거나 눌러서 고르세요</span>
+											<span class="cf-drop__sub" th:text="#{contact.file.rule}">jpg · jpeg · png · pdf · zip / 20MB 까지 / 1개</span>
+										</label>
+										<input type="file" id="template-contactform-file" name="file" class="cf-file"
+											accept=".jpg,.jpeg,.png,.pdf,.zip">
+										<div class="cf-chip" id="cfChip" hidden>
+											<span class="cf-chip__name"></span>
+											<span class="cf-chip__size"></span>
+											<button type="button" class="cf-chip__x"
+												th:attr="aria-label=#{contact.file.remove}" aria-label="첨부 지우기">&times;</button>
 										</div>
 									</div>
-								</form>
+								</div>
+							</section>
+
+							<!-- 3. 동의 -->
+							<section class="cf-sect">
+								<h4 class="cf-sect__title"><span class="cf-sect__n">3</span> <span class="cf-sect__label" th:text="#{contact.step3}">동의</span></h4>
+
+								<div class="cf-consent">
+									<input type="checkbox" id="policyCheck" class="cf-consent__box">
+									<div class="cf-consent__txt">
+										<label for="policyCheck" class="cf-consent__main">
+											<span th:text="#{contact.consent}">개인정보의 수집 및 이용에 동의합니다.</span> <span class="cf-req">*</span>
+										</label>
+										<p class="cf-consent__detail" th:text="#{contact.consent.detail}">
+											수집 항목: 이름, 회사명, 이메일, 연락처 · 이용 목적: 발송 고객 식별 및 민원처리 · 보유 기간: 메일 발송일로부터 3년
+										</p>
+										<p class="cf-consent__links">
+											<button type="button" class="cf-link" id="cfOpenPolicy"
+												th:text="#{contact.policy.view}">개인정보 처리방침 전문 보기</button>
+											<span class="cf-dot">·</span>
+											<button type="button" class="cf-link" id="cfOpenTerms"
+												th:text="#{contact.terms.view}">이용약관 보기</button>
+										</p>
+									</div>
+								</div>
+
+								<div class="cf-submit">
+									<!-- ⚠️ disabled 를 박아 두지 않는다. js 가 못 뜨면 문의를 아예 못 보낸다 -->
+									<button class="cf-send" type="submit" id="contactBtn" th:text="#{contact.send}">문의 보내기</button>
+								</div>
+							</section>
+
+						</form>
+						</div>
 					</div>
 					</div>
 				</div>

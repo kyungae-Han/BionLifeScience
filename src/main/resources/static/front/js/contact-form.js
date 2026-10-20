@@ -7,6 +7,11 @@
  *    그 바람에 동의를 안 해도 전송 단추가 눌렸다. (2026-10-19 확인)
  *
  * 그래서 모든 처리를 document 에 위임해서 건다. 폼이 나중에 꽂혀도 걸린다.
+ *
+ * ⚠️ 한 화면에 폼이 둘 있을 수 있다. (2026-10-20)
+ *    회사소개 화면은 아래쪽에 폼을 직접 두면서 머리말의 고객문의 모달도 같이 쓴다.
+ *    그래서 #policyCheck 처럼 문서 전체에서 첫 번째를 찾으면 두 번째 폼이 망가진다.
+ *    모든 조회를 **그 폼 안에서** 한다. formOf() 가 그 역할이다.
  */
 (function () {
   'use strict';
@@ -15,6 +20,16 @@
   var OK_EXT = ['jpg', 'jpeg', 'png', 'pdf', 'zip'];
 
   function $(sel, root) { return (root || document).querySelector(sel); }
+
+  /** 이 요소가 속한 고객문의 폼. 없으면 null */
+  function formOf(el) {
+    return (el && el.closest) ? el.closest('form#contactForm') : null;
+  }
+
+  /** 화면 안의 고객문의 폼 전부 */
+  function allForms() {
+    return document.querySelectorAll('form#contactForm');
+  }
 
   /** 화면 문구. common.html 이 로케일에 맞춰 window.I18N 에 실어 준다.
    *  (여기 한글을 직접 적으면 영문으로 안 바뀐다. 뒤의 값은 I18N 이 없을 때의 대비용) */
@@ -34,9 +49,10 @@
   }
 
   /** 고른 파일을 이름표로 보여 준다. 없으면 숨긴다 */
-  function paintChip() {
-    var input = $('#template-contactform-file');
-    var chip = $('#cfChip');
+  function paintChip(form) {
+    if (!form) { return; }
+    var input = $('#template-contactform-file', form);
+    var chip = $('#cfChip', form);
     if (!input || !chip) { return; }
 
     var f = input.files && input.files[0];
@@ -68,11 +84,14 @@
   }
 
   // ── 동의 체크 → 전송 단추 ──────────────────────────────────────────
-  /** 체크 상태에 맞춰 단추를 잠그거나 푼다 */
+  /** 폼마다 체크 상태에 맞춰 단추를 잠그거나 푼다 */
   function syncSendButton() {
-    var chk = $('#policyCheck');
-    var btn = $('#contactBtn');
-    if (chk && btn) { btn.disabled = !chk.checked; }
+    var forms = allForms();
+    for (var i = 0; i < forms.length; i++) {
+      var chk = $('#policyCheck', forms[i]);
+      var btn = $('#contactBtn', forms[i]);
+      if (chk && btn) { btn.disabled = !chk.checked; }
+    }
   }
 
   // 폼은 모달이 열릴 때 뒤늦게 꽂힌다. 꽂히는 순간 한 번 맞춰 준다.
@@ -87,7 +106,7 @@
   document.addEventListener('submit', function (e) {
     var form = e.target;
     if (!form || form.id !== 'contactForm') { return; }
-    var chk = $('#policyCheck');
+    var chk = $('#policyCheck', form);
     if (chk && !chk.checked) {
       e.preventDefault();
       alert(msg('contactConsent', '개인정보의 수집 및 이용에 동의해 주세요.'));
@@ -96,12 +115,16 @@
   });
 
   document.addEventListener('change', function (e) {
-    if (e.target && e.target.id === 'policyCheck') {
-      var btn = $('#contactBtn');
+    if (!e.target) { return; }
+    var form = formOf(e.target);
+
+    if (e.target.id === 'policyCheck') {
+      var btn = form ? $('#contactBtn', form) : null;
       if (btn) { btn.disabled = !e.target.checked; }
     }
-    if (e.target && e.target.id === 'template-contactform-file') {
-      if (checkFile(e.target)) { paintChip(); } else { paintChip(); }
+    if (e.target.id === 'template-contactform-file') {
+      checkFile(e.target);
+      paintChip(form);
     }
   });
 
@@ -109,9 +132,10 @@
   document.addEventListener('click', function (e) {
     var x = e.target.closest ? e.target.closest('.cf-chip__x') : null;
     if (x) {
-      var input = $('#template-contactform-file');
+      var form = formOf(x);
+      var input = form ? $('#template-contactform-file', form) : null;
       if (input) { input.value = ''; }
-      paintChip();
+      paintChip(form);
       return;
     }
 
@@ -155,7 +179,8 @@
     if (!drop) { return; }
     drop.classList.remove('is-over');
 
-    var input = $('#template-contactform-file');
+    var form = formOf(drop);
+    var input = form ? $('#template-contactform-file', form) : null;
     var files = e.dataTransfer && e.dataTransfer.files;
     if (!input || !files || !files.length) { return; }
 
@@ -166,6 +191,7 @@
     dt.items.add(files[0]);
     input.files = dt.files;
 
-    if (checkFile(input)) { paintChip(); } else { paintChip(); }
+    checkFile(input);
+    paintChip(form);
   });
 })();
