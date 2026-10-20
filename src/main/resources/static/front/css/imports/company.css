@@ -3665,3 +3665,18 @@ body:has(.breadcrumb-wrap.fixed-bottom:not(.hide):not(.gone)) #gotoTop {
     display: flex !important;
   }
 }
+
+
+/* ── 4. 영문에서 문의 안내 상자 밖으로 글이 삐져나오던 것 ──────────── */
+/* 위쪽 .overview-contact-us div.section-left 에 height:fit-content 로
+   "내용만큼 자라라" 고 해 놓고, 바로 아래에서 max-height:460px 로 다시 가뒀다.
+   overflow 가 visible 이라 넘친 만큼이 회색 상자 밖으로 흘러나온다.
+
+   실측(1024px, 영문): 상자 460px(상한) vs 내용 550px → 전화번호가 90px 밖으로.
+   한글은 427px 라 상한에 안 닿아서 그동안 안 보였다.
+   관리자에서 문구를 길게 고치면 한글에서도 똑같이 터진다.
+
+   상한을 없앤다. height:fit-content 가 이미 내용에 맞춰 준다. */
+.overview-contact-us div.section-left {
+  max-height: none;
+}
