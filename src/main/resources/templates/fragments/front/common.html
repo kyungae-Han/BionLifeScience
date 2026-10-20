@@ -818,7 +818,7 @@
           <p id="brandGlobalModalDesc"></p>
           
           <div class="client_btn text-left mt-4">
-          		<button type="button" class="nav-btn" id="js-open-contact"><span th:text="#{modal.quote.button}">다양한 제품 견적문의 하러가기</span> <i class="bi bi-arrow-right"></i></button>
+          		<button type="button" class="nav-btn" id="js-open-contact"><span class="quote-full" th:text="#{modal.quote.button}">다양한 제품 견적문의 하러가기</span><span class="quote-short" th:text="#{modal.quote.button.short}">견적문의</span> <i class="bi bi-arrow-right"></i></button>
           </div>
         </div>
       </div>
@@ -1013,6 +1013,11 @@ document.addEventListener('DOMContentLoaded', () => {
 let currentIndex = 0;
 
 function navigateBrandModal(direction) {
+  // 실제 전환은 아래 DOMContentLoaded 안의 슬라이드가 맡는다.
+  // 마크업의 onclick 이 이 이름을 부르고 있어서 이름은 그대로 둔다.
+  if (window.__brandModalSlide) { window.__brandModalSlide(direction); return; }
+
+  // 예비: 슬라이드가 아직 붙기 전에 눌린 경우 (예전 동작)
   const brandLinks = document.querySelectorAll('.brand-link');
   if (!brandLinks.length) return;
 
@@ -1089,8 +1094,11 @@ document.addEventListener('DOMContentLoaded', () => {
   modalClose.addEventListener('click', closeModal);
 
   // ====== 브랜드 링크 클릭 ======
-  brandLinks.forEach(link => {
-    link.addEventListener('click', async e => {
+  brandLinks.forEach((link, idx) => {
+    // ⚠️ 본문은 예전 그대로다. 바깥 껍데기만 바꿨다.
+    //    좌우 슬라이드가 "제품까지 다 받았는지" 를 기다려야 해서
+    //    처리기를 이름 있는 함수로 꺼내고, 클릭할 때 그 약속을 link 에 남긴다.
+    const loadBrand = async e => {
       e.preventDefault();
 
       const brandId = link.dataset.id;
@@ -1227,8 +1235,87 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('브랜드 모달 로드 오류:', err);
         productList.innerHTML = `<p class="text-danger text-center my-4">${window.I18N.productLoadError}</p>`;
       }
+    };
+
+    link.addEventListener('click', e => {
+      // 로고를 직접 눌러서 연 경우에도 현재 위치를 기억해야
+      // 좌우 버튼이 엉뚱한 브랜드로 건너뛰지 않는다
+      currentIndex = idx;
+      // 슬라이드가 기다릴 수 있도록 약속을 남긴다
+      link.__loading = loadBrand(e);
     });
   });
+
+  // ====== 좌우 슬라이드 ======
+  // 흰 카드(.modal-content)만 밀어낸다. 좌우 화살표는 카드 바깥(-70px)에 있어
+  // 같이 움직이면 어지러우므로 제자리에 둔다.
+  //
+  // 순서: 지금 카드를 밀어내면서 그 사이에 다음 브랜드를 받아 두고,
+  //       둘 다 끝나면 반대편에서 새 카드를 들여보낸다.
+  //       그래서 중간에 'Loading...' 이 깜빡이는 구간이 안 보인다.
+  const SLIDE_MS = 260;
+  const SLIDE_PX = 48;   // 화살표 자리(70px)보다 작게. 넘으면 화살표를 덮는다
+  let isSliding = false;
+
+  window.__brandModalSlide = async function (direction) {
+    const links = document.querySelectorAll('.brand-link');
+    const panel = modal.querySelector('.modal-content');
+    if (!links.length || !panel || isSliding) return;
+
+    let next = currentIndex + direction;
+    if (next < 0) next = links.length - 1;
+    if (next >= links.length) next = 0;
+
+    // 모션을 줄여 달라고 한 사용자에게는 움직임 없이 바꿔 준다
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      links[next].click();
+      return;
+    }
+
+    isSliding = true;
+    if (prevBtn) prevBtn.disabled = true;
+    if (nextBtn) nextBtn.disabled = true;
+
+    const out = direction > 0 ? -1 : 1;   // 다음(1)이면 왼쪽으로 빠진다
+    const ease = 'cubic-bezier(.4, 0, .2, 1)';
+
+    try {
+      // 1) 지금 카드를 밀어낸다. 동시에 다음 브랜드를 받기 시작한다
+      panel.style.willChange = 'transform, opacity';
+      panel.style.transition = `transform ${SLIDE_MS}ms ${ease}, opacity ${SLIDE_MS}ms ease`;
+      panel.style.transform  = `translateX(${out * SLIDE_PX}px)`;
+      panel.style.opacity    = '0';
+
+      links[next].click();
+      await Promise.all([
+        new Promise(r => setTimeout(r, SLIDE_MS)),
+        links[next].__loading
+      ]);
+
+      // 2) 반대편에 새 카드를 세워 두고
+      panel.scrollTop = 0;
+      panel.style.transition = 'none';
+      panel.style.transform  = `translateX(${-out * SLIDE_PX}px)`;
+      void panel.offsetWidth;          // 이 자리를 브라우저에 한 번 반영시킨다
+
+      // 3) 제자리로 들여보낸다
+      panel.style.transition = `transform ${SLIDE_MS}ms ${ease}, opacity ${SLIDE_MS}ms ease`;
+      panel.style.transform  = 'translateX(0)';
+      panel.style.opacity    = '1';
+      await new Promise(r => setTimeout(r, SLIDE_MS));
+    } catch (err) {
+      console.error('브랜드 모달 슬라이드 오류:', err);
+    } finally {
+      // 어디서 멈추든 원래대로 돌려놓는다. 안 그러면 카드가 비뚤어진 채 남는다
+      panel.style.transition = '';
+      panel.style.transform  = '';
+      panel.style.opacity    = '';
+      panel.style.willChange = '';
+      isSliding = false;
+      if (prevBtn) prevBtn.disabled = false;
+      if (nextBtn) nextBtn.disabled = false;
+    }
+  };
 
 });
 </script>
