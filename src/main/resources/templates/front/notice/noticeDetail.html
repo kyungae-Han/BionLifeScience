@@ -51,25 +51,39 @@
 		  
 		<!-- 상세 본문 아래에 배치 -->
 		<div class="notice_list_page">
+		  <!-- ⚠️ 단추마다 .nav-btn-bob 껍데기를 하나씩 두는 것이 중요하다.
+		       호버를 감지하는 쪽(껍데기)은 가만히 있고 움직이는 쪽(.nav-btn)만 둥실거려야
+		       테두리에 커서를 걸쳤을 때 떨리지 않는다. 껍데기를 하나로 묶으면 셋이 같이 움직인다.
+		       자세한 사정은 custom.css 의 "둥실 모션 호버 떨림" 주석에 있다.
+		       th:if 는 껍데기에 둔다. 그래야 안 쓰는 껍데기가 남지 않는다. -->
+
 		  <!-- 이전 -->
-		  <a class="nav-btn prev"
-		     th:if="${prevNotice != null}"
-		     th:href="@{/noticeDetail/{id}(id=${prevNotice.id})}">이전</a>
-		  <span class="nav-btn prev disabled" th:if="${prevNotice == null}">이전</span>
+		  <span class="nav-btn-bob" th:if="${prevNotice != null}">
+		    <a class="nav-btn prev"
+		       th:href="@{/noticeDetail/{id}(id=${prevNotice.id})}">이전</a>
+		  </span>
+		  <span class="nav-btn-bob" th:if="${prevNotice == null}">
+		    <span class="nav-btn prev disabled">이전</span>
+		  </span>
 		  
 		  
 		  <!-- 목록 -->
-		  <a class="nav-btn list"
-		     th:href="@{/noticeList(
-		               page=${param.page} ?: 1,
-		               searchText=${param.searchText} ?: ''
-		             )}">목록</a>
+		  <span class="nav-btn-bob">
+		    <a class="nav-btn list"
+		       th:href="@{/noticeList(
+		                 page=${param.page} ?: 1,
+		                 searchText=${param.searchText} ?: ''
+		               )}">목록</a>
+		  </span>
 		
 		  <!-- 다음 -->
-		  <a class="nav-btn next"
-		     th:if="${nextNotice != null}"
-		     th:href="@{/noticeDetail/{id}(id=${nextNotice.id})}">다음</a>
-		  <span class="nav-btn next disabled" th:if="${nextNotice == null}">다음</span>
+		  <span class="nav-btn-bob" th:if="${nextNotice != null}">
+		    <a class="nav-btn next"
+		       th:href="@{/noticeDetail/{id}(id=${nextNotice.id})}">다음</a>
+		  </span>
+		  <span class="nav-btn-bob" th:if="${nextNotice == null}">
+		    <span class="nav-btn next disabled">다음</span>
+		  </span>
 		</div>
 		</section>
 	
