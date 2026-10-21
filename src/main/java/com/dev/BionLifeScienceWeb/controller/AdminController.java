@@ -667,7 +667,33 @@ public class AdminController {
 		return "admin/siteManager :: #companyInfoForm";
 	}
 	
-	
+
+	/**
+	 * 회사소개 상단 배너를 올린다. 한글·영문 각각이고 둘 다 선택이다.
+	 * 안 고른 쪽은 그대로 둔다.
+	 */
+	@PostMapping("/aboutBannerUpload")
+	public String aboutBannerUpload(
+			@RequestParam(required = false) MultipartFile aboutBannerFile,
+			@RequestParam(required = false) MultipartFile aboutBannerEnFile,
+			Model model
+			) {
+		companyInfoService.saveAboutBanner(aboutBannerFile, aboutBannerEnFile);
+		model.addAttribute("company", companyInfoRepository.findById(1L).orElseGet(CompanyInfo::new));
+		return "admin/siteManager :: #aboutBannerForm";
+	}
+
+	/** 올린 배너를 치운다. 기본 그림으로 돌아간다 */
+	@PostMapping("/aboutBannerClear")
+	public String aboutBannerClear(
+			@RequestParam(defaultValue = "false") boolean english,
+			Model model
+			) {
+		companyInfoService.clearAboutBanner(english);
+		model.addAttribute("company", companyInfoRepository.findById(1L).orElseGet(CompanyInfo::new));
+		return "admin/siteManager :: #aboutBannerForm";
+	}
+
 	//******************************회사 이메일관리
 	@PostMapping("/emailInsert")
 	public String emailInsert(@RequestParam("email") String email, Model model) {

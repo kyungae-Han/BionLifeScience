@@ -1341,3 +1341,28 @@ ul.sidebar-menu > li:first-child { margin-top: 25px; }
   margin-bottom: 0;
   max-width: 190px;
 }
+
+/* ── 회사소개 상단 배너 미리보기 (2026-10-21) ──────────────────────── */
+#main-content .about-banner-preview {
+  margin-bottom: 10px;
+  padding: 10px;
+  background: var(--bn-surface-2);
+  border: 1px solid var(--bn-line-2);
+  border-radius: 6px;
+}
+
+#main-content .about-banner-preview img {
+  display: block;
+  max-width: 100%;
+  max-height: 180px;
+  border-radius: 4px;
+}
+
+/* 아직 안 올린 상태. 무엇이 대신 나가는지 적어 둔다 */
+#main-content .about-banner-empty {
+  display: block;
+  padding: 18px 6px;
+  color: var(--bn-ink-4);
+  font-size: 12px;
+  text-align: center;
+}

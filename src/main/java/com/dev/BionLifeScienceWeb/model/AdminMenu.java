@@ -32,7 +32,9 @@ public enum AdminMenu {
 
 	INFORMATION("information", "회사정보관리", "/admin/siteManager",
 			"siteManager", "companyInfoInsert", "emailInsert", "deleteEmail", "tldInsert", "deleteTld",
-			"allowedEmailInsert", "deleteAllowedEmail", "changeEmailStatus"),
+			"allowedEmailInsert", "deleteAllowedEmail", "changeEmailStatus",
+			// ⚠️ 새 주소를 만들면 여기에도 적어야 한다. 안 적으면 권한에서 막힌다
+			"aboutBannerUpload", "aboutBannerClear"),
 
 	REFERENCE("reference", "자료실 관리", "/admin/referenceManager",
 			"referenceManager", "referenceFileInsert", "deleteReferenceFile", "referenceUpdate"),

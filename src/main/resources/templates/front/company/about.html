@@ -62,8 +62,16 @@
 	
 				<div class="p-wrap" id="about">
 					<div class="hero-grid">
+						<!-- 상단 배너. 관리자 > 회사정보관리 > 회사소개 상단 배너에서 올린다.
+						     고르는 차례 (없으면 다음으로 떨어진다)
+						       영문 화면 : 올린 영문 → 올린 한글 → 기본 그림
+						       한글 화면 : 올린 한글 → 기본 그림
+						     이렇게 두면 아직 안 올렸을 때도 그림이 깨지지 않는다. -->
 						<img class="hero-img p-item" data-speed="0.28"
-							th:src="@{/front/images/about/about-bion.jpg}" alt="About hero" loading="lazy" decoding="async" />
+							th:with="koBanner=${company != null and company.aboutBanner != null and !company.aboutBanner.isBlank()} ? ${company.aboutBanner} : '/front/images/about/about-bion.jpg',
+							         enBanner=${company != null and company.aboutBannerEn != null and !company.aboutBannerEn.isBlank()} ? ${company.aboutBannerEn} : null"
+							th:src="@{${enBanner != null and @enText.isEnglish()} ? ${enBanner} : ${koBanner}}"
+							alt="About hero" loading="lazy" decoding="async" />
 					</div>
 					
 					<div class="about-caption p-item m-lg-5 p-lg-2 pb-4 pt-4 text-center fs-lg-5 fs-6">

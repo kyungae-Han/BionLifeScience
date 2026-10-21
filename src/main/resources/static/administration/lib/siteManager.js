@@ -160,3 +160,54 @@ $(function(){
 
 
 
+
+/* ── 회사소개 상단 배너 ────────────────────────────────────────────
+ * 파일을 보내야 해서 FormData 로 올린다.
+ * 보통 ajax 처럼 data 에 객체를 주면 파일이 안 실린다.
+ * processData/contentType 을 false 로 두어야 브라우저가 경계 문자열을 만들어 준다. */
+function aboutBannerUpload(){
+	var ko = document.getElementById('aboutBannerFile');
+	var en = document.getElementById('aboutBannerEnFile');
+	var hasKo = ko && ko.files && ko.files.length > 0;
+	var hasEn = en && en.files && en.files.length > 0;
+
+	if(!hasKo && !hasEn){
+		alert('올릴 그림을 고른 뒤 저장을 눌러 주세요.');
+		return;
+	}
+
+	var fd = new FormData();
+	if(hasKo) fd.append('aboutBannerFile', ko.files[0]);
+	if(hasEn) fd.append('aboutBannerEnFile', en.files[0]);
+
+	$.ajax({
+		cache: false,
+		url: '/admin/aboutBannerUpload',
+		type: 'POST',
+		data: fd,
+		processData: false,
+		contentType: false
+	}).done(function(fragment){
+		$('#aboutBannerForm').replaceWith(fragment);
+		alert('배너를 올렸습니다.');
+	}).fail(function(xhr){
+		alert('올리지 못했습니다. ' + (xhr.responseText || '').slice(0, 200));
+	});
+}
+
+/** 올린 배너를 치운다. 기본 그림으로 돌아간다. 파일 자체는 남는다 */
+function aboutBannerClear(english){
+	if(!confirm(english ? '영문 배너를 치울까요? 한글 배너가 대신 나갑니다.'
+	                    : '한글 배너를 치울까요? 기본 그림이 나갑니다.')) return;
+
+	$.ajax({
+		cache: false,
+		url: '/admin/aboutBannerClear',
+		type: 'POST',
+		data: { english: english }
+	}).done(function(fragment){
+		$('#aboutBannerForm').replaceWith(fragment);
+	}).fail(function(){
+		alert('치우지 못했습니다.');
+	});
+}

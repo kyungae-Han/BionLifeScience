@@ -43,6 +43,7 @@ import com.dev.BionLifeScienceWeb.model.product.SmallSort;
 import com.dev.BionLifeScienceWeb.repository.BannerRepository;
 import com.dev.BionLifeScienceWeb.repository.CertificationRepository;
 import com.dev.BionLifeScienceWeb.repository.CompanyEmailRepository;
+import com.dev.BionLifeScienceWeb.repository.CompanyInfoRepository;
 import com.dev.BionLifeScienceWeb.repository.EventRepository;
 import com.dev.BionLifeScienceWeb.repository.HistoryContentRepository;
 import com.dev.BionLifeScienceWeb.repository.HistorySubjectRepository;
@@ -78,6 +79,7 @@ public class HomeController {
 	private final EnText enText;
 	
 	private final PopupService popupService;
+	private final CompanyInfoRepository companyInfoRepository;
 	private final HistorySubjectRepository historySubjectRepository;
 	private final HistoryContentRepository historyContentRepository;
 	private final ProductRepository productRepository;
@@ -180,6 +182,10 @@ public class HomeController {
         model.addAttribute("certification", certs);
         
         model.addAttribute("list", subject);
+
+        // 상단 배너를 관리자에서 올릴 수 있어 회사정보가 필요하다.
+        // 없으면 화면이 기본 그림으로 떨어진다 (th:src 의 ?: 참고).
+        model.addAttribute("company", companyInfoRepository.findById(1L).orElse(null));
 
         model.addAttribute("metaDescription",
 		        "바이온라이프사이언스는 생명과학 연구용 기자재와 소모품을 공급하는 기업입니다. 자체 브랜드 BIOTREAT를 비롯해 검증된 제품으로 연구 현장을 지원합니다.");
