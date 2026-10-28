@@ -4580,21 +4580,6 @@ body:not(.has-plugin-html5video) .video-wrap video {
   background:#fff; opacity:1; transform:scaleX(1.1);
 }
 
-/* 슬라이드 우하단 숫자 옆 토글 버튼 */
-.slide-toggle{
-  appearance:none; background:none; border:0;
-  color:#fff; font-weight:700; line-height:1;
-  display:inline-grid; place-items:center;
-  width:22px; height:22px; margin:0 14px;
-  cursor:pointer;
-}
-
-.slide-toggle::before{ content:"❚❚"; }
-
-/* 일시정지 표시 */
-.slide-toggle.is-paused::before{ content:"▶"; }
-
-/* 재생 표시 */
 
 
 

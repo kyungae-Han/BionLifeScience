@@ -30,9 +30,14 @@
 	
 							<ul class="grid-filter" data-container="#portfolio">
 								<li class="activeFilter"><a href="#" data-filter="*">모두보기</a></li>
-								<li><a href="#" data-filter=".pf-icons">기업인증</a></li>
-								<li><a href="#" data-filter=".pf-media">특허인증</a></li>
-								<li><a href="#" data-filter=".pf-etc">기타인증</a></li>
+								<!--/* 탭은 [인증서 분류 관리] 의 분류에서 나온다.
+								     거르는 클래스는 회사소개 화면과 같은 pf-{분류 id} 다.
+								     예전에는 여기만 pf-icons / pf-media / pf-etc 라
+								     분류를 하나 늘리면 두 화면을 따로 고쳐야 했다 */-->
+								<li th:each="s:${certSorts}">
+									<a href="#" th:data-filter="'.pf-' + ${s.id}"
+									   th:text="${@enText.pick(s.nameKo, s.nameEn)}">분류</a>
+								</li>
 							</ul>
 	
 						</div>
@@ -41,7 +46,7 @@
 
 						<article
 							class="portfolio-item col-md-4 col-sm-6 col-12" th:each="c:${certification}"
-							th:classappend="|${c.sort == '기업인증' ? 'pf-icons' : ''} ${c.sort == '특허인증' ? 'pf-media' : ''} ${c.sort == '기타인증' ? 'pf-etc' : ''}|">
+							th:classappend="${c.sortId != null} ? ' pf-' + ${c.sortId} : ''">
 							<div class="grid-inner">
 								<div class="portfolio-image">
 									<a th:href="@{${c.road}}"><img

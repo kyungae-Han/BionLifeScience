@@ -15,4 +15,7 @@ public interface CertificationRepository extends JpaRepository<Certification, Lo
 	 * 마이그레이션 SQL 이 기존 행을 모두 채워 넣으므로 평소엔 빈 값이 없다.
 	 */
 	List<Certification> findAllByOrderByCertificationIndexAscIdAsc();
+
+	/** 분류를 지워도 되는지 본다. 0 이 아니면 막는다 */
+	long countBySortId(Long sortId);
 }

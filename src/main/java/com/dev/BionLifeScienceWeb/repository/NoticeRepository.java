@@ -46,4 +46,8 @@ public interface NoticeRepository extends JpaRepository<Notice, Long>{
     
 	 Page<Notice> findBySubjectContainingIgnoreCaseOrContentContainingIgnoreCase(
 	     String q1, String q2, Pageable pageable);
+
+	 /** 분류에 속한 공지 수.
+	  *  분류 관리 화면에 보여 주고, 0 이 아니면 삭제를 막는다 */
+	 long countByNoticeSubject_Id(Long subjectId);
 }

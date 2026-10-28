@@ -100,9 +100,13 @@
 								<li><a href="/admin/popupManager">팝업 관리</a></li>
 							</ul>
 						</li>
-						<li th:if="${@adminMenu.can('certification')}"><a th:classappend="${code} == 'certification' ? 'active' : ''"  href="/admin/certificationManager"> <i
+						<li class="sub-menu" th:if="${@adminMenu.can('certification')}"><a th:classappend="${code} == 'certification' ? 'active' : ''"  href="javascript:;"> <i
 								class="fa fa-book"></i> <span>인증서 관리</span>
 						</a>
+							<ul class="sub">
+								<li><a href="/admin/certificationSortManager">인증서 분류 관리</a></li>
+								<li><a href="/admin/certificationManager">인증서 관리</a></li>
+							</ul>
 						</li>
 						<li th:if="${@adminMenu.can('namecard')}"><a th:classappend="${code} == 'namecard' ? 'active' : ''"  href="/admin/namecardManager"> <i
 								class="fa fa-user"></i> <span>디지털 명함 관리</span>

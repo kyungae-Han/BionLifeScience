@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="KO" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/admin/common :: headMenu}">
+
+
+</head>
+
+
+<style>
+/* 인증서 분류 목록. 인증서 관리 화면의 표와 같은 모양으로 맞춘다 */
+.sort-table td { vertical-align: middle; }
+.sort-table .form-control { height: 34px; }
+.sort-none { text-align: center; color: var(--bn-ink-4); padding: 28px 0 !important; }
+.sort-use { color: var(--bn-ink-3); }
+.sort-use.is-used { color: var(--bn-ink); font-weight: 600; }
+
+/* 안내 문구(.bn-help)는 bion-admin.css 에서 margin-top 이 -6px 이다.
+   표나 제목 바로 밑에 붙이려고 음수로 잡아 둔 것인데,
+   form-inline 은 아래 여백이 없어서 문구가 입력칸 위로 올라탔다.
+   전역 규칙을 건드리면 다른 화면이 같이 움직이므로 여기서만 띄운다 */
+#sortAddForm { margin-bottom: 16px; }
+</style>
+
+<body>
+	<section id="container">
+		<th:block th:replace="~{fragments/admin/common :: topBar}"></th:block>
+		<th:block th:replace="~{fragments/admin/common :: sideMenu('certification')}"></th:block>
+		<section id="main-content">
+			<section class="wrapper">
+				<div class="row mt">
+					<div class="col-md-8">
+
+						<div class="form-panel">
+							<h5><i class="fa fa-tasks"></i> 바이온라이프사이언스 - 인증서 분류 관리</h5>
+
+							<form class="form-inline" id="sortAddForm" onsubmit="return false;">
+								<input class="form-control" id="newNameKo" type="text"
+									placeholder="한글 이름 (예: 기업인증)" style="width:220px;">
+								<input class="form-control" id="newNameEn" type="text"
+									placeholder="영문 이름 (예: Company Certification)" style="width:280px;">
+								<button class="btn btn-theme push-right" type="button" onclick="certSortInsert();">분류 등록</button>
+							</form>
+
+							<p class="bn-help">* 여기서 만든 분류가 회사소개와 인증서 페이지의 탭이 됩니다.</p>
+							<p class="bn-help">* 인증서를 등록·수정할 때 이 분류 중에서 고릅니다.</p>
+							<p class="bn-help">* 영문 이름을 비우면 영문 화면에서도 한글 이름이 그대로 나갑니다.</p>
+						</div>
+
+						<div class="content-panel">
+							<h5><i class="fa fa-list"></i> 분류 목록</h5>
+
+							<p class="bn-help">
+								줄 맨 앞을 잡고 끌어서 탭 순서를 바꾼다. 놓는 순간 저장된다.
+								이름을 고친 뒤에는 그 줄의 저장을 눌러야 반영된다.
+							</p>
+
+							<table class="table table-hover sort-table">
+								<thead>
+									<tr>
+										<th style="width:34px;"></th>
+										<th style="width:44px;">순서</th>
+										<th style="width:200px;">한글 이름</th>
+										<th>영문 이름</th>
+										<th style="width:96px;">쓰는 인증서</th>
+										<th style="width:140px;">관리</th>
+									</tr>
+								</thead>
+								<tbody id="sortRows">
+									<tr th:each="s:${sorts}" th:data-id="${s.id}"
+										th:data-used="${useCounts[s.id]}">
+										<td class="bn-grip" title="끌어서 순서 바꾸기"><i class="fa fa-bars"></i></td>
+										<td><span class="bn-index" th:text="${s.sortIndex}">1</span></td>
+										<td>
+											<input class="form-control js-ko" type="text"
+												th:value="${s.nameKo}" maxlength="100">
+										</td>
+										<td>
+											<input class="form-control js-en" type="text"
+												th:value="${s.nameEn}" maxlength="200"
+												placeholder="비우면 한글이 나갑니다">
+										</td>
+										<td>
+											<span class="sort-use" th:classappend="${useCounts[s.id]} > 0 ? ' is-used' : ''"
+												th:text="${useCounts[s.id]} + '건'">0건</span>
+										</td>
+										<td>
+											<button class="btn btn-theme btn-xs" type="button"
+												th:onclick="|certSortUpdate('${s.id}')|">
+												<i class="fa fa-check"></i> 저장
+											</button>
+											<button class="btn btn-danger btn-xs" type="button"
+												th:onclick="|certSortDelete('${s.id}')|">
+												<i class="fa fa-trash-o"></i> 삭제
+											</button>
+										</td>
+									</tr>
+									<tr th:if="${#lists.isEmpty(sorts)}">
+										<td colspan="6" class="sort-none">등록된 분류가 없다.</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<p class="bn-help">
+								* 분류를 쓰는 인증서가 한 건이라도 있으면 삭제되지 않습니다.
+								먼저 인증서의 분류를 다른 것으로 옮겨 주세요.
+							</p>
+						</div>
+
+					</div>
+				</div>
+			</section>
+		</section>
+	</section>
+	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
+	<script src="/administration/lib/jquery-ui-1.9.2.custom.min.js"></script>
+	<script src="/administration/lib/certificationSortManager.js"></script>
+</body>
+
+</html>

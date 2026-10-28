@@ -1,63 +1,119 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="KO" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{fragments/admin/common :: headMenu}">
+
 
 </head>
 
 
+<style>
+/* 공지사항 분류 목록. 인증서 분류 관리 화면과 같은 모양으로 맞춘다 */
+.sort-table td { vertical-align: middle; }
+.sort-table .form-control { height: 34px; }
+.sort-none { text-align: center; color: var(--bn-ink-4); padding: 28px 0 !important; }
+.sort-use { color: var(--bn-ink-3); }
+.sort-use.is-used { color: var(--bn-ink); font-weight: 600; }
+
+/* 안내 문구(.bn-help)는 bion-admin.css 에서 margin-top 이 -6px 이다.
+   표나 제목 바로 밑에 붙이려고 음수로 잡아 둔 것인데,
+   form-inline 은 아래 여백이 없어서 문구가 입력칸 위로 올라탄다.
+   전역 규칙을 건드리면 다른 화면이 같이 움직이므로 여기서만 띄운다 */
+#subjectAddForm { margin-bottom: 16px; }
+</style>
+
 <body>
 	<section id="container">
-
 		<th:block th:replace="~{fragments/admin/common :: topBar}"></th:block>
-
 		<th:block th:replace="~{fragments/admin/common :: sideMenu('notice')}"></th:block>
-
 		<section id="main-content">
 			<section class="wrapper">
 				<div class="row mt">
-					<div class="col-lg-8">
-						<h4>
-							<i class="fa fa-angle-right"></i> 공지사항분류 관리
-						</h4>
+					<div class="col-md-8">
+
 						<div class="form-panel">
-							<div class="form">
-								<form class="cmxform form-horizontal style-form" id="textForm">
-									<div class="form-group ">
-										<label for="firstname" class="control-label col-lg-2">공지사항 분류 입력</label>
-										<div class="col-lg-10">
-											<input 
-											class="form-control" 
-											id="text" 
-											name="text" 
-											type="text" />
-											<button class="btn btn-theme" type="button" onclick="insertNoticeSubject();" style="margin-top:10px;">입력</button>
-											<p class="help-block">* 공지사항의 분류를 입력 해 주세요.</p>
-											<p class="help-block">* 입력한 분류는 [공지사항등록]시 사용됩니다.</p>
-											<p class="help-block">* 사이트 접속자는 입력한 분류를 통해 공지사항을 정렬할 수 있습니다.</p>
-										</div>
-									</div>
-									<div class="form-group ">
-										<label for="lastname" class="control-label col-lg-2">공지사항 분류 삭제</label>
-										<div class="col-lg-10">
-											<select class="form-control" multiple="multiple" id="textDelSelect">
-												<option th:each="s:${subject}" th:text="${s.text}" th:value="${s.id}">bion01@bion.co.kr</option>
-											</select>
-											<button class="btn btn-danger" id="textDelBtn" type="button" style="margin-top:10px;">삭제</button>
-											<p class="help-block">* 공지사항 분류를 삭제할 수 있습니다.</p>
-											<p class="help-block">* 공지사항 분류를 드래그 하여 동시에 여러개를 삭제할 수 있습니다.</p>
-											<p class="help-block">* 해당 분류가 적용된 공지사항이 있는 경우 공지사항을 먼저 삭제 후 분류를 삭제하시기 바랍니다.</p>
-										</div>
-									</div>
-								</form>
-							</div>
+							<h5><i class="fa fa-tasks"></i> 바이온라이프사이언스 - 공지사항 분류 관리</h5>
+
+							<form class="form-inline" id="subjectAddForm" onsubmit="return false;">
+								<input class="form-control" id="newText" type="text"
+									placeholder="한글 이름 (예: 제품소식)" style="width:220px;">
+								<input class="form-control" id="newTextEn" type="text"
+									placeholder="영문 이름 (예: Product News)" style="width:280px;">
+								<button class="btn btn-theme push-right" type="button" onclick="noticeSubjectInsert();">분류 등록</button>
+							</form>
+
+							<p class="bn-help">* 여기서 만든 분류는 [공지사항 등록] 시 고르는 항목이 됩니다.</p>
+							<p class="bn-help">* 사이트 접속자는 이 분류로 공지사항을 가려 볼 수 있습니다.</p>
+							<p class="bn-help">* 영문 이름을 비우면 영문 화면에서도 한글 이름이 그대로 나갑니다.</p>
 						</div>
+
+						<div class="content-panel">
+							<h5><i class="fa fa-list"></i> 분류 목록</h5>
+
+							<p class="bn-help">
+								줄 맨 앞을 잡고 끌어서 순서를 바꾼다. 놓는 순간 저장된다.
+								이름을 고친 뒤에는 그 줄의 저장을 눌러야 반영된다.
+							</p>
+
+							<table class="table table-hover sort-table">
+								<thead>
+									<tr>
+										<th style="width:34px;"></th>
+										<th style="width:44px;">순서</th>
+										<th style="width:200px;">한글 이름</th>
+										<th>영문 이름</th>
+										<th style="width:96px;">소속 공지</th>
+										<th style="width:140px;">관리</th>
+									</tr>
+								</thead>
+								<tbody id="subjectRows">
+									<tr th:each="s:${subject}" th:data-id="${s.id}"
+										th:data-used="${useCounts[s.id]}">
+										<td class="bn-grip" title="끌어서 순서 바꾸기"><i class="fa fa-bars"></i></td>
+										<td><span class="bn-index" th:text="${s.sortIndex}">1</span></td>
+										<td>
+											<input class="form-control js-ko" type="text"
+												th:value="${s.text}" maxlength="200">
+										</td>
+										<td>
+											<input class="form-control js-en" type="text"
+												th:value="${s.textEn}" maxlength="1000"
+												placeholder="비우면 한글이 나갑니다">
+										</td>
+										<td>
+											<span class="sort-use" th:classappend="${useCounts[s.id]} > 0 ? ' is-used' : ''"
+												th:text="${useCounts[s.id]} + '건'">0건</span>
+										</td>
+										<td>
+											<button class="btn btn-theme btn-xs" type="button"
+												th:onclick="|noticeSubjectUpdate('${s.id}')|">
+												<i class="fa fa-check"></i> 저장
+											</button>
+											<button class="btn btn-danger btn-xs" type="button"
+												th:onclick="|noticeSubjectDelete('${s.id}')|">
+												<i class="fa fa-trash-o"></i> 삭제
+											</button>
+										</td>
+									</tr>
+									<tr th:if="${#lists.isEmpty(subject)}">
+										<td colspan="6" class="sort-none">등록된 분류가 없다.</td>
+									</tr>
+								</tbody>
+							</table>
+
+							<p class="bn-help">
+								* 분류에 속한 공지사항이 한 건이라도 있으면 삭제되지 않습니다.
+								먼저 해당 공지사항의 분류를 다른 것으로 옮겨 주세요.
+							</p>
+						</div>
+
 					</div>
 				</div>
 			</section>
 		</section>
 	</section>
 	<th:block th:replace="~{fragments/admin/common :: scriptSrc}"></th:block>
+	<script src="/administration/lib/jquery-ui-1.9.2.custom.min.js"></script>
 	<script src="/administration/lib/noticeSubjectManager.js"></script>
 </body>
 

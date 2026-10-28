@@ -27,6 +27,7 @@ public enum AdminMenu {
 
 	NOTICE("notice", "공지사항 관리", "/admin/noticeManager",
 			"noticeManager", "noticeSubjectManager", "noticeSubjectInsert", "noticeSubjectDelete",
+			"noticeSubjectUpdate", "noticeSubjectOrder",
 			"noticeUpdate", "noticeDetail", "noticeInsertForm", "noticeInsert", "noticeDelete",
 			"notice"), // /admin/notice/image : 공지 편집기 이미지 올리기
 
@@ -58,7 +59,9 @@ public enum AdminMenu {
 
 	CERTIFICATION("certification", "인증서 관리", "/admin/certificationManager",
 			"certificationManager", "certificationInsertForm", "certificationInsert",
-			"certificationUpdateForm", "certificationUpdate", "certificationOrder", "deleteCertification"),
+			"certificationUpdateForm", "certificationUpdate", "certificationOrder", "deleteCertification",
+			"certificationSortManager", "certificationSortInsert", "certificationSortUpdate",
+			"certificationSortDelete", "certificationSortOrder"),
 
 	NAMECARD("namecard", "디지털 명함 관리", "/admin/namecardManager",
 			"namecardManager"),

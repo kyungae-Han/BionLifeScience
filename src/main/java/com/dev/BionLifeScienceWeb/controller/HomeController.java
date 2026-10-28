@@ -42,6 +42,7 @@ import com.dev.BionLifeScienceWeb.model.product.Product;
 import com.dev.BionLifeScienceWeb.model.product.SmallSort;
 import com.dev.BionLifeScienceWeb.repository.BannerRepository;
 import com.dev.BionLifeScienceWeb.repository.CertificationRepository;
+import com.dev.BionLifeScienceWeb.repository.CertificationSortRepository;
 import com.dev.BionLifeScienceWeb.repository.CompanyEmailRepository;
 import com.dev.BionLifeScienceWeb.repository.CompanyInfoRepository;
 import com.dev.BionLifeScienceWeb.repository.EventRepository;
@@ -96,6 +97,7 @@ public class HomeController {
 	private final BrandSmallSortRepository brandSmallSortRepository;
 	private final BrandProductRepository brandProductRepository;
 	private final CertificationRepository certificationRepository;
+	private final CertificationSortRepository certificationSortRepository;
 	
 	
 	@ResponseStatus(value=HttpStatus.NOT_FOUND, reason="잘못된 접근입니다.")
@@ -178,8 +180,12 @@ public class HomeController {
         }
         
         
-        List<Certification> certs = certificationRepository.findAll();
+        // 어드민에서 끌어 맞춘 순서를 따른다.
+        // findAll() 은 정렬이 없어 /certifications 와 순서가 어긋났다
+        List<Certification> certs = certificationRepository.findAllByOrderByCertificationIndexAscIdAsc();
         model.addAttribute("certification", certs);
+        // 인증서 탭. [인증서 분류 관리] 에서 만든 것을 그대로 그린다
+        model.addAttribute("certSorts", certificationSortRepository.findAllByOrderBySortIndexAscIdAsc());
         
         model.addAttribute("list", subject);
 
@@ -228,6 +234,7 @@ public class HomeController {
 			) {
 		
 		model.addAttribute("certification", certificationRepository.findAllByOrderByCertificationIndexAscIdAsc());
+		model.addAttribute("certSorts", certificationSortRepository.findAllByOrderBySortIndexAscIdAsc());
 		model.addAttribute("metaDescription",
 		        "바이온라이프사이언스가 보유한 품질 인증서와 시험성적서를 확인하실 수 있습니다.");
 

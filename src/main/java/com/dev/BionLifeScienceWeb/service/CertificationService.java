@@ -12,7 +12,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dev.BionLifeScienceWeb.model.Certification;
+import com.dev.BionLifeScienceWeb.model.CertificationSort;
 import com.dev.BionLifeScienceWeb.repository.CertificationRepository;
+import com.dev.BionLifeScienceWeb.repository.CertificationSortRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class CertificationService {
 
 	private final CertificationRepository certificationRepository;
+	private final CertificationSortRepository certificationSortRepository;
 
 	@Value("${spring.upload.env}")
 	private String env;
@@ -40,6 +43,7 @@ public class CertificationService {
 
 		// 새 인증서는 목록 맨 뒤에 붙인다. 끌어서 올리는 것은 사용자가 한다
 		certification.setCertificationIndex(nextIndex());
+		applySort(certification, certification.getSortId());
 		certificationRepository.save(certification);
 		return "success";
 	}
@@ -61,7 +65,7 @@ public class CertificationService {
 		// 영문 칸. 비어 있으면 앞단에서 한글로 떨어진다
 		saved.setSubjectEn(form.getSubjectEn());
 		saved.setContentEn(form.getContentEn());
-		saved.setSort(form.getSort());
+		applySort(saved, form.getSortId());
 
 		if (file != null && !file.isEmpty()) {
 			// 새 파일을 받았을 때만 경로를 갈아 끼운다.
@@ -73,6 +77,31 @@ public class CertificationService {
 
 		certificationRepository.save(saved);
 		return "success";
+	}
+
+	/**
+	 * 고른 분류를 붙인다. 화면이 쓰는 참값은 sortId 다.
+	 * 예전 방식의 이름 칸(CERTIFICATION_SORT)에도 한글 이름을 같이 넣어 둔다.
+	 * 그 칸을 읽는 곳이 더 남아 있을 수 있어서, 둘이 어긋나지 않게 하려는 것이다.
+	 * 분류를 안 고른 경우(빈 값)는 둘 다 비운다
+	 */
+	private void applySort(Certification certification, Long sortId) {
+		if (sortId == null) {
+			certification.setSortId(null);
+			certification.setSort(null);
+			return;
+		}
+
+		CertificationSort sort = certificationSortRepository.findById(sortId).orElse(null);
+		if (sort == null) {
+			// 고르는 사이에 분류가 지워진 경우다. 분류 없음으로 둔다
+			certification.setSortId(null);
+			certification.setSort(null);
+			return;
+		}
+
+		certification.setSortId(sort.getId());
+		certification.setSort(sort.getNameKo());
 	}
 
 	/** 목록 맨 뒤 번호. 한 건도 없으면 1 이다 */

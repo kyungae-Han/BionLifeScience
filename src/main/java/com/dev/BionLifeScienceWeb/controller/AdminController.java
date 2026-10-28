@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -397,39 +398,118 @@ public class AdminController {
 	
 	//******************************공지사항관리
 	
+	/**
+	 * 분류를 새로 만든다. 목록 맨 뒤에 붙는다. 순서는 끌어서 바꾼다.
+	 * 인증서 분류(certificationSortInsert) 와 같은 방식이다
+	 */
 	@PostMapping("/noticeSubjectInsert")
+	@ResponseBody
 	public String noticeSubjectInsert(
-			NoticeSubject noticeSubject,
-			Model model
+			@RequestParam("text") String text,
+			@RequestParam(value="textEn", required=false) String textEn
 			) {
-		
-		noticeSubjectRepository.save(noticeSubject);
-		model.addAttribute("subject", noticeSubjectRepository.findAll());
-		
-		return "admin/noticeSubjectManager :: #textForm";
-	}
-	
-	@RequestMapping(value = "/noticeSubjectDelete",
-		    method = {RequestMethod.GET, RequestMethod.POST}
-	)
-	public String noticeSubjectDelete(
-			@RequestParam(value="text[]") Long[] text,
-			Model model
-			){
-		for(Long id : text) {
-			noticeSubjectRepository.deleteById(id);
+
+		String ko = text == null ? "" : text.trim();
+		if (ko.isEmpty()) {
+			return "EMPTY";
 		}
-		model.addAttribute("subject", noticeSubjectRepository.findAll());
-		return "admin/noticeSubjectManager :: #textForm";
-		
+		if (noticeSubjectRepository.existsByText(ko)) {
+			return "DUP";
+		}
+
+		NoticeSubject subject = new NoticeSubject();
+		subject.setText(ko);
+		subject.setTextEn(textEn == null || textEn.isBlank() ? null : textEn.trim());
+		subject.setSortIndex(nextNoticeSubjectIndex());
+		noticeSubjectRepository.save(subject);
+		return "ok";
+	}
+
+	/** 이름을 고친다. 공지는 id 로 물려 있어 이름을 바꿔도 따라온다 */
+	@PostMapping("/noticeSubjectUpdate")
+	@ResponseBody
+	public String noticeSubjectUpdate(
+			@RequestParam("id") Long id,
+			@RequestParam("text") String text,
+			@RequestParam(value="textEn", required=false) String textEn
+			) {
+
+		NoticeSubject subject = noticeSubjectRepository.findById(id).orElse(null);
+		if (subject == null) {
+			return "NONE";
+		}
+
+		String ko = text == null ? "" : text.trim();
+		if (ko.isEmpty()) {
+			return "EMPTY";
+		}
+		if (!ko.equals(subject.getText()) && noticeSubjectRepository.existsByText(ko)) {
+			return "DUP";
+		}
+
+		subject.setText(ko);
+		subject.setTextEn(textEn == null || textEn.isBlank() ? null : textEn.trim());
+		noticeSubjectRepository.save(subject);
+		return "ok";
+	}
+
+	/**
+	 * 분류를 지운다. 그 분류를 쓰는 공지가 있으면 막는다.
+	 * 예전에는 그냥 지워서 공지가 분류를 잃었다.
+	 * 화면 JS 에는 막는 안내문구가 있었으나 서버가 그 응답을 보낸 적은 없다
+	 */
+	@PostMapping("/noticeSubjectDelete")
+	@ResponseBody
+	public String noticeSubjectDelete(@RequestParam("id") Long id) {
+
+		long used = noticeRepository.countByNoticeSubject_Id(id);
+		if (used > 0) {
+			return "USED:" + used;
+		}
+		noticeSubjectRepository.deleteById(id);
+		return "ok";
+	}
+
+	/** 끌어 놓은 순서를 저장한다 */
+	@PostMapping("/noticeSubjectOrder")
+	@ResponseBody
+	public String noticeSubjectOrder(@RequestParam("ids") List<Long> ids) {
+		int index = 1;
+		for (Long id : ids) {
+			NoticeSubject subject = noticeSubjectRepository.findById(id).orElse(null);
+			if (subject != null) {
+				subject.setSortIndex(index++);
+				noticeSubjectRepository.save(subject);
+			}
+		}
+		return "ok";
+	}
+
+	/** 목록 맨 뒤 번호. 한 건도 없으면 1 이다 */
+	private int nextNoticeSubjectIndex() {
+		return noticeSubjectRepository.findAll().stream()
+				.map(NoticeSubject::getSortIndex)
+				.filter(i -> i != null)
+				.mapToInt(Integer::intValue)
+				.max().orElse(0) + 1;
 	}
 
 	@GetMapping("/noticeSubjectManager")
 	public String noticeSubjectManager(
 			Model model
 			) {
-		
-		model.addAttribute("subject",noticeSubjectRepository.findAll());
+
+		List<NoticeSubject> subjects = noticeSubjectRepository.findAllByOrderBySortIndexAscIdAsc();
+
+		// 분류마다 속한 공지가 몇 건인지 같이 보낸다.
+		// 삭제가 막히는 이유를 누르기 전에 알 수 있어야 한다
+		Map<Long, Long> useCounts = new LinkedHashMap<>();
+		for (NoticeSubject s : subjects) {
+			useCounts.put(s.getId(), noticeRepository.countByNoticeSubject_Id(s.getId()));
+		}
+
+		model.addAttribute("subject", subjects);
+		model.addAttribute("useCounts", useCounts);
 		return "admin/noticeSubjectManager";
 	}
 	
@@ -477,7 +557,7 @@ public class AdminController {
 
 	    noticeService.noticeUpdate(notice);
 
-	    model.addAttribute("subject", noticeSubjectRepository.findAll());
+	    model.addAttribute("subject", noticeSubjectRepository.findAllByOrderBySortIndexAscIdAsc());
 	    model.addAttribute("notice", noticeRepository.findById(notice.getId()).get());
 	    return "admin/noticeDetail";
 	}
@@ -489,7 +569,7 @@ public class AdminController {
 			@PathVariable Long id,
 			Model model
 			) {
-		model.addAttribute("subject", noticeSubjectRepository.findAll());
+		model.addAttribute("subject", noticeSubjectRepository.findAllByOrderBySortIndexAscIdAsc());
 		model.addAttribute("notice", noticeRepository.findById(id).get());
 		return "admin/noticeDetail";
 	}
@@ -499,7 +579,7 @@ public class AdminController {
 			Model model
 			) {
 		
-		model.addAttribute("subject", noticeSubjectRepository.findAll());
+		model.addAttribute("subject", noticeSubjectRepository.findAllByOrderBySortIndexAscIdAsc());
 		return "admin/noticeInsertForm";
 	}
 	

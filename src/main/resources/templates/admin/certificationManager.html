@@ -59,7 +59,10 @@
 										<td class="bn-grip" title="끌어서 순서 바꾸기"><i class="fa fa-bars"></i></td>
 										<td><span class="bn-index" th:text="${b.certificationIndex}">1</span></td>
 										<td><img class="cert-thumb" th:src="${b.road}" th:alt="${b.subject}"></td>
-										<td><span class="label label-default" th:text="${b.sort} ?: '분류 없음'">분류</span></td>
+										<!-- 분류는 certification_sort 가 참값이다.
+										     이름을 고쳐도 여기 표시가 따라온다 -->
+										<td><span class="label label-default"
+											th:text="${b.certificationSort != null} ? ${b.certificationSort.nameKo} : '분류 없음'">분류</span></td>
 										<td class="cert-subject" th:text="${b.subject}">제목</td>
 										<td class="cert-content" th:text="${b.content}">내용</td>
 										<td>

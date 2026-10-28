@@ -91,15 +91,21 @@
 										</div>
 
 										<div class="col-md-12 col-xs-11" style="margin-top:20px;">
+											<!-- 분류는 [인증서 분류 관리] 에서 만든 것을 그대로 쓴다.
+											     값은 분류의 id 다. 이름을 고쳐도 인증서가 따라온다 -->
 											<select class="form-control form-control-inline"
-											name="sort"
+											name="sortId"
 											required="required">
 												<option value="">=== 분류를 선택하세요 ===</option>
-												<option value="특허인증" th:selected="${certification.sort == '특허인증'}">특허인증</option>
-												<option value="기업인증" th:selected="${certification.sort == '기업인증'}">기업인증</option>
-												<option value="기타인증" th:selected="${certification.sort == '기타인증'}">기타인증</option>
+												<option th:each="s:${sorts}"
+													th:value="${s.id}"
+													th:text="${s.nameKo}"
+													th:selected="${s.id == certification.sortId}">분류</option>
 											</select>
 											<span class="help-block"># 인증서의 분류를 선택 해 주세요.</span>
+											<span class="help-block" th:if="${#lists.isEmpty(sorts)}">
+												# 등록된 분류가 없습니다. [인증서 분류 관리] 에서 먼저 만들어 주세요.
+											</span>
 										</div>
 
 										<div class="col-md-12 col-xs-11" style="margin-top:20px;">

@@ -495,57 +495,6 @@
 </script>
 
 <script>
-(function(){
-  // ① 숫자 박스 바로 뒤에 버튼 하나만 삽입
-  const sn = document.querySelector('#slider .slide-number');
-  if (!sn) return;
-
-  let btn = sn.parentElement.querySelector('.slide-toggle');
-  if (!btn) {
-    btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'slide-toggle';
-    btn.setAttribute('aria-label', '일시정지');
-    sn.insertAdjacentElement('afterend', btn);  // slide-number 바로 뒤
-  }
-
-  // ② Swiper 인스턴스(있으면 제어), 없으면 비디오만 제어
-  const swiperEl = document.querySelector('#slider .swiper, #slider .swiper-container');
-  const swiper   = swiperEl && swiperEl.swiper ? swiperEl.swiper : null;
-
-  function setPaused(paused){
-    btn.classList.toggle('is-paused', paused);
-    btn.setAttribute('aria-label', paused ? '재생' : '일시정지');
-  }
-
-  function getActiveVideo(){
-    const active = document.querySelector('#slider .swiper-slide-active') || document.querySelector('#slider video')?.closest('.swiper-slide');
-    return active ? active.querySelector('video') : null;
-  }
-
-  // ③ 토글 동작: Swiper 자동재생 + 현재 슬라이드 비디오 동시 제어
-  let paused = false;
-  btn.addEventListener('click', () => {
-    paused = !paused; setPaused(paused);
-
-    // Swiper autoplay
-    if (swiper && swiper.params && swiper.params.autoplay) {
-      paused ? swiper.autoplay.stop() : swiper.autoplay.start();
-    }
-
-    // 현재 슬라이드 비디오
-    const vid = getActiveVideo();
-    if (vid) {
-      if (paused) { vid.pause(); }
-      else { vid.play().catch(()=>{}); }
-    }
-  });
-
-  // ④ 초기 상태 동기화(autoplay가 꺼져 시작하면 ▶ 표시)
-  if (swiper && swiper.params && swiper.params.autoplay && swiper.autoplay && swiper.autoplay.running === false) {
-    paused = true; setPaused(true);
-  }
-})();
 
 
 /* function adjustBannerView() {

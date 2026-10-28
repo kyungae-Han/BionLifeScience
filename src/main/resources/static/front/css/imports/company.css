@@ -3717,3 +3717,65 @@ body:has(.breadcrumb-wrap.fixed-bottom:not(.hide):not(.gone)) #gotoTop {
     flex-wrap: nowrap;
   }
 }
+
+
+/* ── 5. 인증서 좌우 화살표를 위쪽 롤링과 같게 ──────────────── */
+/* 위쪽 #certificates .cert-nav 가 inset:0 0 auto 0 으로 .cert-wrap 폭을
+   그대로 덮어서 화살표가 첫 장·마지막 장을 통째로 가리고 있었다.
+
+   위쪽 롤링(.glance-swiper)과 같은 모양으로 맞춘다.
+     바깥 틀   1280  ─ .container 의 max-width 가 이미 1280 이다
+     안쪽 내용 1240  ─ .container 의 좌우 20px 패딩을 뺀 크기다
+     화살표      바깥 틀 안쪽 10px ─ 롤링의 .container-btn 과 같다
+
+   .cert-wrap 은 .container 의 내용 박스(1240) 이므로
+   화살표를 left/right: -10px 에 두면 바깥 틀 안쪽 10px 자리가 된다.
+   1440px 실측으로 롤링의 prev(83~127)·next(1299~1343) 와 값이 같다.
+   카드에 34px 걸쳐 살짝 겹친다.
+
+   .cert-wrap 에 붙은 overflow:hidden 은 마크업의 .swiper 클래스가
+   달고 온 것이다. 그대로두면 밖으로 내보낸 화살표가 잘리므로 푸는다.
+   정작 카드를 자르고 스크롤하는 것은 #certViewport 라 풀어도 안전하다.
+   (about.js 가 #certViewport 를 scrollBy 한다)
+
+   600px 미만은 위쪽 ── 3 ── 에서 화살표를 숨기므로 그대로 둔다 */
+
+@media (min-width: 600px) {
+  #certificates .cert-wrap {
+    overflow: visible !important;
+    /* 카드는 .container 내용폭(1240)을 그대로 쓴다.
+       마크업의 p-0 은 부트스트랩이라 !important 다 */
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  #certificates .cert-nav {
+    left: -10px;
+    right: -10px;
+  }
+}
+
+/* top:50% 만 있어서 화살표가 가운데보다 버튼 높이의 절반만큼 내려가 있었다 */
+#certificates .cert-nav {
+  transform: translateY(-50%);
+}
+
+/* 색은 같은 페이지 위쪽 글랜스 슬라이더(.glance-nav)와 맞춘다.
+   연한 회색 원에 진한 셔브론이다.
+   아이콘도 bi-arrow-*-circle-fill(원이 채워진 모양)에서 bi-chevron-* 로
+   바꿨다. 그대로 두면 회색 원 안에 또 원이 들어가 보인다.
+
+   ⚠ :hover 로 opacity 를 건드리지 않는다. 위쪽 .cert-btn[disabled] 의
+   opacity:0 과 명시도가 같아서, 뒤에 쓰면 넘길 데가 없어 숨긴 화살표가
+   마우스만 올리면 나타난다. 스크롤 방향 표시가 깨진다 */
+#certificates .cert-btn {
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+  color: var(--bs-gray-900);
+  background: var(--bs-gray-300);
+  border-radius: 999px;
+  opacity: .8;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 6px 18px rgba(3, 10, 27, .08);
+}
