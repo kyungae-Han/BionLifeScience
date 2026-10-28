@@ -147,6 +147,10 @@
          window.addEventListener("load", relock, { passive: true });
          window.addEventListener("resize", relock, { passive: true });
          setTimeout(relock, 0);
+         /* 글꼴이 늦게 바뀌면 글이 한 줄 더 접혀 카드가 길어진다.
+            그 전에 잰 높이를 그대로 두면 칸이 짧아서 진행 막대가 카드 위로 올라탄다.
+            fonts.ready 는 글꼴이 다 정해진 뒤에 풀린다 */
+         if (document.fonts && document.fonts.ready) document.fonts.ready.then(relock);
 
          tabs.forEach(a => a.addEventListener("click", (e) => {
            e.preventDefault();
@@ -593,6 +597,10 @@
       window.addEventListener("load",   relock, { passive: true });
       window.addEventListener("resize", relock, { passive: true });
       setTimeout(relock, 0);
+      /* 글꼴이 늦게 바뀌면 글이 한 줄 더 접혀 카드가 길어진다.
+         그 전에 잰 높이를 그대로 두면 칸이 짧아서 진행 막대가 카드 위로 올라탄다.
+         fonts.ready 는 글꼴이 다 정해진 뒤에 풀린다 */
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(relock);
 
       tabs.forEach(a => a.addEventListener("click", (e) => {
         e.preventDefault();

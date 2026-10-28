@@ -3760,22 +3760,122 @@ body:has(.breadcrumb-wrap.fixed-bottom:not(.hide):not(.gone)) #gotoTop {
   transform: translateY(-50%);
 }
 
-/* 색은 같은 페이지 위쪽 글랜스 슬라이더(.glance-nav)와 맞춘다.
-   연한 회색 원에 진한 셔브론이다.
-   아이콘도 bi-arrow-*-circle-fill(원이 채워진 모양)에서 bi-chevron-* 로
-   바꿨다. 그대로 두면 회색 원 안에 또 원이 들어가 보인다.
+/* 색과 모양은 제품 상세의 [연관된 상품] 캐로셀 버튼과 맞춘다.
+   style.css 의 .owl-carousel .owl-nav [class*="owl-"] 에서 가져온 값이다.
+     기본  36x36 원, 흰 바탕에 #666 글자, 1px 연한 테두리
+     hover  배경 #fe5000, 글자 #fff
+   마크업은 그대로 두고 CSS 만 맞춘 것이라 아이콘은 bi-chevron-* 을 쓴다.
 
    ⚠ :hover 로 opacity 를 건드리지 않는다. 위쪽 .cert-btn[disabled] 의
    opacity:0 과 명시도가 같아서, 뒤에 쓰면 넘길 데가 없어 숨긴 화살표가
-   마우스만 올리면 나타난다. 스크롤 방향 표시가 깨진다 */
+   마우스만 올리면 나타난다. 스크롤 방향 표시가 깨진다.
+   그래서 :not([disabled]) 를 붙이고 opacity 는 적지 않는다 */
 #certificates .cert-btn {
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
+  line-height: 32px;
   font-size: 18px;
-  color: var(--bs-gray-900);
-  background: var(--bs-gray-300);
-  border-radius: 999px;
-  opacity: .8;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 6px 18px rgba(3, 10, 27, .08);
+  color: #666;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, .2);
+  border-radius: 50%;
+  opacity: 1;
+  box-shadow: none;
+  backdrop-filter: none;
+  transition: all .3s ease;
+}
+
+#certificates .cert-btn:hover:not([disabled]) {
+  background-color: #fe5000;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* 같은 화면 위쪽 [총 165건+] 롤링(.glance-slider)의 좌우 화살표도 같은 모양으로 맞춘다.
+   위 인증서 화살표와 똑같이 style.css 의 .owl-carousel .owl-nav [class*="owl-"] 값이다.
+   원래는 44x44 회색 원(--bs-gray-300)에 그림자와 blur 가 붙어 있었다.
+
+   ⚠ 이 규칙은 swiper.css 가 아니라 여기에 둔다. company.css 가 마지막에 실려서
+   같은 명시도면 이긴다. swiper.css 를 고치면 다른 화면의 롤링까지 같이 변한다.
+
+   ⚠ opacity 는 그대로 1 로 둔다. 스와이퍼의 .swiper-button-disabled { opacity:.35 } 는
+   명시도가 같은데 company.css 가 뒤에 실려서 이미 지금도 먹지 않는다.
+   끝에 닿은 화살표가 흐려지지 않는 것은 이 변경 때문이 아니라 원래 그랬다 */
+.glance-nav .swiper-button-prev,
+.glance-nav .swiper-button-next {
+  width: 36px;
+  height: 36px;
+  color: #666;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, .2);
+  border-radius: 50%;
+  opacity: 1;
+  box-shadow: none;
+  backdrop-filter: none;
+  transition: all .3s ease;
+}
+
+.glance-nav .swiper-button-prev:after,
+.glance-nav .swiper-button-next:after {
+  font-size: 18px;
+}
+
+/* 좁은 화면의 .container-btn ... :hover 는 배경이 검정이었다.
+   여기가 뒤에 있어 넓은 화면·좁은 화면 모두 주황으로 모인다 */
+.glance-nav .swiper-button-prev:hover,
+.glance-nav .swiper-button-next:hover {
+  background-color: #fe5000;
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ── 6. 폰에서 인증서 카드가 화면 밖으로 잘리던 것 ─────────────────── */
+/* 트랙과 카드 사이에 래퍼가 하나 더 있다.
+
+     .cert-track            390px (화면 폭 - 좌우 20px)
+       └ div.d-flex.gap-4   452px  ← 여기
+           └ .cert          452px  (flex: 0 0 100%)
+
+   카드의 100% 는 트랙이 아니라 이 래퍼 기준으로 풀린다.
+   래퍼는 min-width:auto 라 내용 최소폭(인증서 이미지)까지 벌어지고,
+   카드가 그 폭을 따라가 화면 밖으로 62px(430px 화면) 잘렸다.
+   트랙은 넘긴 만큼 밀리기는 하지만, 카드 자체가 창보다 넓어서
+   어디로 밀어도 인증서 한 장이 통째로 보이지 않았다.
+
+   래퍼의 상자를 없애 카드를 트랙의 직계 자식으로 만든다.
+   그러면 100% 가 트랙(390px) 기준이 되고 트랙이 제대로 스크롤된다.
+   칸 사이는 래퍼의 gap-4(24px) 대신 트랙의 gap(20px) 이 쓰인다.
+
+   ⚠ 부트스트랩의 .d-flex 가 display:flex !important 라 !important 가 있어야 이긴다.
+   ⚠ 600px 부터는 래퍼가 트랙 폭을 제대로 따라가므로 건드리지 않는다 */
+@media (max-width: 599.98px) {
+  #certificates .cert-track > .d-flex {
+    display: contents !important;
+  }
+}
+
+/* ── 7. 폰에서 연혁 진행 막대가 카드 위로 올라타던 것 ───────────────── */
+/* .hist-progress 는 .bio-history-tab-container 안에서 bottom:30px 에 떠 있고,
+   그 칸의 높이는 about.js 의 lockContainerHeight 가 내용 높이에 딱 맞춰 박는다.
+   그래서 막대가 차지하는 아래 33px(bottom 30 + 높이 3)은 내용 영역과 겹친다.
+   카드 밑에 남는 여백이 그만큼 없으면 막대가 카드 위를 지나간다.
+
+   카드와 막대 사이 간격은 카드 높이와 상관없이
+   (이 칸의 padding-bottom + 30) - 33 으로 정해진다.
+   32px 일 때 간격이 375px 화면에서 5px, 430px 에서 29px 밖에 안 됐다.
+   글자가 한 줄만 더 접혀도 닿는다.
+   이 여백은 내용 안에 있어서 lockContainerHeight 가 재는 높이도 같이 늘어난다.
+   그래서 아래를 넓히면 칸도 같이 커지고 간격만 벌어진다.
+   36px 이면 375px 에서 9px, 430px 에서 33px 가 남는다.
+   (72px 까지 올렸더니 여백이 너무 넓다고 해서 절반으로 줄였다)
+
+   ⚠ 폭을 768px 로 맞춘 것은, 막대를 아래로 내리는
+   .hist-progress { top:auto !important; bottom:30px } 가
+   @media(max-width:768px) 안에 있기 때문이다.
+   그보다 넓은 화면에서는 막대가 카드 위쪽에 깔려서 겹칠 일이 없다.
+   위 규칙을 다른 폭으로 옮기면 여기도 같이 옮긴다 */
+@media (max-width: 768px) {
+  .bio-history-timeline__group {
+    padding-bottom: 36px;
+  }
 }
