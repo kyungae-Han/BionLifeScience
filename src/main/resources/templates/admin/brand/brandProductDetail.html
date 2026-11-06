@@ -5,6 +5,35 @@
 
 </head>
 
+<style>
+/* 제품에 이미 붙어 있는 파일·썸네일 목록. 줄마다 × 로 한 건씩 지운다.
+   색은 bion-admin.css 의 :root 이름을 쓴다 (CLAUDE.md 14절).
+   이 style 이 bion-admin.css 보다 뒤에 와서 같은 세기면 이쪽이 이긴다.
+   × 단추에 btn 클래스를 주지 않았다. 주면 .form-panel 의 단추 오른쪽정렬
+   규칙에 걸려 줄 밖으로 밀린다. */
+.bn-attach { border: 1px solid var(--bn-line); border-radius: 6px; margin-bottom: 12px; overflow: hidden; }
+.bn-attach__head { display: flex; justify-content: space-between; background: var(--bn-surface-2);
+	border-bottom: 1px solid var(--bn-line-3); padding: 7px 12px; font-size: 12px; color: var(--bn-ink-3); }
+.bn-attach__row { display: flex; align-items: center; gap: 10px; padding: 9px 12px;
+	border-bottom: 1px solid var(--bn-line-3); }
+.bn-attach__row:last-child { border-bottom: 0; }
+.bn-attach__name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+	font-size: 13px; color: var(--bn-link); }
+.bn-attach__date { flex: 0 0 auto; font-size: 11px; color: var(--bn-ink-4); }
+.bn-attach__none { padding: 18px 12px; text-align: center; font-size: 12px; color: var(--bn-ink-4); }
+.bn-attach__x { flex: 0 0 auto; width: 24px; height: 24px; padding: 0; line-height: 1; font-size: 12px;
+	border: 1px solid var(--bn-line); border-radius: 4px; background: var(--bn-surface); color: var(--bn-ink-3); }
+.bn-attach__x:hover { border-color: var(--bn-danger); color: var(--bn-danger); background: var(--bn-danger-bg); }
+
+/* 썸네일은 격자로 놓고 × 를 오른쪽 위에 겹친다 */
+.bn-attach__grid { display: flex; flex-wrap: wrap; gap: 10px; padding: 10px 12px; }
+.bn-attach__cell { position: relative; width: 120px; }
+.bn-attach__cell img { width: 100%; display: block; border: 1px solid var(--bn-line); border-radius: 4px; }
+/* 흰 제품 사진 위에 흰 단추가 겹치면 테두리가 묻혀 안 보인다.
+   겹치는 자리에서만 테두리와 글자를 한 단계 진하게 쓴다 */
+.bn-attach__cell .bn-attach__x { position: absolute; top: 4px; right: 4px;
+	border-color: var(--bn-line-2); color: var(--bn-ink-2); }
+</style>
 
 <body>
 	<section id="container">
@@ -249,21 +278,43 @@
 										class="form-control wth-100" 
 										style="margin-bottom:10px;" 
 										id="deImage" 
-										name="slides" 
+										name="slides"
 										th:attr="required=${#strings.isEmpty(product.id)}"
 										multiple="multiple">
+
+										<!-- 이미 붙어 있는 썸네일. × 로 한 장씩 지운다 -->
+										<div class="bn-attach" id="productImageList">
+											<div class="bn-attach__head">
+												<span>등록된 썸네일</span>
+												<span><span id="productImageCount" th:text="${product.images == null ? 0 : product.images.size()}">0</span>장</span>
+											</div>
+											<div class="bn-attach__grid" th:unless="${product.images == null or #lists.isEmpty(product.images)}">
+												<div class="bn-attach__cell" th:each="e:${product.images}" th:data-id="${e.id}">
+													<img th:src="${e.productImageRoad}" th:alt="${e.productImageName}">
+													<button type="button" class="bn-attach__x js-image-x"
+														th:data-id="${e.id}" th:data-name="${e.productImageName}"
+														th:title="|${e.productImageName} 삭제|">
+														<i class="fa fa-times"></i>
+													</button>
+												</div>
+											</div>
+											<div class="bn-attach__none" th:if="${product.images == null or #lists.isEmpty(product.images)}">등록된 썸네일이 없습니다.</div>
+										</div>
+
+										<span class="label label-success">사용</span> <span> 여러 장을 한 번에 고를 수 있습니다. 나중에 더 올려도 기존 썸네일은 그대로 남습니다.</span><br>
+										<span class="label label-success">사용</span> <span> 740px * 740px 의 사이즈에 최적화 되어 있습니다.</span><br>
+										<span class="label label-danger">주의</span> <span> 위 목록의 × 는 누르는 즉시 지웁니다. 수정 단추를 누르지 않아도 지워지고, 되돌릴 수 없습니다.</span><br>
 										<span class="label label-danger">주의</span> <span> image용 확장자(jpg/jpeg/png)만을 지원합니다</span><br>
 										<span class="label label-danger">주의</span> <span> 이미지 이름에 공백 혹은 특수문자를 제거 해 주시기 바랍니다</span><br>
-										<span class="label label-success">사용</span> <span> 파일 드래그를 통해 여러장을 한번에 업로드 할 수 있습니다</span><br>
-										<span class="label label-success">사용</span> <span> 740px * 740px 의 사이즈에 최적화 되어 있습니다.</span><br>
 										<button onclick="imgReset('deImage');" type="button" class="btn btn-warning" style="margin-top:10px;">이미지 리셋</button>
 									</div>
 								</div>
 								<div class="form-group has-error">
-									<label class="col-sm-2 control-label col-lg-2" for="sampleSection"># 추가이미지 미리보기</label>
-									<div class="col-lg-10" id="sampleSection">
-										<img th:each="e:${product.images}" width="200" th:src="${e.productImageRoad}">
-									</div>
+									<label class="col-sm-2 control-label col-lg-2" for="sampleSection"># 고른 이미지 미리보기</label>
+									<!-- 저장된 썸네일은 위 [등록된 썸네일] 로 옮겼다. 여기는 방금 고른 것만 나온다.
+									     handleImgFileSelect 가 파일을 고를 때마다 이 칸을 비우고 다시 채우므로,
+									     저장된 것을 여기 두면 파일을 고르는 순간 사라져 보였다. -->
+									<div class="col-lg-10" id="sampleSection"></div>
 								</div>
 								
 								<!-- 상세페이지 본문. 예전에는 이미지 한 장을 올렸는데 편집기로 바꿨다 -->
@@ -285,12 +336,36 @@
 										class="form-control wth-100" 
 										style="margin-bottom:10px;" 
 										id="productFile" 
-										name="productFile" 
+										name="productFile"
 										multiple="multiple"
 										th:value="same">
-										<span class="label label-danger">주의</span> <span> 수정을 원하시는 경우 새로운 파일을 등록 해 주세요.</span><br>
-										<span class="label label-danger">주의</span> <span> 새로운 파일 등록시 기존 파일은 삭제됩니다.</span><br>
-										<span class="label label-success">사용</span> <span> 파일 드래그를 통해 여러장을 한번에 업로드 할 수 있습니다</span><br>
+
+										<!-- 이미 붙어 있는 파일. × 로 한 건씩 지운다 -->
+										<div class="bn-attach" id="productFileList">
+											<div class="bn-attach__head">
+												<span>등록된 파일</span>
+												<span><span id="productFileCount" th:text="${product.files == null ? 0 : product.files.size()}">0</span>개</span>
+											</div>
+											<div class="bn-attach__row" th:each="f:${product.files}" th:data-id="${f.id}">
+												<i class="fa fa-file-o" style="color:var(--bn-ink-3);"></i>
+												<a class="bn-attach__name" target="_blank"
+													th:href="${f.productFileRoad}"
+													th:text="${f.productFileName}">파일명</a>
+												<span class="bn-attach__date"
+													th:text="${f.productFileDate != null} ? ${#dates.format(f.productFileDate,'yyyy-MM-dd')} : ''">등록일</span>
+												<button type="button" class="bn-attach__x js-file-x"
+													th:data-id="${f.id}" th:data-name="${f.productFileName}"
+													th:title="|${f.productFileName} 삭제|">
+													<i class="fa fa-times"></i>
+												</button>
+											</div>
+											<div class="bn-attach__none" th:if="${product.files == null or #lists.isEmpty(product.files)}">등록된 파일이 없습니다.</div>
+										</div>
+
+										<span class="label label-success">사용</span> <span> 여러 개를 한 번에 고를 수 있습니다. 나중에 더 올려도 기존 파일은 그대로 남습니다.</span><br>
+										<span class="label label-success">사용</span> <span> 파일명을 누르면 새 창에서 열립니다. 지우기 전에 어떤 파일인지 확인할 수 있습니다.</span><br>
+										<span class="label label-danger">주의</span> <span> 위 목록의 × 는 누르는 즉시 지웁니다. 수정 단추를 누르지 않아도 지워지고, 되돌릴 수 없습니다.</span><br>
+										<span class="label label-danger">주의</span> <span> 파일 이름에 공백과 특수문자는 빼 주세요.</span><br>
 									</div>
 								</div>
 								<button type="submit" class="btn btn-danger">수정</button>

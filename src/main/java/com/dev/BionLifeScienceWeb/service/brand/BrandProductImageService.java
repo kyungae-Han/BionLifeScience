@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,10 +40,9 @@ public class BrandProductImageService {
         String absolutePath = new File("").getAbsolutePath() + "\\";
         String path = commonPath + "/brandproduct/" + productCode + "/slide";
         String road = "/upload/brandproduct/" + productCode + "/slide";
+        // 올린 썸네일은 기존 것 뒤에 붙는다. 폴더를 비우지 않는다.
+        // 파일 쪽(BrandProductFileService)과 같은 이유다. 거기 주석을 참고한다.
         File fileFolder = new File(path);
-        if(fileFolder.exists() && fileFolder.isDirectory()) {
-        	FileUtils.cleanDirectory(fileFolder);
-        }
         int leftLimit = 48; // numeral '0'
 		int rightLimit = 122; // letter 'z'
 		int targetStringLength = 10;
@@ -88,7 +87,39 @@ public class BrandProductImageService {
                 brandProductImageRepository.save(f);
             }
         }
-        
+
         return "success";
+	}
+
+	/**
+	 * 썸네일 한 장을 지운다. DB 행과 디스크 파일을 함께 지운다.
+	 * 화면의 × 가 이것을 부른다. 수정 저장과 무관하게 바로 지워진다.
+	 * 디스크 파일을 못 지워도 DB 행은 지운다 (BrandProductFileService 의 같은 메서드 주석 참고).
+	 *
+	 * @return 지웠으면 true, 그 번호의 행이 없으면 false
+	 */
+	@Transactional
+	public boolean deleteOne(Long id) {
+		BrandProductImage image = brandProductImageRepository.findById(id).orElse(null);
+		if (image == null) {
+			return false;
+		}
+		deleteFromDisk(image.getProductImagePath());
+		brandProductImageRepository.delete(image);
+		return true;
+	}
+
+	private void deleteFromDisk(String storedPath) {
+		if (storedPath == null || storedPath.isBlank()) {
+			return;
+		}
+		try {
+			File target = new File(storedPath);
+			if (target.exists() && target.isFile()) {
+				target.delete();
+			}
+		} catch (Exception e) {
+			// 디스크에서 못 지워도 DB 행은 지운다
+		}
 	}
 }

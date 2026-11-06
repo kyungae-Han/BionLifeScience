@@ -48,6 +48,8 @@ public enum AdminMenu {
 			"brandSmallSortInsert", "brandSmallSortSearch", "brandSmallSortDelete",
 			"brandProductManager", "brandProductInsertForm", "brandProductInsert", "brandProductDetail",
 			"brandProductUpdate", "brandProductDelete", "brandProductSpecDelete",
+			// 제품 수정 화면의 × 가 부른다. 파일·썸네일 한 건씩 지우기
+			"brandProductFileDelete", "brandProductImageDelete",
 			"brandCenter"), // 상단 ProductCenter
 
 	SITE("site", "사이트관리", "/admin/bannerManager",

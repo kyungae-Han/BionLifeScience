@@ -8,9 +8,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,14 +44,14 @@ public class BrandProductFileService {
         String path = commonPath +  "/brandproduct/" + productCode + "/files";
         String road = "/upload/brandproduct/" + productCode + "/files";
         
+        // 올린 파일은 기존 파일 뒤에 붙는다. 폴더를 비우지 않는다.
+        // 예전에는 여기서 FileUtils.cleanDirectory 로 폴더를 통째로 비워서,
+        // 새 파일을 하나 올리면 먼저 있던 것이 전부 사라졌다. 그래서 파일을
+        // 여러 개 모아 둘 수가 없었고, 한 개만 떼어내는 길도 없었다.
+        // 지금은 떼어낼 파일을 화면의 × 로 한 건씩 지운다 (deleteOne).
+        // 이름 앞에 10자리 무작위 문자를 붙이므로 같은 이름을 올려도 덮이지 않는다.
         File fileFolder = new File(path);
-        if(fileFolder.exists() && fileFolder.isDirectory()) {
-        	FileUtils.cleanDirectory(fileFolder);
-        }else {
-        	fileFolder.mkdirs();
-        }
-        
-        
+
         int leftLimit = 48; // numeral '0'
 		int rightLimit = 122; // letter 'z'
 		int targetStringLength = 10;
@@ -100,7 +100,42 @@ public class BrandProductFileService {
                 brandProductFileRepository.save(f);
             }
         }
-        
+
         return "success";
+	}
+
+	/**
+	 * 파일 한 건을 지운다. DB 행과 디스크 파일을 함께 지운다.
+	 * 화면의 × 가 이것을 부른다. 수정 저장과 무관하게 바로 지워진다.
+	 *
+	 * 디스크 파일을 못 지워도 DB 행은 지운다. 로컬에서 만든 오래된 행은
+	 * 저장된 경로가 운영과 달라 파일을 찾지 못하는데, 그때 행까지 남겨 두면
+	 * 화면에는 계속 보이면서 내려받을 수는 없는 줄이 된다.
+	 *
+	 * @return 지웠으면 true, 그 번호의 행이 없으면 false
+	 */
+	@Transactional
+	public boolean deleteOne(Long id) {
+		BrandProductFile file = brandProductFileRepository.findById(id).orElse(null);
+		if (file == null) {
+			return false;
+		}
+		deleteFromDisk(file.getProductFilePath());
+		brandProductFileRepository.delete(file);
+		return true;
+	}
+
+	private void deleteFromDisk(String storedPath) {
+		if (storedPath == null || storedPath.isBlank()) {
+			return;
+		}
+		try {
+			File target = new File(storedPath);
+			if (target.exists() && target.isFile()) {
+				target.delete();
+			}
+		} catch (Exception e) {
+			// 위 주석 참고. 디스크에서 못 지워도 DB 행은 지운다
+		}
 	}
 }

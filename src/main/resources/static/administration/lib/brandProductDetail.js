@@ -256,3 +256,79 @@ function handleImgFileSelect(e) {
 
 
 
+
+/* 제품에 이미 붙어 있는 파일·썸네일을 한 건씩 지운다.
+   확인을 누르면 그 자리에서 DB 행과 디스크 파일이 지워진다. 수정 단추와 무관하다.
+   되돌릴 수 없으므로 확인창에 이름을 넣어, 무엇을 지우는지 보이게 한다.
+
+   줄은 Thymeleaf 가 그려 두고 여기서는 지우기만 한다. 지운 뒤 머리의 개수를
+   같이 줄이고, 마지막 하나를 지우면 '없습니다' 줄을 넣는다. 그래야 새로고침
+   하지 않아도 화면이 맞게 보인다. */
+$(function () {
+
+	function removeAttachment($button, opts) {
+		var id = $button.data('id');
+		if (!id) return;
+
+		var name = $button.data('name');
+		var label = name ? ('[' + name + ']') : opts.word;
+		if (!confirm(label + ' 을(를) 정말 삭제하시겠습니까?\n되돌릴 수 없습니다.')) return;
+
+		// 두 번 눌러 같은 번호를 두 번 보내는 것을 막는다
+		$button.prop('disabled', true);
+
+		$.post(opts.url + id)
+			.done(function (res) {
+				if (res === 'GONE') {
+					alert('이미 삭제된 항목입니다.');
+				} else if (res !== 'ok') {
+					alert('삭제하지 못했습니다.');
+					$button.prop('disabled', false);
+					return;
+				}
+				$button.closest(opts.item).remove();
+				afterRemove(opts);
+			})
+			.fail(function () {
+				alert('삭제하지 못했습니다.');
+				$button.prop('disabled', false);
+			});
+	}
+
+	function afterRemove(opts) {
+		var $list = $(opts.list);
+		var left = $list.find(opts.item).length;
+		$(opts.count).text(left);
+		if (left > 0) return;
+
+		// 썸네일은 격자 칸이 남아 빈 여백이 생긴다. 같이 치운다
+		if (opts.wrap) $list.find(opts.wrap).remove();
+		if ($list.find('.bn-attach__none').length === 0) {
+			$list.append($('<div class="bn-attach__none"></div>').text(opts.empty));
+		}
+	}
+
+	$('#productFileList').on('click', '.js-file-x', function () {
+		removeAttachment($(this), {
+			url: '/admin/brandProductFileDelete/',
+			list: '#productFileList',
+			item: '.bn-attach__row',
+			count: '#productFileCount',
+			word: '이 파일',
+			empty: '등록된 파일이 없습니다.'
+		});
+	});
+
+	$('#productImageList').on('click', '.js-image-x', function () {
+		removeAttachment($(this), {
+			url: '/admin/brandProductImageDelete/',
+			list: '#productImageList',
+			item: '.bn-attach__cell',
+			wrap: '.bn-attach__grid',
+			count: '#productImageCount',
+			word: '이 썸네일',
+			empty: '등록된 썸네일이 없습니다.'
+		});
+	});
+
+});

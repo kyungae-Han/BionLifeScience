@@ -29,8 +29,6 @@ import com.dev.BionLifeScienceWeb.model.brand.BrandProduct;
 import com.dev.BionLifeScienceWeb.model.brand.BrandSmallSort;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandBigSortRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandMiddleSortRepository;
-import com.dev.BionLifeScienceWeb.repository.brand.BrandProductFileRepository;
-import com.dev.BionLifeScienceWeb.repository.brand.BrandProductImageRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandSmallSortRepository;
@@ -56,8 +54,6 @@ public class BrandManageController {
 	private final BrandSmallSortRepository brandSmallSortRepository;
 	private final BrandProductRepository brandProductRepository;
 	private final BrandRepository brandRepository;
-	private final BrandProductImageRepository brandProductImageRepository;
-	private final BrandProductFileRepository brandProductFileRepository;
 	private final BrandProductFileService brandProductFileService;
 	private final BrandProductService brandProductService;
 	private final BrandExcelDownloadService brandExcelDownloadService;
@@ -305,17 +301,17 @@ public class BrandManageController {
 			List<MultipartFile> file
 			
 			) throws IllegalStateException, IOException {
+		// 올린 것은 기존 것 뒤에 붙는다. 예전에는 deleteAllByProductId 로 먼저
+		// 전부 지웠다. 떼어낼 것은 제품 수정 화면의 × 로 한 건씩 지운다.
 		if(productCodeInput.equals("slide")) {
 			if(file.size()>0 && !file.get(0).isEmpty()) {
-				brandProductImageRepository.deleteAllByProductId(productIdInput);
 				brandProductImageService.fileUpload(
-						file, 
+						file,
 						productIdInput,
 						brandProductRepository.findById(productIdInput).get().getBrandProductCode());
 			}
 		}else if(productCodeInput.equals("files")) {
 			if(file.size()>0 && !file.get(0).isEmpty()) {
-				brandProductFileRepository.deleteAllByProductId(productIdInput);
 				brandProductFileService.fileUpload(
 						file, 
 						productIdInput, 

@@ -507,3 +507,31 @@ html[lang="en"] #top-search > a {
     padding-top: 24px;
   }
 }
+
+/* ── owl 화살표가 경계에 커서를 걸치면 떨리던 것 (2026-10-29) ───────── */
+/* 연관상품 롤링의 이전 화살표에 커서를 걸치면 부르르 떨었다.
+
+   화살표는 평소 보이지 않고(opacity:0) 카로셀 왼쪽 바깥 -36px 에 서 있다.
+   커서를 올리면 style.css 의 `.owl-carousel:hover` 가 -18px 로 당겨 온다.
+   그런데 화살표가 카로셀 상자 밖에 있어서, 당겨 오는 18px 만큼 화살표가
+   커서에서 빠져나간다. 그러면 :hover 가 꺼져 다시 -36px 로 돌아오고,
+   돌아오면 또 커서에 닿아 :hover 가 켜진다. 이것이 무한 반복이다.
+   운영에서 실측: 화살표 왼쪽 18px 띠에서 x 가 87 ↔ 105 를 쉬지 않고 오갔다.
+
+   원인은 보이지도 않는 화살표가 hover 를 가로채는 것이다.
+   그래서 안 보일 때는 커서를 받지 않게 한다. 카로셀 안으로 들어와야 살아난다.
+   되돌아갈 때도 커서에 닿지 않으므로 다시 켜지지 않는다.
+
+   ⚠️ 움직임(left)은 건드리지 않았다. 테마가 주는 슬라이드-인은 그대로다.
+   `owl-nav-hover-fixed` 는 카로셀을 안 덮어도 늘 보이는 종류라 항상 눌리게 둔다
+   (지금 이 클래스를 쓰는 화면은 없지만, 쓰게 되면 막히면 안 된다).
+   모든 롤링이 같은 테마 규칙을 쓰므로 연관상품만 따로 잡지 않는다. */
+
+.owl-carousel .owl-nav [class*="owl-"] {
+  pointer-events: none;
+}
+
+.owl-carousel:hover .owl-nav [class*="owl-"],
+.owl-carousel.owl-nav-hover-fixed .owl-nav [class*="owl-"] {
+  pointer-events: auto;
+}

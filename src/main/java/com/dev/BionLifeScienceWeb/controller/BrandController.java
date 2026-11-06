@@ -35,8 +35,6 @@ import com.dev.BionLifeScienceWeb.model.brand.BrandProductSpec;
 import com.dev.BionLifeScienceWeb.model.brand.BrandSmallSort;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandBigSortRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandMiddleSortRepository;
-import com.dev.BionLifeScienceWeb.repository.brand.BrandProductFileRepository;
-import com.dev.BionLifeScienceWeb.repository.brand.BrandProductImageRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductInfoRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductRepository;
 import com.dev.BionLifeScienceWeb.repository.brand.BrandProductSpecRepository;
@@ -76,8 +74,6 @@ public class BrandController {
 	private final BrandProductRepository brandProductRepository;
 	private final BrandProductInfoRepository brandProductInfoRepository;
 	private final BrandProductSpecRepository brandProductSpecRepository;
-	private final BrandProductFileRepository brandProductFileRepository;
-	private final BrandProductImageRepository brandProductImageRepository;
 	private final BrandService brandService;	
 	private final BrandProductService brandProductService;
 	private final BrandProductImageService brandProductImageService;
@@ -591,13 +587,14 @@ public class BrandController {
 	    );
 
 	    // ✅ 파일 업로드 처리
+	    // 방금 만든 제품이라 지울 것이 없다. 예전에는 여기서도 deleteAllByProductId 를
+	    // 불렀는데 새 번호라 한 건도 지워지지 않았다. 올리기가 누적으로 바뀌어
+	    // 뜻까지 반대가 되므로 뺐다.
 	    if (productFile != null && !productFile.isEmpty() && productFile.stream().anyMatch(f -> !f.isEmpty())) {
-	        brandProductFileRepository.deleteAllByProductId(savedProduct.getId());
 	        brandProductFileService.fileUpload(productFile, savedProduct.getId(), savedProduct.getBrandProductCode());
 	    }
 
 	    if (slides != null && !slides.isEmpty() && slides.stream().anyMatch(f -> !f.isEmpty())) {
-	        brandProductImageRepository.deleteAllByProductId(savedProduct.getId());
 	        brandProductImageService.fileUpload(slides, savedProduct.getId(), savedProduct.getBrandProductCode());
 	    }
 
@@ -825,19 +822,20 @@ public class BrandController {
 		}
 		
 		
+		// 올린 것은 기존 것 뒤에 붙는다. 예전에는 여기서 deleteAllByProductId 로
+		// 그 제품의 행을 전부 지운 뒤 새로 올린 것만 남겼다. 떼어낼 파일은 이제
+		// 화면의 × 가 brandProductFileDelete / brandProductImageDelete 로 한 건씩 지운다.
 		if(productFile.size()>0 && !productFile.get(0).isEmpty()) {
-			brandProductFileRepository.deleteAllByProductId(product.getId());
 			brandProductFileService.fileUpload(
-				productFile, 
-				product.getId(), 
+				productFile,
+				product.getId(),
 				brandProductRepository.findById(product.getId()).get().getBrandProductCode()
 				);
 		}
 		if(slides.size()>0 && !slides.get(0).isEmpty()) {
-			brandProductImageRepository.deleteAllByProductId(product.getId());
 			brandProductImageService.fileUpload(
-				slides, 
-				product.getId(), 
+				slides,
+				product.getId(),
 				brandProductRepository.findById(product.getId()).get().getBrandProductCode()
 				);
 		}
@@ -990,7 +988,39 @@ public class BrandController {
 		    sb.insert(0, "<script>");
 		    return sb.toString();
 		}
-	
+
+	/*
+	 * 제품에 붙은 파일·썸네일을 한 건씩 지운다.
+	 *
+	 * 확인창은 화면(brandProductDetail.js)에서 띄운다. 여기 닿았다는 것은
+	 * 사용자가 이미 확인을 눌렀다는 뜻이므로 바로 지운다. 수정 저장과 무관하다.
+	 *
+	 * 돌려주는 값은 화면이 읽는다. ok = 지웠다, GONE = 그 번호가 이미 없다,
+	 * FAIL = 지우다 실패했다. 여기서 alert 스크립트를 돌려주지 않는 이유는
+	 * ajax 응답은 실행되지 않아서다 (위 brandProductSpecDelete 의 alert 는 그래서 뜨지 않는다).
+	 *
+	 * ⚠️ 새 주소라서 AdminMenu.BRAND 의 segments 에도 넣었다. 빼면 일반회원이 막힌다.
+	 */
+	@PostMapping("/brandProductFileDelete/{id}")
+	@ResponseBody
+	public String brandProductFileDelete(@PathVariable Long id) {
+		try {
+			return brandProductFileService.deleteOne(id) ? "ok" : "GONE";
+		} catch (Exception e) {
+			return "FAIL";
+		}
+	}
+
+	@PostMapping("/brandProductImageDelete/{id}")
+	@ResponseBody
+	public String brandProductImageDelete(@PathVariable Long id) {
+		try {
+			return brandProductImageService.deleteOne(id) ? "ok" : "GONE";
+		} catch (Exception e) {
+			return "FAIL";
+		}
+	}
+
 }
 
 
