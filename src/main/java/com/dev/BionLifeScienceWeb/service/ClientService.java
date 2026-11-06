@@ -34,58 +34,87 @@ public class ClientService {
 	private String commonPath;
 	
 	public String clientInsert(
-			Client client, 
+			Client client,
 			MultipartFile file) throws IllegalStateException, IOException {
-		
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String current_date = simpleDateFormat.format(new Date());
-        
-        String absolutePath = new File("").getAbsolutePath() + "\\";
-        String path = commonPath + "/clientfiles/" + current_date;
-        String road = "/administration/clientfiles/" + current_date;
-        
-        
-        
-        
-        File fileFolder = new File(path);
-        
-        int leftLimit = 48; // numeral '0'
-		int rightLimit = 122; // letter 'z'
-		int targetStringLength = 10;
-		Random random = new Random();
 
-		String generatedString = random.ints(leftLimit,rightLimit + 1)
-		  .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
-		  .limit(targetStringLength)
-		  .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-		  .toString();
-        
-        if(!fileFolder.exists()) {
-        	fileFolder.mkdirs();
-        }
-		
-    	String contentType = file.getContentType();
-    	
-    	// 확장자 명 NULL 검증
-		if (ObjectUtils.isEmpty(contentType)) {
-			return "NONE";
-		} 
-        String new_file_name = generatedString +  "_" + file.getOriginalFilename();
-        if(env.equals("local")) {
-        	fileFolder = new File(absolutePath + path + "/" + new_file_name);
-        	client.setFilepath(absolutePath + path + "/" + new_file_name);
-		}else if(env.equals("prod")) {
-			fileFolder = new File(path + "/" + new_file_name);
-			client.setFilepath(path + "/" + new_file_name);
+		// 첨부를 고르지 않아도 브라우저는 이름이 빈 파일 파트를 함께 보낸다.
+		// 예전에는 이것을 걸러내지 않아서, 첨부 없는 문의마다 0바이트 파일이 하나씩 쌓이고
+		// DB 의 파일 칸에도 그 경로가 박혔다. 관리자 상세에는 빈 첨부 링크가 떴다.
+		boolean hasFile = file != null && !file.isEmpty()
+				&& file.getOriginalFilename() != null
+				&& !file.getOriginalFilename().isBlank();
+
+		// 저장이 깨졌을 때 치우려고 방금 쓴 파일을 들고 있는다
+		File written = null;
+
+		if (hasFile) {
+
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        String current_date = simpleDateFormat.format(new Date());
+
+	        String absolutePath = new File("").getAbsolutePath() + "\\";
+	        String path = commonPath + "/clientfiles/" + current_date;
+	        String road = "/upload/clientfiles/" + current_date;
+
+	        File fileFolder = new File(path);
+
+	        int leftLimit = 48; // numeral '0'
+			int rightLimit = 122; // letter 'z'
+			int targetStringLength = 10;
+			Random random = new Random();
+
+			String generatedString = random.ints(leftLimit,rightLimit + 1)
+			  .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+			  .limit(targetStringLength)
+			  .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+			  .toString();
+
+	        if(!fileFolder.exists()) {
+	        	fileFolder.mkdirs();
+	        }
+
+	    	String contentType = file.getContentType();
+
+	    	// 확장자 명 NULL 검증
+			if (ObjectUtils.isEmpty(contentType)) {
+				return "NONE";
+			}
+	        String new_file_name = generatedString +  "_" + file.getOriginalFilename();
+	        if(env.equals("local")) {
+	        	fileFolder = new File(absolutePath + path + "/" + new_file_name);
+	        	client.setFilepath(absolutePath + path + "/" + new_file_name);
+			}else if(env.equals("prod")) {
+				fileFolder = new File(path + "/" + new_file_name);
+				client.setFilepath(path + "/" + new_file_name);
+			}
+	        file.transferTo(fileFolder);
+	        written = fileFolder;
+	        client.setFiledate(current_date);
+	        client.setFileroad(road + "/" + new_file_name);
+	        client.setFilename(file.getOriginalFilename());
+
+		} else {
+			// 파일 칸은 NOT NULL 이다. 비워 두면 insert 가 깨지므로 빈 문자열을 넣는다.
+			client.setFiledate("");
+			client.setFilepath("");
+			client.setFilename("");
+			client.setFileroad("");
 		}
-        file.transferTo(fileFolder);
-        client.setFiledate(current_date);
-        client.setFileroad(road + "/" + new_file_name);
-        client.setFilename(file.getOriginalFilename());
+
         client.setJoindate(new Date());
         client.setContact(false);
-        clientRepository.save(client);
-		
+
+        try {
+        	clientRepository.save(client);
+        } catch (RuntimeException e) {
+        	// 저장이 깨지면 방금 쓴 파일을 치운다. 안 그러면 주인 없는 파일이 디스크에 남는다.
+        	// 2026-11-05 에 이모지 때문에 저장이 깨지면서 그렇게 두 개가 남았다.
+        	if (written != null && written.exists()) {
+        		written.delete();
+        	}
+        	throw e;
+        }
+
         return "success";
 	}
 	

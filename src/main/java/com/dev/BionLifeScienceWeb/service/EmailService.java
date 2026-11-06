@@ -40,6 +40,37 @@ public class EmailService {
         );
     }
 
+    /**
+     * 저장에 실패한 문의를 알린다.
+     *
+     * 이 메일이 나갔다는 것은 그 문의가 DB 에 들어가지 않았다는 뜻이다.
+     * 관리자 [문의사항 관리] 에는 나오지 않으므로 이 메일이 내용의 전부다.
+     * 2026-11-05 에 이모지가 든 문의가 사라졌을 때는 이 알림이 없어서 아무도 몰랐다.
+     */
+    public void sendClientFailureMail(String[] to, Client client, String reason)
+            throws MailSendException, InterruptedException {
+        String message = buildFailureNotice(reason) + buildClientMailBody(client);
+        emailSendService.send(
+                to,
+                "[접수실패] " + safe(client.getCompany()) + " - " + safe(client.getSubject()),
+                message,
+                client.getEmail()
+        );
+    }
+
+    private String buildFailureNotice(String reason) {
+        return """
+            <div style="font-family:'Noto Sans KR',sans-serif; font-size:14px; line-height:1.6;
+                        border:2px solid #d64545; border-radius:6px; padding:14px; margin-bottom:16px;
+                        background:#fdf3f3; color:#8a2222;">
+              <strong style="font-size:15px;">이 문의는 저장되지 않았습니다.</strong><br>
+              관리자 [문의사항 관리] 화면에는 나오지 않습니다.
+              아래 내용이 남은 전부이므로 이 메일을 지우지 말고, 고객에게 직접 연락해 주세요.<br>
+              <span style="color:#666666; font-size:12px;">원인: %s</span>
+            </div>
+            """.formatted(safe(reason));
+    }
+
     private String buildClientMailBody(Client client) {
     	
     	

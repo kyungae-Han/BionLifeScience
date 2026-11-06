@@ -52,7 +52,7 @@ public class ProductFileService {
         String absolutePath = new File("").getAbsolutePath() + "\\";
 
         String path = commonPath + "/company/" + productCode + "/files";
-        String road = "/administration/company/" + productCode + "/files";
+        String road = "/upload/company/" + productCode + "/files";
         
         File fileFolder = new File(path);
         if(fileFolder.exists() && fileFolder.isDirectory()) {

@@ -158,19 +158,30 @@ public class ClientController {
 		// === 정상 처리 ===
 		log.info("[고객문의] 접수 - IP: {}, 이름: {}, 이메일: {}", clientIp, client.getName(), client.getEmail());
 
-	    clientService.clientInsert(client, file);
+	    // 받는 사람은 저장보다 먼저 읽어 둔다. 저장이 깨졌을 때도 알려야 하기 때문이다.
 	    List<CompanyEmail> list = companyEmailRepository.findAll();
+	    String[] to = list.stream().map(CompanyEmail::getEmail).toArray(String[]::new);
 
-	    ExecutorService executorService = Executors.newCachedThreadPool();
-	    executorService.submit(() -> {
-	        String[] to = list.stream().map(CompanyEmail::getEmail).toArray(String[]::new);
-	        try {
-	            emailService.sendClientMail(to, client);
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	    });
-	    executorService.shutdown();
+	    try {
+	        clientService.clientInsert(client, file);
+	    } catch (Exception e) {
+	        // 저장이 깨져도 문의 내용은 남겨야 한다. 로그와 메일 두 군데에 남긴다.
+	        //
+	        // 예전에는 예외가 그대로 위로 올라가 ControllerExceptionHandler 가
+	        // {"message":"SQL Exception"} 만 돌려줬다. 메일 발송은 이 줄 아래에 있어서
+	        // 아예 실행되지 않았고, 그래서 DB 에도 메일에도 아무것도 남지 않았다.
+	        // 2026-11-05 에 이모지가 든 문의 한 건이 이렇게 통째로 사라졌다.
+	        log.error("[고객문의] 저장 실패 - IP: {}, 이름: {}, 회사: {}, 이메일: {}, 전화: {}, 제목: {}, 본문: {}",
+	                clientIp, client.getName(), client.getCompany(), client.getEmail(),
+	                client.getPhone(), client.getSubject(), client.getComment(), e);
+
+	        sendInBackground(() -> emailService.sendClientFailureMail(to, client, e.getMessage()));
+
+	        writeAlert(response, "일시적인 오류로 문의가 접수되지 않았습니다. 잠시 후 다시 시도해 주세요.");
+	        return;
+	    }
+
+	    sendInBackground(() -> emailService.sendClientMail(to, client));
 
 	    response.setContentType("text/html; charset=UTF-8");
 	    response.getWriter().write("""
@@ -179,6 +190,25 @@ public class ClientController {
 	            window.location.href = '/index';
 	        </script>
 	    """);
+	}
+
+	/** 메일이 화면 응답을 막지 않도록 뒤에서 보낸다. 메일이 실패해도 접수 자체에는 영향이 없다. */
+	@FunctionalInterface
+	private interface MailTask {
+		void run() throws Exception;
+	}
+
+	private void sendInBackground(MailTask task) {
+		ExecutorService executorService = Executors.newCachedThreadPool();
+		executorService.submit(() -> {
+			try {
+				task.run();
+			} catch (Exception e) {
+				// 예전에는 printStackTrace 라 어느 문의인지 모른 채 스택만 찍혔다
+				log.error("[고객문의] 메일 발송 실패", e);
+			}
+		});
+		executorService.shutdown();
 	}
 
 	private String extractClientIp(HttpServletRequest request) {

@@ -169,6 +169,44 @@
 	<build>
 	   <finalName>ROOT</finalName>
 		<plugins>
+			<!--
+			  업로드 파일은 WAR 에 넣지 않는다.
+
+			  업로드가 저장되는 곳은 spring.upload.path 한 군데뿐이다.
+			  운영은 톰캣 webapps, 로컬은 src/main/resources/static/administration 이다.
+			  화면은 /upload/ 와 /administration/ 두 주소를 쓰는데, 운영에서 확인해 보니
+			  둘 다 webapps 를 본다. WAR 안의 사본은 어느 주소로도 나오지 않는다.
+			  (2026-11-06 확인: WAR 에만 있는 파일 186개가 두 주소 모두 404)
+
+			  그런데도 WAR 에 301MB 가 실려 있었다. 로컬에서 테스트하며 쌓인 것이
+			  그대로 커밋된 것이다 (company/abcdefg, company/123D123tC, 테마 데모 jpg 등).
+			  이걸 빼면 WAR 가 673MB 에서 370MB 쯤으로 줄고, 배포 업로드와
+			  톰캣 리소스 캐시 경고도 같이 줄어든다.
+
+			  <resources> 를 덮어쓰지 않고 여기서 빼는 이유는, 덮어쓰면 스프링부트 부모의
+			  application.yml 필터링 설정까지 같이 사라지기 때문이다.
+			  target/classes 에는 그대로 남으므로 이클립스 로컬 실행은 영향이 없다.
+
+			  ⚠️ 새 업로드 폴더가 생기면 여기에도 적는다. 안 적으면 다시 WAR 에 실린다.
+			-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<packagingExcludes>
+						WEB-INF/classes/static/administration/banner/**,
+						WEB-INF/classes/static/administration/brand/**,
+						WEB-INF/classes/static/administration/brandproduct/**,
+						WEB-INF/classes/static/administration/certification/**,
+						WEB-INF/classes/static/administration/clientfiles/**,
+						WEB-INF/classes/static/administration/company/**,
+						WEB-INF/classes/static/administration/notice/**,
+						WEB-INF/classes/static/administration/page/**,
+						WEB-INF/classes/static/administration/popup/**,
+						WEB-INF/classes/static/administration/reference/**
+					</packagingExcludes>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

@@ -34,7 +34,7 @@ public class BannerService {
 
 	    // 실제 저장 경로 및 URL 경로
 	    String path = commonPath + "/banner/" + current_date;   // 상대 or 절대
-	    String road = "/administration/banner/" + current_date; // 접근 URL
+	    String road = "/upload/banner/" + current_date; // 접근 URL
 
 	    // env-분기
 	    String absolutePath = "";
@@ -105,8 +105,26 @@ public class BannerService {
 	        webFile.transferTo(new File(webSavePath));
 	        mobileFile.transferTo(new File(mobileSavePath));
 	    }
+	    // 정렬순서를 비우고 등록하면 맨 뒤 번호를 자동으로 붙인다.
+	    //
+	    // 폼의 숫자 칸을 비우면 "" 가 넘어오고, 스프링이 Integer 로 바꾸면서 null 이 된다.
+	    // 그 null 이 엔티티의 기본값 0 을 덮어써서 NOT NULL 위반으로 등록이 통째로 실패했다.
+	    // 2026-11-06 에 로컬에서 배너를 올리다 발견했다. 순서를 안 적는 것이 잘못은 아니므로
+	    // 오류를 내는 대신 번호를 채워 준다.
+	    if (banner.getBannerIndex() == null) {
+	        banner.setBannerIndex(nextBannerIndex());
+	    }
 	    bannerRepository.save(banner);
 	    return "success";
+	}
+
+	/** 비어 있을 때 쓸 다음 정렬순서. 가장 큰 값 + 1, 하나도 없으면 1 */
+	private int nextBannerIndex() {
+		return bannerRepository.findAll().stream()
+				.map(Banner::getBannerIndex)
+				.filter(java.util.Objects::nonNull)
+				.max(Integer::compareTo)
+				.orElse(0) + 1;
 	}
 	
 	
@@ -117,7 +135,7 @@ public class BannerService {
 	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	    String current_date = sdf.format(new Date());
 	    String path = commonPath + "/banner/" + current_date;
-	    String road = "/administration/banner/" + current_date;
+	    String road = "/upload/banner/" + current_date;
 
 	    String absolutePath = "";
 	    if ("local".equals(env)) absolutePath = new File("").getAbsolutePath() + "/";
@@ -162,7 +180,12 @@ public class BannerService {
 	    existing.setSubjectEn(banner.getSubjectEn());
 	    existing.setContentEn(banner.getContentEn());
 	    existing.setLinkUrl(banner.getLinkUrl());
-	    existing.setBannerIndex(banner.getBannerIndex());
+
+	    // 수정 화면에서 정렬순서를 비우면 원래 번호를 그대로 둔다.
+	    // 여기서 null 을 넣으면 등록 때와 같은 이유로 저장이 깨진다.
+	    if (banner.getBannerIndex() != null) {
+	        existing.setBannerIndex(banner.getBannerIndex());
+	    }
 
 	    bannerRepository.save(existing);
 	    return "updated";

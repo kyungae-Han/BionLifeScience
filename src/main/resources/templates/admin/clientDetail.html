@@ -78,7 +78,10 @@
                                                     name="comment"></textarea>
                                                 </div>
                                             </div>
-                                            <div class="form-group ">
+                                            <!-- 첨부가 없으면 줄째로 숨긴다.
+                                                 예전에는 조건 없이 그려서, 첨부를 안 붙인 문의에도
+                                                 글자 없는 링크가 떠 있었고 누르면 0바이트 파일이 내려왔다. -->
+                                            <div class="form-group " th:if="${!#strings.isEmpty(client.filename)}">
                                                 <label for="curl" class="control-label col-lg-2"># 고객파일</label>
                                                 <div class="col-lg-10">
                                                     <a th:href="@{|/admin/fileDownload/${client.id}|}"><span class="task-title-sp" th:text="${client.filename}"></span></a>

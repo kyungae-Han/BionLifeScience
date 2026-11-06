@@ -51,7 +51,7 @@ public class ProductImageService {
 
 		String absolutePath = new File("").getAbsolutePath() + "\\";
         String path = commonPath + "/company/" + productCode + "/slide";
-        String road = "/administration/company/" + productCode + "/slide";
+        String road = "/upload/company/" + productCode + "/slide";
         File fileFolder = new File(path);
         if(fileFolder.exists() && fileFolder.isDirectory()) {
         	FileUtils.cleanDirectory(fileFolder);
