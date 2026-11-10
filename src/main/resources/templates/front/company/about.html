@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="ko" th:lang="${#locale.language}" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{/fragments/front/common :: headSrc('About Us')}"></head>
+<head th:replace="~{/fragments/front/common :: headSrc(${@enText.isEnglish()} ? 'About Us | BION Life Science' : '회사소개 | 바이온라이프사이언스')}"></head>
 
 <link rel="stylesheet" th:href="@{/front/css/imports/company.css}">
 

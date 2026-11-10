@@ -636,6 +636,27 @@ public class HomeController {
 		
 	}
 	
+	/**
+	 * 제품 분류 화면의 제목을 만든다. "Corning Tubes | 바이온라이프사이언스" 모양이다.
+	 * 분류가 없으면 브랜드만, 브랜드도 없으면 회사 이름만 남긴다.
+	 */
+	private String buildSortedTitle(String brandName, String sortName, String suffix) {
+		StringBuilder sb = new StringBuilder();
+		if (brandName != null && !brandName.isBlank()) {
+			sb.append(brandName.trim());
+		}
+		if (sortName != null && !sortName.isBlank()) {
+			if (sb.length() > 0) {
+				sb.append(' ');
+			}
+			sb.append(sortName.trim());
+		}
+		if (sb.length() == 0) {
+			return suffix;
+		}
+		return sb + " | " + suffix;
+	}
+
 	@GetMapping("/brandProductSorted/{sort}/{id}")
 	public String brandProductSorted(
 			Model model,
@@ -646,9 +667,14 @@ public class HomeController {
 			) {
 		
 		Page<BrandProduct> products = null;
-		Brand brand = null;	
+		Brand brand = null;
 		String name = "";
-		
+
+		// 화면 제목에 쓸 분류 이름. 브랜드 전체(sort=brand)일 때는 분류가 없으므로 null 로 둔다.
+		// 예전에는 이 12개 화면이 전부 "바이온라이프사이언스 제품 분류 페이지" 라는 같은 제목을 달고 있었다.
+		// 검색엔진이 서로 다른 화면으로 보지 않아 색인에서 밀렸다. 2026-11-10 에 고쳤다.
+		String sortName = null;
+		String sortNameEn = null;
 
 		if(sort.equals("brand")) {
 			Optional<Brand> b = brandRepository.findById(id);
@@ -675,6 +701,8 @@ public class HomeController {
 			if(b.isPresent()) {
 				products = brandProductRepository.findAllByBigSort(pageable, b.get());
 				brand = b.get().getBrand();
+				sortName = b.get().getName();
+				sortNameEn = b.get().getNameEn();
 				if(products.getNumberOfElements()>0) {
 					
 					name = brand.getName() + "브랜드의 " + b.get().getName() + "분류에 속한 제품들 입니다.";
@@ -691,6 +719,8 @@ public class HomeController {
 			if(b.isPresent()) {
 				products = brandProductRepository.findAllByMiddleSort(pageable, b.get());
 				brand = b.get().getBigSort().getBrand();
+				sortName = b.get().getName();
+				sortNameEn = b.get().getNameEn();
 				if(products.getNumberOfElements()>0) {
 					name = brand.getName() + "브랜드의 " + b.get().getName() + "분류에 속한 제품들 입니다.";
 				}else {
@@ -709,6 +739,8 @@ public class HomeController {
 			if(b.isPresent()) {
 				products = brandProductRepository.findAllBySmallSort(pageable, b.get());
 				brand = b.get().getMiddleSort().getBigSort().getBrand();
+				sortName = b.get().getName();
+				sortNameEn = b.get().getNameEn();
 				if(products.getNumberOfElements()>0) {
 					
 					name = brand.getName() + "브랜드의 " + b.get().getName() + "분류에 속한 제품들 입니다.";
@@ -733,6 +765,35 @@ public class HomeController {
 			}
 		}
 		
+		// 화면 제목을 한글·영문 두 벌로 만들어 둔다.
+		// 템플릿에서 @enText.pick 으로 고른다. 여기서 만드는 이유는, 분류가 없는 화면
+		// (sort=brand) 에서 null 을 이어붙이면 제목에 "null" 이 찍히기 때문이다.
+		String brandKo = brand != null ? brand.getName() : null;
+		String brandEn = brand != null && brand.getNameEn() != null && !brand.getNameEn().isBlank()
+				? brand.getNameEn() : brandKo;
+
+		String pageTitle   = buildSortedTitle(brandKo, sortName,   "바이온라이프사이언스");
+		String pageTitleEn = buildSortedTitle(brandEn,
+				sortNameEn != null && !sortNameEn.isBlank() ? sortNameEn : sortName,
+				"BION Life Science");
+
+		model.addAttribute("pageTitle", pageTitle);
+		model.addAttribute("pageTitleEn", pageTitleEn);
+
+		// 설명도 화면마다 달라야 한다. 없으면 공통 문구로 떨어져서 12개가 또 같아진다.
+		boolean en = enText.isEnglish();
+		String descBrand = en ? brandEn : brandKo;
+		String descSort  = en && sortNameEn != null && !sortNameEn.isBlank() ? sortNameEn : sortName;
+		if (descBrand != null && !descBrand.isBlank()) {
+			model.addAttribute("metaDescription", en
+					? (descSort != null && !descSort.isBlank()
+						? descBrand + " " + descSort + " products supplied by BION Life Science."
+						: descBrand + " products supplied by BION Life Science.")
+					: (descSort != null && !descSort.isBlank()
+						? "바이온라이프사이언스가 공급하는 " + descBrand + " " + descSort + " 제품을 소개합니다."
+						: "바이온라이프사이언스가 공급하는 " + descBrand + " 제품을 소개합니다."));
+		}
+
 		model.addAttribute("brandInfo", brand);
 		model.addAttribute("products", products);
 		model.addAttribute("name", name);

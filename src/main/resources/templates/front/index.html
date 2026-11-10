@@ -20,7 +20,28 @@
   <th:block th:replace="~{/fragments/front/common :: headerSrc(false, ${menuList})}"></th:block>
   
 	<!--메인배너-->
-  <section id="slider" class="slider-element slider-parallax swiper_wrapper vh-75">
+  <!-- 메인배너 자동 롤링.
+       두 가지가 다 있어야 돈다. 하나만 넣으면 안 돌거나 한 장만 넘어가고 멈춘다.
+
+       1) data-autoplay (밀리초)
+          테마(plugins.swiper.js 48줄)는 이 속성이 없으면 delay 를 999999999 로 넣는다.
+          "자동재생 끔"을 그 숫자로 표현하는 것이라, 빠져 있으면 영영 안 넘어간다.
+
+       2) data-settings 의 waitForTransition:false
+          Swiper 는 기본적으로 전환이 끝났다는 transitionend 신호를 받아야 다음 장을 예약한다.
+          그런데 이 화면에서는 그 신호가 오지 않는다 (2026-11-10 운영 화면에서 확인, 수신 0회).
+          그래서 기본값으로 두면 첫 장만 넘어가고 멈춘다. 신호를 기다리지 않고
+          타이머만으로 넘기게 해야 계속 돈다.
+          테마는 new Swiper 직후(202줄) 이 설정을 덮어쓰므로 첫 타이머 전에 반영된다.
+
+       3) data-loop
+          없으면 마지막 장에서 처음으로 "되감기" 하듯 돌아가 눈에 거슬린다.
+          켜면 Swiper 가 슬라이드를 복제해서, 마지막 다음에도 같은 방향으로 계속 밀린다.
+          복제가 걱정이었는데, 배경을 바꾸던 adjustBannerView() 가 지금은 주석 처리돼 있고
+          모바일/데스크톱 전환은 CSS 가 하므로 부딪히지 않는다. -->
+  <section id="slider" class="slider-element slider-parallax swiper_wrapper vh-75"
+           data-autoplay="5000" data-speed="900" data-loop="true"
+           data-settings='{"autoplay":{"delay":5000,"disableOnInteraction":false}}'>
   <div class="slider-inner">
 
     <div class="swiper-container swiper-parent">
@@ -540,6 +561,82 @@
 		  });
 		}
 
+</script>
+
+<script>
+/*
+ * 메인배너: 다음 슬라이드 이미지를 미리 디코딩한다.
+ *
+ * 배너 원본이 아주 크다 (2026-11-10 기준 web_main-2.jpg 가 7680×3584).
+ * 용량은 3MB 남짓이라 내려받는 건 금방이지만, 화면에 그리려면 메모리에 펼쳐야 하고
+ * 7680×3584 는 2,750만 화소라 그 작업이 무겁다. 슬라이드가 들어오는 순간 그 일이
+ * 일어나서 전환 끝에 한 번 걸린다. 동영상 슬라이드가 아니어도 똑같이 생긴다.
+ *
+ * 여기서는 다음 장이 보이기 전에 img.decode() 로 미리 펼쳐 둔다.
+ * 디코딩은 본 작업과 다른 흐름에서 돌기 때문에 전환이 덜 끊긴다.
+ *
+ * ⚠️ 이것은 완화책이다. 근본 해결은 배너를 1920×896 정도로 줄여서 올리는 것이다.
+ *    원본이 4배 크면 미리 해 둬도 메모리와 첫 장은 그대로 무겁다.
+ */
+(function () {
+  var slider = document.querySelector('#slider');
+  if (!slider) { return; }
+
+  /* 그 슬라이드가 지금 실제로 쓰는 배경 주소들.
+     배경은 .swiper-slide-bg 가 아니라 그 안의 .bg-inner 에 인라인으로 걸려 있다.
+     모바일용/데스크톱용 중 CSS 가 숨긴 쪽은 offsetParent 가 없어서 걸러진다. */
+  function urlsOf(slide) {
+    var list = [];
+    if (!slide) { return list; }
+    Array.prototype.forEach.call(slide.querySelectorAll('.bg-inner, .swiper-slide-bg'), function (el) {
+      if (el.offsetParent === null) { return; }
+      var m = /url\(["']?([^"')]+)/.exec(getComputedStyle(el).backgroundImage || '');
+      if (m) { list.push(m[1]); }
+    });
+    return list;
+  }
+
+  var done = {};
+  function warm(slide) {
+    urlsOf(slide).forEach(function (u) {
+      if (done[u]) { return; }
+      done[u] = true;
+      var img = new Image();
+      img.src = u;
+      if (img.decode) { img.decode().catch(function () {}); }
+    });
+  }
+
+  /* 테마가 Swiper 를 만들기 전에 이 스크립트가 돌 수 있어서 잠깐씩 기다린다 */
+  var tries = 0;
+  (function bind() {
+    var box = slider.querySelector('.swiper-container');
+    var sw = box && box.swiper;
+    if (!sw) {
+      if (++tries > 50) { return; }   // 10초까지만 기다린다
+      setTimeout(bind, 200);
+      return;
+    }
+    function nextSlide() {
+      return sw.slides[sw.activeIndex + 1] || sw.slides[0];
+    }
+    warm(sw.slides[sw.activeIndex]);
+    warm(nextSlide());
+    sw.on('slideChangeTransitionEnd', function () { warm(nextSlide()); });
+
+    /* 마우스를 올리면 멈추고, 벗어나면 다시 돈다.
+       Swiper 내장 기능(data-hover / pauseOnMouseEnter)은 일부러 끄고 여기서 직접 한다.
+       이 빌드의 autoplay 에는 pause() 는 있는데 짝이 되는 resume() 이 없어서,
+       내장 기능으로 한 번 멈추면 start() 로도 paused 가 안 풀린다.
+       (2026-11-10 운영 화면에서 확인) stop()/start() 쌍은 정상 동작한다. */
+    slider.addEventListener('mouseenter', function () {
+      if (sw.autoplay) { sw.autoplay.stop(); }
+    });
+    slider.addEventListener('mouseleave', function () {
+      if (sw.autoplay) { sw.autoplay.start(); }
+    });
+  })();
+})();
 </script>
 
 <!-- 메인 팝업. 켜진 팝업이 없으면 아무것도 그리지 않는다 -->
